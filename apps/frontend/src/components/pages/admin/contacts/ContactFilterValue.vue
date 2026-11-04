@@ -24,12 +24,15 @@
       variant="subtle"
       class="w-44"
       :aria-label="item.label"
+      v-bind="errorAttrs(i)"
       @update:model-value="setValue(i, $event)"
     />
 
     <ContactFilterDateInput
       v-else-if="item.type === 'date'"
       :label="item.label"
+      :invalid="isMissing(i)"
+      :error-id="errorId"
       :model-value="String(value[i] ?? '')"
       @update:model-value="setValue(i, $event)"
     />
@@ -42,6 +45,7 @@
       variant="subtle"
       class="w-44"
       :aria-label="item.label"
+      v-bind="errorAttrs(i)"
       @update:model-value="
         (input: string | number) =>
           setValue(i, item.type === 'number' ? Number(input) : input)
@@ -72,6 +76,10 @@ const props = defineProps<{
   item: FilterItem;
   /** The rule's current operator, which decides how many values are needed */
   operator: RuleOperator;
+  /** Flags any empty value as missing */
+  invalid?: boolean;
+  /** Id of the message explaining the missing value */
+  errorId?: string;
 }>();
 
 const value = defineModel<RuleValue[]>({ required: true });
@@ -97,6 +105,21 @@ const selectItems = computed(() =>
 const prefix = computed(() =>
   'prefix' in props.item ? props.item.prefix : undefined
 );
+
+function isMissing(index: number) {
+  return !!props.invalid && value.value[index] === '';
+}
+
+function errorAttrs(index: number) {
+  return isMissing(index)
+    ? {
+        color: 'error' as const,
+        highlight: true,
+        'aria-invalid': true,
+        'aria-describedby': props.errorId,
+      }
+    : {};
+}
 
 function setValue(index: number, newValue: RuleValue) {
   value.value = value.value.map((v, i) => (i === index ? newValue : v));

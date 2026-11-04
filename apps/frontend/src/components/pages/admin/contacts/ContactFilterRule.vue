@@ -5,7 +5,7 @@
 -->
 <template>
   <div
-    class="flex flex-wrap items-center gap-2 rounded-lg border border-default bg-default px-3 py-2.5"
+    class="flex flex-wrap items-start gap-2 rounded-lg border border-default bg-default px-3 py-2.5"
   >
     <UPopover v-model:open="fieldPickerOpen">
       <UButton
@@ -39,11 +39,20 @@
         </UButton>
       </UDropdownMenu>
 
-      <ContactFilterValue
-        v-model="value"
-        :item="item"
-        :operator="rule.operator"
-      />
+      <div class="flex flex-col gap-1">
+        <div class="flex flex-wrap items-center gap-2">
+          <ContactFilterValue
+            v-model="value"
+            :item="item"
+            :operator="rule.operator"
+            :invalid="invalid"
+            :error-id="errorId"
+          />
+        </div>
+        <p v-if="invalid" :id="errorId" class="text-error">
+          {{ t('form.errors.unknown.required') }}
+        </p>
+      </div>
     </template>
 
     <UButton
@@ -61,7 +70,7 @@
 import type { Rule, RuleOperator, RuleValue } from '@beabee/beabee-common';
 
 import { operatorsByTypeMap } from '@beabee/beabee-common';
-import { computed, ref } from 'vue';
+import { computed, ref, useId } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { FilterGroups, FilterItem } from '../../../../type/search';
@@ -88,6 +97,8 @@ const props = defineProps<{
   rule: Rule;
   /** The field groups to pick from, excluding the crowdNewsroom group */
   filterGroups: FilterGroups;
+  /** Whether to flag missing values, once a search has been attempted */
+  showErrors?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -96,6 +107,11 @@ const emit = defineEmits<{
 }>();
 
 const fieldPickerOpen = ref(false);
+const errorId = useId();
+
+const invalid = computed(
+  () => !!props.showErrors && props.rule.value.some((v) => v === '')
+);
 
 const calloutId = computed(() => getCalloutIdFromField(props.rule.field));
 

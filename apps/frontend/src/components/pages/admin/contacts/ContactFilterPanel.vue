@@ -7,7 +7,7 @@
   behaviour of the previous search form.
 -->
 <template>
-  <div class="border-b border-default bg-elevated/40 p-4">
+  <div ref="root" class="border-b border-default bg-elevated/40 p-4">
     <div class="mb-3 flex flex-wrap items-center gap-2">
       <span class="text-muted">
         {{ t('advancedSearch.createFiltersBefore-nuxt') }}
@@ -42,6 +42,7 @@
           v-else
           :rule="rule"
           :filter-groups="baseFilterGroups"
+          :show-errors="showErrors"
           @update:rule="ruleGroup.rules[i] = $event"
           @remove="ruleGroup.rules.splice(i, 1)"
         />
@@ -92,7 +93,7 @@
 import type { Rule, RuleGroup } from '@beabee/beabee-common';
 
 import { isRuleGroup } from '@beabee/beabee-common';
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, nextTick, reactive, ref, useTemplateRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { FilterGroups, FilterItem } from '../../../../type/search';
@@ -121,6 +122,9 @@ const emit = defineEmits<{
 const modelValue = defineModel<RuleGroup>();
 
 const addPickerOpen = ref(false);
+/** Set once Search is pressed with a value missing, so empty fields show it */
+const showErrors = ref(false);
+const root = useTemplateRef('root');
 
 const conditions = computed(() => [
   { value: 'AND' as const, label: t('advancedSearch.createFiltersType.all') },
@@ -134,7 +138,15 @@ const baseFilterGroups = computed(() =>
 
 const ruleGroup = reactive<RuleGroup>({ condition: 'AND', rules: [] });
 
+/** Nested groups can't be edited here, so they're taken as they are */
+const allValuesFilled = computed(() =>
+  ruleGroup.rules.every(
+    (rule) => isRuleGroup(rule) || rule.value.every((value) => value !== '')
+  )
+);
+
 function reset() {
+  showErrors.value = false;
   const newRuleGroup = modelValue.value
     ? copyRuleGroup(modelValue.value)
     : { condition: 'AND' as const, rules: [] };
@@ -148,7 +160,14 @@ function handleAddRule(field: string, item: FilterItem) {
   ruleGroup.rules.push(createNewRule(field, item.type));
 }
 
-function handleSubmit() {
+async function handleSubmit() {
+  if (!allValuesFilled.value) {
+    showErrors.value = true;
+    await nextTick();
+    root.value?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+    return;
+  }
+
   modelValue.value = {
     condition: ruleGroup.condition,
     rules: ruleGroup.rules as (Rule | RuleGroup)[],

@@ -25,8 +25,10 @@
         variant="subtle"
         :placeholder="example"
         class="w-40 font-mono"
-        :aria-invalid="!!relativeValue && !preview"
-        :aria-describedby="previewId"
+        :color="invalid ? 'error' : undefined"
+        :highlight="invalid"
+        :aria-invalid="invalid || (!!relativeValue && !preview)"
+        :aria-describedby="invalid ? errorId : previewId"
         :aria-label="label"
       />
       <span v-if="relativeValue" :id="previewId" class="text-muted">
@@ -38,6 +40,10 @@
       v-model="dateValue"
       type="date"
       variant="subtle"
+      :color="invalid ? 'error' : undefined"
+      :highlight="invalid"
+      :aria-invalid="invalid || undefined"
+      :aria-describedby="invalid ? errorId : undefined"
       :aria-label="label"
     />
   </div>
@@ -55,6 +61,10 @@ const { t } = useI18n();
 defineProps<{
   /** Accessible name for the input, usually the field being filtered */
   label: string;
+  /** Flags the input as missing a value */
+  invalid?: boolean;
+  /** Id of the message explaining the missing value */
+  errorId?: string;
 }>();
 
 const modelValue = defineModel<string>({ required: true });
