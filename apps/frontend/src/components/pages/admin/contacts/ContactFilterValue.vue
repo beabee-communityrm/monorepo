@@ -9,18 +9,13 @@
       {{ t('advancedSearch.matchWord.AND') }}
     </span>
 
-    <UButtonGroup v-if="item.type === 'boolean'">
-      <UButton
-        v-for="option in booleanOptions"
-        :key="String(option.value)"
-        :color="value[i] === option.value ? 'primary' : 'neutral'"
-        :variant="value[i] === option.value ? 'subtle' : 'outline'"
-        :aria-pressed="value[i] === option.value"
-        @click="setValue(i, option.value)"
-      >
-        {{ option.label }}
-      </UButton>
-    </UButtonGroup>
+    <ContactFilterToggle
+      v-if="item.type === 'boolean'"
+      :model-value="value[i]"
+      :options="booleanOptions"
+      :label="item.label"
+      @update:model-value="setValue(i, $event)"
+    />
 
     <USelect
       v-else-if="selectItems"
@@ -65,6 +60,7 @@ import { useI18n } from 'vue-i18n';
 
 import type { FilterItem } from '../../../../type/search';
 import ContactFilterDateInput from './ContactFilterDateInput.vue';
+import ContactFilterToggle from './ContactFilterToggle.vue';
 
 const { t } = useI18n();
 

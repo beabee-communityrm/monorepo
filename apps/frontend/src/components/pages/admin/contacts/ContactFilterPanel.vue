@@ -12,13 +12,10 @@
       <span class="text-muted">
         {{ t('advancedSearch.createFiltersBefore-nuxt') }}
       </span>
-      <UTabs
-        :items="conditions"
-        :model-value="ruleGroup.condition"
-        size="xs"
-        @update:model-value="
-          ruleGroup.condition = $event as RuleGroup['condition']
-        "
+      <ContactFilterToggle
+        v-model="ruleGroup.condition"
+        :options="conditions"
+        :label="t('advancedSearch.matchCondition-nuxt')"
       />
       <span class="text-muted">
         {{ t('advancedSearch.createFiltersAfter-nuxt') }}
@@ -102,6 +99,7 @@ import type { FilterGroups, FilterItem } from '../../../../type/search';
 import { copyRuleGroup, createNewRule } from '../../../../utils/rules';
 import ContactFilterFieldPicker from './ContactFilterFieldPicker.vue';
 import ContactFilterRule from './ContactFilterRule.vue';
+import ContactFilterToggle from './ContactFilterToggle.vue';
 
 const { t, n } = useI18n();
 

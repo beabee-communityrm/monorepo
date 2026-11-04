@@ -397,6 +397,7 @@
       "text": "text"
     },
     "invalidRuleError": "Something is broken in this rule: \"{ rule }\". Please update!",
+    "matchCondition-nuxt": "How many filters to match",
     "matchCount-nuxt": "{count} match",
     "matchWord": {
       "AND": "and",
@@ -1294,7 +1295,7 @@
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
-      "callout-nuxt": "crowdNewsroom responses",
+      "callout-nuxt": "CrowdNewsroom responses",
       "contact": "Contact information",
       "oneTimeContributions": "One-Time Contributions",
       "recurringContributions": "Recurring Contributions",
