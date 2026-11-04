@@ -634,11 +634,12 @@ function clearSearch() {
   currentSearch.value = '';
 }
 
+/** Keeps an empty group rather than none, which would bring back the segment's rules */
 function handleRemoveRule(index: number) {
-  const rules = appliedRules.value.filter((_, i) => i !== index);
-  currentRules.value = rules.length
-    ? { condition: currentRules.value?.condition ?? 'AND', rules }
-    : undefined;
+  currentRules.value = {
+    condition: currentRules.value?.condition ?? 'AND',
+    rules: appliedRules.value.filter((_, i) => i !== index),
+  };
 }
 
 function handleResetFilters() {
