@@ -165,8 +165,14 @@
     "yesReset": ""
   },
   "activity": {
+    "actorType": {
+      "admin": "",
+      "system": "",
+      "user": ""
+    },
     "data": {
       "actor": "",
+      "actorType": "",
       "category": "",
       "target": "",
       "time": ""

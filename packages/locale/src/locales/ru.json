@@ -166,8 +166,14 @@
     "yesReset": "Да, сбросить"
   },
   "activity": {
+    "actorType": {
+      "admin": "Администратор",
+      "system": "Система",
+      "user": "Пользователь"
+    },
     "data": {
       "actor": "Инициатор",
+      "actorType": "Тип инициатора",
       "category": "Категория",
       "target": "Объект",
       "time": "Время"

@@ -166,8 +166,14 @@
     "yesReset": "Sí, restablecer"
   },
   "activity": {
+    "actorType": {
+      "admin": "Administrador",
+      "system": "Sistema",
+      "user": "Usuario"
+    },
     "data": {
       "actor": "Actor",
+      "actorType": "Tipo de actor",
       "category": "Categoría",
       "target": "Objetivo",
       "time": "Hora"

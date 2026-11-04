@@ -166,8 +166,14 @@
     "yesReset": "Sì, reimpostalo"
   },
   "activity": {
+    "actorType": {
+      "admin": "Amministratore",
+      "system": "Sistema",
+      "user": "Utente"
+    },
     "data": {
       "actor": "Autore",
+      "actorType": "Tipo di autore",
       "category": "Categoria",
       "target": "Destinatario",
       "time": "Ora"

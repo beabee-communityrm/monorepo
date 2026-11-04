@@ -166,8 +166,14 @@
     "yesReset": "Sim, redefinir"
   },
   "activity": {
+    "actorType": {
+      "admin": "Administrador",
+      "system": "Sistema",
+      "user": "Utilizador"
+    },
     "data": {
       "actor": "Autor",
+      "actorType": "Tipo de autor",
       "category": "Categoria",
       "target": "Alvo",
       "time": "Hora"
