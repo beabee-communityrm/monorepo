@@ -1,16 +1,17 @@
 <!--
   # ContactFilterChip
   Read-only summary of one applied contact filter rule, with a button to
-  remove it.
+  remove it. A nested rule group can't be summarised, so it's just labelled.
 -->
 <template>
   <span
     class="flex items-center gap-1.5 rounded-full border border-default bg-default py-1 pr-1 pl-3"
   >
-    <span>
+    <span v-if="!simpleRule">{{ t('advancedSearch.nestedRules') }}</span>
+    <span v-else>
       <b class="font-semibold">
         <template v-if="callout">{{ callout.title }} · </template>
-        {{ item?.label || rule.field }}
+        {{ item?.label || simpleRule.field }}
       </b>
       {{ operatorLabel }}
       <template v-if="valueLabels.length">
@@ -29,8 +30,10 @@
 </template>
 
 <script lang="ts" setup>
-import type { Rule, RuleValue } from '@beabee/beabee-common';
+import type { Rule, RuleGroup, RuleValue } from '@beabee/beabee-common';
 import { formatLocale } from '@beabee/vue';
+
+import { isRuleGroup } from '@beabee/beabee-common';
 
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -47,14 +50,20 @@ import {
 const { t } = useI18n();
 
 const props = defineProps<{
-  rule: Rule;
+  rule: Rule | RuleGroup;
   /** All available filter groups, including the crowdNewsroom group */
   filterGroups: FilterGroups;
 }>();
 
 const emit = defineEmits<{ (event: 'remove'): void }>();
 
-const calloutId = computed(() => getCalloutIdFromField(props.rule.field));
+const simpleRule = computed(() =>
+  isRuleGroup(props.rule) ? undefined : props.rule
+);
+const field = computed(() => simpleRule.value?.field ?? '');
+const operator = computed(() => simpleRule.value?.operator ?? '');
+
+const calloutId = computed(() => getCalloutIdFromField(field.value));
 
 const {
   callout,
@@ -64,25 +73,27 @@ const {
 
 const item = computed(
   () =>
-    findFilterItem(props.filterGroups, props.rule.field) ||
-    participationItems.value[props.rule.field] ||
-    findFilterItem(calloutGroups.value, props.rule.field)
+    findFilterItem(props.filterGroups, field.value) ||
+    participationItems.value[field.value] ||
+    findFilterItem(calloutGroups.value, field.value)
 );
 
 const operatorLabels = computed(() => createOperatorLabels(t));
 
 const operatorLabel = computed(() => {
-  if (!item.value) return props.rule.operator;
+  if (!item.value) return operator.value;
   const operators = buildOperatorItems(operatorLabels.value)[item.value.type];
   return (
-    operators.find((o) => o.id === props.rule.operator)?.label ||
-    operatorLabels.value.all[props.rule.operator] ||
-    props.rule.operator
+    operators.find((o) => o.id === operator.value)?.label ||
+    operatorLabels.value.all[operator.value] ||
+    operator.value
   );
 });
 
 const valueLabels = computed(() =>
-  item.value ? props.rule.value.map((v) => formatValue(item.value!, v)) : []
+  item.value && simpleRule.value
+    ? simpleRule.value.value.map((v) => formatValue(item.value!, v))
+    : []
 );
 
 function formatValue(item: FilterItem, value: RuleValue): string {

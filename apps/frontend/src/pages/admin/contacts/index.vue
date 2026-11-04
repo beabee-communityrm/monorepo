@@ -419,7 +419,6 @@ import {
   type GetContactDataWith,
   GetContactWith,
   type Paginated,
-  type Rule,
   type RuleGroup,
   type UpdateContactData,
 } from '@beabee/beabee-common';
@@ -625,9 +624,7 @@ function getMembershipStartDate(
 /**
  * Filters
  */
-const appliedRules = computed(
-  () => (currentRules.value?.rules ?? []) as Rule[]
-);
+const appliedRules = computed(() => currentRules.value?.rules ?? []);
 
 const filtersOn = computed(
   () => filtersOpen.value || appliedRules.value.length > 0
