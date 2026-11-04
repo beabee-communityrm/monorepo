@@ -7,7 +7,7 @@
   <span
     class="flex items-center gap-1.5 rounded-full border border-default bg-default py-1 pr-1 pl-3"
   >
-    <span v-if="!simpleRule">{{ t('advancedSearch.nestedRules') }}</span>
+    <span v-if="!simpleRule">{{ t('advancedSearch.nestedRules-nuxt') }}</span>
     <span v-else-if="isBroken" class="text-error">
       {{ t('advancedSearch.invalidRuleError', { rule: field }) }}
     </span>
