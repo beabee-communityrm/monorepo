@@ -178,8 +178,14 @@
     "yesReset": "Ja, resetten"
   },
   "activity": {
+    "actorType": {
+      "admin": "Beheerder",
+      "system": "Systeem",
+      "user": "Gebruiker"
+    },
     "data": {
       "actor": "Actor",
+      "actorType": "Type actor",
       "category": "Categorie",
       "target": "Doel",
       "time": "Tijd"

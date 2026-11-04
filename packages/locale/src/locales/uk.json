@@ -178,8 +178,14 @@
     "yesReset": "Так, скинути"
   },
   "activity": {
+    "actorType": {
+      "admin": "Адміністратор",
+      "system": "Система",
+      "user": "Користувач"
+    },
     "data": {
       "actor": "Ініціатор",
+      "actorType": "Тип ініціатора",
       "category": "Категорія",
       "target": "Об'єкт",
       "time": "Час"

@@ -46,3 +46,13 @@ export class ListActivityEventsDto extends GetPaginatedQuery {
   @IsIn(['createdAt'])
   sort?: string;
 }
+
+export interface ExportActivityEventDto {
+  Id: string;
+  CreatedAt: string;
+  EventType: ActivityEventType;
+  ActorType: ActivityActorType;
+  ActorId: string;
+  TargetId: string;
+  Metadata: string;
+}
