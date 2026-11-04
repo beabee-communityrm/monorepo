@@ -7,14 +7,14 @@ meta:
 </route>
 
 <template>
-  <div class="nuxt-page flex flex-col">
+  <div class="nuxt-page flex flex-1 flex-col">
     <Teleport to="#page-header-actions" defer>
       <UButton icon="i-lucide-plus" to="/admin/contacts/add">
         {{ t('contacts.addContact') }}
       </UButton>
     </Teleport>
 
-    <div class="flex flex-col md:flex-row">
+    <div class="flex flex-1 flex-col md:flex-row">
       <UNavigationMenu
         orientation="vertical"
         :items="segmentNavItems"
@@ -240,8 +240,8 @@ meta:
           </template>
         </div>
 
-        <div class="overflow-x-auto">
-          <table class="w-full">
+        <div class="flex-1 overflow-x-auto bg-muted">
+          <table class="w-full bg-default">
             <thead>
               <tr class="border-b border-default bg-elevated/50">
                 <th class="w-10 px-3 py-3">
@@ -274,7 +274,7 @@ meta:
                 </th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-default">
+            <tbody class="divide-y divide-default border-b border-default">
               <tr
                 v-for="contact in contactsTable?.items"
                 :key="contact.id"
@@ -371,7 +371,7 @@ meta:
           v-model:limit="currentPaginatedQuery.limit"
           :total="contactsTable?.total ?? 0"
           :limit-options="[10, 25, 50, 100]"
-          class="sticky bottom-0 z-10 bg-default"
+          class="sticky bottom-0 z-10 -mt-px bg-default"
         />
       </div>
     </div>

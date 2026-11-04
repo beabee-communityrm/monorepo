@@ -30,7 +30,12 @@
         </UDashboardNavbar>
         <div id="sticky-top-banner" class="bg-default"></div>
       </div>
-      <div :class="['flex flex-col', route.meta.fullBleed ? '' : 'p-4 md:p-5']">
+      <div
+        :class="[
+          'flex flex-col',
+          route.meta.fullBleed ? 'flex-1' : 'p-4 md:p-5',
+        ]"
+      >
         <router-view />
       </div>
 
