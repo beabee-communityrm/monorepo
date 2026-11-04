@@ -21,8 +21,33 @@ meta:
         :ui="{
           link: 'data-[active]:before:bg-primary/10 hover:before:bg-elevated',
         }"
-        class="shrink-0 border-b border-default p-2 md:w-52 md:border-r md:border-b-0"
+        class="hidden w-52 shrink-0 border-r border-default p-2 md:flex"
       />
+
+      <nav
+        class="flex shrink-0 gap-1.5 overflow-x-auto border-b border-default px-4 py-2.5 md:hidden"
+      >
+        <ULink
+          v-for="segment in segmentNavItems"
+          :key="segment.to"
+          :to="segment.to"
+          :aria-current="segment.active ? 'page' : undefined"
+          raw
+          class="inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          :class="
+            segment.active
+              ? 'border-primary/35 bg-primary/10 font-medium text-primary'
+              : 'border-default text-muted hover:bg-elevated hover:text-default'
+          "
+        >
+          {{ segment.label }}
+          <UBadge
+            :label="segment.badge.label"
+            :color="segment.active ? 'primary' : 'neutral'"
+            variant="soft"
+          />
+        </ULink>
+      </nav>
 
       <div class="flex min-w-0 flex-1 flex-col bg-default">
         <div
