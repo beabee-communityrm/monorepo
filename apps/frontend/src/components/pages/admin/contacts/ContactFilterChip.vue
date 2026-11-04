@@ -8,6 +8,9 @@
     class="flex items-center gap-1.5 rounded-full border border-default bg-default py-1 pr-1 pl-3"
   >
     <span v-if="!simpleRule">{{ t('advancedSearch.nestedRules') }}</span>
+    <span v-else-if="isBroken" class="text-error">
+      {{ t('advancedSearch.invalidRuleError', { rule: field }) }}
+    </span>
     <span v-else>
       <b class="font-semibold">
         <template v-if="callout">{{ callout.title }} · </template>
@@ -76,6 +79,11 @@ const item = computed(
     findFilterItem(props.filterGroups, field.value) ||
     participationItems.value[field.value] ||
     findFilterItem(calloutGroups.value, field.value)
+);
+
+/** The field no longer exists, e.g. a deleted CrowdNewsroom question */
+const isBroken = computed(
+  () => !item.value && (!calloutId.value || !!callout.value)
 );
 
 const operatorLabels = computed(() => createOperatorLabels(t));
