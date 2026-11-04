@@ -121,8 +121,16 @@ meta:
                 variant="ghost"
                 :title="t('actions.sendEmails')"
                 :aria-label="t('actions.sendEmails')"
+                :aria-describedby="emailUnavailableReason && emailReasonId"
               />
             </UDropdownMenu>
+            <span
+              v-if="emailUnavailableReason"
+              :id="emailReasonId"
+              class="sr-only"
+            >
+              {{ emailUnavailableReason }}
+            </span>
 
             <UDropdownMenu
               :items="bulkTagItems"
@@ -424,7 +432,7 @@ import {
 
 import type { DropdownMenuItem } from '@nuxt/ui';
 
-import { computed, ref, watch } from 'vue';
+import { computed, ref, useId, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import ContactFilterChip from '#components/pages/admin/contacts/ContactFilterChip.vue';
@@ -788,14 +796,23 @@ function handleToggleTag(
 /**
  * Emails
  */
+const emailReasonId = useId();
+
+/** Why a one-off email can't be sent right now, if it can't */
+const emailUnavailableReason = computed(() => {
+  if (!currentSegment.value) return t('contacts.sendEmailNoSegment-nuxt');
+  if (selectedCount.value > 0) return t('contacts.sendEmailSelection-nuxt');
+  return undefined;
+});
+
 const emailItems = computed<DropdownMenuItem[][]>(() => [
   [
     {
-      label: t('actions.sendOneOffEmail'),
+      label: t('actions.sendOneOffEmail-nuxt'),
       icon: 'i-lucide-send',
-      ...(currentSegment.value
+      ...(currentSegment.value && !emailUnavailableReason.value
         ? { to: `/admin/contacts/send-email/${currentSegment.value.id}` }
-        : { disabled: true }),
+        : { disabled: true, description: emailUnavailableReason.value }),
     },
   ],
   [
