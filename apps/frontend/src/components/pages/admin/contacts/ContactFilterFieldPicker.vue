@@ -2,67 +2,46 @@
   # ContactFilterFieldPicker
   Searchable, drill-down picker for the fields a contact filter can be built on.
 
-  Navigation is: all fields → a field group → a field, with crowdNewsrooms as an
-  extra branch that steps through crowdNewsroom → response information/answers.
-  Question fields only become searchable once their crowdNewsroom is opened,
-  because that's when its form schema is loaded.
+  Navigation is: all fields → a field group → a field, with CrowdNewsrooms as an
+  extra branch that steps through CrowdNewsroom → response information/answers.
+  Question fields only become searchable once their CrowdNewsroom is opened,
+  because that's when its form schema is loaded. Navigation is kept here rather
+  than in UCommandPalette's own `children`, so a level can load on demand.
 -->
 <template>
-  <div class="flex max-h-96 w-80 flex-col gap-0.5 overflow-y-auto p-2">
-    <UInput
-      v-model="query"
-      variant="subtle"
-      :placeholder="t('advancedSearch.searchFields-nuxt')"
-      class="mb-1"
-      autofocus
-    />
-
-    <template v-for="(entry, i) in entries" :key="i">
-      <p v-if="entry.kind === 'header'" class="px-2.5 pt-2 pb-1 text-primary">
-        {{ entry.label }}
-      </p>
-      <UButton
-        v-else-if="entry.kind === 'back'"
+  <UCommandPalette
+    v-model:search-term="query"
+    :groups="groups"
+    :fuse="{ resultLimit: Infinity }"
+    :placeholder="t('advancedSearch.searchFields-nuxt')"
+    class="max-h-96 w-80"
+  >
+    <template #item-trailing="{ item }">
+      <UBadge
+        v-if="item.typeLabel"
         color="neutral"
-        variant="ghost"
-        icon="i-lucide-chevron-left"
-        block
-        class="justify-start"
-        @click="path = entry.path"
+        variant="soft"
+        class="shrink-0 py-0.5"
       >
-        {{ entry.label }}
-      </UButton>
-      <UButton
-        v-else-if="entry.kind === 'branch'"
-        color="neutral"
-        variant="ghost"
-        trailing-icon="i-lucide-chevron-right"
-        block
-        class="justify-between font-medium"
-        @click="path = entry.path"
-      >
-        {{ entry.label }}
-      </UButton>
-      <UButton
-        v-else
-        color="neutral"
-        variant="ghost"
-        block
-        class="justify-between gap-2"
-        :disabled="hasNoOptions(entry.item)"
-        @click="emit('select', entry.field, entry.item)"
-      >
-        <span class="text-left">{{ entry.label }}</span>
-        <UBadge color="neutral" variant="soft" class="shrink-0">
-          {{ typeLabel(entry.item) }}
-        </UBadge>
-      </UButton>
+        {{ item.typeLabel }}
+      </UBadge>
+      <UIcon
+        v-else-if="item.isBranch"
+        name="i-lucide-chevron-right"
+        class="size-5 shrink-0 text-dimmed"
+        aria-hidden="true"
+      />
     </template>
-  </div>
+
+    <template #empty>
+      {{ query ? t('advancedSearch.noFieldsMatch-nuxt', { query }) : '' }}
+    </template>
+  </UCommandPalette>
 </template>
 
 <script lang="ts" setup>
 import type { GetCalloutData } from '@beabee/beabee-common';
+import type { CommandPaletteGroup, CommandPaletteItem } from '@nuxt/ui';
 
 import { ItemStatus } from '@beabee/beabee-common';
 import { computed, onBeforeMount, ref } from 'vue';
@@ -80,7 +59,7 @@ import { useCalloutContactFilters } from './contacts.interface';
 const { t } = useI18n();
 
 const props = defineProps<{
-  /** The field groups to pick from, excluding the crowdNewsroom group */
+  /** The field groups to pick from, excluding the CrowdNewsroom group */
   filterGroups: FilterGroups;
 }>();
 
@@ -95,17 +74,11 @@ type PickerPath =
   | { type: 'callout'; calloutId: string }
   | { type: 'calloutGroup'; calloutId: string; groupId: string };
 
-type PickerEntry =
-  | { kind: 'header'; label: string }
-  | { kind: 'back'; label: string; path: PickerPath }
-  | { kind: 'branch'; label: string; path: PickerPath }
-  | { kind: 'field'; label: string; field: string; item: FilterItem };
-
 const query = ref('');
 const path = ref<PickerPath>({ type: 'root' });
 
 // Cached for the session: the picker is remounted every time it's opened, and
-// the crowdNewsroom list is the same for every rule.
+// the CrowdNewsroom list is the same for every rule.
 let calloutsRequest: Promise<GetCalloutData[]> | undefined;
 
 function listCallouts() {
@@ -141,158 +114,174 @@ const {
   groups: calloutGroups,
 } = useCalloutContactFilters(openCalloutId);
 
-function toFields(items: FilterItems): PickerEntry[] {
-  return Object.entries(items).map(([field, item]) => ({
-    kind: 'field',
-    label: item.label,
-    field,
-    item,
-  }));
-}
-
-function matches(label: string) {
+function matches(label = '') {
   return label.toLowerCase().includes(query.value.trim().toLowerCase());
 }
 
-/** Every field of the currently open crowdNewsroom, grouped for display */
+/** A palette group; filtering is done here, so search can reach every level */
+function group(
+  id: string,
+  items: CommandPaletteItem[],
+  label?: string
+): CommandPaletteGroup {
+  return { id, label, items, ignoreFilter: true };
+}
+
+/** An item that steps to another level, forwards or back */
+function navItem(label: string, to: PickerPath, back = false) {
+  return {
+    label,
+    ...(back ? { icon: 'i-lucide-chevron-left' } : { isBranch: true }),
+    onSelect: (event: Event) => {
+      // Stops the palette marking the item as selected
+      event.preventDefault();
+      goTo(to);
+    },
+  };
+}
+
+function fieldItems(items: FilterItems): CommandPaletteItem[] {
+  return Object.entries(items).map(([field, item]) => ({
+    label: item.label,
+    typeLabel: typeLabel(item),
+    disabled: hasNoOptions(item),
+    onSelect: (event: Event) => {
+      // Stops the palette marking the item as selected
+      event.preventDefault();
+      emit('select', field, item);
+    },
+  }));
+}
+
+/** Every field of the currently open CrowdNewsroom, grouped for display */
 const openCalloutGroups = computed(() => [
   { label: openCallout.value?.title || '', items: participationItems.value },
-  ...calloutGroups.value.map((group) => ({
-    label: group.label,
-    items: group.items,
-  })),
+  ...calloutGroups.value,
 ]);
 
-const searchEntries = computed<PickerEntry[]>(() => {
-  const entries: PickerEntry[] = [];
-
-  const groups = openCalloutId.value
+const searchGroups = computed(() => {
+  const fieldGroups = openCalloutId.value
     ? openCalloutGroups.value
     : props.filterGroups;
 
-  for (const group of groups) {
-    const fields = toFields(group.items).filter((entry) =>
-      matches(entry.label)
-    );
-    if (fields.length) {
-      entries.push({ kind: 'header', label: group.label }, ...fields);
-    }
-  }
+  const result = fieldGroups.map((fieldGroup, i) =>
+    group(
+      `search-${i}`,
+      fieldItems(fieldGroup.items).filter((item) => matches(item.label)),
+      fieldGroup.label
+    )
+  );
 
   if (!openCalloutId.value) {
-    const hits = callouts.value.filter((callout) => matches(callout.title));
-    if (hits.length) {
-      entries.push({
-        kind: 'header',
-        label: t('contacts.dataGroup.callout-nuxt'),
-      });
-      for (const callout of hits) {
-        entries.push({
-          kind: 'branch',
-          label: callout.title,
-          path: { type: 'callout', calloutId: callout.id },
-        });
-      }
-    }
+    result.push(
+      group(
+        'search-callouts',
+        callouts.value
+          .filter((callout) => matches(callout.title))
+          .map((callout) =>
+            navItem(callout.title, { type: 'callout', calloutId: callout.id })
+          ),
+        t('contacts.dataGroup.callout-nuxt')
+      )
+    );
   }
 
-  return entries.length
-    ? entries
-    : [
-        {
-          kind: 'header',
-          label: t('advancedSearch.noFieldsMatch-nuxt', { query: query.value }),
-        },
-      ];
+  return result;
 });
 
-const browseEntries = computed<PickerEntry[]>(() => {
-  const backToRoot: PickerEntry = {
-    kind: 'back',
-    label: t('advancedSearch.allFields-nuxt'),
-    path: { type: 'root' },
-  };
+const browseGroups = computed(() => {
+  const allFields = t('advancedSearch.allFields-nuxt');
+  const calloutsLabel = t('contacts.dataGroup.callout-nuxt');
+  const back = (label: string, to: PickerPath) =>
+    group('back', [navItem(label, to, true)]);
 
-  switch (path.value.type) {
+  const current = path.value;
+  switch (current.type) {
     case 'group': {
-      const groupId = path.value.groupId;
-      const group = props.filterGroups.find((g) => g.id === groupId);
-      return group
-        ? [
-            backToRoot,
-            { kind: 'header', label: group.label },
-            ...toFields(group.items),
-          ]
-        : [backToRoot];
+      const fieldGroup = props.filterGroups.find(
+        (g) => g.id === current.groupId
+      );
+      return [
+        back(allFields, { type: 'root' }),
+        group('fields', fieldItems(fieldGroup?.items ?? {}), fieldGroup?.label),
+      ];
     }
 
     case 'callouts':
       return [
-        backToRoot,
-        { kind: 'header', label: t('contacts.dataGroup.callout-nuxt') },
-        ...callouts.value.map<PickerEntry>((callout) => ({
-          kind: 'branch',
-          label: callout.title,
-          path: { type: 'callout', calloutId: callout.id },
-        })),
+        back(allFields, { type: 'root' }),
+        group(
+          'callouts',
+          callouts.value.map((callout) =>
+            navItem(callout.title, { type: 'callout', calloutId: callout.id })
+          ),
+          calloutsLabel
+        ),
       ];
 
-    case 'callout': {
-      const calloutId = path.value.calloutId;
+    case 'callout':
       return [
-        {
-          kind: 'back',
-          label: t('contacts.dataGroup.callout-nuxt'),
-          path: { type: 'callouts' },
-        },
-        { kind: 'header', label: openCallout.value?.title || '' },
-        ...toFields(participationItems.value),
-        ...calloutGroups.value.map<PickerEntry>((group) => ({
-          kind: 'branch',
-          label: group.label,
-          path: { type: 'calloutGroup', calloutId, groupId: group.id },
-        })),
+        back(calloutsLabel, { type: 'callouts' }),
+        group(
+          'fields',
+          [
+            ...fieldItems(participationItems.value),
+            ...calloutGroups.value.map((calloutGroup) =>
+              navItem(calloutGroup.label, {
+                type: 'calloutGroup',
+                calloutId: current.calloutId,
+                groupId: calloutGroup.id,
+              })
+            ),
+          ],
+          openCallout.value?.title
+        ),
       ];
-    }
 
     case 'calloutGroup': {
-      const { calloutId, groupId } = path.value;
-      const group = calloutGroups.value.find((g) => g.id === groupId);
+      const calloutGroup = calloutGroups.value.find(
+        (g) => g.id === current.groupId
+      );
       return [
-        {
-          kind: 'back',
-          label: openCallout.value?.title || '',
-          path: { type: 'callout', calloutId },
-        },
-        ...(group
-          ? [
-              { kind: 'header' as const, label: group.label },
-              ...toFields(group.items),
-            ]
-          : []),
+        back(openCallout.value?.title || '', {
+          type: 'callout',
+          calloutId: current.calloutId,
+        }),
+        group(
+          'fields',
+          fieldItems(calloutGroup?.items ?? {}),
+          calloutGroup?.label
+        ),
       ];
     }
 
     default:
       return [
-        { kind: 'header', label: t('advancedSearch.allFields-nuxt') },
-        ...props.filterGroups.map<PickerEntry>((group) => ({
-          kind: 'branch',
-          label: group.label,
-          path: { type: 'group', groupId: group.id },
-        })),
-        {
-          kind: 'branch',
-          label: t('contacts.dataGroup.callout-nuxt'),
-          path: { type: 'callouts' },
-        },
+        group(
+          'root',
+          [
+            ...props.filterGroups.map((fieldGroup) =>
+              navItem(fieldGroup.label, {
+                type: 'group',
+                groupId: fieldGroup.id,
+              })
+            ),
+            navItem(calloutsLabel, { type: 'callouts' }),
+          ],
+          allFields
+        ),
       ];
   }
 });
 
-const entries = computed(() =>
-  query.value.trim() ? searchEntries.value : browseEntries.value
+const groups = computed(() =>
+  query.value.trim() ? searchGroups.value : browseGroups.value
 );
+
+function goTo(newPath: PickerPath) {
+  path.value = newPath;
+  query.value = '';
+}
 
 function hasNoOptions(item: FilterItem) {
   return 'options' in item && item.options?.length === 0;
