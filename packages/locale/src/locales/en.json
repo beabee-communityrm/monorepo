@@ -177,8 +177,14 @@
     "yesReset": "Yes, reset it"
   },
   "activity": {
+    "actorType": {
+      "admin": "Admin",
+      "system": "System",
+      "user": "User"
+    },
     "data": {
       "actor": "Actor",
+      "actorType": "Actor type",
       "category": "Category",
       "target": "Target",
       "time": "Time"
