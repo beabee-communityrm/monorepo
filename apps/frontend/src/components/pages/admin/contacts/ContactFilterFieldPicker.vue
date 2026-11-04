@@ -18,7 +18,7 @@
     />
 
     <template v-for="(entry, i) in entries" :key="i">
-      <p v-if="entry.kind === 'header'" class="text-muted px-2.5 pt-2 pb-1">
+      <p v-if="entry.kind === 'header'" class="px-2.5 pt-2 pb-1 text-muted">
         {{ entry.label }}
       </p>
       <UButton

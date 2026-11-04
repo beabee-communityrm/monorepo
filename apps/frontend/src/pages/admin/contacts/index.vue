@@ -21,12 +21,12 @@ meta:
         :ui="{
           link: 'data-[active]:before:bg-primary/10 hover:before:bg-elevated',
         }"
-        class="border-default shrink-0 border-b p-2 md:w-52 md:border-r md:border-b-0"
+        class="shrink-0 border-b border-default p-2 md:w-52 md:border-r md:border-b-0"
       />
 
-      <div class="bg-default flex min-w-0 flex-1 flex-col">
+      <div class="flex min-w-0 flex-1 flex-col bg-default">
         <div
-          class="border-default flex flex-wrap items-center gap-3 border-b p-4"
+          class="flex flex-wrap items-center gap-3 border-b border-default p-4"
         >
           <UInput
             v-model="searchInput"
@@ -125,20 +125,20 @@ meta:
             </UDropdownMenu>
           </div>
 
-          <span v-if="contactsTable" class="text-muted whitespace-nowrap">
+          <span v-if="contactsTable" class="whitespace-nowrap text-muted">
             <i18n-t keypath="contacts.showingOf-nuxt">
               <template #start>
-                <b class="text-highlighted font-medium">
+                <b class="font-medium text-highlighted">
                   {{ n(contactsTable.offset + 1) }}
                 </b>
               </template>
               <template #end>
-                <b class="text-highlighted font-medium">
+                <b class="font-medium text-highlighted">
                   {{ n(contactsTable.offset + contactsTable.count) }}
                 </b>
               </template>
               <template #total>
-                <b class="text-highlighted font-medium">
+                <b class="font-medium text-highlighted">
                   {{ n(contactsTable.total) }}
                 </b>
               </template>
@@ -158,11 +158,11 @@ meta:
 
         <div
           v-else-if="currentTag || appliedRules.length"
-          class="border-default bg-elevated/40 flex flex-wrap items-center gap-2 border-b p-3"
+          class="flex flex-wrap items-center gap-2 border-b border-default bg-elevated/40 p-3"
         >
           <span
             v-if="currentTag"
-            class="border-default bg-default flex items-center gap-1.5 rounded-full border py-1 pr-1 pl-3"
+            class="flex items-center gap-1.5 rounded-full border border-default bg-default py-1 pr-1 pl-3"
           >
             <span>
               <b class="font-semibold">{{ t('contacts.data.tags') }}</b>
@@ -181,7 +181,7 @@ meta:
           <template v-for="(rule, i) in appliedRules" :key="i">
             <span
               v-if="currentTag || i > 0"
-              class="text-muted font-semibold uppercase"
+              class="font-semibold text-muted uppercase"
             >
               {{ t(`advancedSearch.matchWord.${currentRules?.condition}`) }}
             </span>
@@ -204,7 +204,7 @@ meta:
 
         <div
           v-if="showSelectAllBanner"
-          class="border-primary/20 bg-primary/6 flex flex-wrap items-center justify-center gap-2 border-b p-3"
+          class="flex flex-wrap items-center justify-center gap-2 border-b border-primary/20 bg-primary/6 p-3"
         >
           <template v-if="selectionState.mode === 'explicit'">
             <span>
@@ -243,7 +243,7 @@ meta:
         <div class="overflow-x-auto">
           <table class="w-full">
             <thead>
-              <tr class="border-default bg-elevated/50 border-b">
+              <tr class="border-b border-default bg-elevated/50">
                 <th class="w-10 px-3 py-3">
                   <UCheckbox
                     :model-value="headerCheckboxValue"
@@ -274,7 +274,7 @@ meta:
                 </th>
               </tr>
             </thead>
-            <tbody class="divide-default divide-y">
+            <tbody class="divide-y divide-default">
               <tr
                 v-for="contact in contactsTable?.items"
                 :key="contact.id"
@@ -293,11 +293,11 @@ meta:
                 <td class="px-3 py-3 align-top">
                   <router-link
                     :to="`/admin/contacts/${contact.id}`"
-                    class="text-primary font-medium hover:underline"
+                    class="font-medium text-primary hover:underline"
                   >
                     {{ contact.displayName }}
                   </router-link>
-                  <p v-if="contact.profile.description" class="text-muted mt-1">
+                  <p v-if="contact.profile.description" class="mt-1 text-muted">
                     {{ contact.profile.description }}
                   </p>
                   <div
@@ -318,7 +318,7 @@ meta:
                     </UBadge>
                   </div>
                 </td>
-                <td class="text-muted px-3 py-3 align-top">
+                <td class="px-3 py-3 align-top text-muted">
                   {{ contact.email }}
                 </td>
                 <td class="px-3 py-3 align-top">
@@ -338,12 +338,12 @@ meta:
                   <span v-else class="text-dimmed">—</span>
                 </td>
                 <td
-                  class="text-muted px-3 py-3 align-top whitespace-nowrap tabular-nums"
+                  class="px-3 py-3 align-top whitespace-nowrap text-muted tabular-nums"
                 >
                   {{ formatLocale(contact.joined, 'PPP') }}
                 </td>
                 <td
-                  class="text-muted px-3 py-3 align-top whitespace-nowrap tabular-nums"
+                  class="px-3 py-3 align-top whitespace-nowrap text-muted tabular-nums"
                 >
                   {{ getMembershipStartDate(contact) }}
                 </td>
@@ -351,12 +351,12 @@ meta:
             </tbody>
           </table>
 
-          <p v-if="!contactsTable" class="text-muted p-8 text-center">
+          <p v-if="!contactsTable" class="p-8 text-center text-muted">
             {{ t('common.loading') }}
           </p>
           <p
             v-else-if="contactsTable.items.length === 0"
-            class="text-muted p-8 text-center"
+            class="p-8 text-center text-muted"
           >
             {{
               currentRules || currentSearch
@@ -371,7 +371,7 @@ meta:
           v-model:limit="currentPaginatedQuery.limit"
           :total="contactsTable?.total ?? 0"
           :limit-options="[10, 25, 50, 100]"
-          class="bg-default sticky bottom-0 z-10"
+          class="sticky bottom-0 z-10 bg-default"
         />
       </div>
     </div>
@@ -687,7 +687,8 @@ const tagFilterItems = computed<DropdownMenuItem[][]>(() => [
           {
             label: t('tags.clearTags-nuxt'),
             color: 'primary' as const,
-            class: 'data-highlighted:before:bg-transparent data-highlighted:underline',
+            class:
+              'data-highlighted:before:bg-transparent data-highlighted:underline',
             onSelect: () => (currentTag.value = ''),
           },
         ]

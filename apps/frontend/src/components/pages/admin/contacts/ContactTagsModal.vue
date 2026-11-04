@@ -36,7 +36,7 @@
         </p>
 
         <form
-          class="border-default mt-2 flex items-center gap-2 border-t pt-4"
+          class="mt-2 flex items-center gap-2 border-t border-default pt-4"
           @submit.prevent="handleAdd"
         >
           <UInput

@@ -11,20 +11,20 @@
 -->
 <template>
   <div
-    class="border-default flex flex-wrap items-center justify-between gap-3 border-t p-4"
+    class="flex flex-wrap items-center justify-between gap-3 border-t border-default p-4"
   >
-    <span class="text-muted flex items-center gap-2">
+    <span class="flex items-center gap-2 text-muted">
       <i18n-t keypath="common.pageCount-nuxt" tag="span">
         <template #pageNumber>
-          <b class="text-highlighted font-medium">{{ n(page + 1) }}</b>
+          <b class="font-medium text-highlighted">{{ n(page + 1) }}</b>
         </template>
         <template #pageTotal>
-          <b class="text-highlighted font-medium">{{ n(totalPages) }}</b>
+          <b class="font-medium text-highlighted">{{ n(totalPages) }}</b>
         </template>
       </i18n-t>
 
       <template v-if="limitOptions">
-        <span class="bg-accented h-4 w-px" aria-hidden="true" />
+        <span class="h-4 w-px bg-accented" aria-hidden="true" />
         <USelect
           v-model="limit"
           :items="limitOptions"

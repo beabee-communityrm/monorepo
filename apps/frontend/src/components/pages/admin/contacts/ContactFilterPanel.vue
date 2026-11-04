@@ -7,7 +7,7 @@
   behaviour of the previous search form.
 -->
 <template>
-  <div class="border-default bg-elevated/40 border-b p-4">
+  <div class="border-b border-default bg-elevated/40 p-4">
     <div class="mb-3 flex flex-wrap items-center gap-2">
       <span class="text-muted">
         {{ t('advancedSearch.createFiltersBefore-nuxt') }}
@@ -16,7 +16,9 @@
         :items="conditions"
         :model-value="ruleGroup.condition"
         size="xs"
-        @update:model-value="ruleGroup.condition = $event as RuleGroup['condition']"
+        @update:model-value="
+          ruleGroup.condition = $event as RuleGroup['condition']
+        "
       />
       <span class="text-muted">
         {{ t('advancedSearch.createFiltersAfter-nuxt') }}
@@ -25,17 +27,17 @@
 
     <ul class="flex flex-col gap-0.5">
       <li v-for="(rule, i) in ruleGroup.rules" :key="i">
-        <div v-if="i > 0" class="text-muted flex items-center gap-2.5 py-2">
-          <span class="bg-accented h-px flex-1" aria-hidden="true" />
+        <div v-if="i > 0" class="flex items-center gap-2.5 py-2 text-muted">
+          <span class="h-px flex-1 bg-accented" aria-hidden="true" />
           <span class="font-semibold uppercase">
             {{ t(`advancedSearch.matchWord.${ruleGroup.condition}`) }}
           </span>
-          <span class="bg-accented h-px flex-1" aria-hidden="true" />
+          <span class="h-px flex-1 bg-accented" aria-hidden="true" />
         </div>
 
         <p
           v-if="isRuleGroup(rule)"
-          class="border-default bg-default rounded-lg border px-3 py-2.5"
+          class="rounded-lg border border-default bg-default px-3 py-2.5"
         >
           {{ t('advancedSearch.noNestedRules') }}
         </p>
@@ -68,10 +70,10 @@
         </template>
       </UPopover>
 
-      <span v-if="matchCount !== undefined" class="text-muted ml-auto">
+      <span v-if="matchCount !== undefined" class="ml-auto text-muted">
         <i18n-t keypath="advancedSearch.matchCount-nuxt">
           <template #count>
-            <b class="text-highlighted font-semibold">{{ n(matchCount) }}</b>
+            <b class="font-semibold text-highlighted">{{ n(matchCount) }}</b>
           </template>
         </i18n-t>
       </span>

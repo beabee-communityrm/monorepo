@@ -5,7 +5,7 @@
 -->
 <template>
   <div
-    class="border-default bg-default flex flex-wrap items-center gap-2 rounded-lg border px-3 py-2.5"
+    class="flex flex-wrap items-center gap-2 rounded-lg border border-default bg-default px-3 py-2.5"
   >
     <UPopover v-model:open="fieldPickerOpen">
       <UButton
@@ -50,7 +50,7 @@
       icon="i-lucide-x"
       color="neutral"
       variant="ghost"
-      class="hover:text-error ml-auto"
+      class="ml-auto hover:text-error"
       :aria-label="t('advancedSearch.removeFilter-nuxt')"
       @click="emit('remove')"
     />

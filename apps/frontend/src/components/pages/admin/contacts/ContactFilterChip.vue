@@ -5,7 +5,7 @@
 -->
 <template>
   <span
-    class="border-default bg-default flex items-center gap-1.5 rounded-full border py-1 pr-1 pl-3"
+    class="flex items-center gap-1.5 rounded-full border border-default bg-default py-1 pr-1 pl-3"
   >
     <span>
       <b class="font-semibold">
