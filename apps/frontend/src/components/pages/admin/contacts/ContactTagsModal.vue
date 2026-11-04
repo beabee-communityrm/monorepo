@@ -92,9 +92,11 @@ import { AppModalActions } from '@beabee/vue';
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { useAppToast } from '#composables/useAppToast';
 import { client } from '#utils/api';
 
 const { t } = useI18n();
+const toast = useAppToast();
 
 const emit = defineEmits<{
   /** Emitted whenever the tag list changed, so callers can refresh their copy */
@@ -121,9 +123,14 @@ async function handleRename(tag: TagGetData, event: FocusEvent) {
     return;
   }
 
-  await client.contact.tag.update(undefined, tag.id, { name });
-  await loadTags();
-  emit('updated');
+  try {
+    await client.contact.tag.update(undefined, tag.id, { name });
+    await loadTags();
+    emit('updated');
+  } catch {
+    input.value = tag.name;
+    toast.error(t('tags.notifications.renameFailed-nuxt', { tag: tag.name }));
+  }
 }
 
 async function handleAdd() {
@@ -136,6 +143,8 @@ async function handleAdd() {
     newTagName.value = '';
     await loadTags();
     emit('updated');
+  } catch {
+    toast.error(t('tags.notifications.createFailed-nuxt', { tag: name }));
   } finally {
     saving.value = false;
   }
@@ -148,10 +157,12 @@ async function handleDelete() {
   saving.value = true;
   try {
     await client.contact.tag.delete(undefined, tag.id);
-    tagToDelete.value = undefined;
     await loadTags();
     emit('updated');
+  } catch {
+    toast.error(t('tags.notifications.deleteFailed-nuxt', { tag: tag.name }));
   } finally {
+    tagToDelete.value = undefined;
     saving.value = false;
   }
 }

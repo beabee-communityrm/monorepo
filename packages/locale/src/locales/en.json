@@ -475,6 +475,7 @@
         "update": "Update segment \"{segment}\""
       },
       "createSegment": "Create segment",
+      "failed-nuxt": "Couldn't save the segment. Try again.",
       "segmentName": "Segment name",
       "text": "A segment is a group of contacts that matches a set of filters, like the ones you've just created. New contacts that match these filters are automatically added to the segment.",
       "text-nuxt": "A segment is a group of contacts that matches a set of filters, like the ones you've just created. New contacts that match these filters are automatically added to the segment.",
@@ -2153,7 +2154,11 @@
     "noTags": "No tags",
     "notifications": {
       "addedTag": "Added tag \"{tag}\"",
-      "removedTag": "Removed tag \"{tag}\" "
+      "createFailed-nuxt": "Couldn't add tag \"{tag}\". Try again.",
+      "deleteFailed-nuxt": "Couldn't delete tag \"{tag}\". Try again.",
+      "removedTag": "Removed tag \"{tag}\" ",
+      "renameFailed-nuxt": "Couldn't rename tag \"{tag}\". Try again.",
+      "updateFailed-nuxt": "Couldn't update tags on the selected contacts. Try again."
     },
     "searchTag": "Tagged with...",
     "selectToTag-nuxt": "Select contacts to tag them",

@@ -421,12 +421,7 @@ import {
   type RuleGroup,
   type UpdateContactData,
 } from '@beabee/beabee-common';
-import {
-  AppTablePagination,
-  SortType,
-  addNotification,
-  formatLocale,
-} from '@beabee/vue';
+import { AppTablePagination, SortType, formatLocale } from '@beabee/vue';
 
 import type { DropdownMenuItem } from '@nuxt/ui';
 
@@ -438,6 +433,7 @@ import ContactFilterPanel from '#components/pages/admin/contacts/ContactFilterPa
 import ContactTagsModal from '#components/pages/admin/contacts/ContactTagsModal.vue';
 import SaveSegment from '#components/pages/admin/contacts/SaveSegment.vue';
 import { useContactFilters } from '#components/pages/admin/contacts/contacts.interface';
+import { useAppToast } from '#composables/useAppToast';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
@@ -458,6 +454,7 @@ import { useTagFilter } from '../../../composables/useTagFilter';
  */
 
 const { t, n } = useI18n();
+const toast = useAppToast();
 
 const contactsTable =
   ref<
@@ -842,10 +839,15 @@ async function handleUpdateAction(
   successText: string
 ): Promise<void> {
   doingAction.value = true;
-  await client.contact.updateMany(getSelectedContactsRules(), updates);
-  await refreshContacts();
-  addNotification({ variant: 'success', title: successText });
-  doingAction.value = false;
+  try {
+    await client.contact.updateMany(getSelectedContactsRules(), updates);
+    await refreshContacts();
+    toast.success(successText);
+  } catch {
+    toast.error(t('tags.notifications.updateFailed-nuxt'));
+  } finally {
+    doingAction.value = false;
+  }
 }
 
 /**
@@ -866,7 +868,7 @@ async function refreshContacts() {
     ]);
   } catch (err) {
     contactsTable.value = emptyTable();
-    addNotification({ variant: 'error', title: extractErrorText(err) });
+    toast.error(extractErrorText(err));
   } finally {
     isRefreshing.value = false;
   }

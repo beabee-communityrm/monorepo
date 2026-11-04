@@ -58,10 +58,10 @@
 
 <script lang="ts" setup>
 import type { GetSegmentData, RuleGroup } from '@beabee/beabee-common';
-import { addNotification } from '@beabee/vue';
-
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { useAppToast } from '#composables/useAppToast';
 
 const emit = defineEmits(['saved']);
 const props = defineProps<{
@@ -76,6 +76,7 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+const toast = useAppToast();
 
 const showModal = ref(false);
 const shouldUpdate = ref(false);
@@ -100,19 +101,19 @@ async function handleSubmit() {
         props.segment.name,
         props.rules
       );
-      addNotification({
-        variant: 'success',
-        title: t('advancedSearch.updatedSegment', { segment: segment.name }),
-      });
+      toast.success(
+        t('advancedSearch.updatedSegment', { segment: segment.name })
+      );
     } else {
       segment = await props.saveSegment(newSegmentName.value, props.rules);
-      addNotification({
-        variant: 'success',
-        title: t('advancedSearch.createdSegment', { segment: segment.name }),
-      });
+      toast.success(
+        t('advancedSearch.createdSegment', { segment: segment.name })
+      );
     }
     showModal.value = false;
     emit('saved', segment);
+  } catch {
+    toast.error(t('advancedSearch.saveSegment.failed-nuxt'));
   } finally {
     isSaving.value = false;
   }

@@ -475,6 +475,7 @@
         "update": ""
       },
       "createSegment": "",
+      "failed-nuxt": "",
       "segmentName": "",
       "text": "",
       "text-nuxt": "",
@@ -2153,7 +2154,11 @@
     "noTags": "",
     "notifications": {
       "addedTag": "",
-      "removedTag": ""
+      "createFailed-nuxt": "",
+      "deleteFailed-nuxt": "",
+      "removedTag": "",
+      "renameFailed-nuxt": "",
+      "updateFailed-nuxt": ""
     },
     "searchTag": "",
     "selectToTag-nuxt": "",
