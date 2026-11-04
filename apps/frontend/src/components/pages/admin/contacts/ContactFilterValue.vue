@@ -23,6 +23,7 @@
       :items="selectItems"
       variant="subtle"
       class="w-44"
+      :aria-label="item.label"
       @update:model-value="setValue(i, $event)"
     />
 
@@ -40,6 +41,7 @@
       :placeholder="item.label.toLowerCase()"
       variant="subtle"
       class="w-44"
+      :aria-label="item.label"
       @update:model-value="
         (input: string | number) =>
           setValue(i, item.type === 'number' ? Number(input) : input)
@@ -84,7 +86,7 @@ const booleanOptions = computed(() => [
 ]);
 
 const selectItems = computed(() =>
-  'options' in props.item && props.item.options?.length
+  'options' in props.item && props.item.options
     ? props.item.options.map((option) => ({
         label: option.label,
         value: option.id,

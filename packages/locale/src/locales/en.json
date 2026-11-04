@@ -406,6 +406,7 @@
     "nestedRules": "Nested rules",
     "noFieldsMatch-nuxt": "No fields match \"{query}\"",
     "noNestedRules": "This filter contains nested rules which cannot be edited using the advanced search editor.",
+    "noOptions-nuxt": "no options",
     "operatorGroup-nuxt": {
       "blank": "Blank",
       "not": "Not"

@@ -49,6 +49,7 @@
         variant="ghost"
         block
         class="justify-between gap-2"
+        :disabled="hasNoOptions(entry.item)"
         @click="emit('select', entry.field, entry.item)"
       >
         <span class="text-left">{{ entry.label }}</span>
@@ -293,7 +294,12 @@ const entries = computed(() =>
   query.value.trim() ? searchEntries.value : browseEntries.value
 );
 
+function hasNoOptions(item: FilterItem) {
+  return 'options' in item && item.options?.length === 0;
+}
+
 function typeLabel(item: FilterItem) {
+  if (hasNoOptions(item)) return t('advancedSearch.noOptions-nuxt');
   return t(`advancedSearch.fieldType-nuxt.${item.type}`, {
     count: 'options' in item ? (item.options?.length ?? 0) : 0,
   });
