@@ -29,7 +29,10 @@
     </UPopover>
 
     <template v-if="item">
-      <UDropdownMenu :items="operatorMenuItems">
+      <span v-if="operators.length === 1" class="px-2.5 py-2">
+        {{ operatorLabel }}
+      </span>
+      <UDropdownMenu v-else :items="operatorMenuItems">
         <UButton
           color="neutral"
           variant="ghost"
