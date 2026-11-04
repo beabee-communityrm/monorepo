@@ -87,7 +87,7 @@
 
 <script lang="ts" setup>
 import type { TagGetData } from '@beabee/beabee-common';
-import { AppModalActions, addNotification } from '@beabee/vue';
+import { AppModalActions } from '@beabee/vue';
 
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -124,10 +124,6 @@ async function handleRename(tag: TagGetData, event: FocusEvent) {
   await client.contact.tag.update(undefined, tag.id, { name });
   await loadTags();
   emit('updated');
-  addNotification({
-    variant: 'success',
-    title: t('tags.notifications.renamedTag-nuxt', { tag: name }),
-  });
 }
 
 async function handleAdd() {
@@ -140,10 +136,6 @@ async function handleAdd() {
     newTagName.value = '';
     await loadTags();
     emit('updated');
-    addNotification({
-      variant: 'success',
-      title: t('tags.notifications.createdTag-nuxt', { tag: name }),
-    });
   } finally {
     saving.value = false;
   }
@@ -159,10 +151,6 @@ async function handleDelete() {
     tagToDelete.value = undefined;
     await loadTags();
     emit('updated');
-    addNotification({
-      variant: 'success',
-      title: t('tags.notifications.deletedTag-nuxt', { tag: tag.name }),
-    });
   } finally {
     saving.value = false;
   }

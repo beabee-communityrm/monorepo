@@ -2153,10 +2153,7 @@
     "noTags": "No tags",
     "notifications": {
       "addedTag": "Added tag \"{tag}\"",
-      "createdTag-nuxt": "Created tag \"{tag}\"",
-      "deletedTag-nuxt": "Deleted tag \"{tag}\"",
-      "removedTag": "Removed tag \"{tag}\" ",
-      "renamedTag-nuxt": "Renamed tag to \"{tag}\""
+      "removedTag": "Removed tag \"{tag}\" "
     },
     "searchTag": "Tagged with...",
     "selectToTag-nuxt": "Select contacts to tag them",

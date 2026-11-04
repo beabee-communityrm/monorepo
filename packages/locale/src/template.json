@@ -2153,10 +2153,7 @@
     "noTags": "",
     "notifications": {
       "addedTag": "",
-      "createdTag-nuxt": "",
-      "deletedTag-nuxt": "",
-      "removedTag": "",
-      "renamedTag-nuxt": ""
+      "removedTag": ""
     },
     "searchTag": "",
     "selectToTag-nuxt": "",
