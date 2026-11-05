@@ -29,11 +29,7 @@ export function installRouteGuard(router: Router) {
     }
 
     // The identity provider shows the login page, so leave before anything renders
-    if (
-      to.name === 'login' &&
-      generalContent.value.oidcEnabled &&
-      !to.query.loginError
-    ) {
+    if (to.name === 'login' && generalContent.value.oidcEnabled) {
       const next = to.query.next as string | undefined;
       window.location.href = client.auth.getLoginUrl(
         isInternalUrl(next) ? next : '/'
