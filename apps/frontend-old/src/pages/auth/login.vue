@@ -107,7 +107,7 @@ import type { LoginData } from '@beabee/beabee-common';
 import { UnauthorizedError } from '@beabee/client';
 import { AppButton, AppInput, AppNotification, AppTitle } from '@beabee/vue';
 
-import { onMounted, reactive, ref, toRef, watch } from 'vue';
+import { reactive, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
@@ -136,18 +136,10 @@ const errorCode = oidcErrorCodes.find(
   (code) => code === route.query.loginError
 );
 
-// The identity provider handles the login itself, this page only forwards
-// there via the API's OIDC login endpoint
 function redirectToLogin() {
   const next = isInternalUrl(redirectTo) ? redirectTo : '/';
   window.location.href = client.auth.getLoginUrl(next);
 }
-
-onMounted(() => {
-  if (generalContent.value.oidcEnabled && !errorCode) {
-    redirectToLogin();
-  }
-});
 
 async function submitLogin() {
   try {

@@ -12,6 +12,8 @@ import { computed, watch } from 'vue';
 
 import env from '#env';
 import router from '#lib/router';
+import { client } from '#utils/api';
+import { isInternalUrl } from '#utils/index';
 
 import { currentUser, generalContent, initStore, isEmbed } from '../store';
 
@@ -86,6 +88,19 @@ router.beforeEach(async (to) => {
   // Password flow routes don't exist when the identity provider handles login
   if (to.meta.localLoginOnly && generalContent.value.oidcEnabled) {
     return { path: '/auth/login' };
+  }
+
+  // The identity provider shows the login page, so leave before anything renders
+  if (
+    to.name === 'login' &&
+    generalContent.value.oidcEnabled &&
+    !to.query.loginError
+  ) {
+    const next = to.query.next as string | undefined;
+    window.location.href = client.auth.getLoginUrl(
+      isInternalUrl(next) ? next : '/'
+    );
+    return false;
   }
 
   const user = currentUser.value;
