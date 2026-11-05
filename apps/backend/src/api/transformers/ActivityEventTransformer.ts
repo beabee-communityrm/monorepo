@@ -75,6 +75,34 @@ class ActivityEventTransformer extends BaseTransformer<
       },
     });
   }
+
+  /**
+   * Fetch activity feed events caused by or about a contact
+   * @param auth Authentication info
+   * @param contactId Contact who is either the actor or the target
+   */
+  async fetchByContactId(
+    auth: AuthInfo,
+    contactId: string,
+    query: ListActivityEventsDto
+  ): Promise<PaginatedDto<GetActivityEventDto>> {
+    return await this.fetch(auth, {
+      ...query,
+      rules: {
+        condition: 'AND',
+        rules: [
+          ...(query.rules ? [query.rules] : []),
+          {
+            condition: 'OR',
+            rules: [
+              { field: 'targetId', operator: 'equal', value: [contactId] },
+              { field: 'actorId', operator: 'equal', value: [contactId] },
+            ],
+          },
+        ],
+      },
+    });
+  }
 }
 
 export default new ActivityEventTransformer();
