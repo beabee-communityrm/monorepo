@@ -23,16 +23,18 @@ import type {
   GetContactData,
   Paginated,
 } from '@beabee/beabee-common';
-import { type Header, formatLocale } from '@beabee/vue';
+import { type Header, formatLocale, addNotification } from '@beabee/vue';
 
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { client } from '#utils/api';
+import { extractErrorText } from '#utils/api-error';
 
 import { definePaginatedQuery } from '#utils/pagination';
 
 import AppPaginatedTable from '../../../../components/table/AppPaginatedTable.vue';
 
-defineProps<{
+const props = defineProps<{
   contact: GetContactData;
 }>();
 
@@ -47,11 +49,37 @@ const headers: Header[] = [
 
 const currentPaginatedQuery = definePaginatedQuery('createdAt');
 
-// TODO: Load the contact's activity events
-const activity = ref<Paginated<GetActivityEventData>>({
-  items: [],
-  offset: 0,
-  count: 0,
-  total: 0,
+const activity = ref<Paginated<GetActivityEventData>>();
+
+/**
+ * Table state
+ */
+const isRefreshing = ref(false);
+
+/**
+ * Refreshes the activity table
+ */
+async function refreshResponses() {
+  if (isRefreshing.value) return;
+
+  isRefreshing.value = true;
+  try {
+    activity.value = await client.contact.listActivity(props.contact.id, {
+      ...currentPaginatedQuery.query,
+    });
+  } catch (err) {
+    activity.value = { items: [], offset: 0, count: 0, total: 0 };
+    addNotification({
+      variant: 'error',
+      title: extractErrorText(err),
+    });
+  } finally {
+    isRefreshing.value = false;
+  }
+}
+
+watch([currentPaginatedQuery], () => refreshResponses(), {
+  deep: true,
 });
+refreshResponses();
 </script>
