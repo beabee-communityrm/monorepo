@@ -1,8 +1,4 @@
-import {
-  BadRequestError,
-  NotFoundError,
-  PaymentRequiresActionError,
-} from '@beabee/core/errors';
+import { BadRequestError, NotFoundError } from '@beabee/core/errors';
 import { isOidcEnabled } from '@beabee/core/lib/oidc';
 import { Password } from '@beabee/core/models';
 import SignupService from '@beabee/core/services/SignupService';
@@ -20,14 +16,13 @@ import {
   UseBefore,
 } from 'routing-controllers';
 
-import { GetContactDto } from '#api/dto/ContactDto';
 import { PaymentFlowResultDto } from '#api/dto/PaymentFlowDto';
 import {
   CompleteSignupFlowDto,
+  ConfirmSignupResultDto,
   StartSignupFlowDto,
 } from '#api/dto/SignupFlowDto';
 import { SignupConfirmEmailParams } from '#api/params/SignupConfirmEmailParams';
-import ContactTransformer from '#api/transformers/ContactTransformer';
 import { login } from '#api/utils/auth';
 
 import { RateLimit } from '../decorators/index.js';
@@ -62,9 +57,10 @@ export class SignupController {
       password: data.password
         ? await generatePassword(data.password)
         : Password.none,
-      confirmUrl: data.confirmUrl,
-      loginUrl: data.loginUrl,
-      setPasswordUrl: data.setPasswordUrl,
+      confirmUrl: data.confirmUrl ?? null,
+      loginUrl: data.loginUrl ?? null,
+      setPasswordUrl: data.setPasswordUrl ?? null,
+      postConfirmUrl: data.postConfirmUrl ?? null,
       origin: data.origin || null,
       newsletterStatus: data.newsletterStatus ?? null,
       newsletterGroups: data.newsletterGroups ?? null,
@@ -132,25 +128,18 @@ export class SignupController {
   async confirmEmail(
     @Req() req: Request,
     @Body() { joinFlowId }: SignupConfirmEmailParams
-  ): Promise<GetContactDto> {
+  ): Promise<ConfirmSignupResultDto> {
     const result = await SignupService.finalizeSignup(joinFlowId);
     if (!result) {
       throw new NotFoundError();
     }
 
-    const { contact, clientSecret } = result;
+    const { contact, clientSecret, postConfirmUrl } = result;
     await login(req, contact);
 
-    // The member is signed up and logged in, the first payment still needs
-    // their authentication
-    if (clientSecret) {
-      throw new PaymentRequiresActionError(clientSecret);
-    }
-
-    return ContactTransformer.convert(contact, {
-      method: 'user',
-      contact,
-      roles: contact.activeRoles,
+    return plainToInstance(ConfirmSignupResultDto, {
+      postConfirmUrl,
+      ...(clientSecret && { paymentClientSecret: clientSecret }),
     });
   }
 }

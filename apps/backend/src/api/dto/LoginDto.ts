@@ -7,7 +7,7 @@ import { LoginData } from '@beabee/core/type';
 
 import { IsEmail, IsIn, IsOptional, IsString } from 'class-validator';
 
-import IsNextUrl from '#api/validators/IsNextUrl';
+import IsTrustedUrl from '#api/validators/IsTrustedUrl';
 import IsUrl from '#api/validators/IsUrl';
 
 export class LoginDto implements LoginData {
@@ -33,14 +33,14 @@ export class LogoutResultDto implements LogoutResultData {
 export class NextOptsDto {
   /** Internal path or allowed return URL to continue to after login */
   @IsOptional()
-  @IsNextUrl()
+  @IsTrustedUrl({ allowRelative: true })
   next?: string;
 }
 
 export class LogoutCallbackDto {
   /** The next from /auth/logout, carried through the identity provider */
   @IsOptional()
-  @IsNextUrl()
+  @IsTrustedUrl({ allowRelative: true })
   state?: string;
 }
 
