@@ -76,9 +76,9 @@ const filterItems = computed<TabItem[]>(() => [
     to: '/admin/activity?category=contact',
   },
   {
-    id: 'newsletter',
-    label: t('accountPage.newsletter.title'),
-    to: '/admin/activity?category=newsletter',
+    id: 'callout',
+    label: t('menu.callouts'),
+    to: '/admin/activity?category=callout',
   },
   {
     id: 'email',
@@ -89,11 +89,6 @@ const filterItems = computed<TabItem[]>(() => [
     id: 'payment',
     label: t('contactOverview.contribution'),
     to: '/admin/activity?category=payment',
-  },
-  {
-    id: 'other',
-    label: t('activity.filters.other'),
-    to: '/admin/activity?category=other',
   },
 ]);
 const currentFilter = defineParam('category', (v) => v || '', 'replace');
@@ -109,7 +104,7 @@ function getEventCategory(type: ActivityEventType): string {
   ) {
     return 'payment';
   }
-  if (type.startsWith('newsletter.')) return 'newsletter';
+  if (type.startsWith('callout.')) return 'callout';
   if (type.startsWith('email.')) return 'email';
   if (type.startsWith('contact.')) return 'contact';
   return 'other';
