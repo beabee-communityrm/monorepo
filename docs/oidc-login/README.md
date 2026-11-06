@@ -197,13 +197,20 @@ website's edge; unset = off), `COOKIE_NAME`, `COOKIE_DOMAIN` (the parent domain;
 spread), `COOKIE_MAXAGE` (seconds, longer than the ID token lifetime). Requires
 `BEABEE_COOKIE_SECURE=true` for a `__Secure-` cookie name. The website links
 to `/api/1.0/auth/login?next=<absolute URL>`; `next` may be any URL on a
-`BEABEE_TRUSTEDORIGINS` origin. When the cookie's token has expired, the
-website's edge sends the browser to `/api/1.0/auth/refresh?next=…`, one
-`prompt=none` round trip that renews the cookie or, if the IdP session is
-gone, clears it; either way the browser continues to `next`. A website logout
-link is `/api/1.0/auth/logout?next=<absolute URL>`; the member returns to
-that page via the logout callback, so the IdP needs only the one registered
-post-logout redirect URI. The website's edge reads a `role` claim from the
+`BEABEE_TRUSTEDORIGINS` origin. With Site Login on, the login also asks for
+`offline_access`, and the callback keeps the refresh token in the beabee
+session, encrypted with the Site Login key. When the cookie's token has
+expired, the website's edge sends the browser to
+`/api/1.0/auth/refresh?next=…`: beabee renews the ID token with the refresh
+token, server to server, and sets a new cookie; without a refresh token the
+IdP still accepts, it clears the cookie. Either way the browser continues to
+`next` and never sees the IdP. The website login therefore lives as long as
+the beabee session and the refresh token, not the IdP session. Logout
+revokes the refresh token at the IdP, since ending the IdP session does not.
+A website logout link is `/api/1.0/auth/logout?next=<absolute URL>`; the
+member returns to that page via the logout callback, so the IdP needs only
+the one registered post-logout redirect URI. The website's edge reads a
+`role` claim from the
 token, which the IdP obtains from beabee's webhook app while issuing it: the
 webhook answers with the contact's highest active role other than the admin
 roles (`member` today), found by IdP subject, or no claim. A beabee outage
@@ -219,14 +226,17 @@ sequenceDiagram
     B->>W: GET article (site cookie expired)
     W-->>B: 302 /api/1.0/auth/refresh?next=article
     B->>BE: GET /api/1.0/auth/refresh
-    BE-->>B: 302 authorize?prompt=none
-    B->>IdP: GET authorize
-    alt IdP session alive
-        IdP-->>B: 302 callback?code&state
-        Note over B,IdP: token exchange as in the login flow, new site cookie
-        BE-->>B: 302 article
-    else no session
-        IdP-->>B: 302 callback?error=login_required
+    alt session holds a refresh token
+        BE->>IdP: POST token (grant_type=refresh_token)
+        alt accepted
+            IdP-->>BE: id_token, rotated refresh_token
+            Note over BE: session: new refresh token<br/>new site cookie
+            BE-->>B: 302 article
+        else rejected (revoked, expired, already rotated by a parallel request)
+            Note over BE: re-read session, retry once with a newer token
+            BE-->>B: 302 article, site cookie cleared
+        end
+    else no beabee session or token
         BE-->>B: 302 article, site cookie cleared
     end
 ```

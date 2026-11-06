@@ -105,34 +105,18 @@ logo as logo and icon. Fonts and the splash background image are not synced
 (Zitadel has one font file per instance and no per-instance background
 before v5).
 
-## Known limitation: `prompt=none`
+## Refresh tokens
 
-Login v2 does not answer a `prompt=none` request without a session with
-`error=login_required` as the OIDC spec requires, but with its login form
-or a JSON 400 ([zitadel#12165](https://github.com/zitadel/zitadel/issues/12165)).
-A website reader whose IdP session is gone is therefore stuck at the login
-form on refresh instead of continuing to `next`.
-
-```mermaid
-sequenceDiagram
-    participant B as Browser
-    participant BE as beabee
-    participant Z as Zitadel
-    participant L as Login v2
-
-    B->>BE: GET /api/1.0/auth/refresh?next=article
-    BE-->>B: 302 /oauth/v2/authorize?prompt=none
-    B->>Z: GET /oauth/v2/authorize
-    Z-->>B: 302 /ui/v2/login/login?authRequest=…
-    B->>L: GET
-    alt IdP session alive
-        L-->>B: 302 callback?code&state
-        BE-->>B: 302 article, new site cookie
-    else no session
-        L-->>B: login form or JSON 400
-        Note over B: reader is stuck here
-    end
-```
+The website login is renewed with refresh tokens rather than a `prompt=none`
+round trip: Login v2 answers `prompt=none` without a session with its login
+form or a JSON 400 instead of `error=login_required`
+([zitadel#12165](https://github.com/zitadel/zitadel/issues/12165)), which
+would strand a reader there. The OIDC client needs the refresh token grant
+type. Zitadel issues one to the public PKCE client on `offline_access` and
+rotates it on every use, after which the previous token is rejected with
+`RefreshTokenInvalid`; the refreshed ID token keeps the login's `auth_time`.
+Ending the IdP session (`/oidc/v1/end_session`) leaves the refresh token
+valid, so beabee revokes it at `/oauth/v2/revoke` on logout.
 
 ## Operations
 
