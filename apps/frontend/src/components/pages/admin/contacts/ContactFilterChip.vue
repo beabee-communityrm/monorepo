@@ -17,8 +17,14 @@
         {{ item?.label || simpleRule.field }}
       </b>
       {{ operatorLabel }}
-      <template v-if="valueLabels.length">
-        {{ valueLabels.join(` ${t('advancedSearch.matchWord.AND')} `) }}
+      <template v-for="(value, i) in values" :key="i">
+        <template v-if="i > 0">
+          {{ t('advancedSearch.matchWord.AND') }}
+        </template>
+        {{ value.label }}
+        <span v-if="value.expression" class="text-muted">
+          · <span class="font-mono">{{ value.expression }}</span>
+        </span>
       </template>
     </span>
     <UButton
@@ -36,7 +42,7 @@
 import type { Rule, RuleGroup, RuleValue } from '@beabee/beabee-common';
 import { formatLocale } from '@beabee/vue';
 
-import { isRuleGroup } from '@beabee/beabee-common';
+import { isRuleGroup, isValidDate, parseDate } from '@beabee/beabee-common';
 
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -98,28 +104,45 @@ const operatorLabel = computed(() => {
   );
 });
 
-const valueLabels = computed(() =>
+const values = computed(() =>
   item.value && simpleRule.value
     ? simpleRule.value.value.map((v) => formatValue(item.value!, v))
     : []
 );
 
-function formatValue(item: FilterItem, value: RuleValue): string {
+/** Relative dates show the date they resolve to now, then the expression */
+function formatValue(
+  item: FilterItem,
+  value: RuleValue
+): { label: string; expression?: string } {
   switch (item.type) {
     case 'date': {
       const date = String(value);
-      return date.startsWith('$now') ? date : formatLocale(new Date(date), 'P');
+      if (date.startsWith('$now') && isValidDate(date)) {
+        return {
+          label: formatLocale(parseDate(date)[0], 'PPP'),
+          expression: date,
+        };
+      }
+      return {
+        label: date.startsWith('$now')
+          ? date
+          : formatLocale(new Date(date), 'PPP'),
+      };
     }
     case 'boolean':
-      return value === true ? t('common.yes') : t('common.no');
+      return { label: value === true ? t('common.yes') : t('common.no') };
     case 'enum':
     case 'array':
-      return (
-        item.options?.find((option) => option.id === value)?.label ||
-        String(value)
-      );
+      return {
+        label:
+          item.options?.find((option) => option.id === value)?.label ||
+          String(value),
+      };
     default:
-      return `${'prefix' in item ? (item.prefix ?? '') : ''}${value}`;
+      return {
+        label: `${'prefix' in item ? (item.prefix ?? '') : ''}${value}`,
+      };
   }
 }
 </script>
