@@ -5,7 +5,7 @@
 The docker-compose stack includes a Keycloak identity provider (the `auth`
 service) for testing IdP Provisioning and OIDC Login locally. It always
 runs but is unused until `BEABEE_IDP_PROVIDER=keycloak` is set. Production
-instances use Zitadel (see [OIDC login](./oidc-login.md)); to test against
+instances use Zitadel (see [OIDC login](./oidc-login/README.md)); to test against
 the real provider, use the hosted dev instance described at the end of this
 page.
 
