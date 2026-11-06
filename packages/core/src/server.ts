@@ -5,7 +5,6 @@ import { log as mainLogger } from '#logging';
 import { networkCommunicatorService } from '#services/NetworkCommunicatorService';
 import OptionsService from '#services/OptionsService';
 import { wrapAsync } from '#utils/express';
-import { getTrustedOrigins } from '#utils/trusted-origins';
 
 const log = mainLogger.child({ app: 'server' });
 const PORT = 3000;
@@ -41,7 +40,7 @@ export function startServer(app: Express) {
   internalApp.get('/trusted-origins', (_, res) => {
     res.setHeader(
       'X-Frame-Ancestors',
-      getTrustedOrigins().join(' ') || "'none'"
+      OptionsService.getList('trusted-origins').join(' ') || "'none'"
     );
     res.sendStatus(204);
   });
