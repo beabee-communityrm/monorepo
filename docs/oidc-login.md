@@ -52,6 +52,54 @@ same in one step for plain links. The IdP returns to
 through the IdP as the end-session `state`. Local-auth endpoints (password, MFA,
 reset) return 404.
 
+In the diagrams, "Zitadel" is the OIDC endpoints and the management API,
+"Login v2" the separate login UI: the browser talks to Login v2, beabee
+talks to Zitadel. The token exchange is the only server-to-server step of a
+login; everything else is a browser redirect.
+
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant BE as beabee
+    participant Z as Zitadel
+    participant L as Login v2
+
+    B->>BE: GET /api/1.0/auth/login?next=/profile
+    Note over BE: PKCE verifier, state, nonce → session.oidc
+    BE-->>B: 302 /oauth/v2/authorize?client_id&redirect_uri&state&code_challenge
+    B->>Z: GET /oauth/v2/authorize
+    Z-->>B: 302 /ui/v2/login/login?authRequest=V2_…
+    B->>L: login form, password or passkey
+    L-->>B: 302 /api/1.0/auth/callback?code&state
+    B->>BE: GET /api/1.0/auth/callback?code&state
+    BE->>Z: POST /oauth/v2/token (code, code_verifier)
+    Z-->>BE: id_token (sub, auth_time)
+    Note over BE: contact by idpSubject = sub<br/>session: idToken, authTime<br/>cookies: session, session-idp, site login
+    alt contact linked
+        BE-->>B: 302 next
+    else no contact for sub
+        BE-->>B: 302 end_session (state=/auth/login-error?code=unlinked-account)
+        Note over B,Z: logout flow below, ending on the error page
+    end
+```
+
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant BE as beabee
+    participant Z as Zitadel
+
+    B->>BE: POST /api/1.0/auth/logout (or GET ?next=…)
+    Note over BE: destroy session, clear all three cookies
+    BE-->>B: { redirectUrl } or 302:<br/>/oidc/v1/end_session?id_token_hint&post_logout_redirect_uri=…/auth/logout/callback&state=next
+    B->>Z: GET /oidc/v1/end_session
+    Note over Z: ends the IdP session, no confirmation thanks to the hint
+    Z-->>B: 302 /api/1.0/auth/logout/callback?state=next
+    B->>BE: GET /api/1.0/auth/logout/callback?state=next
+    Note over BE: state validated as internal path or trusted origin
+    BE-->>B: 302 next
+```
+
 **Joining (OIDC state).** The setup form has no password field. After the
 confirm-email link, beabee finalises the Signup Flow, starts an OIDC login
 that continues to the setup page, and hands the member to the IdP's
@@ -86,6 +134,32 @@ up and removes one after a fresh login at the IdP (`prompt=login`, recent
 Operators can still remove them in the Console
 ([ADR-0005](./adr/0005-hide-the-idp-console-from-members.md)).
 
+beabee requests the authorize endpoint itself only to obtain the
+`authRequest` ID; the browser then opens the Login v2 page directly with
+that ID, and Login v2 completes the login beabee started.
+
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant BE as beabee
+    participant Z as Zitadel
+    participant L as Login v2
+
+    B->>BE: GET /api/1.0/auth/login?action=changePassword
+    alt no fresh IdP session (session-idp cookie + auth_time < 2h)
+        Note over BE: next = this URL, action dropped
+        BE-->>B: 302 authorize?prompt=login&login_hint=email
+        Note over B,L: login flow above, then back here
+    end
+    BE->>Z: GET /oauth/v2/authorize (redirect: manual)
+    Z-->>BE: 302 Location: …?authRequest=V2_x
+    BE->>Z: GET /v2/users/{sub} (PAT) → login name
+    BE-->>B: 302 /ui/v2/login/password/change?requestId=oidc_V2_x&loginName=…
+    B->>L: change password
+    L-->>B: 302 /api/1.0/auth/callback?code&state
+    Note over B,Z: callback as in the login flow, lands on /profile/account?tab=security
+```
+
 **IdP Transition and cutover.** Existing password hashes cannot be imported
 into Zitadel ([ADR-0003](./adr/0003-migrate-passwords-by-capturing-at-login.md)).
 Instead, at transition start operators provision all contacts and clear all
@@ -103,6 +177,29 @@ background colours (light and dark alike, theme mode forced light) plus the
 logo as logo and icon. Pushed when the theme or logo is saved and by the
 CLI. Fonts and the splash background image are not synced for now (Zitadel
 has one font file per instance and no per-instance background before v5).
+
+**Server-to-server.** Provisioning and the account page's method removal
+use the instance PAT; the login flows do not, apart from the login name
+lookup above. The role claim runs the other way: Zitadel calls beabee's
+webhook app while issuing the token.
+
+```mermaid
+sequenceDiagram
+    participant BE as beabee
+    participant Z as Zitadel
+    participant WH as beabee webhooks
+
+    Note over BE,Z: Provisioning, with the instance PAT
+    BE->>Z: POST /v2/users/human (contact created)
+    Z-->>BE: userId → contact.idpSubject
+    BE->>Z: PATCH /v2/users/{sub} (email, name changed)
+    BE->>Z: DELETE /v2/users/{sub} (contact deleted)
+    BE->>Z: GET /v2/users/{sub}/authentication_methods, DELETE …/totp (account page)
+
+    Note over Z,WH: Role claim, during token issuance in the login flow
+    Z->>WH: POST /webhook/zitadel/claims (signed, preuserinfo)
+    WH-->>Z: { role: member }
+```
 
 ## Configuration
 
@@ -135,6 +232,40 @@ the webhook answers with the contact's highest active role other than the
 admin roles (`member` today), found by IdP subject, or no claim. The target
 does not interrupt token issuance, so a beabee outage costs the role, not
 the login.
+
+Login v2 does not answer a `prompt=none` request without a session with
+`error=login_required` as the OIDC spec requires, but with its login form
+or a JSON 400 ([zitadel#12165](https://github.com/zitadel/zitadel/issues/12165)),
+so a reader whose IdP session is gone is stuck there instead of
+continuing to `next`.
+
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant W as Website edge
+    participant BE as beabee
+    participant Z as Zitadel
+    participant L as Login v2
+
+    B->>W: GET article (site cookie expired)
+    W-->>B: 302 /api/1.0/auth/refresh?next=article
+    B->>BE: GET /api/1.0/auth/refresh
+    BE-->>B: 302 /oauth/v2/authorize?prompt=none
+    B->>Z: GET /oauth/v2/authorize
+    Z-->>B: 302 /ui/v2/login/login?authRequest=…
+    B->>L: GET
+    alt IdP session alive
+        L-->>B: 302 callback?code&state
+        Note over B,Z: token exchange as in the login flow, new site cookie
+        BE-->>B: 302 article
+    else no session, per OIDC spec
+        L-->>B: 302 callback?error=login_required
+        BE-->>B: 302 article, site cookie cleared
+    else no session, Login v2 today (zitadel#12165)
+        L-->>B: login form or JSON 400
+        Note over B: reader is stuck here
+    end
+```
 
 IdP-side setup that beabee owns and applies idempotently via
 `backend-cli setup integrations idp`: `defaultRedirectUri` (beabee's login endpoint, the
