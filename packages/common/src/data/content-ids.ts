@@ -11,5 +11,6 @@ export const contentIds = [
   'share',
   'payment',
   'telegram',
+  'system',
 ] as const;
 contentIds satisfies readonly ContentId[];

@@ -311,6 +311,12 @@
         "text": "Konfiguriere hier, was auf sozialen Medien erscheint, wenn ein Link zu Deiner beabee-Community geteilt wird.",
         "title": "Soziale Netzwerke",
         "twitterHandle": "Twitter-Handle"
+      },
+      "trustedOrigins": {
+        "add": "Weitere Website hinzufügen",
+        "label": "Origin",
+        "text": "Websites, die Deine beabee-Community einbetten, ihre API aus dem Browser aufrufen und Mitglieder nach dem Login empfangen dürfen.",
+        "title": "Vertrauenswürdige Websites"
       }
     },
     "integrations": {
@@ -1574,6 +1580,11 @@
       },
       "name": {
         "required": "Name benötigt"
+      },
+      "origin": {
+        "pattern": "Nur Schema und Host, zum Beispiel https://example.com",
+        "required": "Origin ist erforderlich",
+        "url": "Ungültige URL"
       },
       "password": {
         "password": "Passwort ungültig",

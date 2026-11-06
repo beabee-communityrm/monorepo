@@ -137,6 +137,7 @@ import { MakeActorTypeNullable1790585189483 } from './migrations/1790585189483-M
 import { RemoveContactLoginOverride1790855215072 } from './migrations/1790855215072-RemoveContactLoginOverride.js';
 import { AddSignupFlowNewsletter1792506342771 } from './migrations/1792506342771-AddSignupFlowNewsletter.js';
 import { AddSignupFlowPostConfirmUrl1793892212089 } from './migrations/1793892212089-AddSignupFlowPostConfirmUrl.js';
+import { MigrateTrustedOrigins1793963840911 } from './migrations/1793963840911-MigrateTrustedOrigins.js';
 
 export const migrations = [
   SessionTable1616677358190,
@@ -277,4 +278,5 @@ export const migrations = [
   RemoveContactLoginOverride1790855215072,
   AddSignupFlowNewsletter1792506342771,
   AddSignupFlowPostConfirmUrl1793892212089,
+  MigrateTrustedOrigins1793963840911,
 ];

@@ -69,6 +69,7 @@ const parseData = {
   email: (d: any) => d,
   payment: (d: any) => d,
   telegram: (d: any) => d,
+  system: (d: any) => d,
 } as const;
 
 // urlencoding parser doesn't support overwriting if the same query param

@@ -1,22 +1,19 @@
 import axios from 'axios';
-import express, { type Express, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { EventEmitter } from 'node:events';
-import { Server } from 'node:http';
 
 import config from '#config/config';
 import * as env from '#config/env';
 import { log as mainLogger } from '#logging';
 import type { NetworkServiceMap } from '#type/network-service-map';
 import { extractToken } from '#utils/auth';
-import { wrapAsync } from '#utils/express';
 
 const { JsonWebTokenError, sign, verify } = jwt;
 
 const log = mainLogger.child({ app: 'network-communicator-service' });
 
 class NetworkCommunicatorService {
-  private server?: Server;
   private events = new EventEmitter();
 
   // TODO: remove hardcoded service references
@@ -66,27 +63,8 @@ class NetworkCommunicatorService {
   public off = this.events.off.bind(this.events);
 
   /**
-   * Start the internal server
-   */
-  public startServer(): Express {
-    const internalApp = express();
-    this.server = internalApp.listen(4000);
-
-    process.on('SIGTERM', () => {
-      this.server?.close();
-    });
-
-    // Register internal service routes
-    internalApp.post(
-      '/reload',
-      wrapAsync(this.onInternalServiceRequest.bind(this))
-    );
-
-    return internalApp;
-  }
-
-  /**
    * Called if this service is notified from other internal service to a registered route
+   * on the internal server, see `startServer`
    * * Verifies the request token
    * * If the request is authenticated, it will emit the event with the payload
    * @throws JsonWebTokenError if the request is not authenticated
@@ -94,7 +72,7 @@ class NetworkCommunicatorService {
    * @param req
    * @param res
    */
-  private async onInternalServiceRequest(req: Request, res: Response) {
+  async onInternalServiceRequest(req: Request, res: Response) {
     // Get the action from request path
     const actionPath = req.path.substring(1);
     // Convert action path to event name, e.g. "user:created" if the route is "/user/created" or 'reload' if the route is '/reload'

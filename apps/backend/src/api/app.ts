@@ -42,7 +42,18 @@ const app = express();
 
 app.use(requestLogger);
 
-app.use(cors({ origin: config.trustedOrigins, credentials: true }));
+// A function so option changes apply without a restart
+app.use(
+  cors({
+    origin: (_, cb) =>
+      cb(null, [
+        ...optionsService.getList('trusted-origins'),
+        // Any localhost port in development
+        ...(config.dev ? [/^https?:\/\/localhost(:\d+)?$/] : []),
+      ]),
+    credentials: true,
+  })
+);
 
 app.use(cookie());
 

@@ -310,6 +310,12 @@
         "text": "Configure what appears on social media when a link to your beabee community is shared",
         "title": "Social sharing",
         "twitterHandle": "Twitter handle"
+      },
+      "trustedOrigins": {
+        "add": "Add another website",
+        "label": "Origin",
+        "text": "Websites that may embed your beabee community, call its API from the browser and receive members after login.",
+        "title": "Trusted websites"
       }
     },
     "integrations": {
@@ -1571,6 +1577,11 @@
       },
       "name": {
         "required": "Name is required"
+      },
+      "origin": {
+        "pattern": "Must be a scheme and host only, like https://example.com",
+        "required": "Origin is required",
+        "url": "Invalid URL"
       },
       "password": {
         "password": "Invalid password",
