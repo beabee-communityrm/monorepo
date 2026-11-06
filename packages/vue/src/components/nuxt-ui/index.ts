@@ -30,3 +30,7 @@ export {
   default as AppStickySaveBar,
   type AppStickySaveBarProps,
 } from './AppStickySaveBar.vue';
+export {
+  default as AppTablePagination,
+  type AppTablePaginationProps,
+} from './AppTablePagination.vue';

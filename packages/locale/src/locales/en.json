@@ -162,6 +162,7 @@
     "search": "Search",
     "sendEmails": "Send emails",
     "sendOneOffEmail": "Send email",
+    "sendOneOffEmail-nuxt": "Email segment",
     "sendOngoingEmails": "Ongoing emails",
     "share": "Share",
     "showPassword": "Show password",
@@ -374,21 +375,44 @@
   },
   "advancedSearch": {
     "addRule": "Add rule",
+    "addRule-nuxt": "Add filter",
+    "allFields-nuxt": "All fields",
     "button": "Filters",
     "createFiltersAfter": "rules",
+    "createFiltersAfter-nuxt": "of these filters",
     "createFiltersBefore": "Only show results matching",
+    "createFiltersBefore-nuxt": "Show contacts who match",
     "createFiltersType": {
       "all": "all",
       "any": "any"
     },
     "createdSegment": "Created segment \"{segment}\"",
+    "fieldType-nuxt": {
+      "array": "multi-select",
+      "blob": "long text",
+      "boolean": "yes / no",
+      "contact": "contact",
+      "date": "date",
+      "enum": "one of {count}",
+      "number": "number",
+      "text": "text"
+    },
     "invalidRuleError": "Something is broken in this rule: \"{ rule }\". Please update!",
+    "matchCondition-nuxt": "How many filters to match",
+    "matchCount-nuxt": "{count} match",
     "matchWord": {
       "AND": "and",
       "OR": "or"
     },
     "nestedRules": "Nested rules",
+    "nestedRules-nuxt": "Nested rules (applied, but can't be shown here)",
+    "noFieldsMatch-nuxt": "No fields match \"{query}\"",
     "noNestedRules": "This filter contains nested rules which cannot be edited using the advanced search editor.",
+    "noOptions-nuxt": "no options",
+    "operatorGroup-nuxt": {
+      "blank": "Blank",
+      "not": "Not"
+    },
     "operators": {
       "all": {
         "is_empty": "is empty",
@@ -440,6 +464,10 @@
         "not_equal": "is not"
       }
     },
+    "relativeDate-nuxt": "Use a relative date",
+    "relativeDateExample-nuxt": "Use a relative date, e.g. {example}",
+    "relativeDateInvalid-nuxt": "Not a valid expression",
+    "removeFilter-nuxt": "Remove filter",
     "saveSegment": {
       "createOrUpdate": {
         "create": "Create new segment",
@@ -447,11 +475,14 @@
         "update": "Update segment \"{segment}\""
       },
       "createSegment": "Create segment",
+      "failed-nuxt": "Couldn't save the segment. Try again.",
       "segmentName": "Segment name",
       "text": "A segment is a group of contacts that matches a set of filters, like the ones you've just created. New contacts that match these filters are automatically added to the segment.",
+      "text-nuxt": "A segment is a group of contacts that matches a set of filters, like the ones you've just created. New contacts that match these filters are automatically added to the segment.",
       "title": "Save segment",
       "updateSegment": "Update segment"
     },
+    "searchFields-nuxt": "Search fields",
     "selectFilter": "Select a filter",
     "updatedSegment": "Updated segment \"{segment}\""
   },
@@ -1096,6 +1127,7 @@
     "no": "No",
     "noResults": "No results found",
     "pageCount": "Page {pageNumber} out of {pageTotal}",
+    "pageCount-nuxt": "Page {pageNumber} of {pageTotal}",
     "paymentPeriod": {
       "annually": "Annually",
       "monthly": "Monthly",
@@ -1123,6 +1155,8 @@
       "member": "Member",
       "superadmin": "Super Admin"
     },
+    "rowsPerPage-nuxt": "rows per page",
+    "selectAll": "Select all",
     "selectNone": "-- None --",
     "selectOne": "Select one...",
     "show": "Show",
@@ -1267,6 +1301,7 @@
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
+      "callout-nuxt": "CrowdNewsroom responses",
       "contact": "Contact information",
       "oneTimeContributions": "One-Time Contributions",
       "recurringContributions": "Recurring Contributions",
@@ -1297,6 +1332,13 @@
     "noResults": "No contacts found",
     "numResults": "{n} contact found | {n} contacts found",
     "search": "Search contacts...",
+    "selectAllBanner-nuxt": {
+      "allSelected": "All {count} matching contacts are selected.",
+      "clearSelection": "Clear selection",
+      "pageSelected": "All {count} contacts on this page are selected.",
+      "selectAll": "Select all {count} matching contacts",
+      "someSelected": "{count} matching contacts are selected."
+    },
     "selectedCount": "{n} contact selected | {n} contacts selected",
     "sendEmail": {
       "newEmail": "New email",
@@ -1306,7 +1348,11 @@
       "templateNameRequired": "Please enter a name for the new template.",
       "title": "Send email to segment"
     },
-    "showingOf": "Showing {start} to {end} contacts out of {total}"
+    "sendEmailNoSegment-nuxt": "Choose a saved segment to email its contacts",
+    "sendEmailSelection-nuxt": "Sends to the whole segment. Clear your selection first.",
+    "sendEmailToSelected-nuxt": "Send email to {count} selected",
+    "showingOf": "Showing {start} to {end} contacts out of {total}",
+    "showingOf-nuxt": "Showing {start}–{end} of {total} results"
   },
   "contribution": {
     "adminCancelDescription": "If you cancel the contact's contribution their membership will finish at the end of their current payment cycle on {date}.",
@@ -2100,13 +2146,23 @@
     "name": "Name"
   },
   "tags": {
+    "clearTags-nuxt": "Clear",
+    "countOfSelected-nuxt": "{count} of {total}",
     "manageTags": "Manage tags",
+    "manageTagsDescription-nuxt": "Rename or delete tags across all contacts.",
+    "newTagName-nuxt": "New tag name",
     "noTags": "No tags",
     "notifications": {
       "addedTag": "Added tag \"{tag}\"",
-      "removedTag": "Removed tag \"{tag}\" "
+      "createFailed-nuxt": "Couldn't add tag \"{tag}\". Try again.",
+      "deleteFailed-nuxt": "Couldn't delete tag \"{tag}\". Try again.",
+      "removedTag": "Removed tag \"{tag}\" ",
+      "renameFailed-nuxt": "Couldn't rename tag \"{tag}\". Try again.",
+      "updateFailed-nuxt": "Couldn't update tags on the selected contacts. Try again."
     },
     "searchTag": "Tagged with...",
+    "selectToTag-nuxt": "Select contacts to tag them",
+    "tagSelected-nuxt": "Tag {count} selected contact | Tag {count} selected contacts",
     "toggleTag": "Toggle tag"
   }
 }

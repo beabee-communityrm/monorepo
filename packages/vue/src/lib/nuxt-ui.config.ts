@@ -27,10 +27,15 @@ export const nuxtUiConfig: NuxtUIOptions = {
           xl: { base: 'rounded-full' },
         },
       },
+      compoundVariants: [
+        // One step darker than Nuxt UI's default bg-elevated.
+        { color: 'neutral', variant: 'soft', class: 'bg-accented' },
+      ],
     },
     navigationMenu: {
       slots: {
         link: 'py-2!',
+        linkLeadingIcon: 'size-4.5!',
       },
       variants: {
         active: {
@@ -91,6 +96,8 @@ export const nuxtUiConfig: NuxtUIOptions = {
         // the left on stretched (block/w-full/flex-1) buttons.
         // Disabled is paler than Nuxt UI's default 75% opacity.
         base: 'cursor-pointer justify-center disabled:opacity-40 aria-disabled:opacity-40',
+        leadingIcon: 'size-4.5!',
+        trailingIcon: 'size-4.5!',
       },
       compoundVariants: [
         {
