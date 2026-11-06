@@ -1,5 +1,6 @@
 import express, { Express } from 'express';
 
+import config from '#config/config';
 import * as db from '#database';
 import { log as mainLogger } from '#logging';
 import { networkCommunicatorService } from '#services/NetworkCommunicatorService';
@@ -38,10 +39,10 @@ export function startServer(app: Express) {
   // The router fetches this in an auth_request subrequest for every frontend
   // page and copies the header into its Content-Security-Policy
   internalApp.get('/trusted-origins', (_, res) => {
-    res.setHeader(
-      'X-Frame-Ancestors',
-      OptionsService.getList('trusted-origins').join(' ') || "'none'"
-    );
+    const origins = OptionsService.getList('trusted-origins');
+    // Any localhost port in development
+    if (config.dev) origins.push('http://localhost:*', 'https://localhost:*');
+    res.setHeader('X-Frame-Ancestors', origins.join(' ') || "'none'");
     res.sendStatus(204);
   });
   const internalServer = internalApp.listen(INTERNAL_PORT);

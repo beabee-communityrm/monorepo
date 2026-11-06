@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 
 import { RoleType } from '@beabee/beabee-common';
+import config from '@beabee/core/config';
 import { InternalServerError } from '@beabee/core/errors';
 import {
   log as mainLogger,
@@ -44,7 +45,12 @@ app.use(requestLogger);
 // A function so option changes apply without a restart
 app.use(
   cors({
-    origin: (_, cb) => cb(null, optionsService.getList('trusted-origins')),
+    origin: (_, cb) =>
+      cb(null, [
+        ...optionsService.getList('trusted-origins'),
+        // Any localhost port in development
+        ...(config.dev ? [/^https?:\/\/localhost(:\d+)?$/] : []),
+      ]),
     credentials: true,
   })
 );
