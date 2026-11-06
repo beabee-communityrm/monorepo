@@ -250,10 +250,3 @@ redeploy: local password hashes are kept for exactly this reason, so members
 who haven't changed their password at the IdP since can log in as before. The
 OIDC discovery result is cached for the process lifetime; a restart picks up
 changed IdP metadata.
-
-## Deliberately out of scope
-
-Password hash import; a cutover mail-out; offering both login methods at
-once; export for tenants leaving the hosting; font and background sync;
-Keycloak branding; the legacy frontend; enforcing multi-factor
-authentication.
