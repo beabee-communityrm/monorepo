@@ -1258,9 +1258,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/browser-tests@workspace:apps/browser-tests"
   dependencies:
+    "@beabee/beabee-common": "workspace:^"
+    "@beabee/client": "workspace:^"
     "@beabee/test-utils": "workspace:*"
+    "@beabee/tsconfig": "workspace:^"
     "@playwright/test": "npm:^1.60.0"
+    "@types/node": "npm:^24.12.2"
     playwright: "npm:^1.60.0"
+    typescript: "npm:~6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -1616,6 +1621,13 @@ __metadata:
 "@beabee/test-utils@workspace:*, @beabee/test-utils@workspace:packages/test-utils":
   version: 0.0.0-use.local
   resolution: "@beabee/test-utils@workspace:packages/test-utils"
+  dependencies:
+    "@beabee/client": "workspace:^"
+    "@beabee/prettier-config": "workspace:^"
+    "@beabee/tsconfig": "workspace:^"
+    "@types/node": "npm:^24.12.2"
+    prettier: "npm:^3.8.3"
+    typescript: "npm:~6.0.3"
   languageName: unknown
   linkType: soft
 
