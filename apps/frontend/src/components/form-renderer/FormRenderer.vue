@@ -5,7 +5,7 @@
     :form="{ components: localizedComponents }"
     :submission="modelValue && { data: modelValue }"
     :options="formOpts"
-    language="custom"
+    :language="contentLanguage"
     @change="handleChange"
   />
 </template>
@@ -14,6 +14,7 @@ import type {
   CalloutComponentSchema,
   CalloutResponseAnswersSlide,
 } from '@beabee/beabee-common';
+import { isLocale } from '@beabee/locale';
 import { library } from '@beabee/vue/plugins/icons';
 
 import { config, dom } from '@fortawesome/fontawesome-svg-core';
@@ -32,11 +33,13 @@ import useVuelidate from '@vuelidate/core';
 import { sameAs } from '@vuelidate/validators';
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
 import {
   activeUploadsCount,
   resetActiveUploadsCount,
 } from '#lib/formio/providers/storage/beabee';
+import { generalContent } from '#store';
 
 import { Form } from '../../lib/formio';
 import { type FormChangeEvent } from './form-renderer.interface';
@@ -52,6 +55,15 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+const route = useRoute();
+
+/** The language the callout's content is written in, without any variant suffix */
+const contentLanguage = computed(() => {
+  const variant = route.query.lang?.toString();
+  const locale =
+    variant && isLocale(variant) ? variant : generalContent.value.locale;
+  return locale.split('@')[0];
+});
 
 const isValid = ref(false);
 
@@ -227,7 +239,7 @@ const formOpts = computed(() => {
     noAlerts: true,
     renderMode: props.readonly ? 'html' : 'form',
     i18n: {
-      custom: {
+      [contentLanguage.value]: {
         'Drop files to attach,': t('formRenderer.components.file.dropFiles'),
         'use camera': t('formRenderer.components.file.useCamera'),
         or: t('formRenderer.components.file.or'),
