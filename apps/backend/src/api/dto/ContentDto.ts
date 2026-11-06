@@ -28,6 +28,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 
+import { GetContentSystemDto } from '#api/dto/ContentSystemDto';
 import { GetContentTelegramDto } from '#api/dto/ContentTelegramDto';
 import { LinkDto } from '#api/dto/LinkDto';
 import { NewsletterGroupDto } from '#api/dto/NewsletterDto';
@@ -260,4 +261,6 @@ export type GetContentDto<Id extends ContentId = ContentId> =
                   ? GetContentPaymentDto
                   : never | Id extends 'telegram'
                     ? GetContentTelegramDto
-                    : never;
+                    : never | Id extends 'system'
+                      ? GetContentSystemDto
+                      : never;

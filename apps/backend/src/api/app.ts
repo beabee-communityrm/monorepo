@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 
 import { RoleType } from '@beabee/beabee-common';
-import config from '@beabee/core/config';
 import { InternalServerError } from '@beabee/core/errors';
 import {
   log as mainLogger,
@@ -11,6 +10,7 @@ import {
 import { Contact } from '@beabee/core/models';
 import { initApp, startServer } from '@beabee/core/server';
 import { newsletterService, optionsService } from '@beabee/core/services';
+import { getTrustedOrigins } from '@beabee/core/utils/trusted-origins';
 
 import cookie from 'cookie-parser';
 import cors from 'cors';
@@ -42,7 +42,10 @@ const app = express();
 
 app.use(requestLogger);
 
-app.use(cors({ origin: config.trustedOrigins, credentials: true }));
+// A function so option changes apply without a restart
+app.use(
+  cors({ origin: (_, cb) => cb(null, getTrustedOrigins()), credentials: true })
+);
 
 app.use(cookie());
 

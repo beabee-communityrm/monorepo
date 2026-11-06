@@ -8,6 +8,7 @@ import type {
   ContentPaymentData,
   ContentProfileData,
   ContentShareData,
+  ContentSystemData,
   ContentTelegramData,
 } from './index.js';
 
@@ -30,4 +31,6 @@ export type ContentData<Id extends ContentId = ContentId> =
                   ? ContentPaymentData
                   : never | Id extends 'telegram'
                     ? ContentTelegramData
-                    : never;
+                    : never | Id extends 'system'
+                      ? ContentSystemData
+                      : never;

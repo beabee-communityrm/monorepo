@@ -57,6 +57,9 @@ export default {
   'stripe-membership-product-id': '',
   'stripe-webhook-secret': '',
 
+  /** Comma separated origins trusted in addition to BEABEE_TRUSTEDORIGINS */
+  'trusted-origins': '',
+
   /** Signing key of Zitadel's token claims target, set by `setup integrations idp` */
   'zitadel-claims-signing-key': '',
 
