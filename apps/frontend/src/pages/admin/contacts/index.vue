@@ -15,39 +15,10 @@ meta:
     </Teleport>
 
     <div class="flex flex-1 flex-col md:flex-row">
-      <UNavigationMenu
-        orientation="vertical"
-        :items="segmentNavItems"
-        :ui="{
-          link: 'data-[active]:before:bg-primary/10 hover:before:bg-elevated',
-        }"
-        class="hidden w-52 shrink-0 border-r border-default p-2 md:flex"
+      <ContactsSegmentFilter
+        :segments="segmentItems"
+        :current-segment-id="currentSegmentId"
       />
-
-      <nav
-        class="flex shrink-0 gap-1.5 overflow-x-auto border-b border-default px-4 py-2.5 md:hidden"
-      >
-        <ULink
-          v-for="segment in segmentNavItems"
-          :key="segment.to"
-          :to="segment.to"
-          :aria-current="segment.active ? 'page' : undefined"
-          raw
-          class="inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-          :class="
-            segment.active
-              ? 'border-primary/35 bg-primary/10 font-medium text-primary'
-              : 'border-default text-muted hover:bg-elevated hover:text-default'
-          "
-        >
-          {{ segment.label }}
-          <UBadge
-            :label="segment.badge.label"
-            :color="segment.active ? 'primary' : 'neutral'"
-            variant="soft"
-          />
-        </ULink>
-      </nav>
 
       <div class="flex min-w-0 flex-1 flex-col bg-default">
         <div
@@ -431,6 +402,7 @@ import { useI18n } from 'vue-i18n';
 import ContactFilterChip from '#components/pages/admin/contacts/ContactFilterChip.vue';
 import ContactFilterPanel from '#components/pages/admin/contacts/ContactFilterPanel.vue';
 import ContactTagsModal from '#components/pages/admin/contacts/ContactTagsModal.vue';
+import ContactsSegmentFilter from '#components/pages/admin/contacts/ContactsSegmentFilter.vue';
 import SaveSegment from '#components/pages/admin/contacts/SaveSegment.vue';
 import { useContactFilters } from '#components/pages/admin/contacts/contacts.interface';
 import { useAppToast } from '#composables/useAppToast';
@@ -519,22 +491,6 @@ addBreadcrumb(
 /**
  * Segments
  */
-const segmentNavItems = computed(() =>
-  segmentItems.value.map((segment) => {
-    const active = segment.id === currentSegmentId.value;
-    return {
-      label: segment.label,
-      to: segment.to,
-      active,
-      badge: {
-        label: segment.count,
-        color: active ? 'primary' : 'neutral',
-        variant: 'soft',
-      },
-    };
-  })
-);
-
 async function saveSegment(name: string, rules: RuleGroup) {
   const segment = await client.segments.create({ name, ruleGroup: rules });
   handleSavedSegment(segment);

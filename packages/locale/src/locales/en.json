@@ -1332,6 +1332,7 @@
     "noResults": "No contacts found",
     "numResults": "{n} contact found | {n} contacts found",
     "search": "Search contacts...",
+    "segments-nuxt": "Segments",
     "selectAllBanner-nuxt": {
       "allSelected": "All {count} matching contacts are selected.",
       "clearSelection": "Clear selection",

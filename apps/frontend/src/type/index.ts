@@ -21,6 +21,7 @@ export * from './notification';
 export * from './paginated';
 export * from './payment-flow-form-data';
 export * from './search';
+export * from './segment-filter-item';
 export * from './selection-state';
 export * from './set-mfa-totp-identity';
 export * from './table';
