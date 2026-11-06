@@ -177,43 +177,15 @@ meta:
           />
         </ContactAppliedFilters>
 
-        <div
+        <AppSelectAllBanner
           v-if="showSelectAllBanner"
-          class="flex flex-wrap items-center justify-center gap-2 border-b border-primary/20 bg-primary/6 p-3"
-        >
-          <template v-if="selectionState.mode === 'explicit'">
-            <span>
-              {{
-                t('contacts.selectAllBanner-nuxt.pageSelected', {
-                  count: n(selectedCount),
-                })
-              }}
-            </span>
-            <UButton variant="link" @click="selectAllMatching">
-              {{
-                t('contacts.selectAllBanner-nuxt.selectAll', {
-                  count: n(contactsTable?.total ?? 0),
-                })
-              }}
-            </UButton>
-          </template>
-          <template v-else>
-            <span>
-              {{
-                selectedCount < (contactsTable?.total ?? 0)
-                  ? t('contacts.selectAllBanner-nuxt.someSelected', {
-                      count: n(selectedCount),
-                    })
-                  : t('contacts.selectAllBanner-nuxt.allSelected', {
-                      count: n(selectedCount),
-                    })
-              }}
-            </span>
-            <UButton variant="link" @click="clearSelection">
-              {{ t('contacts.selectAllBanner-nuxt.clearSelection') }}
-            </UButton>
-          </template>
-        </div>
+          :mode="selectionState.mode"
+          :selected-count="selectedCount"
+          :total="contactsTable?.total ?? 0"
+          key-prefix="contacts.selectAllBanner-nuxt"
+          @select-all="selectAllMatching"
+          @clear="clearSelection"
+        />
 
         <div class="flex-1 overflow-x-auto bg-muted">
           <table class="w-full bg-default">
@@ -363,7 +335,12 @@ import {
   type RuleGroup,
   type UpdateContactData,
 } from '@beabee/beabee-common';
-import { AppTablePagination, SortType, formatLocale } from '@beabee/vue';
+import {
+  AppSelectAllBanner,
+  AppTablePagination,
+  SortType,
+  formatLocale,
+} from '@beabee/vue';
 
 import type { DropdownMenuItem } from '@nuxt/ui';
 
