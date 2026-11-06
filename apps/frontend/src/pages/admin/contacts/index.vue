@@ -160,51 +160,22 @@ meta:
           @close="filtersOpen = false"
         />
 
-        <div
+        <ContactAppliedFilters
           v-else-if="currentTag || appliedRules.length"
-          class="flex flex-wrap items-center gap-2 border-b border-default bg-elevated/40 p-3"
+          :tag-label="currentTag ? currentTagLabel : undefined"
+          :rule-group="currentRules"
+          :filter-groups="filterGroups"
+          @remove-tag="currentTag = ''"
+          @remove-rule="handleRemoveRule"
         >
-          <span
-            v-if="currentTag"
-            class="flex items-center gap-1.5 rounded-full border border-default bg-default py-1 pr-1 pl-3"
-          >
-            <span>
-              <b class="font-semibold">{{ t('contacts.data.tags') }}</b>
-              {{ currentTagLabel }}
-            </span>
-            <UButton
-              icon="i-lucide-x"
-              color="neutral"
-              variant="ghost"
-              size="xs"
-              :aria-label="t('advancedSearch.removeFilter-nuxt')"
-              @click="currentTag = ''"
-            />
-          </span>
-
-          <template v-for="(rule, i) in appliedRules" :key="i">
-            <span
-              v-if="currentTag || i > 0"
-              class="font-semibold text-muted uppercase"
-            >
-              {{ t(`advancedSearch.matchWord.${currentRules?.condition}`) }}
-            </span>
-            <ContactFilterChip
-              :rule="rule"
-              :filter-groups="filterGroups"
-              @remove="handleRemoveRule(i)"
-            />
-          </template>
-
-          <div v-if="hasUnsavedSegment && currentRules" class="ml-auto">
-            <SaveSegment
-              :segment="currentSegment"
-              :rules="currentRules"
-              :save-segment="saveSegment"
-              :update-segment="updateSegment"
-            />
-          </div>
-        </div>
+          <SaveSegment
+            v-if="hasUnsavedSegment && currentRules"
+            :segment="currentSegment"
+            :rules="currentRules"
+            :save-segment="saveSegment"
+            :update-segment="updateSegment"
+          />
+        </ContactAppliedFilters>
 
         <div
           v-if="showSelectAllBanner"
@@ -399,7 +370,7 @@ import type { DropdownMenuItem } from '@nuxt/ui';
 import { computed, ref, useId, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import ContactFilterChip from '#components/pages/admin/contacts/ContactFilterChip.vue';
+import ContactAppliedFilters from '#components/pages/admin/contacts/ContactAppliedFilters.vue';
 import ContactFilterPanel from '#components/pages/admin/contacts/ContactFilterPanel.vue';
 import ContactTagsModal from '#components/pages/admin/contacts/ContactTagsModal.vue';
 import ContactsSegmentFilter from '#components/pages/admin/contacts/ContactsSegmentFilter.vue';
