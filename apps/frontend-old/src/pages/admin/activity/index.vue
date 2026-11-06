@@ -35,10 +35,12 @@ meta:
 
 <script lang="ts" setup>
 import {
+  ActivityActorType,
   ActivityEventType,
   type GetActivityEventData,
   type Paginated,
   type RuleGroup,
+  isRuleGroup,
 } from '@beabee/beabee-common';
 import {
   AppButton,
@@ -145,6 +147,46 @@ const filterGroups = computed<FilterGroups>(() => [
   },
 ]);
 
+/**
+ * Maps the actor type filter options to backend actor types: user and admin
+ * are both user actors, every other actor type (cron, webhook, etc.) is system
+ */
+function mapActorTypeRules(group: RuleGroup): RuleGroup {
+  return {
+    ...group,
+    rules: group.rules.map((rule) => {
+      if (isRuleGroup(rule)) return mapActorTypeRules(rule);
+      if (rule.field !== 'actorType') return rule;
+      if (rule.value[0] === 'system') {
+        return {
+          ...rule,
+          operator: rule.operator === 'equal' ? 'not_equal' : 'equal',
+          value: [ActivityActorType.User],
+        };
+      }
+      return { ...rule, value: [ActivityActorType.User] };
+    }),
+  };
+}
+
+/**
+ * Builds the search rules for the current category and filters
+ */
+function getSearchRules(): RuleGroup {
+  const rules: RuleGroup = { condition: 'AND', rules: [] };
+
+  const categoryRules = getCategoryRules();
+  if (categoryRules) {
+    rules.rules.push(categoryRules);
+  }
+
+  if (currentRules.value) {
+    rules.rules.push(mapActorTypeRules(currentRules.value));
+  }
+
+  return rules;
+}
+
 const headers = computed<Header[]>(() => [
   { value: 'createdAt', text: t('activity.data.time') },
   { value: 'eventType', text: t('activity.data.category') },
@@ -181,7 +223,7 @@ async function refreshResponses() {
   try {
     activityTable.value = await client.activity.list({
       ...currentPaginatedQuery.query,
-      rules: getCategoryRules(),
+      rules: getSearchRules(),
     });
   } catch (err) {
     activityTable.value = { items: [], offset: 0, count: 0, total: 0 };
@@ -194,19 +236,18 @@ async function refreshResponses() {
   }
 }
 
-watch([currentPaginatedQuery, currentFilter], () => refreshResponses(), {
-  deep: true,
-});
+watch(
+  [currentPaginatedQuery, currentFilter, currentRules],
+  () => refreshResponses(),
+  { deep: true }
+);
 refreshResponses();
 
 /**
  * Handles exporting activity feed
  */
 function handleExport() {
-  const rules = getCategoryRules();
-  const rulesQuery = rules
-    ? `?rules=${encodeURIComponent(JSON.stringify(rules))}`
-    : '';
-  window.open(`/api/1.0/activity.csv${rulesQuery}`, '_blank');
+  const rulesQuery = encodeURIComponent(JSON.stringify(getSearchRules()));
+  window.open(`/api/1.0/activity.csv?rules=${rulesQuery}`, '_blank');
 }
 </script>
