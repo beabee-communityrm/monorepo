@@ -84,6 +84,41 @@ meta:
           />
         </div>
       </AppApiForm>
+
+      <div class="my-8 border-b border-b-main-40" />
+
+      <AppApiForm
+        :button-text="t('actions.update')"
+        :success-text="t('form.saved')"
+        @submit="handleSaveSystem"
+      >
+        <AppHeading>
+          {{ t('adminSettings.general.trustedOrigins.title') }}
+        </AppHeading>
+        <p class="mb-4 text-sm text-body-80">
+          {{ t('adminSettings.general.trustedOrigins.text') }}
+        </p>
+        <AppRepeatable
+          v-model="systemData.trustedOrigins"
+          class="mb-4"
+          :new-item="() => ({ origin: '' })"
+          :add-label="t('adminSettings.general.trustedOrigins.add')"
+        >
+          <template #default="{ item }">
+            <div class="flex-1">
+              <AppInput
+                v-model="item.origin"
+                :label="t('adminSettings.general.trustedOrigins.label')"
+                name="origin"
+                placeholder="https://example.com"
+                type="url"
+                pattern="https?://[^\s/?#@]+"
+                required
+              />
+            </div>
+          </template>
+        </AppRepeatable>
+      </AppApiForm>
     </template>
     <template #col2>
       <div class="my-8 border-b border-b-main-40 md:hidden" />
@@ -194,6 +229,7 @@ import {
   AppHeading,
   AppInput,
   AppLinkList,
+  AppRepeatable,
   AppSelect,
   AppSubHeading,
   AppTextArea,
@@ -231,6 +267,8 @@ const paymentData = reactive({
 });
 
 const shareContent = ref<ContentShareData>();
+// Objects rather than strings so the repeatable's slot can edit them in place
+const systemData = reactive({ trustedOrigins: [] as { origin: string }[] });
 
 async function handleSaveGeneral() {
   storeGeneralContent.value = await client.content.update(
@@ -261,6 +299,13 @@ async function handleSaveFooter() {
   );
 }
 
+async function handleSaveSystem() {
+  const { trustedOrigins } = await client.content.update('system', {
+    trustedOrigins: systemData.trustedOrigins.map((o) => o.origin.trim()),
+  });
+  systemData.trustedOrigins = trustedOrigins.map((origin) => ({ origin }));
+}
+
 async function handleSavePayment() {
   storeGeneralContent.value = await client.content.update('general', {
     enableOneTimeDonations: paymentData.enableOneTimeDonation,
@@ -285,6 +330,9 @@ onBeforeMount(async () => {
     storeGeneralContent.value.footerLinks?.map((l) => ({ ...l })) || [];
 
   shareContent.value = await client.content.get('share');
+  systemData.trustedOrigins = (
+    await client.content.get('system')
+  ).trustedOrigins.map((origin) => ({ origin }));
 
   const paymentContent = await client.content.get('payment');
 

@@ -4,6 +4,7 @@ export * from './IsFromEmail.js';
 export * from './IsLngLat.js';
 export * from './IsMapBounds.js';
 export * from './IsNonEmptyString.js';
+export * from './IsOrigin.js';
 export * from './IsPassword.js';
 export * from './IsSlug.js';
 export * from './IsTrustedUrl.js';

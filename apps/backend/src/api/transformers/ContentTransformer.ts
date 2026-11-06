@@ -20,6 +20,7 @@ import {
   GetContentPaymentDto,
   GetContentProfileDto,
   GetContentShareDto,
+  GetContentSystemDto,
   GetContentTelegramDto,
 } from '#api/dto/index';
 
@@ -38,6 +39,7 @@ class ContentTransformer {
       share: GetContentShareDto,
       payment: GetContentPaymentDto,
       telegram: GetContentTelegramDto,
+      system: GetContentSystemDto,
     }[id];
 
     return plainToInstance(Dto as any, data);
@@ -234,6 +236,9 @@ const contentData = {
       'data',
       "*Hello*, I'm your Callout bot\\. Use me to list and answer callouts from [beabee](https://beabee.io/)\\.",
     ],
+  }),
+  system: withValue<'system'>({
+    trustedOrigins: ['option', 'trusted-origins', 'list'],
   }),
 } as const;
 
