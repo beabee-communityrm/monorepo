@@ -3,8 +3,7 @@
 Design note for moving a beabee instance's authentication to an external
 identity provider (IdP). Terms are defined in [`CONTEXT.md`](../../CONTEXT.md);
 the decisions a reader is most likely to question are recorded in
-[`docs/adr/`](../adr/). This page ties them together and is the reference for
-the pull request stack that implements them.
+[`docs/adr/`](../adr/). This page ties them together.
 
 This page covers what holds for any OIDC provider. How each provider fills
 the provider-specific steps is in [Zitadel](./zitadel.md) (production) and
@@ -251,27 +250,6 @@ redeploy: local password hashes are kept for exactly this reason, so members
 who haven't changed their password at the IdP since can log in as before. The
 OIDC discovery result is cached for the process lifetime; a restart picks up
 changed IdP metadata.
-
-## Pull request stack
-
-Branches stack on each other in this order; each PR targets the previous
-branch and is retargeted to `main` as its base merges.
-
-1. `feat/idp-provider` — contact link column, provider abstraction and
-   service, provisioning triggers, linking CLI, admin link status
-2. `feat/idp-keycloak` — Keycloak provider and local development stack
-3. `feat/idp-zitadel` — Zitadel provider
-4. `feat/oidc-login-backend` — login provider config, OIDC routes, local-auth
-   404s, client helpers
-5. `feat/oidc-login-frontend` — login, logout and route guards in both
-   frontends
-6. `feat/oidc-account` — account page links to the IdP's self-service pages
-7. `feat/oidc-signup` — join flow
-8. `feat/oidc-self-service-removal` — authentication method status and
-   removal on the account page, behind a fresh IdP login
-9. `feat/idp-setup` — branding sync and `setup integrations idp`
-10. `feat/idp-transition` — password mirroring, session clearing, unsynced
-    count, hash clean-up
 
 ## Deliberately out of scope
 
