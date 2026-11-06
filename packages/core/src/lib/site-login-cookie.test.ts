@@ -15,8 +15,12 @@ vi.mock('#config/config', () => ({
   },
 }));
 
-const { encryptSiteLogin, siteLoginCookieOptions } =
-  await import('./site-login-cookie');
+const {
+  encryptSiteLogin,
+  openRefreshToken,
+  sealRefreshToken,
+  siteLoginCookieOptions,
+} = await import('./site-login-cookie');
 
 function decrypt(value: string): string {
   const [nonce, ciphertext, tag] = value
@@ -44,6 +48,23 @@ describe('encryptSiteLogin', () => {
 
   it('never encrypts the same token to the same value', () => {
     expect(encryptSiteLogin('id-token')).not.toBe(encryptSiteLogin('id-token'));
+  });
+});
+
+describe('sealRefreshToken', () => {
+  it('round-trips the refresh token', () => {
+    expect(openRefreshToken(sealRefreshToken('refresh-token'))).toBe(
+      'refresh-token'
+    );
+  });
+
+  it('does not open a cookie value as a refresh token', () => {
+    expect(openRefreshToken(encryptSiteLogin('id-token'))).toBeNull();
+  });
+
+  it('returns null for a value that is not sealed', () => {
+    expect(openRefreshToken('not.a.token')).toBeNull();
+    expect(openRefreshToken('')).toBeNull();
   });
 });
 

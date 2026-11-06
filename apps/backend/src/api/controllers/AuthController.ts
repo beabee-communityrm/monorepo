@@ -11,9 +11,11 @@ import {
   completeOidcLogin,
   getOidcLogoutUrl,
   isOidcEnabled,
+  revokeOidcRefreshToken,
   startOidcLogin,
 } from '@beabee/core/lib/oidc';
 import passport from '@beabee/core/lib/passport';
+import { sealRefreshToken } from '@beabee/core/lib/site-login-cookie';
 import { log as mainLogger } from '@beabee/core/logging';
 import { Contact, ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
@@ -53,6 +55,8 @@ import {
   clearSiteLoginCookie,
   hasFreshIdpSession,
   login,
+  refreshSiteLogin,
+  revokeSiteLoginRefreshToken,
   setIdpSessionCookie,
   setSiteLoginCookie,
 } from '#api/utils/auth';
@@ -123,7 +127,7 @@ export class AuthController {
     @Req() req: Request,
     @Res() res: Response
   ): Promise<LogoutResultDto | undefined> {
-    const idToken = req.session.idToken;
+    const { idToken, refreshToken } = req.session;
     await new Promise<void>((resolve, reject) =>
       req.logout((err) => {
         if (err) reject(err);
@@ -137,6 +141,7 @@ export class AuthController {
       await new Promise<void>((resolve) =>
         req.session.destroy(() => resolve())
       );
+      await revokeSiteLoginRefreshToken(refreshToken);
       // Only a session that came through the OIDC callback has an IdP
       // session to end; anything else is done with the 204
       if (idToken) {
@@ -199,9 +204,9 @@ export class AuthController {
   }
 
   /**
-   * Silent refresh of the website login cookie: one prompt=none round trip at
-   * the identity provider. The callback renews the cookie if the IdP session
-   * is alive, otherwise clears it, and continues to next either way.
+   * Renews the website login cookie from the session's refresh token, so
+   * the browser never goes to the IdP. Without a token the IdP still
+   * accepts, the cookie is cleared. Either way the browser continues to next.
    */
   @Get('/refresh')
   async oidcRefresh(
@@ -212,21 +217,23 @@ export class AuthController {
     assertOidcAuthEnabled();
 
     try {
-      const { url, loginState } = await startOidcLogin(next, 'none');
-      req.session.oidc = loginState;
-      res.redirect(url);
+      const idToken = config.siteLogin ? await refreshSiteLogin(req) : null;
+      if (idToken) {
+        setSiteLoginCookie(res, idToken);
+      } else {
+        clearSiteLoginCookie(res);
+      }
     } catch (err) {
-      log.error('OIDC refresh failed to start', err);
+      log.error('Site login refresh failed', err);
       clearSiteLoginCookie(res);
-      res.redirect(resolveNext(next));
     }
+    res.redirect(resolveNext(next));
     return res;
   }
 
   /**
    * OIDC callback: exchanges the authorization code and logs in the contact
-   * linked to the identity provider subject. A silent refresh never ends on
-   * an error page: any failure clears the website cookie and continues to next.
+   * linked to the identity provider subject.
    */
   @Get('/callback')
   async oidcCallback(
@@ -243,24 +250,26 @@ export class AuthController {
         throw new Error('No OIDC login in progress for this session');
       }
 
-      const { subject, idToken, authTime } = await completeOidcLogin(
-        new URL(req.originalUrl, config.audience).search,
-        loginState
-      );
+      const { subject, idToken, refreshToken, authTime } =
+        await completeOidcLogin(
+          new URL(req.originalUrl, config.audience).search,
+          loginState
+        );
 
       const contact = await ContactsService.findOneBy({ idpSubject: subject });
       if (!contact) {
         log.info(`OIDC login for unlinked subject ${subject}`);
         clearSiteLoginCookie(res);
+        if (refreshToken) {
+          await revokeOidcRefreshToken(refreshToken);
+        }
         // End the IdP session on the way to the error page, otherwise the
         // next login attempt lands on the same error without a login form
         res.redirect(
-          loginState.prompt === 'none'
-            ? resolveNext(loginState.next)
-            : await getOidcLogoutUrl(
-                idToken,
-                `/auth/login-error?code=${LOGIN_CODES.UNLINKED_ACCOUNT}`
-              )
+          await getOidcLogoutUrl(
+            idToken,
+            `/auth/login-error?code=${LOGIN_CODES.UNLINKED_ACCOUNT}`
+          )
         );
         return res;
       }
@@ -271,6 +280,9 @@ export class AuthController {
       setIdpSessionCookie(res);
       if (idToken) {
         setSiteLoginCookie(res, idToken);
+      }
+      if (config.siteLogin && refreshToken) {
+        req.session.refreshToken = sealRefreshToken(refreshToken);
       }
       // An IdP that omits auth_time still re-authenticated on prompt=login
       req.session.authTime =
@@ -289,9 +301,7 @@ export class AuthController {
       }
       clearSiteLoginCookie(res);
       res.redirect(
-        loginState?.prompt === 'none'
-          ? resolveNext(loginState.next)
-          : `${config.audience}/auth/login-error?code=${LOGIN_CODES.LOGIN_FAILED}`
+        `${config.audience}/auth/login-error?code=${LOGIN_CODES.LOGIN_FAILED}`
       );
       return res;
     }
@@ -309,12 +319,13 @@ export class AuthController {
     @Res() res: Response,
     @QueryParams() { next }: NextOptsDto
   ): Promise<Response> {
-    const idToken = req.session.idToken;
+    const { idToken, refreshToken } = req.session;
 
     await new Promise<void>((resolve, reject) =>
       req.logout((err) => (err ? reject(err) : resolve()))
     );
     await new Promise<void>((resolve) => req.session.destroy(() => resolve()));
+    await revokeSiteLoginRefreshToken(refreshToken);
     clearSiteLoginCookie(res);
 
     res.redirect(
