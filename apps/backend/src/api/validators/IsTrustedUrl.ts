@@ -1,5 +1,5 @@
 import config from '@beabee/core/config';
-import { getTrustedOrigins } from '@beabee/core/utils/trusted-origins';
+import { optionsService } from '@beabee/core/services';
 import { isAllowedReturnUrl, isValidNextUrl } from '@beabee/core/utils/url';
 
 import { ValidateBy, ValidationOptions, buildMessage } from 'class-validator';
@@ -24,7 +24,7 @@ export default function IsTrustedUrl(
             ((allowRelative && isValidNextUrl(value)) ||
               isAllowedReturnUrl(value, [
                 new URL(config.audience).origin,
-                ...getTrustedOrigins(),
+                ...optionsService.getList('trusted-origins'),
               ]))
           );
         },

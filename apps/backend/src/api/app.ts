@@ -10,7 +10,6 @@ import {
 import { Contact } from '@beabee/core/models';
 import { initApp, startServer } from '@beabee/core/server';
 import { newsletterService, optionsService } from '@beabee/core/services';
-import { getTrustedOrigins } from '@beabee/core/utils/trusted-origins';
 
 import cookie from 'cookie-parser';
 import cors from 'cors';
@@ -44,7 +43,10 @@ app.use(requestLogger);
 
 // A function so option changes apply without a restart
 app.use(
-  cors({ origin: (_, cb) => cb(null, getTrustedOrigins()), credentials: true })
+  cors({
+    origin: (_, cb) => cb(null, optionsService.getList('trusted-origins')),
+    credentials: true,
+  })
 );
 
 app.use(cookie());
