@@ -177,147 +177,19 @@ meta:
           />
         </ContactAppliedFilters>
 
-        <AppSelectAllBanner
-          v-if="showSelectAllBanner"
-          :mode="selectionState.mode"
-          :selected-count="selectedCount"
-          :total="contactsTable?.total ?? 0"
-          key-prefix="contacts.selectAllBanner-nuxt"
-          @select-all="selectAllMatching"
-          @clear="clearSelection"
-        />
-
-        <div class="flex-1 overflow-x-auto bg-muted">
-          <table class="w-full bg-default">
-            <thead>
-              <tr class="border-b border-default bg-elevated/50">
-                <th class="w-10 px-3 py-3">
-                  <UCheckbox
-                    :model-value="headerCheckboxValue"
-                    :aria-label="t('common.selectAll')"
-                    @update:model-value="toggleAllOnPage"
-                  />
-                </th>
-                <th
-                  v-for="column in columns"
-                  :key="column.key"
-                  class="px-3 py-2 text-left font-medium whitespace-nowrap"
-                  :class="column.wide && 'w-full'"
-                >
-                  <UButton
-                    color="neutral"
-                    variant="ghost"
-                    class="-mx-2"
-                    :class="
-                      currentPaginatedQuery.sort.by === column.key
-                        ? 'text-highlighted'
-                        : 'text-muted'
-                    "
-                    :trailing-icon="sortIcon(column.key)"
-                    @click="sortBy(column.key)"
-                  >
-                    {{ column.label }}
-                  </UButton>
-                </th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-default border-b border-default">
-              <tr
-                v-for="contact in contactsTable?.items"
-                :key="contact.id"
-                :class="isSelected(contact.id) && 'bg-primary/5'"
-              >
-                <td class="px-3 py-3 align-top">
-                  <UCheckbox
-                    :model-value="isSelected(contact.id)"
-                    :aria-label="contact.displayName"
-                    @update:model-value="
-                      (checked: boolean | 'indeterminate') =>
-                        setSelected(contact.id, checked === true)
-                    "
-                  />
-                </td>
-                <td class="px-3 py-3 align-top">
-                  <router-link
-                    :to="`/admin/contacts/${contact.id}`"
-                    class="font-medium text-primary hover:underline"
-                  >
-                    {{ contact.displayName }}
-                  </router-link>
-                  <p v-if="contact.profile.description" class="mt-1 text-muted">
-                    {{ contact.profile.description }}
-                  </p>
-                  <div
-                    v-if="contact.tags?.length"
-                    class="mt-1 flex flex-wrap gap-1"
-                  >
-                    <UBadge
-                      v-for="tag in contact.tags"
-                      :key="tag.id"
-                      as="button"
-                      type="button"
-                      color="neutral"
-                      variant="subtle"
-                      class="cursor-pointer"
-                      @click="currentTag = tag.id"
-                    >
-                      {{ tag.name }}
-                    </UBadge>
-                  </div>
-                </td>
-                <td class="px-3 py-3 align-top text-muted">
-                  {{ contact.email }}
-                </td>
-                <td class="px-3 py-3 align-top">
-                  <UBadge
-                    v-if="contact.contributionAmount"
-                    color="primary"
-                    variant="subtle"
-                    class="whitespace-nowrap"
-                  >
-                    {{ n(contact.contributionAmount, 'currency') }}
-                    {{
-                      contact.contributionPeriod === ContributionPeriod.Monthly
-                        ? t('common.perMonth')
-                        : t('common.perYear')
-                    }}
-                  </UBadge>
-                  <span v-else class="text-dimmed">—</span>
-                </td>
-                <td
-                  class="px-3 py-3 align-top whitespace-nowrap text-muted tabular-nums"
-                >
-                  {{ formatLocale(contact.joined, 'PPP') }}
-                </td>
-                <td
-                  class="px-3 py-3 align-top whitespace-nowrap text-muted tabular-nums"
-                >
-                  {{ getMembershipStartDate(contact) }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <p v-if="!contactsTable" class="p-8 text-center text-muted">
-            {{ t('common.loading') }}
-          </p>
-          <p
-            v-else-if="contactsTable.items.length === 0"
-            class="p-8 text-center text-muted"
-          >
-            {{
-              currentRules || currentSearch
-                ? t('contacts.noResults')
-                : t('contacts.noContacts')
-            }}
-          </p>
-        </div>
-
-        <AppTablePagination
+        <ContactsTable
+          v-model:sort="currentPaginatedQuery.sort"
           v-model:page="currentPaginatedQuery.page"
           v-model:limit="currentPaginatedQuery.limit"
+          v-model:selection-state="selectionState"
+          :contacts="contactsTable?.items"
           :total="contactsTable?.total ?? 0"
-          class="sticky bottom-0 z-10 -mt-px bg-default"
+          :empty-text="
+            currentRules || currentSearch
+              ? t('contacts.noResults')
+              : t('contacts.noContacts')
+          "
+          @select-tag="currentTag = $event"
         />
       </div>
     </div>
@@ -328,19 +200,12 @@ meta:
 
 <script lang="ts" setup>
 import {
-  ContributionPeriod,
   type GetContactDataWith,
   GetContactWith,
   type Paginated,
   type RuleGroup,
   type UpdateContactData,
 } from '@beabee/beabee-common';
-import {
-  AppSelectAllBanner,
-  AppTablePagination,
-  SortType,
-  formatLocale,
-} from '@beabee/vue';
 
 import type { DropdownMenuItem } from '@nuxt/ui';
 
@@ -350,6 +215,7 @@ import { useI18n } from 'vue-i18n';
 import ContactAppliedFilters from '#components/pages/admin/contacts/ContactAppliedFilters.vue';
 import ContactFilterPanel from '#components/pages/admin/contacts/ContactFilterPanel.vue';
 import ContactTagsModal from '#components/pages/admin/contacts/ContactTagsModal.vue';
+import ContactsTable from '#components/pages/admin/contacts/ContactsTable.vue';
 import ContactsSegmentFilter from '#components/pages/admin/contacts/ContactsSegmentFilter.vue';
 import SaveSegment from '#components/pages/admin/contacts/SaveSegment.vue';
 import { useContactFilters } from '#components/pages/admin/contacts/contacts.interface';
@@ -385,19 +251,8 @@ const contactsTable =
     >
   >();
 
-const {
-  selectionState,
-  selectedPageItems,
-  selectedCount,
-  allOnPageSelected,
-  someOnPageSelected,
-  isSelected,
-  setSelected,
-  toggleAllOnPage,
-  selectAllMatching,
-  clearSelection,
-  getSelectionRules,
-} = usePaginatedSelectionState(contactsTable);
+const { selectionState, selectedPageItems, selectedCount, getSelectionRules } =
+  usePaginatedSelectionState(contactsTable);
 
 const { currentTag, addTagToRules } = useTagFilter();
 
@@ -466,59 +321,6 @@ async function listSegments() {
 
 async function listTotalSegmentItems() {
   return (await client.contact.list({ limit: 1 })).total;
-}
-
-/**
- * Table
- */
-const columns = computed(() => [
-  { key: 'firstname', label: t('contacts.data.name'), wide: true },
-  { key: 'email', label: t('contacts.data.email') },
-  { key: 'contributionMonthlyAmount', label: t('contacts.data.contribution') },
-  { key: 'joined', label: t('contacts.data.joined') },
-  { key: 'membershipStarts', label: t('contacts.data.membershipStarts') },
-]);
-
-const headerCheckboxValue = computed<boolean | 'indeterminate'>(() =>
-  allOnPageSelected.value
-    ? true
-    : someOnPageSelected.value
-      ? 'indeterminate'
-      : false
-);
-
-const showSelectAllBanner = computed(() => {
-  if (selectionState.value.mode === 'all') return selectedCount.value > 0;
-
-  return (
-    allOnPageSelected.value &&
-    (contactsTable.value?.total ?? 0) > (contactsTable.value?.count ?? 0)
-  );
-});
-
-function sortIcon(key: string) {
-  if (currentPaginatedQuery.sort.by !== key) return 'i-lucide-chevrons-up-down';
-  return currentPaginatedQuery.sort.type === SortType.Asc
-    ? 'i-lucide-chevron-up'
-    : 'i-lucide-chevron-down';
-}
-
-function sortBy(key: string) {
-  const { by, type } = currentPaginatedQuery.sort;
-  currentPaginatedQuery.sort = {
-    by: key,
-    type: by === key && type === SortType.Asc ? SortType.Desc : SortType.Asc,
-  };
-}
-
-/**
- * Gets the membership start date for a contact
- */
-function getMembershipStartDate(
-  contact: GetContactDataWith<GetContactWith.Roles>
-): string {
-  const membership = contact.roles.find((role) => role.role === 'member');
-  return membership ? formatLocale(membership.dateAdded, 'PPP') : '';
 }
 
 /**

@@ -14,15 +14,15 @@ export function usePaginatedSelectionState<I extends { id: string }>(
   );
 }
 
+/**
+ * @param selectionState - Existing state to work on, so a page and its table
+ * can share one selection; a new one is created if omitted
+ */
 export function useSelectionState<I extends { id: string }>(
   items: Ref<I[]> | ComputedRef<I[]>,
-  totalItemCount: Ref<number>
+  totalItemCount: Ref<number>,
+  selectionState: Ref<SelectionState> = ref({ mode: 'explicit', ids: [] })
 ) {
-  const selectionState = ref<SelectionState>({
-    mode: 'explicit',
-    ids: [],
-  });
-
   function isSelected(id: string): boolean {
     switch (selectionState.value.mode) {
       case 'explicit':
