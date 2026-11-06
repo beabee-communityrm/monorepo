@@ -192,6 +192,17 @@ class ContactsService {
 
     const oldEmail = updates.email && contact.email;
 
+    // Check if anything has changed on the contact (not contact profile)
+    // Event will be logged only if this is true
+    const mainContactChanged =
+      (updates.email !== undefined && updates.email !== contact.email) ||
+      (updates.firstname !== undefined &&
+        updates.firstname !== contact.firstname) ||
+      (updates.lastname !== undefined &&
+        updates.lastname !== contact.lastname) ||
+      // A password is always a freshly generated hash, so it's always a change
+      updates.password !== undefined;
+
     try {
       await getRepository(Contact).update(contact.id, updates);
     } catch (err) {
@@ -210,11 +221,13 @@ class ContactsService {
       );
     }
 
-    await ActivityService.addEvent({
-      eventType: ActivityEventType.ContactUpdated,
-      targetId: contact.id,
-      metadata: null,
-    });
+    if (mainContactChanged) {
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.ContactUpdated,
+        targetId: contact.id,
+        metadata: null,
+      });
+    }
 
     await PaymentService.updateContact(contact, updates);
 
