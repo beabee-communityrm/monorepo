@@ -14,6 +14,9 @@ meta:
       <template #value-createdAt="{ value }">
         {{ formatLocale(value, 'Pp') }}
       </template>
+      <template #value-eventType="{ value }">
+        {{ getEventTypeLabel(value) }}
+      </template>
     </AppPaginatedTable>
   </div>
 </template>
@@ -27,6 +30,7 @@ import { type Header, formatLocale, addNotification } from '@beabee/vue';
 
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { getEventTypeLabel } from '#utils/activity';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 

@@ -1,3 +1,4 @@
+export * from './activity';
 export * from './api-error';
 export * from './audio-playback';
 export * from './callouts';

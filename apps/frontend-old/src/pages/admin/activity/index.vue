@@ -29,6 +29,9 @@ meta:
       <template #value-createdAt="{ value }">
         <span class="whitespace-nowrap">{{ formatLocale(value, 'PPpp') }}</span>
       </template>
+      <template #value-eventType="{ value }">
+        {{ getEventTypeLabel(value) }}
+      </template>
     </AppPaginatedTable>
   </AppFilterGrid>
 </template>
@@ -60,6 +63,7 @@ import AppPaginatedTable from '#components/table/AppPaginatedTable.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import type { FilterGroups } from '#type/search';
 import type { Header } from '#type/table';
+import { getEventTypeLabel } from '#utils/activity';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 import {
