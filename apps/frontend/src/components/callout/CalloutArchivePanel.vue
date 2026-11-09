@@ -31,26 +31,11 @@
       <div
         class="flex flex-wrap items-center gap-3 border-t border-default p-4"
       >
-        <UInput
-          v-model="archiveSearchInput"
-          icon="i-lucide-search"
+        <AppSearchBox
+          v-model="archiveSearch"
           :placeholder="t('callouts.search')"
-          variant="subtle"
           class="w-full sm:w-64"
-          @keyup.enter="archiveSearch = archiveSearchInput"
-          @blur="archiveSearch = archiveSearchInput"
-        >
-          <template v-if="archiveSearchInput" #trailing>
-            <UButton
-              icon="i-lucide-x"
-              color="neutral"
-              variant="link"
-              size="sm"
-              :aria-label="t('actions.clearSearch')"
-              @click="clearArchiveSearch"
-            />
-          </template>
-        </UInput>
+        />
 
         <UButton
           :aria-pressed="!!archiveAnsweredOnly"
@@ -121,6 +106,7 @@ import {
   ItemStatus,
   type Paginated,
 } from '@beabee/beabee-common';
+import { AppSearchBox } from '@beabee/vue';
 
 import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -133,7 +119,6 @@ import type { CalloutCardData } from '#type';
 const { t } = useI18n();
 
 const archiveSearch = defineParam('s', (v) => v || '');
-const archiveSearchInput = ref(archiveSearch.value);
 const archiveAnsweredOnly = defineParam('show', (v) =>
   v === 'answered' ? v : ''
 );
@@ -146,11 +131,6 @@ function toggleArchive() {
 
 function toggleArchiveAnsweredOnly() {
   archiveAnsweredOnly.value = archiveAnsweredOnly.value ? '' : 'answered';
-}
-
-function clearArchiveSearch() {
-  archiveSearchInput.value = '';
-  archiveSearch.value = '';
 }
 
 const archivePageSize = 10;
