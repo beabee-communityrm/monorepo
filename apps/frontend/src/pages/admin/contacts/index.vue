@@ -24,26 +24,11 @@ meta:
         <div
           class="flex flex-wrap items-center gap-3 border-b border-default p-4"
         >
-          <UInput
-            v-model="searchInput"
-            icon="i-lucide-search"
-            variant="subtle"
-            class="w-full sm:w-64"
+          <AppSearchBox
+            v-model="currentSearch"
             :placeholder="t('contacts.search')"
-            @keyup.enter="currentSearch = searchInput"
-            @blur="currentSearch = searchInput"
-          >
-            <template v-if="searchInput" #trailing>
-              <UButton
-                icon="i-lucide-x"
-                color="neutral"
-                variant="link"
-                size="sm"
-                :aria-label="t('actions.clearSearch')"
-                @click="clearSearch"
-              />
-            </template>
-          </UInput>
+            class="w-full sm:w-64"
+          />
 
           <UDropdownMenu :items="tagFilterItems">
             <UButton
@@ -162,6 +147,8 @@ import {
   type UpdateContactData,
 } from '@beabee/beabee-common';
 
+import { AppSearchBox } from '@beabee/vue';
+
 import type { DropdownMenuItem } from '@nuxt/ui';
 
 import { computed, ref, watch } from 'vue';
@@ -214,7 +201,6 @@ const { currentTag, addTagToRules } = useTagFilter();
 
 const currentPaginatedQuery = definePaginatedQuery('joined');
 const currentSearch = defineParam('s', (v) => v || '');
-const searchInput = ref(currentSearch.value);
 
 const { filterGroups, tagItems, refreshTags } = useContactFilters();
 
@@ -287,11 +273,6 @@ const appliedRules = computed(() => currentRules.value?.rules ?? []);
 const filtersOn = computed(
   () => filtersOpen.value || appliedRules.value.length > 0
 );
-
-function clearSearch() {
-  searchInput.value = '';
-  currentSearch.value = '';
-}
 
 /** Keeps an empty group rather than none, which would bring back the segment's rules */
 function handleRemoveRule(index: number) {
@@ -468,6 +449,5 @@ watch(
   () => refreshContacts(),
   { deep: true }
 );
-watch(currentSearch, (value) => (searchInput.value = value));
 refreshContacts();
 </script>

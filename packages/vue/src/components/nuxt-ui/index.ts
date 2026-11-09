@@ -23,6 +23,10 @@ export {
   type AppNoticeCardProps,
 } from './AppNoticeCard.vue';
 export {
+  default as AppSearchBox,
+  type AppSearchBoxProps,
+} from './AppSearchBox.vue';
+export {
   default as AppSectionCard,
   type AppSectionCardProps,
 } from './AppSectionCard.vue';
