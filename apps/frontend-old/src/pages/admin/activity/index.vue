@@ -143,7 +143,6 @@ const filterGroups = computed<FilterGroups>(() => [
         label: t('activity.data.actorType'),
         options: [
           { id: 'user', label: t('activity.actorType.user') },
-          { id: 'admin', label: t('activity.actorType.admin') },
           { id: 'system', label: t('activity.actorType.system') },
         ],
       },
@@ -152,23 +151,20 @@ const filterGroups = computed<FilterGroups>(() => [
 ]);
 
 /**
- * Maps the actor type filter options to backend actor types: user and admin
- * are both user actors, every other actor type (cron, webhook, etc.) is system
+ * Maps the actor type filter options to backend actor types: every actor
+ * other than user (cron, webhook, etc.) is system
  */
 function mapActorTypeRules(group: RuleGroup): RuleGroup {
   return {
     ...group,
     rules: group.rules.map((rule) => {
       if (isRuleGroup(rule)) return mapActorTypeRules(rule);
-      if (rule.field !== 'actorType') return rule;
-      if (rule.value[0] === 'system') {
-        return {
-          ...rule,
-          operator: rule.operator === 'equal' ? 'not_equal' : 'equal',
-          value: [ActivityActorType.User],
-        };
-      }
-      return { ...rule, value: [ActivityActorType.User] };
+      if (rule.field !== 'actorType' || rule.value[0] !== 'system') return rule;
+      return {
+        ...rule,
+        operator: rule.operator === 'equal' ? 'not_equal' : 'equal',
+        value: [ActivityActorType.User],
+      };
     }),
   };
 }
