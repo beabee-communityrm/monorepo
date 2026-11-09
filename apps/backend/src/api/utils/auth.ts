@@ -1,9 +1,15 @@
 import { LOGIN_CODES } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { NotFoundError, UnauthorizedError } from '@beabee/core/errors';
-import { isOidcEnabled } from '@beabee/core/lib/oidc';
+import {
+  isOidcEnabled,
+  refreshOidcLogin,
+  revokeOidcRefreshToken,
+} from '@beabee/core/lib/oidc';
 import {
   encryptSiteLogin,
+  openRefreshToken,
+  sealRefreshToken,
   siteLoginCookieOptions,
 } from '@beabee/core/lib/site-login-cookie';
 import { Contact } from '@beabee/core/models';
@@ -95,5 +101,53 @@ export function setSiteLoginCookie(res: Response, idToken: string): void {
 export function clearSiteLoginCookie(res: Response): void {
   if (config.siteLogin) {
     res.clearCookie(config.siteLogin.cookieName, siteLoginCookieOptions());
+  }
+}
+
+/**
+ * Renew the website login's ID token with the session's refresh token. The
+ * IdP rotates refresh tokens, so two requests refreshing at once leave one
+ * with a spent token: that one re-reads the session, which by then holds
+ * the winner's new token, and tries once more.
+ * @returns The new ID token, or null when the session holds no refresh
+ * token the IdP still accepts
+ */
+export async function refreshSiteLogin(req: Request): Promise<string | null> {
+  const spent = req.session.refreshToken;
+  if (!spent) return null;
+
+  const idToken = await tryRefresh(req);
+  if (idToken) return idToken;
+
+  await new Promise<void>((resolve, reject) =>
+    req.session.reload((err) => (err ? reject(err) : resolve()))
+  );
+  if (req.session.refreshToken && req.session.refreshToken !== spent) {
+    return tryRefresh(req);
+  }
+  delete req.session.refreshToken;
+  return null;
+}
+
+async function tryRefresh(req: Request): Promise<string | null> {
+  const refreshToken =
+    req.session.refreshToken && openRefreshToken(req.session.refreshToken);
+  const tokens = refreshToken && (await refreshOidcLogin(refreshToken));
+  if (!tokens) {
+    delete req.session.refreshToken;
+    return null;
+  }
+  req.session.refreshToken = sealRefreshToken(tokens.refreshToken);
+  req.session.idToken = tokens.idToken;
+  return tokens.idToken;
+}
+
+/** Revoke a session's sealed refresh token at the IdP, if it has one */
+export async function revokeSiteLoginRefreshToken(
+  sealed: string | undefined
+): Promise<void> {
+  const refreshToken = sealed && openRefreshToken(sealed);
+  if (refreshToken) {
+    await revokeOidcRefreshToken(refreshToken);
   }
 }

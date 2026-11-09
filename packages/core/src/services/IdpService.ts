@@ -44,6 +44,7 @@ function getLoginTexts(): Record<string, IdpLoginTexts> {
 // The token claim the website's edge reads, and the roles it can carry in
 // order of precedence; admin roles never leave beabee
 const ROLE_CLAIM = 'role';
+const DEFAULT_SITE_ROLE = 'user';
 const SITE_ROLES = RoleTypes.filter((r) => r !== 'admin' && r !== 'superadmin');
 
 /**
@@ -141,8 +142,8 @@ class IdpService {
   }
 
   /**
-   * The claims the IdP adds to a token for a linked contact: the highest
-   * active Site Login role, or nothing
+   * The claims the IdP adds to a token: the linked contact's highest active
+   * Site Login role, or the default role
    * @param subject The IdP subject the token is for
    */
   async getTokenClaims(subject: string): Promise<Record<string, string>> {
@@ -150,7 +151,7 @@ class IdpService {
       idpSubject: subject,
     });
     const role = SITE_ROLES.find((r) => contact?.activeRoles.includes(r));
-    return role ? { [ROLE_CLAIM]: role } : {};
+    return { [ROLE_CLAIM]: role ?? DEFAULT_SITE_ROLE };
   }
 
   /**

@@ -246,9 +246,9 @@ Environment variables are organized into these main categories:
 - **Localization** - Language and currency settings
 - **Third-Party Services** - API keys and integration settings
 - **Email & Newsletter** - Communication providers
-- **Identity Provider** - IdP Provisioning (`BEABEE_IDP_PROVIDER`, see [OIDC login](./oidc-login.md))
-- **Login** - OIDC Login (`BEABEE_LOGIN_PROVIDER`, `BEABEE_LOGIN_SETTINGS_*`, see [OIDC login](./oidc-login.md))
-- **Website login** - Parent-domain login cookie (`BEABEE_SITELOGIN_*`, see [OIDC login](./oidc-login.md))
+- **Identity Provider** - IdP Provisioning (`BEABEE_IDP_PROVIDER`, see [OIDC login](./oidc-login/README.md))
+- **Login** - OIDC Login (`BEABEE_LOGIN_PROVIDER`, `BEABEE_LOGIN_SETTINGS_*`, see [OIDC login](./oidc-login/README.md))
+- **Website login** - Parent-domain login cookie (`BEABEE_SITELOGIN_*`, see [OIDC login](./oidc-login/README.md))
 - **Payment Processing** - Stripe and GoCardless configuration
 - **Database** - Connection strings
 - **File Storage** - MinIO/S3 settings
