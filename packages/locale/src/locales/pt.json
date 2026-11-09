@@ -179,7 +179,6 @@
   },
   "activity": {
     "actorType": {
-      "admin": "Administrador",
       "system": "Sistema",
       "user": "Utilizador"
     },
