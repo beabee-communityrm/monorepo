@@ -222,18 +222,23 @@ const sortColumns = computed(() => [
 const columns = computed<
   TableColumn<NonNullable<typeof props.contacts>[number]>[]
 >(() => [
-  { id: 'select', meta: { class: { td: 'align-top' } } },
-  ...sortColumns.value.map((column) => ({
-    id: column.id,
-    meta: {
-      class: {
-        td:
-          column.id === 'firstname'
-            ? 'w-full whitespace-normal align-top'
-            : 'align-top tabular-nums',
-      },
-    },
-  })),
+  { id: 'select', meta: { class: { th: 'w-px', td: 'w-px align-top' } } },
+  ...sortColumns.value.map((column) =>
+    column.id === 'firstname'
+      ? {
+          id: column.id,
+          meta: { class: { td: 'whitespace-normal align-top' } },
+        }
+      : {
+          id: column.id,
+          meta: {
+            class: {
+              th: 'w-px whitespace-nowrap',
+              td: 'w-px align-top tabular-nums',
+            },
+          },
+        }
+  ),
 ]);
 
 const rowSelection = computed(() =>
