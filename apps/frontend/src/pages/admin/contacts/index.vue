@@ -30,16 +30,11 @@ meta:
             class="w-full sm:w-64"
           />
 
-          <UDropdownMenu :items="tagFilterItems">
-            <UButton
-              icon="i-lucide-tag"
-              trailing-icon="i-lucide-chevron-down"
-              :color="currentTag ? 'primary' : 'neutral'"
-              variant="subtle"
-            >
-              {{ currentTagLabel }}
-            </UButton>
-          </UDropdownMenu>
+          <ContactsTagFilter
+            v-model="currentTag"
+            :tag-items="tagItems"
+            @manage-tags="tagsModalOpen = true"
+          />
 
           <UButton
             icon="i-lucide-filter"
@@ -102,7 +97,7 @@ meta:
 
         <ContactAppliedFilters
           v-else-if="currentTag || appliedRules.length"
-          :tag-label="currentTag ? currentTagLabel : undefined"
+          :tag-label="currentTagLabel"
           :rule-group="currentRules"
           :filter-groups="filterGroups"
           @remove-tag="currentTag = ''"
@@ -149,8 +144,6 @@ import {
 
 import { AppSearchBox } from '@beabee/vue';
 
-import type { DropdownMenuItem } from '@nuxt/ui';
-
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -159,6 +152,7 @@ import ContactFilterPanel from '#components/pages/admin/contacts/ContactFilterPa
 import ContactsActions from '#components/pages/admin/contacts/ContactsActions.vue';
 import ContactTagsModal from '#components/pages/admin/contacts/ContactTagsModal.vue';
 import ContactsTable from '#components/pages/admin/contacts/ContactsTable.vue';
+import ContactsTagFilter from '#components/pages/admin/contacts/ContactsTagFilter.vue';
 import ContactsSegmentFilter from '#components/pages/admin/contacts/ContactsSegmentFilter.vue';
 import SaveSegment from '#components/pages/admin/contacts/SaveSegment.vue';
 import { useContactFilters } from '#components/pages/admin/contacts/contacts.interface';
@@ -335,43 +329,8 @@ function handleDraftChange(ruleGroup: RuleGroup) {
  * Tags
  */
 const currentTagLabel = computed(
-  () =>
-    tagItems.value.find((tag) => tag.id === currentTag.value)?.label ||
-    t('tags.searchTag')
+  () => tagItems.value.find((tag) => tag.id === currentTag.value)?.label
 );
-
-const tagFilterItems = computed<DropdownMenuItem[][]>(() => [
-  [
-    ...(tagItems.value.length
-      ? tagItems.value.map((tag) => ({
-          type: 'checkbox' as const,
-          label: tag.label,
-          checked: currentTag.value === tag.id,
-          onUpdateChecked: (checked: boolean) => {
-            currentTag.value = checked ? tag.id : '';
-          },
-        }))
-      : [{ label: t('tags.noTags'), disabled: true }]),
-    ...(currentTag.value
-      ? [
-          {
-            label: t('tags.clearTags-nuxt'),
-            color: 'primary' as const,
-            class:
-              'data-highlighted:before:bg-transparent data-highlighted:underline',
-            onSelect: () => (currentTag.value = ''),
-          },
-        ]
-      : []),
-  ],
-  [
-    {
-      label: t('tags.manageTags'),
-      icon: 'i-lucide-settings',
-      onSelect: () => (tagsModalOpen.value = true),
-    },
-  ],
-]);
 
 function handleToggleTag(
   tag: { id: string; label: string },
