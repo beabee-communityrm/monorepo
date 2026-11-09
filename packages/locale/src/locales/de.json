@@ -186,7 +186,7 @@
     "data": {
       "actor": "Ausgeführt von",
       "actorType": "Ausgeführt von",
-      "category": "Kategorie",
+      "eventType": "Ereignistyp",
       "target": "Ziel",
       "time": "Zeit"
     },

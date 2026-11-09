@@ -184,9 +184,9 @@
       "user": "Nutzer"
     },
     "data": {
-      "actor": "Akteur",
-      "actorType": "Akteurstyp",
-      "category": "Kategorie",
+      "actor": "Ausgeführt von",
+      "actorType": "Ausgeführt von",
+      "eventType": "Ereignistyp",
       "target": "Ziel",
       "time": "Zeit"
     },

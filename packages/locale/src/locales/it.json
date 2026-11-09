@@ -186,7 +186,7 @@
     "data": {
       "actor": "Autore",
       "actorType": "Tipo di autore",
-      "category": "Categoria",
+      "eventType": "Tipo di evento",
       "target": "Destinatario",
       "time": "Ora"
     },
