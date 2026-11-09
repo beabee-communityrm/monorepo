@@ -1127,7 +1127,6 @@
     "no": "",
     "noResults": "",
     "pageCount": "",
-    "pageCount-nuxt": "",
     "paymentPeriod": {
       "annually": "",
       "monthly": "",
@@ -1150,6 +1149,7 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "",
+    "range-nuxt": "",
     "role": {
       "admin": "",
       "member": "",
@@ -1352,8 +1352,7 @@
     "sendEmailNoSegment-nuxt": "",
     "sendEmailSelection-nuxt": "",
     "sendEmailToSelected-nuxt": "",
-    "showingOf": "",
-    "showingOf-nuxt": ""
+    "showingOf": ""
   },
   "contribution": {
     "adminCancelDescription": "",

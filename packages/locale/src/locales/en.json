@@ -1127,7 +1127,6 @@
     "no": "No",
     "noResults": "No results found",
     "pageCount": "Page {pageNumber} out of {pageTotal}",
-    "pageCount-nuxt": "Page {pageNumber} of {pageTotal}",
     "paymentPeriod": {
       "annually": "Annually",
       "monthly": "Monthly",
@@ -1150,6 +1149,7 @@
     "perOneTime": " one-time",
     "perOneTimeText": "one-time",
     "perYear": "/ year",
+    "range-nuxt": "{start}–{end} of {total}",
     "role": {
       "admin": "Admin",
       "member": "Member",
@@ -1352,8 +1352,7 @@
     "sendEmailNoSegment-nuxt": "Choose a saved segment to email its contacts",
     "sendEmailSelection-nuxt": "Sends to the whole segment. Clear your selection first.",
     "sendEmailToSelected-nuxt": "Send email to {count} selected",
-    "showingOf": "Showing {start} to {end} contacts out of {total}",
-    "showingOf-nuxt": "Showing {start}–{end} of {total} results"
+    "showingOf": "Showing {start} to {end} contacts out of {total}"
   },
   "contribution": {
     "adminCancelDescription": "If you cancel the contact's contribution their membership will finish at the end of their current payment cycle on {date}.",

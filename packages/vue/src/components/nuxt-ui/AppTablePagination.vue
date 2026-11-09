@@ -2,11 +2,12 @@
   # AppTablePagination
   Pagination footer for tables and paginated lists.
 
-  Shows the current page and a rows-per-page selector on the left, with the
-  page controls on the right.
+  Shows which items are on screen ("1–25 of 50") and a rows-per-page selector
+  on the left, with the page controls on the right. A fixed `pageSize` hides
+  the selector.
 
   ## Internal i18n usage
-  - common.pageCount-nuxt: "Page {pageNumber} of {pageTotal}"
+  - common.range-nuxt: "{start}–{end} of {total}"
   - common.rowsPerPage-nuxt: "rows per page"
 -->
 <template>
@@ -14,29 +15,32 @@
     class="flex flex-wrap items-center justify-between gap-3 border-t border-default p-4"
   >
     <span class="flex items-center gap-2 text-muted">
-      <i18n-t keypath="common.pageCount-nuxt" tag="span">
-        <template #pageNumber>
-          <b class="font-medium text-highlighted">{{ n(page + 1) }}</b>
-        </template>
-        <template #pageTotal>
-          <b class="font-medium text-highlighted">{{ n(totalPages) }}</b>
-        </template>
-      </i18n-t>
+      <span>
+        {{
+          t('common.range-nuxt', {
+            start: n(rangeStart),
+            end: n(rangeEnd),
+            total: n(total),
+          })
+        }}
+      </span>
 
-      <span class="h-4 w-px bg-accented" aria-hidden="true" />
-      <USelect
-        v-model="limit"
-        :items="limitOptions"
-        :aria-label="t('common.rowsPerPage-nuxt')"
-      />
-      <span>{{ t('common.rowsPerPage-nuxt') }}</span>
+      <template v-if="!pageSize">
+        <span class="h-4 w-px bg-accented" aria-hidden="true" />
+        <USelect
+          v-model="limit"
+          :items="limitOptions"
+          :aria-label="t('common.rowsPerPage-nuxt')"
+        />
+        <span>{{ t('common.rowsPerPage-nuxt') }}</span>
+      </template>
     </span>
 
     <UPagination
       variant="subtle"
       :page="page + 1"
       :total="total"
-      :items-per-page="limit"
+      :items-per-page="itemsPerPage"
       @update:page="(newPage: number) => (page = newPage - 1)"
     />
   </div>
@@ -56,19 +60,30 @@ const { t, n } = useI18n();
 export interface AppTablePaginationProps {
   /** Total number of items across all pages */
   total: number;
+  /** Fixed page size, which hides the rows-per-page selector */
+  pageSize?: number;
 }
 
 const props = defineProps<AppTablePaginationProps>();
 
 /** Current page, zero-based */
 const page = defineModel<number>('page', { required: true });
-/** Rows per page */
+/** Rows per page, only used without a fixed `pageSize` */
 const limit = defineModel<number>('limit', { default: 25 });
 
 const limitOptions = [12, 25, 50, 100];
 
+const itemsPerPage = computed(() => props.pageSize ?? limit.value);
+
+const rangeStart = computed(() =>
+  props.total ? page.value * itemsPerPage.value + 1 : 0
+);
+const rangeEnd = computed(() =>
+  Math.min((page.value + 1) * itemsPerPage.value, props.total)
+);
+
 const totalPages = computed(() =>
-  Math.max(1, Math.ceil(props.total / limit.value))
+  Math.max(1, Math.ceil(props.total / itemsPerPage.value))
 );
 
 watch(totalPages, () => {

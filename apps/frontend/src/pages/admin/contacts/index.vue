@@ -63,26 +63,6 @@ meta:
             @toggle-tag="handleToggleTag"
             @manage-tags="tagsModalOpen = true"
           />
-
-          <span v-if="contactsTable" class="whitespace-nowrap text-muted">
-            <i18n-t keypath="contacts.showingOf-nuxt">
-              <template #start>
-                <b class="font-medium text-highlighted">
-                  {{ n(contactsTable.offset + 1) }}
-                </b>
-              </template>
-              <template #end>
-                <b class="font-medium text-highlighted">
-                  {{ n(contactsTable.offset + contactsTable.count) }}
-                </b>
-              </template>
-              <template #total>
-                <b class="font-medium text-highlighted">
-                  {{ n(contactsTable.total) }}
-                </b>
-              </template>
-            </i18n-t>
-          </span>
         </div>
 
         <ContactFilterPanel
@@ -176,7 +156,7 @@ import { useTagFilter } from '../../../composables/useTagFilter';
  * - Saving contact segments
  */
 
-const { t, n } = useI18n();
+const { t } = useI18n();
 const toast = useAppToast();
 
 const contactsTable =

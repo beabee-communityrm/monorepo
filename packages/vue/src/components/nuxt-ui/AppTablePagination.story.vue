@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 
 import AppTablePagination from './AppTablePagination.vue';
 
@@ -8,6 +8,8 @@ const state = reactive({
   page: 0,
   limit: 25,
 });
+
+const listPage = ref(0);
 </script>
 
 <template>
@@ -24,6 +26,14 @@ const state = reactive({
       <template #controls="{ state }">
         <HstNumber v-model="state.total" title="Total" />
       </template>
+    </Variant>
+
+    <Variant title="Fixed page size">
+      <AppTablePagination v-model:page="listPage" :total="36" :page-size="10" />
+    </Variant>
+
+    <Variant title="Empty">
+      <AppTablePagination :page="0" :total="0" />
     </Variant>
   </Story>
 </template>
