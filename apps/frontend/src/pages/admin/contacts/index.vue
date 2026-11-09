@@ -72,62 +72,17 @@ meta:
             </UBadge>
           </UButton>
 
-          <div class="ml-auto flex items-center gap-1">
-            <!-- TODO: Add support for exporting selected contacts (instead of all contacts) -->
-            <UButton
-              icon="i-lucide-download"
-              color="neutral"
-              variant="ghost"
-              :title="t('actions.export')"
-              :aria-label="t('actions.export')"
-              :disabled="selectedCount > 0"
-              @click="handleExport"
-            />
-
-            <!-- TODO: Add support for emailing selected contacts (instead of all contacts) -->
-            <UDropdownMenu :items="emailItems">
-              <UButton
-                icon="i-lucide-mail"
-                color="neutral"
-                variant="ghost"
-                :title="t('actions.sendEmails')"
-                :aria-label="t('actions.sendEmails')"
-                :aria-describedby="emailUnavailableReason && emailReasonId"
-              />
-            </UDropdownMenu>
-            <span
-              v-if="emailUnavailableReason"
-              :id="emailReasonId"
-              class="sr-only"
-            >
-              {{ emailUnavailableReason }}
-            </span>
-
-            <UDropdownMenu
-              :items="bulkTagItems"
-              :disabled="selectedCount === 0"
-            >
-              <UButton
-                icon="i-lucide-tag"
-                color="neutral"
-                variant="ghost"
-                :disabled="selectedCount === 0"
-                :title="
-                  selectedCount > 0
-                    ? t('tags.toggleTag')
-                    : t('tags.selectToTag-nuxt')
-                "
-                :aria-label="t('tags.toggleTag')"
-                :loading="doingAction"
-              />
-
-              <template #item-trailing="{ item }">
-                <span v-if="item.count" class="text-muted">
-                  {{ item.count }}
-                </span>
-              </template>
-            </UDropdownMenu>
-          </div>
+          <ContactsActions
+            class="ml-auto"
+            :selected-count="selectedCount"
+            :selected-page-items="selectedPageItems"
+            :tag-items="tagItems"
+            :current-segment="currentSegment"
+            :busy="doingAction"
+            @export="handleExport"
+            @toggle-tag="handleToggleTag"
+            @manage-tags="tagsModalOpen = true"
+          />
 
           <span v-if="contactsTable" class="whitespace-nowrap text-muted">
             <i18n-t keypath="contacts.showingOf-nuxt">
@@ -209,11 +164,12 @@ import {
 
 import type { DropdownMenuItem } from '@nuxt/ui';
 
-import { computed, ref, useId, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import ContactAppliedFilters from '#components/pages/admin/contacts/ContactAppliedFilters.vue';
 import ContactFilterPanel from '#components/pages/admin/contacts/ContactFilterPanel.vue';
+import ContactsActions from '#components/pages/admin/contacts/ContactsActions.vue';
 import ContactTagsModal from '#components/pages/admin/contacts/ContactTagsModal.vue';
 import ContactsTable from '#components/pages/admin/contacts/ContactsTable.vue';
 import ContactsSegmentFilter from '#components/pages/admin/contacts/ContactsSegmentFilter.vue';
@@ -436,48 +392,6 @@ const tagFilterItems = computed<DropdownMenuItem[][]>(() => [
   ],
 ]);
 
-const bulkTagItems = computed<DropdownMenuItem[][]>(() => [
-  [
-    {
-      type: 'label' as const,
-      label: t(
-        'tags.tagSelected-nuxt',
-        { count: n(selectedCount.value) },
-        selectedCount.value
-      ),
-    },
-  ],
-  tagItems.value.length
-    ? tagItems.value.map((tag) => {
-        const taggedCount = selectedPageItems.value.filter((contact) =>
-          contact.tags?.some((contactTag) => contactTag.id === tag.id)
-        ).length;
-        const checked =
-          taggedCount > 0 && taggedCount === selectedPageItems.value.length;
-
-        return {
-          type: 'checkbox' as const,
-          label: tag.label,
-          checked,
-          count: t('tags.countOfSelected-nuxt', {
-            count: n(taggedCount),
-            total: n(selectedPageItems.value.length),
-          }),
-          // Keep the menu open so several tags can be toggled in a row
-          onSelect: (event: Event) => event.preventDefault(),
-          onUpdateChecked: () => handleToggleTag(tag, checked),
-        };
-      })
-    : [{ label: t('tags.noTags'), disabled: true }],
-  [
-    {
-      label: t('tags.manageTags'),
-      icon: 'i-lucide-settings',
-      onSelect: () => (tagsModalOpen.value = true),
-    },
-  ],
-]);
-
 function handleToggleTag(
   tag: { id: string; label: string },
   isTagged: boolean
@@ -492,37 +406,6 @@ function handleToggleTag(
     )
   );
 }
-
-/**
- * Emails
- */
-const emailReasonId = useId();
-
-/** Why a one-off email can't be sent right now, if it can't */
-const emailUnavailableReason = computed(() => {
-  if (!currentSegment.value) return t('contacts.sendEmailNoSegment-nuxt');
-  if (selectedCount.value > 0) return t('contacts.sendEmailSelection-nuxt');
-  return undefined;
-});
-
-const emailItems = computed<DropdownMenuItem[][]>(() => [
-  [
-    {
-      label: t('actions.sendOneOffEmail-nuxt'),
-      icon: 'i-lucide-send',
-      ...(currentSegment.value && !emailUnavailableReason.value
-        ? { to: `/admin/contacts/send-email/${currentSegment.value.id}` }
-        : { disabled: true, description: emailUnavailableReason.value }),
-    },
-  ],
-  [
-    {
-      label: t('contacts.emailTemplates.manage'),
-      icon: 'i-lucide-settings',
-      to: { name: 'adminContactsEmailTemplates' },
-    },
-  ],
-]);
 
 /**
  * Actions
