@@ -185,7 +185,7 @@
     "data": {
       "actor": "Actor",
       "actorType": "Actor type",
-      "category": "Category",
+      "eventType": "Event type",
       "target": "Target",
       "time": "Time"
     },

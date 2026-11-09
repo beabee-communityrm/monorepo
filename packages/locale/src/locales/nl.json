@@ -186,7 +186,7 @@
     "data": {
       "actor": "Actor",
       "actorType": "Type actor",
-      "category": "Categorie",
+      "eventType": "Type gebeurtenis",
       "target": "Doel",
       "time": "Tijd"
     },

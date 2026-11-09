@@ -193,7 +193,7 @@ function getSearchRules(): RuleGroup {
 
 const headers = computed<Header[]>(() => [
   { value: 'createdAt', text: t('activity.data.time') },
-  { value: 'eventType', text: t('activity.data.category') },
+  { value: 'eventType', text: t('activity.data.eventType') },
   { value: 'actorId', text: t('activity.data.actor') },
   { value: 'targetId', text: t('activity.data.target') },
 ]);
