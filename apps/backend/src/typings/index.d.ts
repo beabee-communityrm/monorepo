@@ -27,6 +27,8 @@ declare module 'express-session' {
     oidc?: OidcLoginState;
     /** ID token of the current OIDC login, used as logout hint */
     idToken?: string | undefined;
+    /** Sealed refresh token of the current OIDC login, renews the website login cookie */
+    refreshToken?: string | undefined;
     /** When the member last authenticated at the IdP, seconds since the epoch */
     authTime?: number | undefined;
   }
