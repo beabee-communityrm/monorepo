@@ -21,7 +21,9 @@ meta:
         <AccountForm />
       </template>
       <template #security>
-        <div class="flex flex-col gap-4">
+        <!-- Login details are managed at the identity provider on OIDC instances -->
+        <LoginMethods v-if="generalContent.oidcEnabled" />
+        <div v-else class="flex flex-col gap-4">
           <ChangePassword />
           <SetMFA contact-id="me" />
         </div>
@@ -45,12 +47,23 @@ import { useRoute, useRouter } from 'vue-router';
 import AccountForm from '../../components/pages/profile/account/AccountForm.vue';
 import AccountNewsletterSubscriptions from '../../components/pages/profile/account/AccountNewsletterSubscriptions.vue';
 import ChangePassword from '../../components/pages/profile/account/ChangePassword.vue';
+import LoginMethods from '../../components/pages/profile/account/LoginMethods.vue';
 import SetMFA from '../../components/pages/profile/account/SetMFA.vue';
+import { generalContent } from '../../store';
 import { addBreadcrumb } from '../../store/breadcrumb';
 import { routeIcons, routeLabels } from '../../utils/route-nav';
 import type { TabsItem } from '@nuxt/ui';
 
 const { t } = useI18n();
+const route = useRoute();
+const router = useRouter();
+
+const activeTab = computed({
+  get: () => route.query.tab?.toString() || 'contact',
+  set: (value) => {
+    router.push({ query: { ...route.query, tab: value } });
+  },
+});
 
 const items = computed<TabsItem[]>(() => [
   {
@@ -72,20 +85,6 @@ const items = computed<TabsItem[]>(() => [
     value: 'subscriptions',
   },
 ]);
-
-const route = useRoute();
-const router = useRouter();
-
-const activeTab = computed({
-  get: () => {
-    const tab = route.query.tab;
-    return typeof tab === 'string' && items.value.some((i) => i.value === tab)
-      ? tab
-      : 'contact';
-  },
-  set: (tab: string | number) =>
-    router.replace({ query: { ...route.query, tab: String(tab) } }),
-});
 
 addBreadcrumb(
   computed(() => [

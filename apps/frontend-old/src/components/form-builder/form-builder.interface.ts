@@ -167,18 +167,20 @@ export const formOpts = {
             type: 'time',
           },
         },
-        signature: {
-          title: 'Signature',
-          icon: 'pencil',
-          schema: {
-            type: 'signature',
-          },
-        },
         file: {
           title: 'File',
           icon: 'cloud-upload',
           schema: {
             type: 'file',
+            // We only support the beabee storage provider for file uploads
+            storage: 'beabee',
+          },
+        },
+        audioRecorder: {
+          title: 'Audio Recording',
+          icon: 'microphone',
+          schema: {
+            type: 'audiorecorder',
             // We only support the beabee storage provider for file uploads
             storage: 'beabee',
           },

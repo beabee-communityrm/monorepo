@@ -4,20 +4,11 @@ import { dataSource } from '@beabee/core/database';
 import passport from '@beabee/core/lib/passport';
 
 import _pgSession from 'connect-pg-simple';
-import express, { RequestHandler, Response } from 'express';
+import express, { RequestHandler } from 'express';
 import session from 'express-session';
 import type { Pool } from 'pg';
 
 const pgSession = _pgSession(session);
-
-export function setTrackingCookie(memberId: string, res: Response) {
-  res.cookie('memberId', memberId, {
-    ...config.cookie,
-    httpOnly: true,
-    maxAge: 365 * 24 * 60 * 60 * 1000,
-    sameSite: 'none',
-  });
-}
 
 export default (app: express.Express): void => {
   app.use(
@@ -44,12 +35,6 @@ export default (app: express.Express): void => {
   app.use(passport.session());
 
   app.use((req, res, next) => {
-    // User tracking cookie
-    const memberId = req.user?.id || req.cookies.memberId;
-    if (memberId) {
-      setTrackingCookie(memberId, res);
-    }
-
     // User template locals
     res.locals.isLoggedIn = !!req.user;
     res.locals.access = (roleType: RoleType) => req.user?.hasRole(roleType);

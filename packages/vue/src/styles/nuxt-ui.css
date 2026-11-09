@@ -8,6 +8,7 @@
   .nuxt-page {
     @apply text-sm;
 
+    h1,
     h2,
     h3,
     h4,

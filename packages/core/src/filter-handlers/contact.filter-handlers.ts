@@ -322,6 +322,7 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
  * - medium: Filters by the referrer (utm_medium) a contact signed up through
  * - source: Filters by the source (utm_source/callout) a contact signed up through
  * - addedBy: Filters by who added a contact
+ * - idpLinked: Filters by whether the contact is linked to an identity provider account
  * - organisation: Filters by organisation name
  * - deliveryAddressCountry: Filters by the delivery address country code
  */
@@ -337,6 +338,12 @@ export const contactFilterHandlers: FilterHandlers<string> = {
     qb.where(
       // Convert password.hash to simple boolean field for simpler querying
       args.convertToWhereClause(`(${args.fieldPrefix}password.hash <> '')`)
+    );
+  },
+  idpLinked: (qb, args) => {
+    qb.where(
+      // A linked contact is one with an IdP Subject
+      args.convertToWhereClause(`(${args.fieldPrefix}idpSubject IS NOT NULL)`)
     );
   },
   membershipStarts: membershipField('dateAdded'),

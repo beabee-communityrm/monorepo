@@ -1,0 +1,24 @@
+---
+subject: A tua contribuição terminou
+---
+
+<p>Olá *|FNAME|*,</p>
+<p><br /></p>
+<p>
+  Infelizmente não foi possível concluir um pagamento da tua contribuição para o
+  *|ORGNAME|*, pelo que a tua contribuição regular foi cancelada. A tua
+  subscrição mantém-se activa até *|EXPIRES|*.
+</p>
+<p><br /></p>
+<p>
+  Para continuares a apoiar-nos, faz login no link que segue abaixo para
+  definires um método de pagamento e reiniciares a tua contribuição, ou entra em
+  contacto connosco por email via
+  <a href="mailto:*|SUPPORTEMAIL|*">*|SUPPORTEMAIL|*</a>.
+</p>
+<p><br /></p>
+<p>
+  <a href="*|LOGINLINK|*"><b>Login</b></a>
+</p>
+<p><br /></p>
+<p>Até já!</p>

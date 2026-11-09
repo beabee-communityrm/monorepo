@@ -89,7 +89,8 @@ export const nuxtUiConfig: NuxtUIOptions = {
       slots: {
         // Nuxt UI's own default omits justify-center, so content packs to
         // the left on stretched (block/w-full/flex-1) buttons.
-        base: 'cursor-pointer justify-center',
+        // Disabled is paler than Nuxt UI's default 75% opacity.
+        base: 'cursor-pointer justify-center disabled:opacity-40 aria-disabled:opacity-40',
       },
       compoundVariants: [
         {

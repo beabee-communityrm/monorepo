@@ -102,11 +102,14 @@ Follow these exact steps to obtain the Stripe values and make the local webhook 
    ```bash
    docker compose up -d
    ```
-   - Read the webhook secret from the Stripe CLI logs and set it in `.env`:
+   - Read the webhook secret from the Stripe CLI logs:
    ```bash
    docker compose logs -f stripe_cli | grep -i "webhook signing secret"
    ```
-   - Set it as the value for the option `stripe-webhook-secret`
+   - Store it, together with the membership product, with the setup command. Stripe only accepts public URLs for webhook endpoints, so the secret of the local listener replaces creating one:
+   ```bash
+   docker compose run --rm api_app yarn backend-cli setup integrations stripe --webhook-secret whsec_...
+   ```
 
 Once all four variables are set, restart the stack if needed.
 
@@ -243,7 +246,9 @@ Environment variables are organized into these main categories:
 - **Localization** - Language and currency settings
 - **Third-Party Services** - API keys and integration settings
 - **Email & Newsletter** - Communication providers
-- **Identity Provider** - IdP Provisioning (`BEABEE_IDP_PROVIDER`, see [OIDC login](./oidc-login.md))
+- **Identity Provider** - IdP Provisioning (`BEABEE_IDP_PROVIDER`, see [OIDC login](./oidc-login/README.md))
+- **Login** - OIDC Login (`BEABEE_LOGIN_PROVIDER`, `BEABEE_LOGIN_SETTINGS_*`, see [OIDC login](./oidc-login/README.md))
+- **Website login** - Parent-domain login cookie (`BEABEE_SITELOGIN_*`, see [OIDC login](./oidc-login/README.md))
 - **Payment Processing** - Stripe and GoCardless configuration
 - **Database** - Connection strings
 - **File Storage** - MinIO/S3 settings

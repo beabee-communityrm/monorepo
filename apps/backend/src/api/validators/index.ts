@@ -6,6 +6,7 @@ export * from './IsMapBounds.js';
 export * from './IsNonEmptyString.js';
 export * from './IsPassword.js';
 export * from './IsSlug.js';
+export * from './IsTrustedUrl.js';
 export * from './IsType.js';
 export * from './IsUrl.js';
 export * from './IsValidPayFee.js';

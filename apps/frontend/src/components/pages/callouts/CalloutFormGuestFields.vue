@@ -8,6 +8,8 @@
         v-model="firstname"
         :label="t('form.firstName')"
         name="firstName"
+        autocomplete="given-name"
+        spellcheck="false"
         :required="isRequired"
       />
     </div>
@@ -16,6 +18,8 @@
         v-model="lastname"
         :label="t('form.lastName')"
         name="lastName"
+        autocomplete="family-name"
+        spellcheck="false"
         :required="isRequired"
       />
     </div>
@@ -25,6 +29,8 @@
         :label="t('form.email')"
         type="email"
         name="email"
+        autocomplete="email"
+        spellcheck="false"
         :required="isRequired"
       />
     </div>

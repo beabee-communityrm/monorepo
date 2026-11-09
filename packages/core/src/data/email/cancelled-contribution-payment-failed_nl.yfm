@@ -1,0 +1,24 @@
+---
+subject: Je bijdrage is beëindigd
+---
+
+<p>Hallo *|FNAME|*</p>
+<p><br /></p>
+<p>
+  Helaas kon een betaling voor je bijdrage aan *|ORGNAME|* niet worden afgerond,
+  daarom is je periodieke bijdrage stopgezet. Je lidmaatschap blijft actief tot
+  *|EXPIRES|*.
+</p>
+<p><br /></p>
+<p>
+  Om ons te blijven steunen kun je inloggen via onderstaande link om een
+  betaalmethode in te stellen en je bijdrage opnieuw te starten, of contact
+  opnemen met ons ondersteuningsteam via
+  <a href="mailto:*|SUPPORTEMAIL|*">*|SUPPORTEMAIL|*</a>
+</p>
+<p><br /></p>
+<p>
+  <a href="*|LOGINLINK|*"><b>Login</b></a>
+</p>
+<p><br /></p>
+<p>Hartelijke groet</p>

@@ -12,6 +12,7 @@ export * from './CalloutResponseSegmentDto.js';
 export * from './CalloutReviewerDto.js';
 export * from './CalloutTagDto.js';
 export * from './CalloutVariantDto.js';
+export * from './ContactAuthMethodDto.js';
 export * from './ContactDto.js';
 export * from './ContactMfaDto.js';
 export * from './ContactProfileDto.js';

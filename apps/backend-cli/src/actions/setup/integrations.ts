@@ -4,11 +4,18 @@ import { STRIPE_WEBHOOK_EVENTS, Stripe, stripe } from '@beabee/core/lib/stripe';
 import { currentLocale } from '@beabee/core/locale';
 import { KNOWN_WEBHOOK_EVENTS } from '@beabee/core/providers/newsletter/MailchimpProvider';
 import { runApp } from '@beabee/core/server';
+import { idpService } from '@beabee/core/services/IdpService';
 import { newsletterService } from '@beabee/core/services/NewsletterService';
 import { optionsService } from '@beabee/core/services/OptionsService';
 import { MCWebhook } from '@beabee/core/type';
 
-export const setupStripe = async (dryRun: boolean) => {
+/**
+ * @param dryRun Report what would change without changing anything
+ * @param webhookSecret Signing secret of a Stripe CLI listener. Stripe only
+ * accepts public URLs for webhook endpoints, so a local instance stores the
+ * listener's secret instead of creating one
+ */
+export const setupStripe = async (dryRun: boolean, webhookSecret?: string) => {
   if (!config.stripe.secretKey) {
     throw new Error(
       'BEABEE_STRIPE_SECRETKEY must be set before running Stripe setup'
@@ -42,6 +49,15 @@ export const setupStripe = async (dryRun: boolean) => {
       }
 
       // Step 2: Check/create webhook
+      if (webhookSecret) {
+        if (!dryRun) {
+          await optionsService.set('stripe-webhook-secret', webhookSecret);
+        }
+        console.log('✅ Stored webhook secret of the local listener');
+        console.log('\n🎉 Stripe integration setup completed successfully!');
+        return;
+      }
+
       const existingWebhookSecret = optionsService.getText(
         'stripe-webhook-secret'
       );
@@ -206,4 +222,23 @@ export const setupMailchimp = async (dryRun: boolean) => {
     console.error(error);
     throw error;
   }
+};
+
+export const setupIdp = async () => {
+  await runApp(async () => {
+    if (!idpService.isEnabled) {
+      console.error(
+        'No identity provider configured, set BEABEE_IDP_PROVIDER first'
+      );
+      process.exitCode = 1;
+      return;
+    }
+
+    if (await idpService.setup()) {
+      console.log('✅ Identity provider set up');
+    } else {
+      console.error('❌ Failed to set up identity provider');
+      process.exitCode = 1;
+    }
+  });
 };

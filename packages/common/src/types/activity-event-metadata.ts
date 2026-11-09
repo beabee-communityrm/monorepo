@@ -1,7 +1,8 @@
 import type { ActivityEventType, ContributionPeriod } from '../data/index.js';
-import type { ContactOriginData } from './index.js';
+import type { ContactOriginData, RoleType } from './index.js';
 
 export interface ContributionUpdateData {
+  subscriptionId: string;
   startNow: boolean;
   expiryDate: Date;
   form: {
@@ -13,10 +14,21 @@ export interface ContributionUpdateData {
 }
 
 export interface ActivityEventMetadataMap {
+  [ActivityEventType.CalloutAnswered]: { responseId: string };
   [ActivityEventType.ContactCreated]: ContactOriginData;
-  [ActivityEventType.ContactContributionStarted]: ContributionUpdateData;
+  // Backfilled events only carry the subscription ID
+  [ActivityEventType.ContactContributionStarted]:
+    | ContributionUpdateData
+    | Pick<ContributionUpdateData, 'subscriptionId'>;
   [ActivityEventType.ContactContributionUpdated]: ContributionUpdateData;
+  [ActivityEventType.ContactContributionCancelled]: {
+    subscriptionId: string | null;
+  };
+  [ActivityEventType.ContactPaymentFailed]: { paymentId: string };
+  [ActivityEventType.ContactPaymentSuccessful]: { paymentId: string };
+  [ActivityEventType.ContactRoleAdded]: { roleType: RoleType };
   [ActivityEventType.EmailSent]: { email: string; recipient: string };
+  [ActivityEventType.EmailTemplateAdded]: { templateId: string | null };
 }
 
 /**

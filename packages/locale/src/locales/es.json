@@ -94,6 +94,25 @@
     "requiredFields": "Campos obligatorios",
     "savedPassword": "Nueva contraseña guardada",
     "security": "Seguridad",
+    "selfService": {
+      "methods": {
+        "anotherPasskey": "Para otro dispositivo",
+        "authenticatorApp": "Aplicación de autenticación",
+        "change": "Cambiar",
+        "confirmRemove": {
+          "desc": "Es posible que primero tengas que iniciar sesión de nuevo. Puedes volver a configurar el método en cualquier momento.",
+          "title": "¿Eliminar este método de inicio de sesión?"
+        },
+        "description": "Las formas en que puedes iniciar sesión. Para añadir o cambiar un método te llevamos a nuestro servicio de inicio de sesión y luego de vuelta. La contraseña no se puede eliminar.",
+        "notSetUp": "Sin configurar",
+        "passkey": "Passkey",
+        "password": "Contraseña",
+        "removed": "Método de inicio de sesión eliminado",
+        "securityKey": "Llave de seguridad",
+        "setUp": "Configurar",
+        "title": "Tus métodos de inicio de sesión"
+      }
+    },
     "subTitle": "Los campos obligatorios están marcados con un asterisco. Toda la información enviada aquí es privada.",
     "subTitle-nuxt": "Los campos obligatorios están marcados con un asterisco. Toda la información enviada aquí es privada.",
     "subscriptions": "Suscripciones",
@@ -823,7 +842,9 @@
     "form": {
       "email": "Tu correo electrónico",
       "guestFieldsMissing": "Por favor, indícanos tus datos de contacto",
+      "incomplete": "Rellena los campos obligatorios de arriba para continuar",
       "name": "Tu nombre",
+      "step": "Paso {current} de {total}",
       "submittingResponseError": "Hubo un problema al enviar tu respuesta, inténtalo de nuevo"
     },
     "getStarted": "Empezar",
@@ -835,9 +856,11 @@
     "loginToYourAccount-nuxt": "Iniciar sesión",
     "membersOnly": "Este CrowdNewsroom es solo para miembros. Para participar",
     "membersOnly-nuxt": "Este CrowdNewsroom es solo para miembros.",
+    "nextResponse": "Respuesta siguiente",
     "notAnswered": "Sin responder",
+    "previousResponse": "Respuesta anterior",
     "replied": "Respondido",
-    "responseNumber": "Respuesta {number}",
+    "responseNumber": "Respuesta {number} de {total}",
     "responseSubmitted": "Respuesta enviada",
     "share": {
       "address": "Comparte con el siguiente enlace:",
@@ -1184,7 +1207,6 @@
     "roles": "Roles",
     "security": {
       "instructions": "Copia y comparte este enlace:",
-      "loginOverride": "Acceso de emergencia",
       "mfa": {
         "desc": "Este contacto tiene 2FA activado. Haz clic en el botón \"{ disableLabel }\" para desactivarlo.",
         "disabledDesc": "2FA no está activado para este contacto."
@@ -1306,6 +1328,7 @@
     "manualPayment": "Actualmente pagas tu contribución de membresía a través de {source}. Pagando a través de nuestro sistema de membresía nos ayudarás a saber con cuánto dinero de nuestros miembros podemos contar mes a mes y te será más fácil gestionar tu contribución.",
     "manualPaymentSource": "una herramienta de terceros",
     "nextAmountChanging": "Tu contribución cambiará a {nextAmount} el {renewalDate}.",
+    "nextAmountPending": "Tu contribución cambiará a {nextAmount} en cuanto se haya autenticado el pago.",
     "paymentHistory": {
       "empty": "Los pagos anteriores y sus facturas aparecerán aquí.",
       "title": "Historial de pagos"
@@ -1412,6 +1435,7 @@
       "availableFields": "Campos disponibles",
       "description": {
         "cancelled-contribution": "Se envía a los miembros cuando se cancela su contribución recurrente. Normalmente incluye información sobre cuándo finaliza la membresía y el ID del miembro. Puede contener un enlace a una encuesta.",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "Se envía a los administradores cuando un miembro cancela su contribución. Normalmente incluye una notificación con el ID y nombre del miembro cancelado.",
         "confirm-email": "Se envía a los nuevos usuarios durante el proceso de registro para verificar su dirección de correo. Contiene un enlace de confirmación que deben pulsar para completar el registro.",
         "contribution-didnt-start": "Se envía a los miembros cuando su pago de suscripción de Stripe no se pudo iniciar (p. ej., método de pago rechazado, fondos insuficientes). Les informa que su membresía ha sido revocada por el fallo en el pago.",
@@ -1429,6 +1453,7 @@
       },
       "names": {
         "cancelled-contribution": "Contribución cancelada",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "Admin: miembro cancelado – notificación",
         "confirm-email": "Confirmar correo-e",
         "contribution-didnt-start": "Contribución no iniciada",
@@ -1500,6 +1525,16 @@
       },
       "addressLine1": {
         "required": "La dirección línea 1 es obligatoria"
+      },
+      "audio": {
+        "micPermissionDeniedBody": "Tu navegador bloqueó el acceso al micrófono. Comprueba los permisos del sitio e inténtalo de nuevo, o sube una grabación hecha en otro lugar.",
+        "micPermissionDeniedTitle": "Micrófono no disponible",
+        "recordingNotSupportedBody": "Este navegador no puede grabar audio. Sube un archivo de audio en su lugar.",
+        "recordingNotSupportedTitle": "Grabación no compatible",
+        "tooLongBody": "Este archivo dura {duration}. El máximo para esta pregunta es {max}. Recórtalo o graba una respuesta más corta.",
+        "tooLongTitle": "Grabación demasiado larga",
+        "uploadFailedTitle": "Error al subir",
+        "wrongTypeBody": "Esta pregunta solo acepta archivos {types}."
       },
       "cityOrTown": {
         "required": "La ciudad/localidad es obligatoria"
@@ -1607,6 +1642,26 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Adjuntado",
+        "delete": "Eliminar",
+        "discard": "Descartar",
+        "download": "Descargar",
+        "pause": "Pausar",
+        "paused": "En pausa",
+        "play": "Reproducir",
+        "playPause": "Reproducir o pausar",
+        "reRecord": "Grabar de nuevo",
+        "record": "Empezar a grabar",
+        "recording": "Grabando",
+        "requestingPermission": "Esperando permiso del micrófono. Permite el acceso en tu navegador para continuar.",
+        "resume": "Reanudar",
+        "stop": "Detener",
+        "tryAgain": "Intentar de nuevo",
+        "uploadInstead": "Subir un archivo de audio en su lugar",
+        "uploadLabel": "Subir un archivo de audio",
+        "uploadingHint": "Subiendo — puedes seguir rellenando el resto del formulario."
+      },
       "file": {
         "browse": "subir desde el dispositivo",
         "dropFiles": "Arrastra archivos para adjuntar",
@@ -1688,6 +1743,9 @@
       "ariaLabel": "Icono de bienvenida"
     }
   },
+  "idpLogin": {
+    "loginName": "Dirección de correo electrónico"
+  },
   "item": {
     "status": {
       "endsIn": "Finaliza en {duration}",
@@ -1757,6 +1815,10 @@
   },
   "login": {
     "backTo": "Volver a {newsroomName}",
+    "errors": {
+      "login-failed": "No se pudo iniciar sesión. Inténtalo de nuevo.",
+      "unlinked-account": "Tu acceso no está vinculado a ninguna cuenta en esta plataforma. Ponte en contacto con el soporte."
+    },
     "forgotPassword": "¿Olvidaste tu contraseña?",
     "joinNow": "¡Únete ahora!",
     "lostMfaDevice": "¿Perdiste tu dispositivo 2FA?",

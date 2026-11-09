@@ -76,6 +76,18 @@ export const getMimetypeFromExtension = (extension: string): string => {
     case 'txt':
       return 'text/plain';
 
+    // Audio
+    case 'webm':
+      return 'audio/webm';
+    case 'ogg':
+      return 'audio/ogg';
+    case 'm4a':
+      return 'audio/x-m4a';
+    case 'mp3':
+      return 'audio/mpeg';
+    case 'wav':
+      return 'audio/wav';
+
     default:
       return 'application/octet-stream';
   }
@@ -137,7 +149,8 @@ export const getMimetypeFromDecoderFormat = (
 export const getExtensionFromMimetype = (mimetype?: string): string => {
   if (!mimetype) return '.bin';
 
-  const mime = mimetype.toLowerCase();
+  // Strip codec parameters, e.g. "audio/webm;codecs=opus" -> "audio/webm"
+  const mime = mimetype.toLowerCase().split(';')[0].trim();
   switch (mime) {
     // Images
     case 'image/jpeg':
@@ -208,6 +221,19 @@ export const getExtensionFromMimetype = (mimetype?: string): string => {
       return '.otg';
     case 'text/plain':
       return '.txt';
+
+    // Audio
+    case 'audio/webm':
+      return '.webm';
+    case 'audio/ogg':
+      return '.ogg';
+    case 'audio/mp4':
+    case 'audio/x-m4a':
+      return '.m4a';
+    case 'audio/mpeg':
+      return '.mp3';
+    case 'audio/wav':
+      return '.wav';
 
     default:
       return '.bin';

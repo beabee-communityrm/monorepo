@@ -1,4 +1,4 @@
-import { ContactOriginData } from '@beabee/beabee-common';
+import { ContactOriginData, NewsletterStatus } from '@beabee/beabee-common';
 
 import {
   Column,
@@ -28,14 +28,17 @@ export class SignupFlow {
   @Column(() => Password)
   password!: Password;
 
-  @Column()
-  loginUrl!: string;
+  @Column({ type: String, nullable: true })
+  loginUrl!: string | null;
 
-  @Column()
-  setPasswordUrl!: string;
+  @Column({ type: String, nullable: true })
+  setPasswordUrl!: string | null;
 
-  @Column()
-  confirmUrl!: string;
+  @Column({ type: String, nullable: true })
+  confirmUrl!: string | null;
+
+  @Column({ type: String, nullable: true })
+  postConfirmUrl!: string | null;
 
   @Column({ type: String, nullable: true })
   paymentFlowId!: string | null;
@@ -53,4 +56,10 @@ export class SignupFlow {
 
   @Column({ type: 'jsonb', nullable: true })
   origin!: ContactOriginData | null;
+
+  @Column({ type: String, nullable: true })
+  newsletterStatus!: NewsletterStatus | null;
+
+  @Column({ type: 'jsonb', nullable: true })
+  newsletterGroups!: string[] | null;
 }

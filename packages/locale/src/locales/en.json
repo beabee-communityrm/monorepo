@@ -94,6 +94,25 @@
     "requiredFields": "Required fields",
     "savedPassword": "New password saved",
     "security": "Security",
+    "selfService": {
+      "methods": {
+        "anotherPasskey": "For another device",
+        "authenticatorApp": "Authenticator app",
+        "change": "Change",
+        "confirmRemove": {
+          "desc": "You may be asked to log in again first. You can set the method up again at any time.",
+          "title": "Remove this login method?"
+        },
+        "description": "The ways you can log in. Adding or changing a method takes you to our login service and back. The password cannot be removed.",
+        "notSetUp": "Not set up",
+        "passkey": "Passkey",
+        "password": "Password",
+        "removed": "Login method removed",
+        "securityKey": "Security key",
+        "setUp": "Set up",
+        "title": "Your login methods"
+      }
+    },
     "subTitle": "Required fields are marked with an asterisk. All information submitted here is private.",
     "subTitle-nuxt": "All personal information you provide is stored securely and kept strictly private. It will never be shared with third parties without your consent.",
     "subscriptions": "Subscriptions",
@@ -822,7 +841,9 @@
     "form": {
       "email": "Your email",
       "guestFieldsMissing": "Please tell us your contact details",
+      "incomplete": "Fill in the required fields above to continue",
       "name": "Your name",
+      "step": "Step {current} of {total}",
       "submittingResponseError": "There was a problem submitting your response, please try again"
     },
     "getStarted": "Get started",
@@ -834,9 +855,11 @@
     "loginToYourAccount-nuxt": "Log in",
     "membersOnly": "This CrowdNewsroom is open to members only. To participate",
     "membersOnly-nuxt": "This CrowdNewsroom is open to members only.",
+    "nextResponse": "Next response",
     "notAnswered": "Not answered",
+    "previousResponse": "Previous response",
     "replied": "Replied",
-    "responseNumber": "Response {number}",
+    "responseNumber": "Response {number} of {total}",
     "responseSubmitted": "Response submitted",
     "share": {
       "address": "Share using the following link:",
@@ -1001,7 +1024,7 @@
   "calloutThanksPage": {
     "backTo": "Back to {title}",
     "oneResponseWarning": "Please note that only one response is allowed per person. If you have already contributed, additional responses will not be recorded.",
-    "sharePrompt": "Help us reach more people by sharing this crowdNewsroom."
+    "sharePrompt": "Help us reach more people by sharing this CrowdNewsroom."
   },
   "callouts": {
     "access": {
@@ -1183,7 +1206,6 @@
     "roles": "Roles",
     "security": {
       "instructions": "Copy and share this link:",
-      "loginOverride": "Login override",
       "mfa": {
         "desc": "This contact has 2FA enabled. Click on the \"{ disableLabel }\" button to disable it.",
         "disabledDesc": "2FA is not enabled for this contact."
@@ -1305,6 +1327,7 @@
     "manualPayment": "You are currently paying your membership contribution via {source}. By paying through our membership system you'll help us to know how much money from our members we can rely on month on month and it'll be easier for you to manage your contribution.",
     "manualPaymentSource": "a third party tool",
     "nextAmountChanging": "Your contribution will change to {nextAmount} on {renewalDate}.",
+    "nextAmountPending": "Your contribution will change to {nextAmount} once the payment has been authenticated.",
     "paymentHistory": {
       "empty": "Past payments and their invoices will show up here.",
       "title": "Payment history"
@@ -1411,6 +1434,7 @@
       "availableFields": "Available fields",
       "description": {
         "cancelled-contribution": "Sent to members when their recurring contribution is cancelled. Typically includes information about when the membership ends, as well as the member ID. May contain a link to a survey.",
+        "cancelled-contribution-payment-failed": "Sent to members when Stripe cancels their recurring contribution because a payment repeatedly failed. Includes information about when the membership ends and a login link to set up a new payment method.",
         "cancelled-member": "Sent to administrators when a member cancels their contribution. Typically includes a notification with the ID and name of the cancelled member.",
         "confirm-email": "Sent to new users during the registration process to verify their email address. Contains a confirmation link they must click to complete registration.",
         "contribution-didnt-start": "Sent to members when their Stripe subscription payment could not be started (e.g., declined payment method, insufficient funds). Informs them that their membership has been revoked due to the payment failure.",
@@ -1428,6 +1452,7 @@
       },
       "names": {
         "cancelled-contribution": "Contribution cancelled",
+        "cancelled-contribution-payment-failed": "Contribution cancelled after failed payment",
         "cancelled-member": "Admin: cancelled member – notification",
         "confirm-email": "Confirm email",
         "contribution-didnt-start": "Contribution did not start",
@@ -1499,6 +1524,16 @@
       },
       "addressLine1": {
         "required": "Address line 1 is required"
+      },
+      "audio": {
+        "micPermissionDeniedBody": "Your browser blocked access to the microphone. Check the site permissions and try again, or upload a recording you made elsewhere.",
+        "micPermissionDeniedTitle": "Microphone not available",
+        "recordingNotSupportedBody": "This browser cannot record audio. Please upload an audio file instead.",
+        "recordingNotSupportedTitle": "Recording not supported",
+        "tooLongBody": "This file is {duration} long. The maximum for this question is {max}. Please trim it or record a shorter answer.",
+        "tooLongTitle": "Recording too long",
+        "uploadFailedTitle": "Upload failed",
+        "wrongTypeBody": "This question only accepts {types} files."
       },
       "cityOrTown": {
         "required": "City/Town is required"
@@ -1606,6 +1641,26 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Attached",
+        "delete": "Delete",
+        "discard": "Discard",
+        "download": "Download",
+        "pause": "Pause",
+        "paused": "Paused",
+        "play": "Play",
+        "playPause": "Play or pause",
+        "reRecord": "Record again",
+        "record": "Start recording",
+        "recording": "Recording",
+        "requestingPermission": "Waiting for microphone permission. Allow access in your browser to continue.",
+        "resume": "Resume",
+        "stop": "Stop",
+        "tryAgain": "Try again",
+        "uploadInstead": "Upload an audio file instead",
+        "uploadLabel": "Upload an audio file",
+        "uploadingHint": "Uploading — you can keep filling in the rest of the form."
+      },
       "file": {
         "browse": "upload from device",
         "dropFiles": "Drop files to attach",
@@ -1687,6 +1742,9 @@
       "ariaLabel": "Welcome icon"
     }
   },
+  "idpLogin": {
+    "loginName": "Email address"
+  },
   "item": {
     "status": {
       "endsIn": "Ends in {duration}",
@@ -1756,6 +1814,10 @@
   },
   "login": {
     "backTo": "Back to {newsroomName}",
+    "errors": {
+      "login-failed": "Login failed. Please try again.",
+      "unlinked-account": "Your login is not linked to an account on this platform. Please contact support."
+    },
     "forgotPassword": "Forgot your password?",
     "joinNow": "Join now!",
     "lostMfaDevice": "Lost your 2FA device?",

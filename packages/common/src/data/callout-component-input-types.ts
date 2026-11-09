@@ -10,6 +10,7 @@ export const calloutComponentInputTypes: Array<
   ...calloutComponentInputSelectableTypes,
   ...calloutComponentInputTextTypes,
   CalloutComponentType.INPUT_ADDRESS,
+  CalloutComponentType.INPUT_AUDIO_RECORDER,
   CalloutComponentType.INPUT_CHECKBOX,
   CalloutComponentType.INPUT_CURRENCY,
   CalloutComponentType.INPUT_DATE_TIME,

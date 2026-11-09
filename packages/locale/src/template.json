@@ -94,6 +94,25 @@
     "requiredFields": "",
     "savedPassword": "",
     "security": "",
+    "selfService": {
+      "methods": {
+        "anotherPasskey": "",
+        "authenticatorApp": "",
+        "change": "",
+        "confirmRemove": {
+          "desc": "",
+          "title": ""
+        },
+        "description": "",
+        "notSetUp": "",
+        "passkey": "",
+        "password": "",
+        "removed": "",
+        "securityKey": "",
+        "setUp": "",
+        "title": ""
+      }
+    },
     "subTitle": "",
     "subTitle-nuxt": "",
     "subscriptions": "",
@@ -822,7 +841,9 @@
     "form": {
       "email": "",
       "guestFieldsMissing": "",
+      "incomplete": "",
       "name": "",
+      "step": "",
       "submittingResponseError": ""
     },
     "getStarted": "",
@@ -834,7 +855,9 @@
     "loginToYourAccount-nuxt": "",
     "membersOnly": "",
     "membersOnly-nuxt": "",
+    "nextResponse": "",
     "notAnswered": "",
+    "previousResponse": "",
     "replied": "",
     "responseNumber": "",
     "responseSubmitted": "",
@@ -1183,7 +1206,6 @@
     "roles": "",
     "security": {
       "instructions": "",
-      "loginOverride": "",
       "mfa": {
         "desc": "",
         "disabledDesc": ""
@@ -1305,6 +1327,7 @@
     "manualPayment": "",
     "manualPaymentSource": "",
     "nextAmountChanging": "",
+    "nextAmountPending": "",
     "paymentHistory": {
       "empty": "",
       "title": ""
@@ -1411,6 +1434,7 @@
       "availableFields": "",
       "description": {
         "cancelled-contribution": "",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "",
         "confirm-email": "",
         "contribution-didnt-start": "",
@@ -1428,6 +1452,7 @@
       },
       "names": {
         "cancelled-contribution": "",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "",
         "confirm-email": "",
         "contribution-didnt-start": "",
@@ -1499,6 +1524,16 @@
       },
       "addressLine1": {
         "required": ""
+      },
+      "audio": {
+        "micPermissionDeniedBody": "",
+        "micPermissionDeniedTitle": "",
+        "recordingNotSupportedBody": "",
+        "recordingNotSupportedTitle": "",
+        "tooLongBody": "",
+        "tooLongTitle": "",
+        "uploadFailedTitle": "",
+        "wrongTypeBody": ""
       },
       "cityOrTown": {
         "required": ""
@@ -1606,6 +1641,26 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "",
+        "delete": "",
+        "discard": "",
+        "download": "",
+        "pause": "",
+        "paused": "",
+        "play": "",
+        "playPause": "",
+        "reRecord": "",
+        "record": "",
+        "recording": "",
+        "requestingPermission": "",
+        "resume": "",
+        "stop": "",
+        "tryAgain": "",
+        "uploadInstead": "",
+        "uploadLabel": "",
+        "uploadingHint": ""
+      },
       "file": {
         "browse": "",
         "dropFiles": "",
@@ -1687,6 +1742,9 @@
       "ariaLabel": ""
     }
   },
+  "idpLogin": {
+    "loginName": ""
+  },
   "item": {
     "status": {
       "endsIn": "",
@@ -1756,6 +1814,10 @@
   },
   "login": {
     "backTo": "",
+    "errors": {
+      "login-failed": "",
+      "unlinked-account": ""
+    },
     "forgotPassword": "",
     "joinNow": "",
     "lostMfaDevice": "",

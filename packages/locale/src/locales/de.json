@@ -94,6 +94,25 @@
     "requiredFields": "Pflichtfelder",
     "savedPassword": "Das neue Passwort wurde gespeichert.",
     "security": "Sicherheit",
+    "selfService": {
+      "methods": {
+        "anotherPasskey": "Für ein weiteres Gerät",
+        "authenticatorApp": "Authenticator-App",
+        "change": "Ändern",
+        "confirmRemove": {
+          "desc": "Möglicherweise müssen Sie sich zuerst erneut anmelden. Sie können die Methode jederzeit wieder einrichten.",
+          "title": "Diese Anmeldemethode entfernen?"
+        },
+        "description": "So können Sie sich anmelden. Zum Hinzufügen oder Ändern leiten wir Sie zu unserem Anmeldedienst und anschließend zurück. Das Passwort kann nicht entfernt werden.",
+        "notSetUp": "Nicht eingerichtet",
+        "passkey": "Passkey",
+        "password": "Passwort",
+        "removed": "Anmeldemethode entfernt",
+        "securityKey": "Sicherheitsschlüssel",
+        "setUp": "Einrichten",
+        "title": "Ihre Anmeldemethoden"
+      }
+    },
     "subTitle": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "subTitle-nuxt": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "subscriptions": "Abonnements",
@@ -823,7 +842,9 @@
     "form": {
       "email": "Ihre E-Mail-Adresse",
       "guestFieldsMissing": "Bitte geben Sie uns Ihre Kontaktdaten.",
+      "incomplete": "Bitte füllen Sie die Pflichtfelder oben aus, um fortzufahren",
       "name": "Ihr Name",
+      "step": "Schritt {current} von {total}",
       "submittingResponseError": "Es gab ein Problem bei der Übermittlung Ihrer Antworten. Bitte versuchen Sie es erneut."
     },
     "getStarted": "Starten",
@@ -835,9 +856,11 @@
     "loginToYourAccount-nuxt": "Einloggen",
     "membersOnly": "An diesem CrowdNewsroom können nur Mitglieder teilnehmen. Um teilzunehmen…",
     "membersOnly-nuxt": "An diesem CrowdNewsroom können nur Mitglieder teilnehmen.",
+    "nextResponse": "Nächste Antwort",
     "notAnswered": "Nicht beantwortet",
+    "previousResponse": "Vorherige Antwort",
     "replied": "Beantwortet",
-    "responseNumber": "Antwort {number}",
+    "responseNumber": "Antwort {number} von {total}",
     "responseSubmitted": "Antwort eingereicht",
     "share": {
       "address": "Diesen CrowdNewsroom per Link teilen:",
@@ -1184,7 +1207,6 @@
     "roles": "Rollen",
     "security": {
       "instructions": "Link kopieren und teilen:",
-      "loginOverride": "Automatischer Login",
       "mfa": {
         "desc": "Dieser Kontakt hat 2FA aktiviert. Klicken Sie auf \"{ disableLabel }\", um es zu deaktivieren.",
         "disabledDesc": "Dieser Kontakt hat keine 2FA aktiviert."
@@ -1306,6 +1328,7 @@
     "manualPayment": "Sie zahlen Ihren Beitrag aktuell via {source}. Indem Sie über unser Mitgliedersystem bezahlen, bekommen wir einen besseren Überblick, auf welche Beiträge wir uns monatlich verlassen können. Für Sie wird es außerdem einfacher, Ihren Beitrag jederzeit zu ändern.",
     "manualPaymentSource": "einem Drittanbieter",
     "nextAmountChanging": "Ab dem {renewalDate} zahlen Sie {nextAmount}.",
+    "nextAmountPending": "Sobald die Zahlung bestätigt wurde, zahlen Sie {nextAmount}.",
     "paymentHistory": {
       "empty": "Ältere Zahlungen und Rechnungen finden Sie hier.",
       "title": "Bisher gezahlte Beiträge"
@@ -1412,6 +1435,7 @@
       "availableFields": "Verfügbare Felder",
       "description": {
         "cancelled-contribution": "Wird an Personen mit wiederkehrenden Beitrag gesendet, wenn ihr wiederkehrender Beitrag gekündigt wird. Enthält in der Regel Informationen darüber, wann der Beitrag endet, sowie die Mitglieds-ID. Kann einen Link zu einer Umfrage enthalten.",
+        "cancelled-contribution-payment-failed": "Wird an Personen gesendet, wenn Stripe ihren wiederkehrenden Beitrag beendet, weil eine Zahlung wiederholt fehlgeschlagen ist. Enthält Informationen darüber, wann der Beitrag endet, sowie einen Login-Link zum Hinterlegen einer neuen Zahlungsmethode.",
         "cancelled-member": "Wird an Admins gesendet, wenn eine Person den Beitrag kündigt. Enthält in der Regel eine Benachrichtigung mit der ID und dem Namen der gekündigten Person.",
         "confirm-email": "Wird während des Registrierungsprozesses an neue Nutzende gesendet, um ihre E-Mail-Adresse zu verifizieren. Enthält einen Bestätigungslink, der angeklickt werden muss, um die Registrierung abzuschließen.",
         "contribution-didnt-start": "Wird an Personen gesendet, wenn ihre Stripe-Abonnementzahlung nicht gestartet werden konnte (z. B. abgelehnte Zahlungsmethode, unzureichende Deckung). Informiert sie darüber, dass ihr wiederkehrender Beitrag aufgrund des Zahlungsfehlers widerrufen wurde.",
@@ -1429,6 +1453,7 @@
       },
       "names": {
         "cancelled-contribution": "Beitrag gekündigt",
+        "cancelled-contribution-payment-failed": "Beitrag nach fehlgeschlagener Zahlung beendet",
         "cancelled-member": "Admin: Gekündigtes Mitglied - Benachrichtigung",
         "confirm-email": "E-Mail bestätigen",
         "contribution-didnt-start": "Beitrag hat nicht begonnen",
@@ -1500,6 +1525,16 @@
       },
       "addressLine1": {
         "required": "Adresse benötigt"
+      },
+      "audio": {
+        "micPermissionDeniedBody": "Ihr Browser hat den Zugriff auf das Mikrofon blockiert. Prüfen Sie die Website-Berechtigungen und versuchen Sie es erneut, oder laden Sie eine anderswo erstellte Aufnahme hoch.",
+        "micPermissionDeniedTitle": "Mikrofon nicht verfügbar",
+        "recordingNotSupportedBody": "Dieser Browser kann keine Audioaufnahmen erstellen. Bitte laden Sie stattdessen eine Audiodatei hoch.",
+        "recordingNotSupportedTitle": "Aufnahme nicht unterstützt",
+        "tooLongBody": "Diese Datei ist {duration} lang. Das Maximum für diese Frage beträgt {max}. Bitte kürzen Sie die Datei oder nehmen Sie eine kürzere Antwort auf.",
+        "tooLongTitle": "Aufnahme zu lang",
+        "uploadFailedTitle": "Hochladen fehlgeschlagen",
+        "wrongTypeBody": "Bei dieser Frage sind nur {types}-Dateien möglich."
       },
       "cityOrTown": {
         "required": "Ort benötigt"
@@ -1607,6 +1642,26 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Angehängt",
+        "delete": "Löschen",
+        "discard": "Verwerfen",
+        "download": "Herunterladen",
+        "pause": "Pause",
+        "paused": "Pausiert",
+        "play": "Abspielen",
+        "playPause": "Abspielen oder pausieren",
+        "reRecord": "Erneut aufnehmen",
+        "record": "Aufnahme starten",
+        "recording": "Aufnahme läuft",
+        "requestingPermission": "Warten auf Mikrofonzugriff. Bitte erlauben Sie den Zugriff in Ihrem Browser, um fortzufahren.",
+        "resume": "Fortsetzen",
+        "stop": "Stopp",
+        "tryAgain": "Erneut versuchen",
+        "uploadInstead": "Stattdessen eine Audiodatei hochladen",
+        "uploadLabel": "Audiodatei hochladen",
+        "uploadingHint": "Wird hochgeladen – Sie können den Rest des Formulars weiter ausfüllen."
+      },
       "file": {
         "browse": "Upload vom Gerät",
         "dropFiles": "Dateien hierher ziehen",
@@ -1688,6 +1743,9 @@
       "ariaLabel": "Willkommen-Symbol"
     }
   },
+  "idpLogin": {
+    "loginName": "E-Mail-Adresse"
+  },
   "item": {
     "status": {
       "endsIn": "Endet in {duration}",
@@ -1757,6 +1815,10 @@
   },
   "login": {
     "backTo": "Zurück zu {newsroomName}",
+    "errors": {
+      "login-failed": "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
+      "unlinked-account": "Dein Login ist mit keinem Konto auf dieser Plattform verknüpft. Bitte wende dich an den Support."
+    },
     "forgotPassword": "Passwort vergessen?",
     "joinNow": "Jetzt Mitglied werden!",
     "lostMfaDevice": "2FA-Gerät verloren?",

@@ -59,6 +59,18 @@ export interface PreparedEmail extends Email {
   fromName: string;
 }
 
+/** The SMTP account beabee's emails leave through */
+export interface EmailSmtpSettings {
+  host: string;
+  port: number;
+  /** TLS from the first byte, otherwise the server decides on STARTTLS */
+  secure: boolean;
+  user: string;
+  pass: string;
+  fromEmail: string;
+  fromName: string;
+}
+
 export interface EmailProvider {
   sendEmail(
     email: Email,

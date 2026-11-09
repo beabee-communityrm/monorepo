@@ -13,6 +13,10 @@ export interface ListUserArgs {
   unlinked?: boolean | undefined;
 }
 
+export interface UnlockUserArgs {
+  email: string;
+}
+
 export interface DeleteUserArgs {
   email?: string | undefined;
   withoutPassword?: boolean | undefined;

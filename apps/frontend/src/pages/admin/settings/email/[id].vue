@@ -147,6 +147,7 @@ const missingMergeTags = computed(() => {
     'reset-password': ['*|RPLINK|*'],
     'confirm-email': ['*|CONFIRMLINK|*'],
     'setup-account': ['*|CONFIRMLINK|*'],
+    'cancelled-contribution-payment-failed': ['*|LOGINLINK|*'],
     'contribution-didnt-start': ['*|LOGINLINK|*'],
     'email-exists-login': ['*|LOGINLINK|*'],
     'email-exists-set-password': ['*|SPLINK|*'],

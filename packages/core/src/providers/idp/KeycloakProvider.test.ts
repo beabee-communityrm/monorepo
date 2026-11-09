@@ -33,6 +33,27 @@ afterEach(() => {
 // Only the provider's own logic is tested here; the Keycloak API contract is
 // verified against a real instance, see docs/oidc-local-development.md
 describe('KeycloakProvider', () => {
+  it('lists the credential types the account page knows as login methods', async () => {
+    mockFetch(
+      tokenResponse(),
+      new Response(
+        JSON.stringify([
+          { id: 'c1', type: 'password' },
+          { id: 'c2', type: 'webauthn-passwordless', userLabel: 'Laptop' },
+          { id: 'c3', type: 'otp', userLabel: 'Authenticator' },
+          { id: 'c4', type: 'recovery-codes' },
+        ])
+      )
+    );
+
+    const provider = new KeycloakProvider(settings);
+    await expect(provider.listAuthMethods('u1')).resolves.toEqual([
+      { id: 'c1', type: 'password' },
+      { id: 'c2', type: 'passkey', name: 'Laptop' },
+      { id: 'c3', type: 'authenticatorApp', name: 'Authenticator' },
+    ]);
+  });
+
   it('caches the access token until it expires', async () => {
     const fetch = mockFetch(
       tokenResponse(),

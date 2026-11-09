@@ -1,4 +1,5 @@
 export * from './api-error';
+export * from './audio-playback';
 export * from './callouts';
 export * from './filters';
 export * from './geocode';

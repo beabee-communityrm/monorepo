@@ -1,4 +1,5 @@
 import { updateSalesTaxRate } from '@beabee/core/lib/stripe';
+import { idpService } from '@beabee/core/services/IdpService';
 
 import {
   Authorized,
@@ -59,6 +60,9 @@ export class ContentController {
     @PartialBody() data: GetContentGeneralDto
   ): Promise<GetContentGeneralDto> {
     await ContentTransformer.updateOne('general', data);
+    if (data.theme !== undefined || data.logoUrl !== undefined) {
+      await idpService.updateBranding();
+    }
     return ContentTransformer.fetchOne('general');
   }
 

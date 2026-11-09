@@ -193,6 +193,7 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
     contactFilters.activeUser,
     t('contacts.data.activeUser')
   ),
+  idpLinked: withLabel(contactFilters.idpLinked, t('contacts.data.idpLinked')),
   membershipStarts: withLabel(
     contactFilters.membershipStarts,
     t('contacts.data.membershipStarts')
@@ -239,14 +240,11 @@ export function useContactFilters() {
           'firstname',
           'lastname',
           'email',
+          'deliveryAddressCountry',
           'organisation',
           'joined',
           'lastSeen',
           'newsletterStatus',
-          'campaign',
-          'medium',
-          'source',
-          'addedBy',
         ]),
         newsletterGroups: {
           ...filterItems.value.newsletterGroups,
@@ -260,7 +258,13 @@ export function useContactFilters() {
             options: tagItems.value,
           }),
         },
-        ...withItems(filterItems, ['deliveryAddressCountry', 'deliveryOptIn']),
+        ...withItems(filterItems, [
+          'campaign',
+          'medium',
+          'source',
+          'addedBy',
+          'deliveryOptIn',
+        ]),
       },
     },
     {

@@ -329,6 +329,13 @@ export class GCProvider extends PaymentProvider {
     );
   }
 
+  static async fetchSubscriptionCreatedAt(
+    subscriptionId: string
+  ): Promise<Date> {
+    const subscription = await gocardless.subscriptions.get(subscriptionId);
+    return new Date(subscription.created_at!);
+  }
+
   /**
    * Check the health of the GoCardless integration. As GoCardless is a
    * deprecated payment method, this is just a basic connectivity check that

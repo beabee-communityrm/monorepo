@@ -1,9 +1,30 @@
+import type {
+  ContactAuthMethodType,
+  GetContactAuthMethodData,
+  LoginAction,
+} from '@beabee/beabee-common';
+
 import type { KeycloakIdpConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
 import type { Contact } from '#models/index';
-import type { IdpProvider } from '#type/index';
+import type { IdpLoginAction, IdpProvider } from '#type/index';
 
 const log = mainLogger.child({ app: 'keycloak-idp-provider' });
+
+// Application Initiated Actions, run on the member's session during login
+const KC_ACTIONS: Record<Exclude<LoginAction, 'setupCredential'>, string> = {
+  changePassword: 'UPDATE_PASSWORD',
+  addPasskey: 'webauthn-register-passwordless',
+  setupMfa: 'CONFIGURE_TOTP',
+};
+
+// Keycloak credential types; the realm offers no other login methods
+const KC_CREDENTIAL_TYPES: Record<string, ContactAuthMethodType> = {
+  password: 'password',
+  'webauthn-passwordless': 'passkey',
+  otp: 'authenticatorApp',
+  webauthn: 'securityKey',
+};
 
 /**
  * Mirrors contacts into a Keycloak realm via the admin REST API, authenticated
@@ -75,6 +96,7 @@ export class KeycloakProvider implements IdpProvider {
   }
 
   async createContact(contact: Contact): Promise<string> {
+    log.info(`Create user for ${contact.email}`);
     // Keycloak returns an empty 201 with the new user's URL in Location
     const resp = await this.request('POST', '/users', {
       username: contact.email,
@@ -96,18 +118,120 @@ export class KeycloakProvider implements IdpProvider {
     contact: Contact,
     updates: Partial<Contact>
   ): Promise<void> {
-    if (updates.email || updates.firstname || updates.lastname) {
-      await this.request('PUT', `/users/${subject}`, {
-        username: contact.email,
-        email: contact.email,
-        firstName: contact.firstname,
-        lastName: contact.lastname,
-        emailVerified: true,
-      });
+    if (!(updates.email || updates.firstname || updates.lastname)) {
+      log.info(
+        `Ignoring update for user ${subject}, no account fields changed`
+      );
+      return;
     }
+    log.info(`Update user ${subject}`);
+    await this.request('PUT', `/users/${subject}`, {
+      username: contact.email,
+      email: contact.email,
+      firstName: contact.firstname,
+      lastName: contact.lastname,
+      emailVerified: true,
+    });
   }
 
   async permanentlyDeleteContact(subject: string): Promise<void> {
+    log.info(`Delete user ${subject}`);
     await this.request('DELETE', `/users/${subject}`);
+  }
+
+  async listAuthMethods(subject: string): Promise<GetContactAuthMethodData[]> {
+    const resp = await this.request('GET', `/users/${subject}/credentials`);
+    const credentials = (await resp.json()) as {
+      id: string;
+      type: string;
+      userLabel?: string;
+    }[];
+    return credentials.flatMap(({ id, type, userLabel }) => {
+      const methodType = KC_CREDENTIAL_TYPES[type];
+      return methodType
+        ? [{ id, type: methodType, ...(userLabel && { name: userLabel }) }]
+        : [];
+    });
+  }
+
+  async removeAuthMethod(subject: string, id: string): Promise<void> {
+    await this.request('DELETE', `/users/${subject}/credentials/${id}`);
+  }
+
+  // Keycloak is the development IdP only; branding is not synced to it
+  async setup(): Promise<void> {
+    log.info('Skipping setup, not supported for Keycloak');
+  }
+  // Clearing the login failures succeeds whether or not the account was locked
+  async unlockContact(subject: string): Promise<boolean> {
+    await this.request(
+      'DELETE',
+      `/attack-detection/brute-force/users/${subject}`
+    );
+    return true;
+  }
+  async updateBranding(): Promise<void> {
+    log.info('Skipping branding, not supported for Keycloak');
+  }
+  async resolveLoginUrl(
+    authorizeUrl: string,
+    action: IdpLoginAction
+  ): Promise<string> {
+    if (action.type === 'setupCredential') {
+      return await this.createMagicLink(authorizeUrl, action.subject);
+    }
+    const url = new URL(authorizeUrl);
+    url.searchParams.set('kc_action', KC_ACTIONS[action.type]);
+    return url.href;
+  }
+
+  /**
+   * A magic link (keycloak-magic-link extension, part of the development
+   * image) logs the member in with the parameters of beabee's authorization
+   * request, so the callback matches the login state. The required action
+   * makes them set a password on the way.
+   */
+  private async createMagicLink(
+    authorizeUrl: string,
+    subject: string
+  ): Promise<string> {
+    log.info(`Create magic link for user ${subject}`);
+    await this.request('PUT', `/users/${subject}`, {
+      requiredActions: ['UPDATE_PASSWORD'],
+    });
+    const user = (await (
+      await this.request('GET', `/users/${subject}`)
+    ).json()) as {
+      username: string;
+    };
+
+    const authorize = new URL(authorizeUrl).searchParams;
+    const resp = await fetch(
+      `${this.settings.url}/realms/${this.settings.realm}/magic-link`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${await this.getAccessToken()}`,
+        },
+        body: JSON.stringify({
+          username: user.username,
+          client_id: authorize.get('client_id'),
+          redirect_uri: authorize.get('redirect_uri'),
+          scope: authorize.get('scope'),
+          state: authorize.get('state'),
+          nonce: authorize.get('nonce'),
+          code_challenge: authorize.get('code_challenge'),
+          reusable: false,
+        }),
+      }
+    );
+    if (!resp.ok) {
+      throw new Error(
+        `Keycloak magic link error: ${resp.status}: ${await resp.text()}`
+      );
+    }
+    const { link } = (await resp.json()) as { link: string };
+    return link;
   }
 }

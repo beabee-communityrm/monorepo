@@ -1,0 +1,24 @@
+---
+subject: Ihr Beitrag wurde beendet
+---
+
+<p>Hallo *|FNAME|* *|LNAME|*</p>
+<p><br /></p>
+<p>
+  leider konnte eine Zahlung für Ihren Beitrag an *|ORGNAME|* nicht
+  abgeschlossen werden, daher wurde Ihr regelmäßiger Beitrag beendet. Ihre
+  Mitgliedschaft bleibt bis zum *|EXPIRES|* aktiv.
+</p>
+<p><br /></p>
+<p>
+  Um uns weiter zu unterstützen, können Sie sich über den untenstehenden Link
+  einloggen, eine Zahlungsmethode hinterlegen und Ihren Beitrag neu starten,
+  oder unser Support-Team unter
+  <a href="mailto:*|SUPPORTEMAIL|*">*|SUPPORTEMAIL|*</a> kontaktieren.
+</p>
+<p><br /></p>
+<p>
+  <a href="*|LOGINLINK|*"><b>Zum Login</b></a>
+</p>
+<p><br /></p>
+<p>Danke und freundliche Grüße</p>

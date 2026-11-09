@@ -11,13 +11,15 @@ meta:
       <CalloutLanguageSelect :callout="callout" />
     </div>
 
+    <h1 v-if="!isEmbed" class="text-xl">{{ callout.title }}</h1>
+
     <template v-if="responses /* Avoids layout thrashing */">
       <CalloutThankYouBanner :callout="callout" :level="2" size="lg" />
 
       <CalloutResponseList
         v-if="responses.length"
         :form-schema="callout.formSchema"
-        :responses="responses.slice(0, 1)"
+        :responses="latestResponse"
         hide-date
         :add-to="respondAction === 'add' ? respondTo : undefined"
         :edit-to="respondAction === 'edit' ? respondTo : undefined"
@@ -92,4 +94,12 @@ addBreadcrumb(
 const { responses, respondAction, respondTo } = useCalloutResponse(
   toRef(props, 'callout')
 );
+
+/** Only the response just submitted, so the list shows it on its own */
+const latestResponse = computed(() => ({
+  total: 1,
+  count: 1,
+  offset: 0,
+  items: responses.value?.slice(0, 1) ?? [],
+}));
 </script>

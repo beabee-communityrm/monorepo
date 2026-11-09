@@ -55,9 +55,14 @@ import { adminMenu, menu } from './menu-list';
 const { t } = useI18n();
 
 const router = useRouter();
-const doLogout = () => {
-  client.auth.logout();
-  router.push('/auth/login');
+const doLogout = async () => {
+  const { redirectUrl } = await client.auth.logout();
+  // Under OIDC login the identity provider session has to be ended too
+  if (redirectUrl) {
+    window.location.href = redirectUrl;
+  } else {
+    router.push('/auth/login');
+  }
 };
 
 const adminMenuVisible = computed(() =>

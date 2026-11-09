@@ -1,6 +1,7 @@
 import { ContentData, ContentId } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
+import { isOidcEnabled } from '@beabee/core/lib/oidc';
 import { Content } from '@beabee/core/models';
 import OptionsService, {
   OptionKey,
@@ -165,6 +166,7 @@ const contentData = {
     footerLinks: ['data', []],
     hideContribution: ['data', false],
     logoUrl: ['option', 'logo', 'text'],
+    oidcEnabled: ['readonly', isOidcEnabled],
     organisationName: ['option', 'organisation', 'text'],
     siteUrl: ['option', 'home-link-url', 'text'],
     supportEmail: ['option', 'support-email', 'text'],

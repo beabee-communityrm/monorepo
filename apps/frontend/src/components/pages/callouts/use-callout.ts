@@ -5,6 +5,7 @@ import {
   type GetCalloutResponseDataWith,
   GetCalloutResponseWith,
   ItemStatus,
+  type Paginated,
 } from '@beabee/beabee-common';
 import { isLocale, config as localeConfig } from '@beabee/locale';
 
@@ -60,9 +61,13 @@ export function useCalloutResponse(
   const { isOpen, isPreview, showLoginPrompt, showMemberOnlyPrompt } =
     useCallout(callout);
 
+  const responsesPaginated =
+    ref<
+      Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Answers>>
+    >();
+
   /** The current user's responses, newest first; undefined until loaded */
-  const responses =
-    ref<GetCalloutResponseDataWith<GetCalloutResponseWith.Answers>[]>();
+  const responses = computed(() => responsesPaginated.value?.items);
 
   /** Which respond action is open to them, if any */
   const respondAction = computed<'start' | 'add' | 'edit' | null>(() => {
@@ -98,11 +103,11 @@ export function useCalloutResponse(
     if (!fetchResponses) return;
 
     if (isPreview.value || !currentUser.value) {
-      responses.value = [];
+      responsesPaginated.value = { total: 0, count: 0, offset: 0, items: [] };
       return;
     }
 
-    const result = await client.callout.listResponses(
+    responsesPaginated.value = await client.callout.listResponses(
       callout.value.slug,
       {
         rules: {
@@ -114,11 +119,11 @@ export function useCalloutResponse(
       },
       [GetCalloutResponseWith.Answers]
     );
-    responses.value = result.items;
   });
 
   return {
     responses,
+    responsesPaginated,
     canRespond,
     respondAction,
     respondTo,

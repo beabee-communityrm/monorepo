@@ -16,6 +16,7 @@ export const activityFilters = {
   actorType: {
     type: 'enum',
     options: Object.values(ActivityActorType),
+    nullable: true,
   },
   actorId: {
     type: 'contact',

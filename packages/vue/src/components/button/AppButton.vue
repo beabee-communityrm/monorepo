@@ -38,13 +38,14 @@
     :is="is"
     v-else
     ref="innerButton"
-    :disabled="disabled || loading"
+    :disabled="(disabled && !disabledFocusable) || loading"
     :class="buttonClasses"
     :type="type"
     :title="title"
     :aria-label="accessibleLabel"
     :aria-busy="loading"
     :aria-disabled="disabled"
+    @click.capture="blockDisabledClick"
   >
     <font-awesome-icon
       v-if="icon"
@@ -90,6 +91,7 @@
  * <AppButton :to="{ name: 'home' }">Go Home</AppButton>
  *
  * @props {boolean} [disabled=false] - Disables the button
+ * @props {boolean} [disabledFocusable=false] - Keeps a disabled button in the tab order
  * @props {boolean} [loading=false] - Shows a loading spinner
  * @props {('button'|'submit')} [type='button'] - HTML button type
  * @props {string} [href] - URL for anchor tag
@@ -183,6 +185,11 @@ const sizeClasses = {
 export interface AppButtonProps {
   /** Whether the button is disabled */
   disabled?: boolean;
+  /**
+   * Keeps a disabled button focusable, marked only with `aria-disabled`, so it
+   * can still be reached and read.
+   */
+  disabledFocusable?: boolean;
   /** Whether to show loading state */
   loading?: boolean;
   /** HTML button type */
@@ -209,6 +216,7 @@ export interface AppButtonProps {
 
 const props = withDefaults(defineProps<AppButtonProps>(), {
   disabled: false,
+  disabledFocusable: false,
   loading: false,
   type: 'button',
   href: undefined,
@@ -226,6 +234,16 @@ const innerButton = ref<HTMLElement | null>(null);
 
 /** Value for aria-label: explicit ariaLabel or title as fallback */
 const accessibleLabel = computed(() => props.ariaLabel || props.title);
+
+// aria-disabled does not stop the browser activating the button, so a disabled
+// focusable one has to be blocked here. Capture runs ahead of the listeners a
+// caller binds with @click.
+const blockDisabledClick = (event: MouseEvent) => {
+  if (props.disabled) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }
+};
 
 const focus = () => {
   if (innerButton.value) {

@@ -1,11 +1,8 @@
-import {
-  ALLOWED_IMAGE_MIME_TYPES,
-  isSupportedImageType,
-} from '@beabee/beabee-common';
 import type { UploadFileResponse } from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';
 import {
   BadRequestError,
+  NotFoundError,
   UnauthorizedError,
   UnsupportedFileTypeError,
 } from '@beabee/core/errors';
@@ -30,6 +27,7 @@ import { pipeline } from 'stream/promises';
 
 import { RateLimit } from '../decorators/index.js';
 import { uploadMiddleware } from '../middlewares/index.js';
+import ContentTransformer from '../transformers/ContentTransformer.js';
 
 @JsonController('/images')
 export class ImageController {
@@ -55,11 +53,11 @@ export class ImageController {
     }
 
     // Verify file type is allowed before consuming the stream
-    if (!isSupportedImageType(file.mimetype)) {
+    if (!imageService.isSupportedType(file.mimetype)) {
       file.stream.resume(); // Drain the stream so the request completes
       throw new UnsupportedFileTypeError(
         file.mimetype,
-        ALLOWED_IMAGE_MIME_TYPES
+        imageService.allowedMimeTypes
       );
     }
 
@@ -85,6 +83,21 @@ export class ImageController {
     }
 
     return response;
+  }
+
+  /**
+   * The join page's background image, referenced from the stylesheet of the
+   * IdP's login pages. Declared before `/:id`, which would otherwise read
+   * `login-background` as an image ID.
+   */
+  @Get('/login-background')
+  async getLoginBackground(@Res() res: Response): Promise<Response> {
+    const { backgroundUrl } = await ContentTransformer.fetchOne('general');
+    const id = backgroundUrl.match(/^images\/(.+)$/)?.[1];
+    if (!id) {
+      throw new NotFoundError();
+    }
+    return this.getImage(res, id, 1800);
   }
 
   /**

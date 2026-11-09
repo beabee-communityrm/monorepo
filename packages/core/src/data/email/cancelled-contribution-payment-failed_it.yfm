@@ -1,0 +1,24 @@
+---
+subject: Il tuo contributo è terminato
+---
+
+<p>Ciao *|FNAME|*,</p>
+<p><br /></p>
+<p>
+  Purtroppo non è stato possibile completare un pagamento del tuo contributo a
+  *|ORGNAME|*, quindi il tuo contributo ricorrente è stato annullato. La tua
+  membership resta attiva fino al *|EXPIRES|*.
+</p>
+<p><br /></p>
+<p>
+  Per continuare a sostenerci, accedi tramite il link qui sotto per impostare un
+  metodo di pagamento e riattivare il tuo contributo, oppure contatta il nostro
+  team di supporto all'indirizzo
+  <a href="mailto:*|SUPPORTEMAIL|*">*|SUPPORTEMAIL|*</a>
+</p>
+<p><br /></p>
+<p>
+  <a href="*|LOGINLINK|*"><b>Login</b></a>
+</p>
+<p><br /></p>
+<p>Cordiali saluti</p>

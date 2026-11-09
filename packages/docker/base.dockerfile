@@ -1,4 +1,4 @@
-ARG NODE_VERSION=24.19-bookworm-slim
+ARG NODE_VERSION=24.22.1-bookworm-slim
 
 ##################################
 # The base stage

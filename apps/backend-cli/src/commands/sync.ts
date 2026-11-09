@@ -130,6 +130,34 @@ export const syncCommand: CommandModule = {
         handler: () => {},
       })
       .command({
+        command: 'contact-sync-service',
+        describe: 'Sync data with the contact sync service',
+        builder: (yargs) =>
+          yargs.command({
+            command: 'push',
+            describe:
+              'Push contacts to the contact sync service, all of them by default',
+            builder: (yargs) =>
+              yargs
+                .option('contactIds', {
+                  type: 'array',
+                  string: true,
+                  description: 'Push specific contact IDs only',
+                })
+                .option('dryRun', {
+                  type: 'boolean',
+                  description: 'Run without making changes',
+                  default: false,
+                }),
+            handler: async (argv) => {
+              const { pushContacts } =
+                await import('../actions/sync/contact-sync-service/push.js');
+              return pushContacts(argv);
+            },
+          }),
+        handler: () => {},
+      })
+      .command({
         command: 'segments',
         describe: 'Process segment memberships',
         builder: (yargs) =>

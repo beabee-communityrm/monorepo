@@ -1309,6 +1309,7 @@ __metadata:
     juice: "npm:^11.1.1"
     moment: "npm:^2.30.1"
     nodemailer: "npm:^6.10.1"
+    openid-client: "npm:^6.8.8"
     otpauth: "npm:^9.5.1"
     passport: "npm:^0.7.0"
     passport-local: "npm:^1.0.0"
@@ -1419,7 +1420,7 @@ __metadata:
     eslint: "npm:^9.39.4"
     eslint-config-prettier: "npm:^9.1.2"
     eslint-plugin-vue: "npm:^9.33.0"
-    formiojs: "npm:@beabee/formiojs@^4.15.11"
+    formiojs: "npm:@beabee/formiojs@^4.15.15"
     maplibre-gl: "npm:^3.6.2"
     mitt: "npm:^3.0.1"
     otpauth: "npm:^9.5.1"
@@ -1473,7 +1474,7 @@ __metadata:
     eslint: "npm:^9.39.4"
     eslint-config-prettier: "npm:^9.1.2"
     eslint-plugin-vue: "npm:^9.33.0"
-    formiojs: "npm:@beabee/formiojs@^4.15.11"
+    formiojs: "npm:@beabee/formiojs@^4.15.15"
     maplibre-gl: "npm:^3.6.2"
     mitt: "npm:^3.0.1"
     otpauth: "npm:^9.5.1"
@@ -1506,7 +1507,6 @@ __metadata:
     "@types/chance": "npm:^1.1.8"
     "@types/connect-busboy": "npm:^1.0.3"
     "@types/connect-pg-simple": "npm:^7.0.3"
-    "@types/cookie-parser": "npm:^1.4.10"
     "@types/cors": "npm:^2.8.19"
     "@types/csurf": "npm:^1.11.5"
     "@types/discourse-sso": "npm:^1.0.4"
@@ -1533,7 +1533,6 @@ __metadata:
     concurrently: "npm:^9.2.1"
     connect-busboy: "npm:^1.0.0"
     connect-pg-simple: "npm:^10.0.0"
-    cookie-parser: "npm:^1.4.7"
     cors: "npm:^2.8.6"
     csurf: "npm:^1.11.0"
     csv-parse: "npm:^5.6.0"
@@ -11761,10 +11760,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:^2.4.1":
-  version: 2.5.8
-  resolution: "dompurify@npm:2.5.8"
-  checksum: 10c0/4101708d190b67be00350369d72619266a2e0ebb7dcab12628cf07711329b1df12239baea613df41b65cba571128e8ea4c29c442f4e2c98670a9bb5563521f03
+"dompurify@npm:^3.4.17":
+  version: 3.4.17
+  resolution: "dompurify@npm:3.4.17"
+  dependencies:
+    "@types/trusted-types": "npm:^2.0.7"
+  dependenciesMeta:
+    "@types/trusted-types":
+      optional: true
+  checksum: 10c0/6a12251ef5e700fc91b6d96d33e9f8b5fd590c55276f632cf42d182c5808e9f48d5bef435ab26eac235dfcc05ed8fe95e1c8308dcc502bf1050e561f14d0361a
   languageName: node
   linkType: hard
 
@@ -13574,9 +13578,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"formiojs@npm:@beabee/formiojs@^4.15.11":
-  version: 4.15.11
-  resolution: "@beabee/formiojs@npm:4.15.11"
+"formiojs@npm:@beabee/formiojs@^4.15.15":
+  version: 4.15.15
+  resolution: "@beabee/formiojs@npm:4.15.15"
   dependencies:
     "@formio/bootstrap3": "npm:2.12.3"
     "@formio/choices.js": "npm:10.2.0"
@@ -13591,7 +13595,7 @@ __metadata:
     custom-event-polyfill: "npm:^1.0.7"
     dialog-polyfill: "npm:^0.5.6"
     dom-autoscroller: "npm:^2.3.4"
-    dompurify: "npm:^2.4.1"
+    dompurify: "npm:^3.4.17"
     downloadjs: "npm:^1.4.7"
     dragula: "npm:^3.7.3"
     eventemitter3: "npm:^4.0.7"
@@ -13604,7 +13608,7 @@ __metadata:
     json-logic-js: "npm:^2.0.2"
     jstimezonedetect: "npm:^1.0.7"
     jwt-decode: "npm:^3.1.2"
-    lodash: "npm:^4.17.21"
+    lodash: "npm:^4.18.1"
     moment: "npm:^2.29.4"
     moment-timezone: "npm:^0.5.40"
     native-promise-only: "npm:^0.8.1"
@@ -13614,7 +13618,7 @@ __metadata:
     tippy.js: "npm:^6.3.7"
     uuid: "npm:^9.0.0"
     vanilla-picker: "npm:^2.12.1"
-  checksum: 10c0/61e830e6ced4e6b6a864a3ad9d16fadd9294c7509bb0f3a8c049bccfdda15599e0342ba39576d65057d7121d9f8483727c915df65a5825c948ae497fe8f9d2b2
+  checksum: 10c0/11ffd34b55a8bf71148cbe56ebbb7ad65a5e779f5df83f8d132a1a551b86fd0a6582ede7f8b37c73d8fa0fdcd685fd4f1b114297599c508884c2055ceac2e2cd
   languageName: node
   linkType: hard
 
@@ -15481,6 +15485,13 @@ __metadata:
   bin:
     jiti: lib/jiti-cli.mjs
   checksum: 10c0/1b1e2310a490dce1aeea3da5f5dfe18273516c20ce48be2e98eb8ea452d5f3dcc8fd0cfd6d28b4052a24c5dbab6e3089b2d7e79f0bce7915b10d750929563c42
+  languageName: node
+  linkType: hard
+
+"jose@npm:^6.2.12":
+  version: 6.2.12
+  resolution: "jose@npm:6.2.12"
+  checksum: 10c0/e8582b946fabcae228819982dda4849908c353e9cb098f02f773635aa0d2f4917f17484c7441b8d526e564013b4cf96951455c94f81d0a39ee765bad44ce293d
   languageName: node
   linkType: hard
 
@@ -17435,6 +17446,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"oauth4webapi@npm:^3.8.8":
+  version: 3.8.8
+  resolution: "oauth4webapi@npm:3.8.8"
+  checksum: 10c0/1f7d35ba8d7d5aa9ce9ec5959a4611ed2b5dd7830172b1546749b91dda8c53f7934e669c6f81e912c64e3ae4fc681d4d6ce149b42cc9d17db97162bf8765e028
+  languageName: node
+  linkType: hard
+
 "object-assign@npm:4.X, object-assign@npm:^4, object-assign@npm:^4.1.1":
   version: 4.1.1
   resolution: "object-assign@npm:4.1.1"
@@ -17653,6 +17671,16 @@ __metadata:
     powershell-utils: "npm:^0.1.0"
     wsl-utils: "npm:^0.3.0"
   checksum: 10c0/7aeeda4131268ed90f90e7728dda5c46bb0c6205b27a4be3e86ea33593e30dd393423e20e31c00802a8e635ef59becaee33ef9749a8ceb027567cd253e9e7b1e
+  languageName: node
+  linkType: hard
+
+"openid-client@npm:^6.8.8":
+  version: 6.8.8
+  resolution: "openid-client@npm:6.8.8"
+  dependencies:
+    jose: "npm:^6.2.12"
+    oauth4webapi: "npm:^3.8.8"
+  checksum: 10c0/b1d60ca45623c77b8869b5a9725e25309cca20d32823861c5f72f0e9126a3ce43da2a93be964bfe771a39560f356c06adaedb2be29fe1762c4d097f91a4b620e
   languageName: node
   linkType: hard
 

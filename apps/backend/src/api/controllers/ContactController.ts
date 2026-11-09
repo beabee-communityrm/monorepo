@@ -4,12 +4,15 @@ import {
   CantUpdateContributionError,
   NoPaymentMethodError,
   NotFoundError,
+  PaymentRequiresActionError,
   UnauthorizedError,
 } from '@beabee/core/errors';
+import { isOidcEnabled } from '@beabee/core/lib/oidc';
 import { Contact } from '@beabee/core/models';
 import ContactMfaService from '@beabee/core/services/ContactMfaService';
 import ContactsService from '@beabee/core/services/ContactsService';
 import DispatchService from '@beabee/core/services/DispatchService';
+import IdpService from '@beabee/core/services/IdpService';
 import NewsletterService from '@beabee/core/services/NewsletterService';
 import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
 import PaymentService from '@beabee/core/services/PaymentService';
@@ -18,7 +21,7 @@ import { generatePassword } from '@beabee/core/utils/auth';
 import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
 import { plainToInstance } from 'class-transformer';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import {
   Authorized,
   Body,
@@ -31,6 +34,7 @@ import {
   Post,
   Put,
   QueryParams,
+  Req,
   Res,
 } from 'routing-controllers';
 
@@ -43,6 +47,7 @@ import {
   ListActivityEventsDto,
 } from '#api/dto/ActivityFeedDto';
 import { GetExportQuery } from '#api/dto/BaseDto';
+import { GetContactAuthMethodDto } from '#api/dto/ContactAuthMethodDto';
 import {
   BatchUpdateContactDto,
   BatchUpdateContactResultDto,
@@ -78,12 +83,18 @@ import {
   PaymentFlowResultDto,
   StartPaymentFlowDto,
 } from '#api/dto/PaymentFlowDto';
+import { ContactAuthMethodParams } from '#api/params/ContactAuthMethodParams';
 import { ContactRoleParams } from '#api/params/ContactRoleParams';
 import ActivityEventTransformer from '#api/transformers/ActivityEventTransformer';
 import ContactExporter from '#api/transformers/ContactExporter';
 import ContactRoleTransformer from '#api/transformers/ContactRoleTransformer';
 import ContactTransformer from '#api/transformers/ContactTransformer';
 import PaymentTransformer from '#api/transformers/PaymentTransformer';
+import {
+  assertFreshOidcLogin,
+  assertOidcAuthEnabled,
+  assertPasswordAuthEnabled,
+} from '#api/utils/auth';
 
 @JsonController('/contact')
 @Authorized()
@@ -94,6 +105,12 @@ export class ContactController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Body() data: CreateContactDto
   ): Promise<GetContactDto> {
+    if (data.password && isOidcEnabled()) {
+      throw new BadRequestError(
+        'Cannot set a password when OIDC login is enabled'
+      );
+    }
+
     const contact = await ContactsService.createContact(
       {
         email: data.email,
@@ -264,6 +281,10 @@ export class ContactController {
     const result = await PaymentService.processUpdateContribution(target, form);
     await ContactsService.handleUpdateContributionResult(target, result);
 
+    if (result.clientSecret) {
+      throw new PaymentRequiresActionError(result.clientSecret);
+    }
+
     return await this.getContribution(target);
   }
 
@@ -291,6 +312,41 @@ export class ContactController {
   }
 
   /**
+   * The login methods a contact has at the identity provider
+   * @param target The target contact
+   */
+  @Get('/:id/auth-methods')
+  async getContactAuthMethods(
+    @TargetUser() target: Contact
+  ): Promise<GetContactAuthMethodDto[]> {
+    assertOidcAuthEnabled();
+    const methods = await IdpService.listAuthMethods(target);
+    return methods.map((method) =>
+      plainToInstance(GetContactAuthMethodDto, method)
+    );
+  }
+
+  /**
+   * Remove one of a contact's login methods at the identity provider.
+   * Members need a fresh login there first; admins act on other contacts
+   * directly, as with MFA.
+   * @param target The target contact
+   */
+  @OnUndefined(204)
+  @Delete('/:id/auth-methods/:methodId')
+  async deleteContactAuthMethod(
+    @Req() req: Request,
+    @TargetUser() target: Contact,
+    @Params() { id, methodId }: ContactAuthMethodParams
+  ): Promise<void> {
+    assertOidcAuthEnabled();
+    if (id === 'me') {
+      assertFreshOidcLogin(req);
+    }
+    await IdpService.removeAuthMethod(target, methodId);
+  }
+
+  /**
    * Get contact multi factor authentication if exists
    * @param target The target contact
    */
@@ -298,6 +354,7 @@ export class ContactController {
   async getContactMfa(
     @TargetUser() target: Contact
   ): Promise<GetContactMfaDto | null> {
+    assertPasswordAuthEnabled();
     const mfa = await ContactMfaService.get(target);
     return mfa ? plainToInstance(GetContactMfaDto, mfa) : null;
   }
@@ -313,6 +370,7 @@ export class ContactController {
     @Body() data: CreateContactMfaDto,
     @TargetUser() target: Contact
   ): Promise<void> {
+    assertPasswordAuthEnabled();
     await ContactMfaService.create(target, data);
   }
 
@@ -329,6 +387,7 @@ export class ContactController {
     @Body() data: DeleteContactMfaDto,
     @Params() { id }: { id: string }
   ): Promise<void> {
+    assertPasswordAuthEnabled();
     if (id === 'me') {
       if (!data.token) {
         throw new BadRequestError('Token is required to delete own MFA');
@@ -355,10 +414,15 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<GetContributionInfoDto> {
-    await PaymentFlowService.completePaymentFlowAndProcess(
+    const result = await PaymentFlowService.completePaymentFlowAndProcess(
       target,
       data.paymentFlowId
     );
+
+    if (result?.clientSecret) {
+      throw new PaymentRequiresActionError(result.clientSecret);
+    }
+
     return await this.getContribution(target);
   }
 

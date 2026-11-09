@@ -50,6 +50,7 @@ import {
   EmailPerson,
   EmailProvider,
   EmailRecipient,
+  EmailSmtpSettings,
   EmailTemplate,
   EmailTemplateId,
   GeneralEmailParams,
@@ -429,13 +430,19 @@ class EmailService {
       name: data.name || existing?.name || `Override: ${templateId}`,
     });
 
-    await ActivityService.addEvent({
-      eventType: existing
-        ? ActivityEventType.EmailTemplateEdited
-        : ActivityEventType.EmailTemplateAdded,
-      targetId: email.id,
-      metadata: null,
-    });
+    if (existing) {
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.EmailTemplateEdited,
+        targetId: email.id,
+        metadata: null,
+      });
+    } else {
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.EmailTemplateAdded,
+        targetId: email.id,
+        metadata: { templateId },
+      });
+    }
 
     return email;
   }
@@ -634,6 +641,52 @@ class EmailService {
    * Check the health of the configured email provider.
    * @returns The email provider health status
    */
+  /**
+   * The account emails are sent with, for systems that send on beabee's
+   * behalf. Mandrill and SendGrid are reached through their SMTP relays,
+   * which take the API key as the password.
+   */
+  getSmtpSettings(): EmailSmtpSettings | undefined {
+    const fromEmail = OptionsService.getText('support-email');
+    const fromName = OptionsService.getText('support-email-from');
+    switch (config.email.provider) {
+      case 'smtp': {
+        const { host, port, secure, auth } = config.email.settings;
+        return {
+          host,
+          port: Number(port),
+          secure,
+          user: auth.user,
+          pass: auth.pass,
+          fromEmail,
+          fromName,
+        };
+      }
+      case 'mandrill':
+        return {
+          host: 'smtp.mandrillapp.com',
+          port: 465,
+          secure: true,
+          user: fromEmail,
+          pass: config.email.settings.apiKey,
+          fromEmail,
+          fromName,
+        };
+      case 'sendgrid':
+        return {
+          host: 'smtp.sendgrid.net',
+          port: 465,
+          secure: true,
+          user: 'apikey',
+          pass: config.email.settings.apiKey,
+          fromEmail,
+          fromName,
+        };
+      default:
+        return undefined;
+    }
+  }
+
   async getHealthStatus(): Promise<ApiHealthStatus> {
     return await this.provider.getHealthStatus();
   }

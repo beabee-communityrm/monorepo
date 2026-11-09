@@ -103,6 +103,14 @@ export const contactEmailTemplates = {
         : '-',
     })
   ),
+  'cancelled-contribution-payment-failed': withMergeFields(
+    ['EXPIRES'],
+    (contact: Contact) => ({
+      EXPIRES: contact.membership?.dateExpires
+        ? moment.utc(contact.membership.dateExpires).format('dddd Do MMMM')
+        : '-',
+    })
+  ),
   'manual-to-automatic': withMergeFields([], () => ({})),
   'email-exists-login': withMergeFields(
     ['LOGINLINK'],

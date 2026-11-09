@@ -11,6 +11,7 @@ import express, { Handler, Request, Response } from 'express';
 import { gocardlessWebhookApp } from '#handlers/gocardless';
 import { mailchimpWebhookApp } from '#handlers/mailchimp';
 import { stripeWebhookApp } from '#handlers/stripe';
+import { zitadelWebhookApp } from '#handlers/zitadel';
 
 function checkOpt(key: OptionKey): Handler {
   return (req, res, next) => {
@@ -45,6 +46,7 @@ app.use(
   mailchimpWebhookApp
 );
 app.use('/stripe', checkOpt('switch-webhook-stripe'), stripeWebhookApp);
+app.use('/zitadel', zitadelWebhookApp);
 
 app.use(requestErrorLogger);
 
