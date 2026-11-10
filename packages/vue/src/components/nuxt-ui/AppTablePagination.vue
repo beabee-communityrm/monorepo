@@ -86,7 +86,7 @@ const totalPages = computed(() =>
   Math.max(1, Math.ceil(props.total / itemsPerPage.value))
 );
 
-watch(totalPages, () => {
+watch([totalPages, () => props.total], () => {
   if (page.value > totalPages.value - 1) {
     page.value = Math.max(0, totalPages.value - 1);
   }
