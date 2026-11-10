@@ -89,21 +89,18 @@ commands inside the container with
 ## Hosted Zitadel dev instance
 
 The Zitadel provider only talks to the instance's HTTPS APIs and the browser
-is sent to the instance's login pages, so a local stack can use the shared
+is sent to the instance's login pages, so a local stack can use a hosted
 dev instance instead of the bundled Keycloak. Zitadel never calls back to
 the stack except for the claims target (see below).
 
-The instance is for the beabee team's local stacks only; external
-contributors use Keycloak. It holds one organisation per developer; the
-provider names no organisation, so users, project and OIDC client are
-resolved through the organisation of the service user whose token it uses,
-and the org scope in the login settings keeps the login inside that
-organisation. Usernames are unique per organisation, so test addresses can
-be the same across developers.
+Dev instances are for the beabee team's local stacks only; external
+contributors use Keycloak. Each developer has their own virtual instance,
+set up like a tenant's, so the stack's token can do everything the provider
+does in production.
 
 ### Local configuration
 
-Ask a beabee operator for an organisation; the onboarding script prints the
+Ask a beabee operator for an instance; the onboarding script prints the
 block to paste into `.env`. The values are:
 
 ```sh
@@ -113,7 +110,6 @@ BEABEE_IDP_SETTINGS_PAT=<token>
 BEABEE_LOGIN_PROVIDER=oidc
 BEABEE_LOGIN_SETTINGS_ISSUER=https://<dev instance>
 BEABEE_LOGIN_SETTINGS_CLIENTID=<client id>
-BEABEE_LOGIN_SETTINGS_SCOPES=openid profile email urn:zitadel:iam:org:id:<org id>
 ```
 
 Then recreate the containers and provision the existing contacts:
@@ -123,22 +119,19 @@ docker compose up -d api_app app
 yarn backend-cli user provision
 ```
 
-Login, logout, invites and credential setup work as with Keycloak; invite
-codes are fetched through the API and the email still goes to maildev.
-Passkeys work because Login v2 runs on the instance's domain. The Console
-at `https://<dev instance>/ui/console` (login name and password from the
-script output) shows the organisation's users.
+Login, logout, invites, credential setup and direct login work as in
+production; invite codes are fetched through the API and beabee's email
+still goes to maildev. Passkeys work because Login v2 runs on the
+instance's domain. The Console at `https://<dev instance>/ui/console`
+(login name and password from the script output) shows the instance's
+users.
 
-### What the service user cannot do
+### Instance settings
 
-The token is scoped to the organisation. Everything beabee writes on the
-instance level (`backend-cli setup integrations idp`: login, lockout and
-notification policies, the email provider, the claims target; and the
-branding push when the
-theme is saved) needs `IAM_OWNER` and fails with 403. Both failures are
-caught and logged (`Failed to set up IdP`, `Failed to update IdP
-branding`), nothing else breaks, so skip the setup command and expect the
-branding line in the log. Those settings are shared by every developer on
-the instance and stay at their defaults. The Site Login claims target
-therefore cannot be tested against the dev instance; tokens come without
-the `role` claim, which does not stop logins.
+`backend-cli setup integrations idp` works against the dev instance. When
+the stack has SMTP settings, it points the instance's email provider at
+them, which the hosted instance usually cannot reach, so Zitadel's own
+emails stop arriving; the onboarding script points it back at the hosted
+mail catcher. The claims target it registers points at the local stack,
+which Zitadel cannot reach: tokens come without the `role` claim, which
+does not stop logins.
