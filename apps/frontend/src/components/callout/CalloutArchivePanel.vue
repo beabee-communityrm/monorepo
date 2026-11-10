@@ -72,7 +72,7 @@
       </p>
 
       <AppTablePagination
-        v-if="archiveTotalPages > 1"
+        v-show="archivedCallouts?.total"
         v-model:page="archivePage"
         :total="archivedCallouts?.total ?? 0"
         :page-size="archivePageSize"
@@ -89,7 +89,7 @@ import {
 } from '@beabee/beabee-common';
 import { AppSearchBox, AppTablePagination } from '@beabee/vue';
 
-import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue';
+import { onBeforeMount, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import CalloutArchiveRow from '#components/callout/CalloutArchiveRow.vue';
@@ -118,17 +118,6 @@ const archivePageSize = 10;
 
 const archivedCallouts = ref<Paginated<CalloutCardData>>();
 const archivedTotal = ref<number>();
-
-const archiveTotalPages = computed(() =>
-  archivedCallouts.value
-    ? Math.ceil(archivedCallouts.value.total / archivePageSize)
-    : 0
-);
-watch(archiveTotalPages, (value) => {
-  if (archivePage.value > value) {
-    archivePage.value = Math.max(0, value - 1);
-  }
-});
 
 onBeforeMount(async () => {
   const archived = await client.callout.list({
