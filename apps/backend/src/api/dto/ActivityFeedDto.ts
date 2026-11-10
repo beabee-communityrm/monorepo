@@ -51,7 +51,7 @@ export interface ExportActivityEventDto {
   Id: string;
   CreatedAt: string;
   EventType: ActivityEventType;
-  ActorType: ActivityActorType;
+  ActorType: ActivityActorType | null;
   ActorId: string;
   TargetId: string;
   Metadata: string;
