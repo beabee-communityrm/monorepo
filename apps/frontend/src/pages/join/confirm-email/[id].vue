@@ -44,13 +44,10 @@ onBeforeMount(async () => {
       await authenticateFirstPayment(paymentClientSecret);
     }
     const nextUrl = postConfirmUrl ?? '/join/setup';
-    // With OIDC login the member sets up their credential at the identity
-    // provider inside a login that returns to the next URL
+    // With OIDC login the member is logged in at the identity provider too,
+    // inside a login that returns to the next URL
     if (generalContent.value.oidcEnabled) {
-      window.location.href = client.auth.getLoginUrl(
-        nextUrl,
-        'setupCredential'
-      );
+      window.location.href = client.auth.getLoginUrl(nextUrl, 'directLogin');
       return;
     }
     // Absolute URLs are on a trusted origin outside this app

@@ -72,7 +72,7 @@ function sameSet(a: string[] = [], b: string[] = []): boolean {
 
 // Login v2 pages that work on the member's existing login session
 const LOGIN_V2_PAGES: Record<
-  Exclude<LoginAction, 'setupCredential'>,
+  Exclude<LoginAction, 'setupCredential' | 'directLogin'>,
   string
 > = {
   changePassword: 'password/change',
@@ -467,7 +467,11 @@ export class ZitadelProvider implements IdpProvider {
     authorizeUrl: string,
     action: IdpLoginAction
   ): Promise<string> {
-    const requestId = await this.startAuthRequest(authorizeUrl);
+    const authRequestId = await this.startAuthRequest(authorizeUrl);
+    if (action.type === 'directLogin') {
+      return await this.finishWithSession(authRequestId, action.subject);
+    }
+    const requestId = `oidc_${authRequestId}`;
 
     // The invite verify page lets the member choose a password or passkey
     if (action.type === 'setupCredential') {
@@ -508,7 +512,41 @@ export class ZitadelProvider implements IdpProvider {
         `Zitadel did not start an authorization request: ${resp.status} ${location}`
       );
     }
-    return `oidc_${authRequest}`;
+    return authRequest;
+  }
+
+  /**
+   * Complete the authorization request with a session that only identifies
+   * the user, so the member gets the callback URL without a login page.
+   * Needs IAM_LOGIN_CLIENT; the session carries no authentication factor,
+   * so the tokens have no auth_time.
+   */
+  private async finishWithSession(
+    authRequestId: string,
+    subject: string
+  ): Promise<string> {
+    log.info(`Create session for user ${subject}`);
+    const session = await this.request<{
+      sessionId: string;
+      sessionToken: string;
+    }>('POST', '/v2/sessions', { checks: { user: { userId: subject } } });
+    if (!session?.sessionId) {
+      throw new Error('Zitadel did not return the new session');
+    }
+    const resp = await this.request<{ callbackUrl: string }>(
+      'POST',
+      `/v2/oidc/auth_requests/${authRequestId}`,
+      {
+        session: {
+          sessionId: session.sessionId,
+          sessionToken: session.sessionToken,
+        },
+      }
+    );
+    if (!resp?.callbackUrl) {
+      throw new Error('Zitadel did not return the callback URL');
+    }
+    return resp.callbackUrl;
   }
 
   private async createInviteCode(subject: string): Promise<string> {

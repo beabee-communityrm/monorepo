@@ -25,13 +25,14 @@ lookup is needed.
 | `addPasskey`     | `webauthn-register-passwordless` |
 | `setupMfa`       | `CONFIGURE_TOTP`                 |
 
-**Joining** uses a magic link (the `keycloak-magic-link` extension in the
+**Credential setup** uses a magic link (the `keycloak-magic-link` extension in the
 development image): beabee sets the `UPDATE_PASSWORD` required action on
 the user and asks `POST /realms/{realm}/magic-link` for a link carrying the
 parameters of its own authorization request (client, redirect URI, state,
 nonce, PKCE challenge). Following the link logs the member in, makes them
 set a password on the way and ends on beabee's callback with a code that
-matches the login state.
+matches the login state. **Direct login** uses the same magic link without
+the required action.
 
 **Removal** of a login method goes through `GET /users/{sub}/credentials`
 and `DELETE /users/{sub}/credentials/{id}`; the method IDs are Keycloak's

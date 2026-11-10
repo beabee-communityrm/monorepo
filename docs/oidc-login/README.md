@@ -100,13 +100,13 @@ sequenceDiagram
 ```
 
 **Joining (OIDC state).** The setup form has no password field. After the
-confirm-email link, beabee finalises the Signup Flow, starts an OIDC login
-that continues to the setup page, and hands the member to the IdP's
-credential setup page inside that login (how each provider enters that
-page is in its own document). The IdP completes the login and the member
-arrives at the setup page through beabee's normal OIDC callback. Clicking
-the confirmation link again after an abandoned setup starts a fresh login
-and credential setup.
+confirm-email link, beabee finalises the Signup Flow, gives the session a
+Login Grant, a one-time permission valid for ten minutes, and starts an
+OIDC login with the `directLogin` Login Action that continues to the setup
+page. The provider completes that login without showing the member a page
+(how each provider does it is in its own document), and the member arrives
+at the setup page through beabee's normal OIDC callback. The member has no
+credential afterwards and sets one up later.
 
 **Account management (OIDC state).** beabee's account page offers three
 actions — change password, add a passkey, set up an authenticator app — each

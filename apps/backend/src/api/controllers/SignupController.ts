@@ -23,7 +23,7 @@ import {
   StartSignupFlowDto,
 } from '#api/dto/SignupFlowDto';
 import { SignupConfirmEmailParams } from '#api/params/SignupConfirmEmailParams';
-import { login } from '#api/utils/auth';
+import { grantDirectLogin, login } from '#api/utils/auth';
 
 import { RateLimit } from '../decorators/index.js';
 
@@ -136,6 +136,10 @@ export class SignupController {
 
     const { contact, clientSecret, postConfirmUrl } = result;
     await login(req, contact);
+    // Confirming the email is the verification a direct login stands on
+    if (isOidcEnabled()) {
+      grantDirectLogin(req, contact);
+    }
 
     return plainToInstance(ConfirmSignupResultDto, {
       postConfirmUrl,

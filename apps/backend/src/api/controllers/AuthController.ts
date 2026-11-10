@@ -53,6 +53,7 @@ import {
   assertPasswordAuthEnabled,
   clearIdpSessionCookie,
   clearSiteLoginCookie,
+  consumeDirectLoginGrant,
   hasFreshIdpSession,
   login,
   refreshSiteLogin,
@@ -167,13 +168,24 @@ export class AuthController {
     if (action && !contact) {
       throw new UnauthorizedError();
     }
+    if (
+      action === 'directLogin' &&
+      !(contact && consumeDirectLoginGrant(req, contact))
+    ) {
+      throw new UnauthorizedError();
+    }
 
     // Adding a login method is as sensitive as removing one, so it needs a
     // login from the last two hours, and one the browser still holds at
     // the IdP: the pages behind the actions work on that session. A fresh
-    // login provides both and returns here. Not for setupCredential: that
-    // account cannot log in yet.
-    if (action && action !== 'setupCredential' && !hasFreshIdpSession(req)) {
+    // login provides both and returns here. Not for setupCredential, whose
+    // account cannot log in yet, nor directLogin, which shows no IdP page.
+    if (
+      action &&
+      action !== 'setupCredential' &&
+      action !== 'directLogin' &&
+      !hasFreshIdpSession(req)
+    ) {
       const back = new URL(LOGIN_URI);
       back.searchParams.set('action', action);
       if (next) back.searchParams.set('next', next);
