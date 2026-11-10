@@ -53,22 +53,6 @@ class ActivityService {
       log.error(`Failed to log ${events.length} events`, err);
     }
   }
-
-  /**
-   * Get events for a particular contact
-   * @param id The contact ID
-   * @returns Events for this contact ID
-   */
-  async getEventByContactId(targetId: string): Promise<ActivityEvent[]> {
-    return getRepository(ActivityEvent).findBy({ targetId });
-  }
-
-  /**
-   * Get all events from table
-   */
-  async getAllEvents(): Promise<ActivityEvent[]> {
-    return getRepository(ActivityEvent).find();
-  }
 }
 
 export const activityService = new ActivityService();
