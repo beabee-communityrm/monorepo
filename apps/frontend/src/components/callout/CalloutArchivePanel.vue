@@ -71,31 +71,12 @@
         {{ t('callouts.noArchivedCallouts') }}
       </p>
 
-      <div
+      <AppTablePagination
         v-if="archiveTotalPages > 1"
-        class="flex items-center justify-between border-t border-default p-4"
-      >
-        <span class="text-sm text-muted">
-          {{
-            t('callouts.archiveRange', {
-              start: archivePage * archivePageSize + 1,
-              end: Math.min(
-                (archivePage + 1) * archivePageSize,
-                archivedCallouts?.total ?? 0
-              ),
-              total: archivedCallouts?.total ?? 0,
-            })
-          }}
-        </span>
-        <UPagination
-          variant="subtle"
-          :default-page="archivePage + 1"
-          :page="archivePage + 1"
-          :total="archivedCallouts?.total ?? 0"
-          :items-per-page="archivePageSize"
-          @update:page="(p: number) => (archivePage = p - 1)"
-        />
-      </div>
+        v-model:page="archivePage"
+        :total="archivedCallouts?.total ?? 0"
+        :page-size="archivePageSize"
+      />
     </template>
   </UCard>
 </template>
@@ -106,7 +87,7 @@ import {
   ItemStatus,
   type Paginated,
 } from '@beabee/beabee-common';
-import { AppSearchBox } from '@beabee/vue';
+import { AppSearchBox, AppTablePagination } from '@beabee/vue';
 
 import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
