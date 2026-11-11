@@ -156,9 +156,16 @@ import { useTagFilter } from '../../../composables/useTagFilter';
  * - Saving contact segments
  */
 
+/**
+ * Props & Composables
+ */
 const { t } = useI18n();
 const toast = useAppToast();
 
+/**
+ * Table state
+ * @description Manages the paginated table data
+ */
 const contactsTable =
   ref<
     Paginated<
@@ -171,17 +178,73 @@ const contactsTable =
 const { selectionState, selectedPageItems, selectedCount, getSelectionRules } =
   usePaginatedSelectionState(contactsTable);
 
+/**
+ * Tag Management
+ * @description Handles tag filtering and selection state
+ */
 const { currentTag, addTagToRules } = useTagFilter();
 
+const tagsModalOpen = ref(false);
+
+const currentTagLabel = computed(
+  () => tagItems.value.find((tag) => tag.id === currentTag.value)?.label
+);
+
+/**
+ * Search & Filter state
+ * @description Manages search and filter parameters
+ */
 const currentPaginatedQuery = definePaginatedQuery('joined');
 const currentSearch = defineParam('s', (v) => v || '');
 
 const { filterGroups, tagItems, refreshTags } = useContactFilters();
 
 const filtersOpen = ref(false);
-const tagsModalOpen = ref(false);
-const doingAction = ref(false);
 
+const appliedRules = computed(() => currentRules.value?.rules ?? []);
+
+const filtersOn = computed(
+  () => filtersOpen.value || appliedRules.value.length > 0
+);
+
+/** Keeps an empty group rather than none, which would bring back the segment's rules */
+function handleRemoveRule(index: number) {
+  currentRules.value = {
+    condition: currentRules.value?.condition ?? 'AND',
+    rules: appliedRules.value.filter((_, i) => i !== index),
+  };
+}
+
+function handleResetFilters() {
+  currentRules.value = undefined;
+  matchCount.value = undefined;
+}
+
+/**
+ * Live count of the contacts the unapplied filters match
+ */
+const matchCount = ref<number>();
+let matchCountTimer: ReturnType<typeof setTimeout>;
+
+function handleDraftChange(ruleGroup: RuleGroup) {
+  clearTimeout(matchCountTimer);
+  matchCountTimer = setTimeout(async () => {
+    try {
+      const result = await client.contact.list({
+        limit: 1,
+        rules: getSearchRules(ruleGroup.rules.length ? ruleGroup : undefined),
+      });
+      matchCount.value = result.total;
+    } catch {
+      matchCount.value = undefined;
+    }
+  }, 400);
+}
+
+/**
+ * Segment Management
+ * @description Handles segment filtering and saving
+ */
 const {
   currentSegmentId,
   currentSegment,
@@ -197,21 +260,11 @@ const {
   listTotalSegmentItems
 );
 
-addBreadcrumb(
-  computed(() => [
-    {
-      label: t(routeLabels.adminContacts),
-      to: '/admin/contacts',
-      icon: routeIcons.adminContacts,
-    },
-  ])
-);
-
-/**
- * Segments
- */
 async function saveSegment(name: string, rules: RuleGroup) {
-  const segment = await client.segments.create({ name, ruleGroup: rules });
+  const segment = await client.segments.create({
+    name,
+    ruleGroup: rules,
+  });
   handleSavedSegment(segment);
   return segment;
 }
@@ -240,26 +293,26 @@ async function listTotalSegmentItems() {
 }
 
 /**
- * Filters
+ * Action state
  */
-const appliedRules = computed(() => currentRules.value?.rules ?? []);
+const doingAction = ref(false);
 
-const filtersOn = computed(
-  () => filtersOpen.value || appliedRules.value.length > 0
+/**
+ * Lifecycle hooks
+ */
+addBreadcrumb(
+  computed(() => [
+    {
+      label: t(routeLabels.adminContacts),
+      to: '/admin/contacts',
+      icon: routeIcons.adminContacts,
+    },
+  ])
 );
 
-/** Keeps an empty group rather than none, which would bring back the segment's rules */
-function handleRemoveRule(index: number) {
-  currentRules.value = {
-    condition: currentRules.value?.condition ?? 'AND',
-    rules: appliedRules.value.filter((_, i) => i !== index),
-  };
-}
-
-function handleResetFilters() {
-  currentRules.value = undefined;
-  matchCount.value = undefined;
-}
+/**
+ * Helper Functions
+ */
 
 /**
  * Builds the search rules for the given filter rules
@@ -285,50 +338,7 @@ function getSearchRules(ruleGroup = currentRules.value): RuleGroup {
 }
 
 /**
- * Live count of the contacts the unapplied filters match
- */
-const matchCount = ref<number>();
-let matchCountTimer: ReturnType<typeof setTimeout>;
-
-function handleDraftChange(ruleGroup: RuleGroup) {
-  clearTimeout(matchCountTimer);
-  matchCountTimer = setTimeout(async () => {
-    try {
-      const result = await client.contact.list({
-        limit: 1,
-        rules: getSearchRules(ruleGroup.rules.length ? ruleGroup : undefined),
-      });
-      matchCount.value = result.total;
-    } catch {
-      matchCount.value = undefined;
-    }
-  }, 400);
-}
-
-/**
- * Tags
- */
-const currentTagLabel = computed(
-  () => tagItems.value.find((tag) => tag.id === currentTag.value)?.label
-);
-
-function handleToggleTag(
-  tag: { id: string; label: string },
-  isTagged: boolean
-) {
-  return handleUpdateAction(
-    { tags: [(isTagged ? '-' : '+') + tag.id] },
-    t(
-      isTagged
-        ? 'tags.notifications.removedTag'
-        : 'tags.notifications.addedTag',
-      { tag: tag.label }
-    )
-  );
-}
-
-/**
- * Actions
+ * Gets rules for selected contacts
  */
 function getSelectedContactsRules(): RuleGroup {
   return {
@@ -337,34 +347,19 @@ function getSelectedContactsRules(): RuleGroup {
   };
 }
 
-function handleExport() {
-  const rules = getSearchRules();
-  const rulesQuery = encodeURIComponent(JSON.stringify(rules));
-  window.open(`/api/1.0/contact.csv?rules=${rulesQuery}`, '_blank');
-}
-
-async function handleUpdateAction(
-  updates: UpdateContactData,
-  successText: string
-): Promise<void> {
-  doingAction.value = true;
-  try {
-    await client.contact.updateMany(getSelectedContactsRules(), updates);
-    await refreshContacts();
-    toast.success(successText);
-  } catch {
-    toast.error(t('tags.notifications.updateFailed-nuxt'));
-  } finally {
-    doingAction.value = false;
-  }
-}
+/**
+ * Action Handlers
+ */
 
 /**
- * Data loading
+ * Table state
  */
 const isRefreshing = ref(false);
 
-async function refreshContacts() {
+/**
+ * Refreshes the contact list based on current filters
+ */
+async function refreshResponses() {
   if (isRefreshing.value) return;
 
   isRefreshing.value = true;
@@ -385,8 +380,51 @@ async function refreshContacts() {
 
 watch(
   [currentPaginatedQuery, currentSearch, currentRules, currentTag],
-  () => refreshContacts(),
+  () => refreshResponses(),
   { deep: true }
 );
-refreshContacts();
+refreshResponses();
+
+/**
+ * Handles exporting contacts
+ */
+function handleExport() {
+  const rules = getSearchRules();
+  const rulesQuery = encodeURIComponent(JSON.stringify(rules));
+  window.open(`/api/1.0/contact.csv?rules=${rulesQuery}`, '_blank');
+}
+
+/**
+ * Handles contact update actions
+ */
+async function handleUpdateAction(
+  updates: UpdateContactData,
+  successText: string
+): Promise<void> {
+  doingAction.value = true;
+  try {
+    await client.contact.updateMany(getSelectedContactsRules(), updates);
+    await refreshResponses();
+    toast.success(successText);
+  } catch {
+    toast.error(t('tags.notifications.updateFailed-nuxt'));
+  } finally {
+    doingAction.value = false;
+  }
+}
+
+function handleToggleTag(
+  tag: { id: string; label: string },
+  isTagged: boolean
+) {
+  return handleUpdateAction(
+    { tags: [(isTagged ? '-' : '+') + tag.id] },
+    t(
+      isTagged
+        ? 'tags.notifications.removedTag'
+        : 'tags.notifications.addedTag',
+      { tag: tag.label }
+    )
+  );
+}
 </script>
