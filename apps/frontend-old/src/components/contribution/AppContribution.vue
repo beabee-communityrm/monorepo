@@ -16,10 +16,11 @@
   <div>
     <AppChoice
       v-if="showPeriod"
-      v-model="period"
+      :model-value="period"
       :items="periodItems"
       :disabled="disabled"
       class="mb-4"
+      @update:model-value="changePeriod"
     />
 
     <ContributionAmount
@@ -146,9 +147,18 @@ const periodItems = computed(() => {
     }));
 });
 
-watch(isAnnually, (value) => {
-  amount.value = value ? amount.value * 12 : Math.floor(amount.value / 12);
-});
+// Converts the amount only when the user switches period; a period set by the
+// parent comes with an amount that already matches it
+function changePeriod(newPeriod: PaymentPeriod) {
+  const wasAnnually = isAnnually.value;
+  period.value = newPeriod;
+  const nowAnnually = newPeriod === ContributionPeriod.Annually;
+  if (nowAnnually !== wasAnnually) {
+    amount.value = nowAnnually
+      ? amount.value * 12
+      : Math.floor(amount.value / 12);
+  }
+}
 
 const shouldForceFee = computed(() => {
   return props.content.showAbsorbFee && amount.value === 1 && !isAnnually.value;
