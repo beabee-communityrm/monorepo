@@ -2,29 +2,38 @@
   # ContactFilterToggle
   Segmented switch for picking one of a few options in the contact filters,
   such as all/any or yes/no.
+
+  Built from native radios rather than URadioGroup, whose variants don't
+  offer this segmented style.
 -->
 <template>
   <fieldset class="inline-flex rounded-lg border border-default bg-default p-1">
     <legend class="sr-only">{{ label }}</legend>
-    <button
+    <label
       v-for="option in options"
       :key="String(option.value)"
-      type="button"
-      class="rounded-md px-3 py-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      class="relative cursor-pointer rounded-md px-3 py-1 transition-colors has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary"
       :class="
         modelValue === option.value
           ? 'bg-primary/10 font-semibold text-primary ring ring-primary/25 ring-inset'
           : 'text-muted hover:text-default'
       "
-      :aria-pressed="modelValue === option.value"
-      @click="modelValue = option.value"
     >
+      <input
+        v-model="modelValue"
+        type="radio"
+        :name="name"
+        :value="option.value"
+        class="sr-only"
+      />
       {{ option.label }}
-    </button>
+    </label>
   </fieldset>
 </template>
 
 <script lang="ts" setup generic="T extends string | number | boolean">
+import { useId } from 'vue';
+
 defineProps<{
   /** Accessible name for the group, read before the options */
   label: string;
@@ -33,4 +42,6 @@ defineProps<{
 }>();
 
 const modelValue = defineModel<T>({ required: true });
+
+const name = useId();
 </script>
