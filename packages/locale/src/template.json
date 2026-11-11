@@ -162,6 +162,7 @@
     "search": "",
     "sendEmails": "",
     "sendOneOffEmail": "",
+    "sendOneOffEmail-nuxt": "",
     "sendOngoingEmails": "",
     "share": "",
     "showPassword": "",
@@ -374,21 +375,44 @@
   },
   "advancedSearch": {
     "addRule": "",
+    "addRule-nuxt": "",
+    "allFields-nuxt": "",
     "button": "",
     "createFiltersAfter": "",
+    "createFiltersAfter-nuxt": "",
     "createFiltersBefore": "",
+    "createFiltersBefore-nuxt": "",
     "createFiltersType": {
       "all": "",
       "any": ""
     },
     "createdSegment": "",
+    "fieldType-nuxt": {
+      "array": "",
+      "blob": "",
+      "boolean": "",
+      "contact": "",
+      "date": "",
+      "enum": "",
+      "number": "",
+      "text": ""
+    },
     "invalidRuleError": "",
+    "matchCondition-nuxt": "",
+    "matchCount-nuxt": "",
     "matchWord": {
       "AND": "",
       "OR": ""
     },
     "nestedRules": "",
+    "nestedRules-nuxt": "",
+    "noFieldsMatch-nuxt": "",
     "noNestedRules": "",
+    "noOptions-nuxt": "",
+    "operatorGroup-nuxt": {
+      "blank": "",
+      "not": ""
+    },
     "operators": {
       "all": {
         "is_empty": "",
@@ -440,6 +464,10 @@
         "not_equal": ""
       }
     },
+    "relativeDate-nuxt": "",
+    "relativeDateExample-nuxt": "",
+    "relativeDateInvalid-nuxt": "",
+    "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
         "create": "",
@@ -447,11 +475,14 @@
         "update": ""
       },
       "createSegment": "",
+      "failed-nuxt": "",
       "segmentName": "",
       "text": "",
+      "text-nuxt": "",
       "title": "",
       "updateSegment": ""
     },
+    "searchFields-nuxt": "",
     "selectFilter": "",
     "updatedSegment": ""
   },
@@ -1118,11 +1149,14 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "",
+    "range-nuxt": "",
     "role": {
       "admin": "",
       "member": "",
       "superadmin": ""
     },
+    "rowsPerPage-nuxt": "",
+    "selectAll": "",
     "selectNone": "",
     "selectOne": "",
     "show": "",
@@ -1267,6 +1301,7 @@
     },
     "dataGroup": {
       "callout": "",
+      "callout-nuxt": "",
       "contact": "",
       "oneTimeContributions": "",
       "recurringContributions": "",
@@ -1297,6 +1332,14 @@
     "noResults": "",
     "numResults": "",
     "search": "",
+    "segments-nuxt": "",
+    "selectAllBanner-nuxt": {
+      "allSelected": "",
+      "clearSelection": "",
+      "pageSelected": "",
+      "selectAll": "",
+      "someSelected": ""
+    },
     "selectedCount": "",
     "sendEmail": {
       "newEmail": "",
@@ -1306,6 +1349,9 @@
       "templateNameRequired": "",
       "title": ""
     },
+    "sendEmailNoSegment-nuxt": "",
+    "sendEmailSelection-nuxt": "",
+    "sendEmailToSelected-nuxt": "",
     "showingOf": ""
   },
   "contribution": {
@@ -2100,13 +2146,23 @@
     "name": ""
   },
   "tags": {
+    "clearTags-nuxt": "",
+    "countOfSelected-nuxt": "",
     "manageTags": "",
+    "manageTagsDescription-nuxt": "",
+    "newTagName-nuxt": "",
     "noTags": "",
     "notifications": {
       "addedTag": "",
-      "removedTag": ""
+      "createFailed-nuxt": "",
+      "deleteFailed-nuxt": "",
+      "removedTag": "",
+      "renameFailed-nuxt": "",
+      "updateFailed-nuxt": ""
     },
     "searchTag": "",
+    "selectToTag-nuxt": "",
+    "tagSelected-nuxt": "",
     "toggleTag": ""
   }
 }

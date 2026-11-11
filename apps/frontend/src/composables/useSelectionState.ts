@@ -14,15 +14,15 @@ export function usePaginatedSelectionState<I extends { id: string }>(
   );
 }
 
+/**
+ * @param selectionState - Existing state to work on, so a page and its table
+ * can share one selection; a new one is created if omitted
+ */
 export function useSelectionState<I extends { id: string }>(
   items: Ref<I[]> | ComputedRef<I[]>,
-  totalItemCount: Ref<number>
+  totalItemCount: Ref<number>,
+  selectionState: Ref<SelectionState> = ref({ mode: 'explicit', ids: [] })
 ) {
-  const selectionState = ref<SelectionState>({
-    mode: 'explicit',
-    ids: [],
-  });
-
   function isSelected(id: string): boolean {
     switch (selectionState.value.mode) {
       case 'explicit':
@@ -59,6 +59,49 @@ export function useSelectionState<I extends { id: string }>(
     items.value.filter((item) => isSelected(item.id))
   );
 
+  const allOnPageSelected = computed(
+    () =>
+      items.value.length > 0 &&
+      selectedPageItems.value.length === items.value.length
+  );
+
+  const someOnPageSelected = computed(
+    () => selectedPageItems.value.length > 0 && !allOnPageSelected.value
+  );
+
+  function setSelected(id: string, selected: boolean) {
+    const state = selectionState.value;
+    if (state.mode === 'all') {
+      selectionState.value = {
+        mode: 'all',
+        excludedIds: selected
+          ? state.excludedIds.filter((x) => x !== id)
+          : [...state.excludedIds, id],
+      };
+    } else {
+      selectionState.value = {
+        mode: 'explicit',
+        ids: selected ? [...state.ids, id] : state.ids.filter((x) => x !== id),
+      };
+    }
+  }
+
+  function toggleAllOnPage() {
+    const selected = !allOnPageSelected.value;
+    for (const item of items.value) {
+      if (isSelected(item.id) !== selected) setSelected(item.id, selected);
+    }
+  }
+
+  /** Extends the selection to every item matching the current filters */
+  function selectAllMatching() {
+    selectionState.value = { mode: 'all', excludedIds: [] };
+  }
+
+  function clearSelection() {
+    selectionState.value = { mode: 'explicit', ids: [] };
+  }
+
   const selectedCount = computed(() => {
     switch (selectionState.value.mode) {
       case 'explicit':
@@ -74,7 +117,13 @@ export function useSelectionState<I extends { id: string }>(
     selectionState,
     selectedPageItems,
     selectedCount,
+    allOnPageSelected,
+    someOnPageSelected,
     isSelected,
+    setSelected,
+    toggleAllOnPage,
+    selectAllMatching,
+    clearSelection,
     getSelectionRules,
   };
 }
