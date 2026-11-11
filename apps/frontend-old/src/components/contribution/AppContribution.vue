@@ -147,13 +147,20 @@ const periodItems = computed(() => {
     }));
 });
 
-// Converts the amount only when the user switches period; a period set by the
-// parent comes with an amount that already matches it
+// Adjusts the amount only when the user switches period; a period set by the
+// parent comes with an amount that already matches it. A preset maps to the
+// preset at the same position, a custom amount is converted.
 function changePeriod(newPeriod: PaymentPeriod) {
+  const presetIndex = definedAmounts.value.indexOf(amount.value);
+  const newPresets =
+    props.content.periods.find((p) => p.name === newPeriod)?.presetAmounts ||
+    [];
   const wasAnnually = isAnnually.value;
   period.value = newPeriod;
   const nowAnnually = newPeriod === ContributionPeriod.Annually;
-  if (nowAnnually !== wasAnnually) {
+  if (presetIndex !== -1 && newPresets.length > 0) {
+    amount.value = newPresets[Math.min(presetIndex, newPresets.length - 1)];
+  } else if (nowAnnually !== wasAnnually) {
     amount.value = nowAnnually
       ? amount.value * 12
       : Math.floor(amount.value / 12);
