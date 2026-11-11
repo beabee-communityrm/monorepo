@@ -1083,7 +1083,7 @@
     "itemsPerPage": "{items} елементів на сторінці",
     "label": "Мітка",
     "loading": "Завантаження...",
-    "login": "Вхід",
+    "login": "Увійти",
     "manualPaymentSource": {
       "none": "Немає"
     },
@@ -1865,7 +1865,6 @@
     "emails": "Електронні листи",
     "home": "Головна",
     "legacyApp": "Стара інформаційна панель",
-    "login": "Увійти",
     "logout": "Вийти",
     "membershipBuilder": "Конструктор членства",
     "notices": "Повідомлення",

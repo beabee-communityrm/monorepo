@@ -1083,7 +1083,7 @@
     "itemsPerPage": "{items} Einträge pro Seite",
     "label": "Label",
     "loading": "Lädt...",
-    "login": "Login",
+    "login": "Anmelden",
     "manualPaymentSource": {
       "none": "Keine"
     },
@@ -1859,7 +1859,6 @@
     "emails": "E-Mails",
     "home": "Home",
     "legacyApp": "Alter Adminbereich",
-    "login": "Anmelden",
     "logout": "Log out",
     "membershipBuilder": "Membership Builder",
     "notices": "Hinweise",

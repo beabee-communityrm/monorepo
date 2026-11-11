@@ -1083,7 +1083,7 @@
     "itemsPerPage": "{items} elementi per pagina",
     "label": "Etichetta",
     "loading": "Caricamento...",
-    "login": "Login",
+    "login": "Accedi",
     "manualPaymentSource": {
       "none": "Nessuna"
     },
@@ -1861,7 +1861,6 @@
     "emails": "Email",
     "home": "Home",
     "legacyApp": "Vecchia dashboard",
-    "login": "Accedi",
     "logout": "Esci",
     "membershipBuilder": "Configuratore iscrizioni",
     "notices": "Notifiche",

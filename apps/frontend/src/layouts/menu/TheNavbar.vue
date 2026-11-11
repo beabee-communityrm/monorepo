@@ -25,7 +25,7 @@
     </template>
     <template v-if="!env.cnrMode" #right>
       <UButton
-        :label="t('menu.login')"
+        :label="t('common.login')"
         icon="i-lucide-log-in"
         :to="{ path: '/auth/login', query: { next: route.fullPath } }"
       />
