@@ -49,7 +49,7 @@ app.use(
       cb(null, [
         ...optionsService.getList('trusted-origins'),
         // Any localhost port in development
-        ...(config.dev ? [/^https?:\/\/localhost(:\d+)?$/] : []),
+        ...(config.dev ? [/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/] : []),
       ]),
     credentials: true,
   })
