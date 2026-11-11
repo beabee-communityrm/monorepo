@@ -80,7 +80,8 @@ meta:
         <ContactAppliedFilters
           v-else-if="currentTag || appliedRules.length"
           v-model:rule-group="currentRules"
-          :tag-label="currentTagLabel"
+          :tag="currentTag"
+          :tag-items="tagItems"
           :filter-groups="filterGroups"
           @remove-tag="currentTag = ''"
         >
@@ -186,10 +187,6 @@ const { selectionState, selectedPageItems, selectedCount, getSelectionRules } =
 const { currentTag, addTagToRules } = useTagFilter();
 
 const tagsModalOpen = ref(false);
-
-const currentTagLabel = computed(
-  () => tagItems.value.find((tag) => tag.id === currentTag.value)?.label
-);
 
 /**
  * Search & Filter state

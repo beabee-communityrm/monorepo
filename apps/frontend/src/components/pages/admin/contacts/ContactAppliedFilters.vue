@@ -49,7 +49,9 @@
 
 <script lang="ts" setup>
 import type { RuleGroup } from '@beabee/beabee-common';
+import type { SelectItem } from '@beabee/vue';
 
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { FilterGroups } from '#type';
@@ -58,9 +60,11 @@ import ContactFilterChip from './ContactFilterChip.vue';
 
 const { t } = useI18n();
 
-defineProps<{
-  /** Label of the tag being filtered by, if any. It's always ANDed with the rules */
-  tagLabel?: string;
+const props = defineProps<{
+  /** Id of the tag being filtered by, empty for none. It's always ANDed with the rules */
+  tag: string;
+  /** Every contact tag, to label the tag filter */
+  tagItems: SelectItem<string>[];
   /** All available filter groups, to label each rule */
   filterGroups: FilterGroups;
 }>();
@@ -68,6 +72,10 @@ defineProps<{
 const emit = defineEmits<{
   (event: 'removeTag'): void;
 }>();
+
+const tagLabel = computed(
+  () => props.tagItems.find((item) => item.id === props.tag)?.label
+);
 
 /** The applied rules */
 const ruleGroup = defineModel<RuleGroup>('ruleGroup');
