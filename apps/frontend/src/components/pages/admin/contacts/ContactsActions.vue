@@ -83,7 +83,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (event: 'export'): void;
-  (event: 'toggleTag', tag: SelectItem<string>, isTagged: boolean): void;
+  (event: 'toggleTag', tagId: string, successText: string): void;
   (event: 'manageTags'): void;
 }>();
 
@@ -150,7 +150,7 @@ const bulkTagItems = computed<DropdownMenuItem[][]>(() => [
           }),
           // Keep the menu open so several tags can be toggled in a row
           onSelect: (event: Event) => event.preventDefault(),
-          onUpdateChecked: () => emit('toggleTag', tag, checked),
+          onUpdateChecked: () => handleToggleTag(tag, checked),
         };
       })
     : [{ label: t('tags.noTags'), disabled: true }],
@@ -162,4 +162,17 @@ const bulkTagItems = computed<DropdownMenuItem[][]>(() => [
     },
   ],
 ]);
+
+function handleToggleTag(tag: SelectItem<string>, isTagged: boolean) {
+  emit(
+    'toggleTag',
+    (isTagged ? '-' : '+') + tag.id,
+    t(
+      isTagged
+        ? 'tags.notifications.removedTag'
+        : 'tags.notifications.addedTag',
+      { tag: tag.label }
+    )
+  );
+}
 </script>

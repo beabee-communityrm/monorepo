@@ -60,7 +60,10 @@ meta:
             :current-segment="currentSegment"
             :busy="doingAction"
             @export="handleExport"
-            @toggle-tag="handleToggleTag"
+            @toggle-tag="
+              (tagId, successText) =>
+                handleUpdateAction({ tags: [tagId] }, successText)
+            "
             @manage-tags="tagsModalOpen = true"
           />
         </div>
@@ -69,19 +72,17 @@ meta:
           v-if="filtersOpen"
           v-model="currentRules"
           :filter-groups="filterGroups"
-          :match-count="matchCount"
-          @change="handleDraftChange"
-          @reset="handleResetFilters"
+          :count-matches="countMatches"
+          @reset="currentRules = undefined"
           @close="filtersOpen = false"
         />
 
         <ContactAppliedFilters
           v-else-if="currentTag || appliedRules.length"
+          v-model:rule-group="currentRules"
           :tag-label="currentTagLabel"
-          :rule-group="currentRules"
           :filter-groups="filterGroups"
           @remove-tag="currentTag = ''"
-          @remove-rule="handleRemoveRule"
         >
           <SaveSegment
             v-if="hasUnsavedSegment && currentRules"
@@ -207,38 +208,9 @@ const filtersOn = computed(
   () => filtersOpen.value || appliedRules.value.length > 0
 );
 
-/** Keeps an empty group rather than none, which would bring back the segment's rules */
-function handleRemoveRule(index: number) {
-  currentRules.value = {
-    condition: currentRules.value?.condition ?? 'AND',
-    rules: appliedRules.value.filter((_, i) => i !== index),
-  };
-}
-
-function handleResetFilters() {
-  currentRules.value = undefined;
-  matchCount.value = undefined;
-}
-
-/**
- * Live count of the contacts the unapplied filters match
- */
-const matchCount = ref<number>();
-let matchCountTimer: ReturnType<typeof setTimeout>;
-
-function handleDraftChange(ruleGroup: RuleGroup) {
-  clearTimeout(matchCountTimer);
-  matchCountTimer = setTimeout(async () => {
-    try {
-      const result = await client.contact.list({
-        limit: 1,
-        rules: getSearchRules(ruleGroup.rules.length ? ruleGroup : undefined),
-      });
-      matchCount.value = result.total;
-    } catch {
-      matchCount.value = undefined;
-    }
-  }, 400);
+async function countMatches(rules: RuleGroup) {
+  return (await client.contact.list({ limit: 1, rules: getSearchRules(rules) }))
+    .total;
 }
 
 /**
@@ -411,20 +383,5 @@ async function handleUpdateAction(
   } finally {
     doingAction.value = false;
   }
-}
-
-function handleToggleTag(
-  tag: { id: string; label: string },
-  isTagged: boolean
-) {
-  return handleUpdateAction(
-    { tags: [(isTagged ? '-' : '+') + tag.id] },
-    t(
-      isTagged
-        ? 'tags.notifications.removedTag'
-        : 'tags.notifications.addedTag',
-      { tag: tag.label }
-    )
-  );
 }
 </script>

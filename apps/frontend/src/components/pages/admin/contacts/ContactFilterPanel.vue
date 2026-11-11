@@ -107,21 +107,22 @@ const { t, n } = useI18n();
 const props = defineProps<{
   /** All available filter groups, including the crowdNewsroom group */
   filterGroups: FilterGroups;
-  /** Number of contacts the unapplied rules currently match */
-  matchCount?: number;
+  /** Counts the contacts some rules match, for showing before they're applied */
+  countMatches: (rules: RuleGroup) => Promise<number>;
 }>();
 
 const emit = defineEmits<{
   (event: 'reset'): void;
   /** Emitted once the rules are applied or cleared, so the panel can be hidden */
   (event: 'close'): void;
-  /** Emitted as the rules are edited, before they're applied */
-  (event: 'change', rules: RuleGroup): void;
 }>();
 
 const modelValue = defineModel<RuleGroup>();
 
 const addPickerOpen = ref(false);
+/** Number of contacts the unapplied rules currently match */
+const matchCount = ref<number>();
+let matchCountTimer: ReturnType<typeof setTimeout>;
 /** Set once Search is pressed with a value missing, so empty fields show it */
 const showErrors = ref(false);
 const root = useTemplateRef('root');
@@ -155,6 +156,18 @@ function reset() {
   ruleGroup.rules = newRuleGroup.rules;
 }
 
+function updateMatchCount() {
+  const rules = copyRuleGroup(ruleGroup);
+  clearTimeout(matchCountTimer);
+  matchCountTimer = setTimeout(async () => {
+    try {
+      matchCount.value = await props.countMatches(rules);
+    } catch {
+      matchCount.value = undefined;
+    }
+  }, 400);
+}
+
 function handleAddRule(field: string, item: FilterItem) {
   addPickerOpen.value = false;
   ruleGroup.rules.push(createNewRule(field, item.type));
@@ -182,8 +195,5 @@ function handleReset() {
 }
 
 watch(modelValue, reset, { immediate: true });
-watch(ruleGroup, () => emit('change', copyRuleGroup(ruleGroup)), {
-  deep: true,
-  immediate: true,
-});
+watch(ruleGroup, updateMatchCount, { deep: true, immediate: true });
 </script>

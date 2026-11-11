@@ -37,7 +37,7 @@
       <ContactFilterChip
         :rule="rule"
         :filter-groups="filterGroups"
-        @remove="emit('removeRule', i)"
+        @remove="handleRemoveRule(i)"
       />
     </template>
 
@@ -61,14 +61,22 @@ const { t } = useI18n();
 defineProps<{
   /** Label of the tag being filtered by, if any. It's always ANDed with the rules */
   tagLabel?: string;
-  /** The applied rules */
-  ruleGroup?: RuleGroup;
   /** All available filter groups, to label each rule */
   filterGroups: FilterGroups;
 }>();
 
 const emit = defineEmits<{
   (event: 'removeTag'): void;
-  (event: 'removeRule', index: number): void;
 }>();
+
+/** The applied rules */
+const ruleGroup = defineModel<RuleGroup>('ruleGroup');
+
+/** Keeps an empty group rather than none, which would bring back the segment's rules */
+function handleRemoveRule(index: number) {
+  ruleGroup.value = {
+    condition: ruleGroup.value?.condition ?? 'AND',
+    rules: (ruleGroup.value?.rules ?? []).filter((_, i) => i !== index),
+  };
+}
 </script>
