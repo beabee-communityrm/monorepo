@@ -15,17 +15,19 @@ import router from '#lib/router';
 
 import { currentUser, generalContent, initStore, isEmbed } from '../store';
 
-export const currentLocale = computed<Locale>(() => {
-  const route = router.currentRoute.value;
-  const newLocale = route.query.lang?.toString() || generalContent.value.locale;
-
-  const realLocale = isLocale(newLocale) ? newLocale : 'en';
-
-  // Some locales have only been translated in non-admin areas
-  return route.path.startsWith('/admin')
-    ? localeConfig[realLocale].adminLocale
-    : realLocale;
+export const contentLocale = computed<Locale>(() => {
+  const newLocale =
+    router.currentRoute.value.query.lang?.toString() ||
+    generalContent.value.locale;
+  return isLocale(newLocale) ? newLocale : 'en';
 });
+
+export const currentLocale = computed<Locale>(() =>
+  // Some locales have only been translated in non-admin areas
+  router.currentRoute.value.path.startsWith('/admin')
+    ? localeConfig[contentLocale.value].adminLocale
+    : contentLocale.value
+);
 
 export const currentLocaleConfig = computed(
   () => localeConfig[currentLocale.value]
