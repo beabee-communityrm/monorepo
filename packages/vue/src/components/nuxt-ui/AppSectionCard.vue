@@ -8,20 +8,21 @@
   - `icon` (string): Iconify icon name, e.g. `i-lucide-user-circle`.
   - `title` (string): Section title.
   - `description` (string, optional): Short description shown under the title.
+  - `level` (2 | 3 | 4 | 5 | 6, optional): Heading level for the title.
+    Defaults to 2.
 
   ## Slots
   - `default`: Section body content.
 -->
 <template>
-  <UCard :ui="{ header: 'flex items-center gap-3', body: 'space-y-4' }">
+  <UCard :ui="{ body: 'space-y-4' }">
     <template #header>
-      <AppIconBadge :icon="icon" />
-      <div class="space-y-1">
-        <h2>{{ title }}</h2>
-        <p v-if="description" class="text-muted">
-          {{ description }}
-        </p>
-      </div>
+      <AppCardHeader
+        :icon="icon"
+        :title="title"
+        :description="description"
+        :level="level"
+      />
     </template>
 
     <slot />
@@ -35,7 +36,7 @@
  *
  * @component AppSectionCard
  */
-import AppIconBadge from './AppIconBadge.vue';
+import AppCardHeader from './AppCardHeader.vue';
 
 export interface AppSectionCardProps {
   /** Iconify icon name, e.g. `i-lucide-user-circle` */
@@ -44,10 +45,13 @@ export interface AppSectionCardProps {
   title: string;
   /** Optional short description shown under the title */
   description?: string;
+  /** Heading level for the title, so the page's outline stays nested */
+  level?: 2 | 3 | 4 | 5 | 6;
 }
 
 withDefaults(defineProps<AppSectionCardProps>(), {
   description: undefined,
+  level: 2,
 });
 
 defineSlots<{

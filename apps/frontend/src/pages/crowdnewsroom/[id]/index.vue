@@ -95,7 +95,6 @@ import { formatLocale } from '@beabee/vue';
 import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import noImage from '#assets/images/no-image.avif';
 import CalloutContributionGate from '#components/callout/CalloutContributionGate.vue';
 import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue';
 import CalloutLoginGate from '#components/callout/CalloutLoginGate.vue';
@@ -111,9 +110,8 @@ import {
 import env from '#env';
 import { currentUser, isEmbed } from '#store';
 import { addBreadcrumb } from '#store/breadcrumb';
-import { getDaysLeft } from '#utils/callouts';
+import { getCalloutImageUrl, getDaysLeft } from '#utils/callouts';
 import { routeIcons, routeLabels } from '#utils/route-nav';
-import { resolveImageUrl } from '#utils/url';
 
 // Props: Receive the already processed callout from parent route
 const props = defineProps<{
@@ -157,9 +155,7 @@ addBreadcrumb(
   )
 );
 
-const imageUrl = computed(() => {
-  return props.callout.image ? resolveImageUrl(props.callout.image) : noImage;
-});
+const imageUrl = computed(() => getCalloutImageUrl(props.callout));
 
 const daysLeft = computed(() => getDaysLeft(props.callout.expires));
 

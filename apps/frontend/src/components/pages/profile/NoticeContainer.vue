@@ -1,6 +1,6 @@
 <template>
-  <section v-if="notices.length">
-    <AppNotice v-for="notice in notices" :key="notice.id" :notice="notice" />
+  <section v-if="notices.length" class="flex flex-col gap-3">
+    <NoticeBanner v-for="notice in notices" :key="notice.id" :notice="notice" />
   </section>
 </template>
 
@@ -9,7 +9,7 @@ import { type GetNoticeData, ItemStatus } from '@beabee/beabee-common';
 
 import { onBeforeMount, ref } from 'vue';
 
-import AppNotice from '#components/notice/AppNotice.vue';
+import NoticeBanner from '#components/notice/NoticeBanner.vue';
 import { client } from '#utils/api';
 
 const notices = ref<GetNoticeData[]>([]);
