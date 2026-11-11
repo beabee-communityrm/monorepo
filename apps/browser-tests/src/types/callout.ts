@@ -6,7 +6,7 @@ import type {
 
 export type CalloutSlide = Pick<SetCalloutSlideSchema, "id" | "components">;
 
-export interface CreateCalloutOptions {
+export interface CreateTestCalloutOptions {
   access: CalloutAccess;
   responseMode: CalloutResponseMode;
   /** Defaults to one slide with one optional text question */

@@ -6,7 +6,7 @@ import {
 } from "@beabee/beabee-common";
 import { createAdminClient } from "@beabee/test-utils";
 import { api } from "@beabee/test-utils/test-data";
-import type { CalloutSlide, CreateCalloutOptions } from "../types/callout";
+import type { CalloutSlide, CreateTestCalloutOptions } from "../types/callout";
 
 export const admin = createAdminClient();
 
@@ -41,7 +41,7 @@ export const test = base.extend<{
   newFrontend: void;
   formBuilds: void;
   /** Creates a CrowdNewsroom through the admin API and returns its slug */
-  createCallout: (options: CreateCalloutOptions) => Promise<string>;
+  createCallout: (options: CreateTestCalloutOptions) => Promise<string>;
   /** Creates a member, logs the browser in as them, and deletes them after
    * the test */
   createContact: () => Promise<GetContactData>;
