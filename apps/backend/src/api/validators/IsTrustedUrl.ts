@@ -29,7 +29,9 @@ export default function IsTrustedUrl(
           // Any localhost port in development
           const localhost =
             config.dev &&
-            value.match(/^https?:\/\/localhost(:\d+)?(?=[/?#]|$)/);
+            value.match(
+              /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?(?=[/?#]|$)/
+            );
           if (localhost) origins.push(localhost[0]);
 
           return isAllowedReturnUrl(value, origins);

@@ -41,7 +41,14 @@ export function startServer(app: Express) {
   internalApp.get('/trusted-origins', (_, res) => {
     const origins = OptionsService.getList('trusted-origins');
     // Any localhost port in development
-    if (config.dev) origins.push('http://localhost:*', 'https://localhost:*');
+    if (config.dev) {
+      origins.push(
+        'http://localhost:*',
+        'https://localhost:*',
+        'http://127.0.0.1:*',
+        'https://127.0.0.1:*'
+      );
+    }
     res.setHeader('X-Frame-Ancestors', origins.join(' ') || "'none'");
     res.sendStatus(204);
   });
