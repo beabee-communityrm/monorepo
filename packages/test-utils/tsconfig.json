@@ -1,0 +1,3 @@
+{
+  "extends": ["@beabee/tsconfig/tsconfig.vanilla.json"]
+}
