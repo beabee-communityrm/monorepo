@@ -32,7 +32,7 @@ export const createBackfill = ({
 
     if (dryRun) {
       const [{ count }] = await dataSource.query(
-        `SELECT COUNT(*)::int AS count ${source}`,
+        `SELECT COUNT(*)::int AS count FROM (SELECT ${fields} ${source}) s`,
         queryParams
       );
       console.log(
