@@ -10,7 +10,7 @@ import { createBackfill, noActor, sameTarget } from '../../utils/backfill.js';
  */
 const backfillCreated = createBackfill({
   eventType: ActivityEventType.CalloutCreated,
-  fields: `c.id, NULL, NULL, c.date, $1, NULL`,
+  fields: `c.id, NULL, NULL, c.date, $1::varchar, NULL`,
   source: `
     FROM callout c
     WHERE NOT EXISTS (
@@ -28,7 +28,7 @@ const backfillCreated = createBackfill({
  */
 const backfillAnswered = createBackfill({
   eventType: ActivityEventType.CalloutAnswered,
-  fields: `r."calloutId", $2, r."contactId", r."createdAt", $1,
+  fields: `r."calloutId", $2, r."contactId", r."createdAt", $1::varchar,
            jsonb_build_object('responseId', r.id)`,
   source: `
     FROM callout_response r
@@ -49,7 +49,7 @@ const backfillAnswered = createBackfill({
  */
 const backfillSegmentsAdded = createBackfill({
   eventType: ActivityEventType.CalloutSegmentsAdded,
-  fields: `s.id, NULL, NULL, TIMESTAMP '0001-01-01 00:00:00', $1, NULL`,
+  fields: `s.id, NULL, NULL, TIMESTAMP '0001-01-01 00:00:00', $1::varchar, NULL`,
   source: `
     FROM callout_response_segment s
     WHERE NOT EXISTS (

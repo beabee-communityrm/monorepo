@@ -32,7 +32,7 @@ const noStartedEvent = `
  */
 const backfillCreated = createBackfill({
   eventType: ActivityEventType.ContactCreated,
-  fields: `c.id, NULL, NULL, c.joined, $1, NULL`,
+  fields: `c.id, NULL, NULL, c.joined, $1::varchar, NULL`,
   source: `
     FROM contact c
     WHERE NOT EXISTS (
@@ -109,7 +109,7 @@ const backfillContributionStarted: EventBackfiller = {
  */
 const backfillContributionCancelled = createBackfill({
   eventType: ActivityEventType.ContactContributionCancelled,
-  fields: `cc."contactId", $2, cc."contactId", cc."cancelledAt", $1, NULL`,
+  fields: `cc."contactId", $2, cc."contactId", cc."cancelledAt", $1::varchar, NULL`,
   source: `
     FROM contact_contribution cc
     WHERE cc."cancelledAt" IS NOT NULL
@@ -130,7 +130,7 @@ const backfillContributionCancelled = createBackfill({
  */
 const backfillRoleAdded = createBackfill({
   eventType: ActivityEventType.ContactRoleAdded,
-  fields: `cr."contactId", NULL, NULL, LEAST(cr."dateAdded", now()), $1,
+  fields: `cr."contactId", NULL, NULL, LEAST(cr."dateAdded", now()), $1::varchar,
            jsonb_build_object('roleType', cr.type)`,
   source: `
     FROM contact_role cr
@@ -150,7 +150,7 @@ const backfillRoleAdded = createBackfill({
  */
 const backfillSegmentsAdded = createBackfill({
   eventType: ActivityEventType.ContactSegmentsAdded,
-  fields: `s.id, NULL, NULL, TIMESTAMP '0001-01-01 00:00:00', $1, NULL`,
+  fields: `s.id, NULL, NULL, TIMESTAMP '0001-01-01 00:00:00', $1::varchar, NULL`,
   source: `
     FROM segment s
     WHERE NOT EXISTS (

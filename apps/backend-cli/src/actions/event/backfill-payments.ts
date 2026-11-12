@@ -15,7 +15,7 @@ import { createBackfill, noActor, sameTarget } from '../../utils/backfill.js';
  */
 const backfillPaymentSuccessful = createBackfill({
   eventType: ActivityEventType.ContactPaymentSuccessful,
-  fields: `p."contactId", NULL, NULL, p."chargeDate", $1,
+  fields: `p."contactId", NULL, NULL, p."chargeDate", $1::varchar,
            jsonb_build_object('paymentId', p.id)`,
   source: `
     FROM payment p
@@ -88,7 +88,7 @@ const backfillPaymentFailed: EventBackfiller = {
 
     const inserted: { id: string }[] = await dataSource.query(
       `INSERT INTO activity_event ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata")
-       SELECT p."contactId", NULL, NULL, i."uncollectibleAt", $1,
+       SELECT p."contactId", NULL, NULL, i."uncollectibleAt", $1::varchar,
               jsonb_build_object('paymentId', p.id)
        ${noFailedEvent}
        RETURNING id`,

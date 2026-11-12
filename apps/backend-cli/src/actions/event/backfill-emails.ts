@@ -10,7 +10,7 @@ import { createBackfill, noActor, sameTarget } from '../../utils/backfill.js';
  */
 const backfillTemplateAdded = createBackfill({
   eventType: ActivityEventType.EmailTemplateAdded,
-  fields: `m.id, NULL, NULL, m.date, $1,
+  fields: `m.id, NULL, NULL, m.date, $1::varchar,
            jsonb_build_object('templateId', m."templateId")`,
   source: `
     FROM email m
