@@ -203,13 +203,15 @@ class SignupService {
   /**
    * Finalizes a signup flow after email confirmation, creating the contact
    * @param signupFlowId - The ID of the signup flow to finalize
-   * @returns The created contact and where to send them next
+   * @returns The created contact, where to send them next and when the flow
+   * was finalized
    */
   async finalizeSignup(signupFlowId: string): Promise<
     | {
         contact: Contact;
         clientSecret?: string;
         postConfirmUrl: string | null;
+        confirmedAt: Date | null;
       }
     | undefined
   > {
@@ -227,6 +229,7 @@ class SignupService {
       return {
         contact: signupFlow.contact,
         postConfirmUrl: signupFlow.postConfirmUrl,
+        confirmedAt: signupFlow.confirmedAt,
       };
     }
 
@@ -236,8 +239,25 @@ class SignupService {
       { id: signupFlow.id, processing: false },
       { processing: true }
     );
+    // Another request is finalizing this flow: answer as it does once it is
+    // done. The lock is never released, so a flow that failed looks the same
+    // as one in progress and the wait has to give up.
     if (res.affected === 0) {
-      return;
+      for (let attempt = 0; attempt < 20; attempt++) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        const finalized = await getRepository(SignupFlow).findOne({
+          where: { id: signupFlow.id },
+          relations: { contact: true },
+        });
+        if (finalized?.contact) {
+          return {
+            contact: finalized.contact,
+            postConfirmUrl: finalized.postConfirmUrl,
+            confirmedAt: finalized.confirmedAt,
+          };
+        }
+      }
+      throw new Error(`Signup flow ${signupFlow.id} was not finalized in time`);
     }
 
     let contact = await ContactsService.findOne({
@@ -330,13 +350,16 @@ class SignupService {
       await EmailService.sendTemplateToContact('welcome', contact);
     }
 
+    const confirmedAt = new Date();
     await getRepository(SignupFlow).update(signupFlow.id, {
       contactId: contact.id,
+      confirmedAt,
     });
 
     return {
       contact,
       postConfirmUrl: signupFlow.postConfirmUrl,
+      confirmedAt,
       ...(clientSecret && { clientSecret }),
     };
   }
