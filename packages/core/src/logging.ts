@@ -3,6 +3,7 @@ import expressWinston from 'express-winston';
 import winston from 'winston';
 
 import config from './config/config.js';
+import { axiosErrorFormat } from './utils/log.js';
 
 const appFormat = winston.format((info) => {
   const { app, ...rest } = info;
@@ -19,7 +20,10 @@ const logFormats = {
 } as const;
 
 const logger = winston.createLogger({
-  format: logFormats[config.logFormat],
+  format: winston.format.combine(
+    axiosErrorFormat(),
+    logFormats[config.logFormat]
+  ),
   levels: winston.config.syslog.levels,
   transports: [
     new winston.transports.Console({

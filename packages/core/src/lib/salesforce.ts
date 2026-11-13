@@ -4,6 +4,7 @@ import { SalesforceContactSyncConfig, config } from '#config/config';
 import { log as mainLogger } from '#logging';
 import type { Contact, ContactProfile } from '#models/index';
 import type { SFTokenResponse } from '#type/index';
+import { truncateForLog } from '#utils/log';
 
 const log = mainLogger.child({ app: 'salesforce' });
 
@@ -32,10 +33,19 @@ export function createInstance(settings: SFSettings): AxiosInstance {
       client_id: settings.clientId,
       client_secret: settings.clientSecret,
     });
-    const resp = await axios.post<SFTokenResponse>(settings.authUrl, body, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    });
-    return resp.data;
+    try {
+      const resp = await axios.post<SFTokenResponse>(settings.authUrl, body, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      });
+      return resp.data;
+    } catch (err) {
+      // A plain error keeps the client secret in the request config out of
+      // logs, and a token 401 out of the response interceptor's retry
+      if (!axios.isAxiosError(err)) throw err;
+      throw new Error(
+        `Salesforce token request failed with status ${err.response?.status}: ${truncateForLog(err.response?.data)}`
+      );
+    }
   }
 
   async function getToken(): Promise<SFTokenResponse> {
@@ -67,7 +77,7 @@ export function createInstance(settings: SFSettings): AxiosInstance {
       }
       log.error('Salesforce API returned with status ' + status, {
         status,
-        data: error.response?.data,
+        data: truncateForLog(error.response?.data),
       });
       return Promise.reject(error);
     }
