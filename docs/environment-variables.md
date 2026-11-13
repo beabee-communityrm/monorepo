@@ -18,7 +18,6 @@ Environment variable documentation is organized by location and purpose:
 
 - **`.env.example`** - Simplified overview with required/optional indicators
 - **`.env.test.example`** - Test environment overrides
-- **`.env.remote.example`** - Remote CLI configuration
 
 ### This Guide
 
@@ -32,13 +31,12 @@ When adding or updating environment variables:
 
 ## Environment Files
 
-The project uses three main environment files, each serving a specific purpose:
+The project uses two main environment files, each serving a specific purpose:
 
-| File          | Purpose                          | Git Status   | Example File          |
-| ------------- | -------------------------------- | ------------ | --------------------- |
-| `.env`        | Main development environment     | `.gitignore` | `.env.example`        |
-| `.env.remote` | Backend CLI remote server access | `.gitignore` | `.env.remote.example` |
-| `.env.test`   | Local testing environment        | `.gitignore` | `.env.test.example`   |
+| File        | Purpose                      | Git Status   | Example File        |
+| ----------- | ---------------------------- | ------------ | ------------------- |
+| `.env`      | Main development environment | `.gitignore` | `.env.example`      |
+| `.env.test` | Local testing environment    | `.gitignore` | `.env.test.example` |
 
 All environment files are excluded from version control (`.gitignore`) to prevent sensitive data from being committed. Instead, example files with the `.example` suffix are checked into the repository.
 
@@ -55,7 +53,6 @@ yarn bootstrap
 This command copies:
 
 - `.env.example` → `.env`
-- `.env.remote.example` → `.env.remote`
 - `.env.test.example` → `.env.test`
 
 ### Required Configuration
@@ -75,7 +72,6 @@ BEABEE_MAPTILER_KEY=your_maptiler_api_key
 Follow these exact steps to obtain the Stripe values and make the local webhook work:
 
 1. Get API keys in Stripe Dashboard (Test mode):
-
    - Go to Developers → API keys and copy the Publishable key (`pk_test_…`) and Secret key (`sk_test_…`).
    - Screenshot for reference:
 
@@ -89,7 +85,6 @@ Follow these exact steps to obtain the Stripe values and make the local webhook 
    ```
 
 3. Get the Membership Product ID:
-
    - Go to Product catalogue → open your “Membership” product → copy the Product ID (`prod_…`).
    - Screenshot for reference:
 
@@ -99,14 +94,19 @@ Follow these exact steps to obtain the Stripe values and make the local webhook 
 
 4. Start Docker and retrieve the Webhook Signing Secret via Stripe CLI:
    - Start the stack (the Stripe CLI service uses your `BEABEE_STRIPE_SECRETKEY`):
+
    ```bash
    docker compose up -d
    ```
+
    - Read the webhook secret from the Stripe CLI logs:
+
    ```bash
    docker compose logs -f stripe_cli | grep -i "webhook signing secret"
    ```
+
    - Store it, together with the membership product, with the setup command. Stripe only accepts public URLs for webhook endpoints, so the secret of the local listener replaces creating one:
+
    ```bash
    docker compose run --rm api_app yarn backend-cli setup integrations stripe --webhook-secret whsec_...
    ```
@@ -146,38 +146,6 @@ DB_PORT=6543                # PostgreSQL database
 - Router (Docker): http://localhost:3002 (configured via BEABEE_AUDIENCE)
 - MailDev: http://localhost:3025
 
-### `.env.remote` - Backend CLI Remote Access
-
-**Purpose**: Enables running the backend CLI locally while connecting to a remote server.
-
-**Key Features**:
-
-- Remote database connection
-- Minimal configuration override
-- CLI-specific settings
-
-**Usage**:
-
-```bash
-# Run CLI commands against remote server
-yarn backend-cli [command]
-```
-
-**Configuration Example**:
-
-```bash
-# Connect to remote production database
-BEABEE_DATABASE_URL=postgres://user:pass@your-server.com:5432/beabee_production
-BEABEE_SECRET=your_remote_secret_key
-BEABEE_AUDIENCE=https://your-beabee-instance.com
-```
-
-**Environment Loading Order** (when CLI runs outside Docker):
-
-1. `.env.remote` (highest priority)
-2. `.env` (root environment file)
-3. `.env.test` (if NODE_ENV=test)
-
 ### `.env.test` - Testing Environment
 
 **Purpose**: Configuration for local test execution and test environment setup.
@@ -212,13 +180,11 @@ DB_PORT=5432                # Test database (container port)
 Environment variables are comprehensively documented in the TypeScript source files:
 
 1. **Backend Variables**: [`packages/core/src/config/config.ts`](../packages/core/src/config/config.ts)
-
    - Complete JSDoc documentation for each variable
    - Type definitions and validation rules
    - Default values and allowed options
 
 2. **Frontend Variables**: [`apps/frontend/src/env.ts`](../apps/frontend/src/env.ts)
-
    - Frontend-specific environment variables
    - Usage examples and legacy fallbacks
    - Integration with build tools
@@ -234,7 +200,6 @@ For a simplified overview, see the example files:
 
 1. **[`.env.example`](../.env.example)** - Main development environment
 2. **[`.env.test.example`](../.env.test.example)** - Test environment overrides
-3. **[`.env.remote.example`](../.env.remote.example)** - Remote CLI configuration
 
 ### Variable Categories
 
@@ -285,47 +250,27 @@ Environment variables are organized into these main categories:
 Use MapTiler to power the public map in CrowdNewsroom.
 
 1. **Create a MapTiler API key**
-
    - Sign up and create a key (limit to `localhost` for local dev if you want).
    - ![New dev key](./assets/maptiler-new-key.png)
    - ![MapTiler API keys](./assets/maptiler-keys.png)
 
 2. **Add the key to `.env` and restart**
-
    - Set `BEABEE_MAPTILER_KEY=...` and apply changes:
      ```bash
      docker compose up -d
      ```
 
 3. **Copy a vector style URL**
-
    - In MapTiler → Maps, pick a style and copy the “Use vector style” JSON URL (contains `style.json?key=...`).
    - ![Vector style URL](./assets/maptiler-map-url.png)
 
 4. **Configure your CrowdNewsroom**
-
    - Edit or create a CrowdNewsroom → tab `Response display` → set to public → enable “Enable map view of public responses”. Paste the URL into “Map style URL”.
    - ![CrowdNewsroom map settings](./assets/crowdnewsroom-maptiler-url.png)
 
 5. **Verify**
    - Open `/map` on the public URL, e.g. `http://localhost:3000/crowdnewsroom/<slug>/map`.
    - ![Map rendering in CrowdNewsroom](./assets/crowdnewsroom-maptiler-map.png)
-
-### Remote Server Management
-
-1. **Configure remote access** in `.env.remote`:
-
-   ```bash
-   BEABEE_DATABASE_URL=postgres://user:pass@remote-host:5432/beabee
-   BEABEE_AUDIENCE=https://your-instance.com
-   BEABEE_SECRET=your_remote_secret
-   ```
-
-2. **Run CLI commands**:
-   ```bash
-   yarn backend-cli user list
-   yarn backend-cli payment create --email user@example.com
-   ```
 
 ### Testing
 
@@ -379,7 +324,7 @@ The application validates environment variables on startup. Check logs for speci
 docker compose logs api_app
 
 # Check specific validation errors
-yarn backend-cli user list  # Tests database connection
+docker compose exec api_app yarn backend-cli user list  # Tests database connection
 ```
 
 ### Environment Loading
