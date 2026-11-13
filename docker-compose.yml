@@ -138,7 +138,6 @@ services:
       dockerfile: ./apps/router/Dockerfile
     environment:
       LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN}
-      TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
     ports:
       - ${ROUTER_PORT}:80
     volumes:

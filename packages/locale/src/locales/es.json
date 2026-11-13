@@ -311,6 +311,12 @@
         "text": "Configura lo que aparece en redes sociales cuando se comparte un enlace a tu comunidad beabee",
         "title": "Compartir en redes sociales",
         "twitterHandle": "Usuario de Twitter"
+      },
+      "trustedOrigins": {
+        "add": "Añadir otro sitio web",
+        "label": "Origen",
+        "text": "Sitios web que pueden incrustar tu comunidad beabee, llamar a su API desde el navegador y recibir a los miembros después de iniciar sesión.",
+        "title": "Sitios web de confianza"
       }
     },
     "integrations": {
@@ -1573,6 +1579,11 @@
       },
       "name": {
         "required": "El nombre es obligatorio"
+      },
+      "origin": {
+        "pattern": "Solo esquema y host, por ejemplo https://example.com",
+        "required": "El origen es obligatorio",
+        "url": "URL no válida"
       },
       "password": {
         "password": "Contraseña no válida",

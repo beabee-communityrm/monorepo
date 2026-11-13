@@ -197,7 +197,7 @@ website's edge; unset = off), `COOKIE_NAME`, `COOKIE_DOMAIN` (the parent domain;
 spread), `COOKIE_MAXAGE` (seconds, longer than the ID token lifetime). Requires
 `BEABEE_COOKIE_SECURE=true` for a `__Secure-` cookie name. The website links
 to `/api/1.0/auth/login?next=<absolute URL>`; `next` may be any URL on a
-`BEABEE_TRUSTEDORIGINS` origin. With Site Login on, the login also asks for
+trusted origin (admin settings). With Site Login on, the login also asks for
 `offline_access`, and the callback keeps the refresh token in the beabee
 session, encrypted with the Site Login key. When the cookie's token has
 expired, the website's edge sends the browser to

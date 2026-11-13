@@ -102,6 +102,7 @@ export type * from './content-join-setup-data.js';
 export type * from './content-payment-data.js';
 export type * from './content-profile-data.js';
 export type * from './content-share-data.js';
+export type * from './content-system-data.js';
 export type * from './content-telegram-data.js';
 export type * from './contribution-info.js';
 export type * from './create-api-key-data.js';

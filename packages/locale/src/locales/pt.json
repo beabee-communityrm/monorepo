@@ -311,6 +311,12 @@
         "text": "",
         "title": "",
         "twitterHandle": ""
+      },
+      "trustedOrigins": {
+        "add": "",
+        "label": "",
+        "text": "",
+        "title": ""
       }
     },
     "integrations": {
@@ -1575,6 +1581,11 @@
       },
       "name": {
         "required": "O nome é obrigatório"
+      },
+      "origin": {
+        "pattern": "Apenas esquema e host, por exemplo https://example.com",
+        "required": "A origem é obrigatória",
+        "url": "URL inválido"
       },
       "password": {
         "password": "Palavra-passe inválida",

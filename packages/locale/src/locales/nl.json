@@ -311,6 +311,12 @@
         "text": "Configureer wat er op sociale media wordt weergegeven wanneer een link naar jouw beabee community wordt gedeeld",
         "title": "Sociaal delen",
         "twitterHandle": "Twitter-handleiding"
+      },
+      "trustedOrigins": {
+        "add": "Andere website toevoegen",
+        "label": "Origin",
+        "text": "Websites die je beabee-community mogen insluiten, de API vanuit de browser mogen aanroepen en leden na het inloggen mogen ontvangen.",
+        "title": "Vertrouwde websites"
       }
     },
     "integrations": {
@@ -1575,6 +1581,11 @@
       },
       "name": {
         "required": "Naam is vereist"
+      },
+      "origin": {
+        "pattern": "Alleen schema en host, bijvoorbeeld https://example.com",
+        "required": "Origin is vereist",
+        "url": "Ongeldige URL"
       },
       "password": {
         "password": "Ongeldig wachtwoord",

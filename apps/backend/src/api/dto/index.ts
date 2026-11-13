@@ -19,6 +19,7 @@ export * from './ContactProfileDto.js';
 export * from './ContactRoleDto.js';
 export * from './ContactTagDto.js';
 export * from './ContentDto.js';
+export * from './ContentSystemDto.js';
 export * from './ContentTelegramDto.js';
 export * from './ContributionDto.js';
 export * from './EmailDto.js';

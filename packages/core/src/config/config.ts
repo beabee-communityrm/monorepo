@@ -360,9 +360,6 @@ export const config = {
     secure: env.b('BEABEE_COOKIE_SECURE', true), // Require HTTPS for cookies (default: true)
   },
 
-  // CORS and security settings
-  trustedOrigins: env.ss('BEABEE_TRUSTEDORIGINS', []), // Origins allowed to make authenticated requests
-
   // Database connection
   databaseUrl: env.s('BEABEE_DATABASE_URL'), // PostgreSQL connection URL
 
