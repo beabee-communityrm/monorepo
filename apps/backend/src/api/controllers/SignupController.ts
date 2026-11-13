@@ -27,6 +27,9 @@ import { grantDirectLogin, login } from '#api/utils/auth';
 
 import { RateLimit } from '../decorators/index.js';
 
+/** How long after the confirmation its link still logs the member in, in ms */
+const CONFIRM_LOGIN_MAX_AGE = 5 * 60 * 1000;
+
 @JsonController('/signup')
 export class SignupController {
   @OnUndefined(204)
@@ -134,11 +137,19 @@ export class SignupController {
       throw new NotFoundError();
     }
 
-    const { contact, clientSecret, postConfirmUrl } = result;
-    await login(req, contact);
-    // Confirming the email is the verification a direct login stands on
-    if (isOidcEnabled()) {
-      grantDirectLogin(req, contact);
+    const { contact, clientSecret, postConfirmUrl, confirmedAt } = result;
+    // The link logs the member in only while the confirmation is recent, so
+    // a second tab or a retried request still works but the link is no
+    // lasting way into the account
+    if (
+      confirmedAt &&
+      Date.now() - confirmedAt.getTime() < CONFIRM_LOGIN_MAX_AGE
+    ) {
+      await login(req, contact);
+      // Confirming the email is the verification a direct login stands on
+      if (isOidcEnabled()) {
+        grantDirectLogin(req, contact);
+      }
     }
 
     return plainToInstance(ConfirmSignupResultDto, {

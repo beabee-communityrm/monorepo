@@ -106,7 +106,11 @@ OIDC login with the `directLogin` Login Action that continues to the setup
 page. The provider completes that login without showing the member a page
 (how each provider does it is in its own document), and the member arrives
 at the setup page through beabee's normal OIDC callback. The member has no
-credential afterwards and sets one up later.
+credential afterwards and sets one up later. The confirmation link logs in
+only for five minutes after the first confirmation, which covers a second
+tab or a retried request. Later it still confirms but logs nobody in: a
+`directLogin` without a Login Grant sends a member who is logged in on to
+the next URL, and anyone else to an ordinary login.
 
 **Account management (OIDC state).** beabee's account page offers three
 actions — change password, add a passkey, set up an authenticator app — each
