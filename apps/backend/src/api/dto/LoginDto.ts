@@ -5,7 +5,7 @@ import {
 } from '@beabee/beabee-common';
 import { LoginData } from '@beabee/core/type';
 
-import { IsEmail, IsIn, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsIn, IsOptional, IsString, IsUUID } from 'class-validator';
 
 import IsTrustedUrl from '#api/validators/IsTrustedUrl';
 import IsUrl from '#api/validators/IsUrl';
@@ -49,6 +49,11 @@ export class OidcLoginOptsDto extends NextOptsDto {
   @IsOptional()
   @IsIn(LOGIN_ACTIONS)
   action?: LoginAction;
+
+  /** The Reset Security Flow of a set or reset password link, for `setupCredential` */
+  @IsOptional()
+  @IsUUID('4')
+  flow?: string;
 
   /** `login` makes the IdP re-authenticate the member even with a live session there */
   @IsOptional()

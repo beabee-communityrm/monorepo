@@ -35,8 +35,15 @@ export class AuthClient extends BaseClient {
    * inside this login, e.g. change their password
    * @param prompt `login` makes the identity provider re-authenticate the
    * member even if they are still logged in there
+   * @param flow The Reset Security Flow of a set or reset password link,
+   * for the `setupCredential` action
    */
-  getLoginUrl(next?: string, action?: LoginAction, prompt?: 'login'): string {
+  getLoginUrl(
+    next?: string,
+    action?: LoginAction,
+    prompt?: 'login',
+    flow?: string
+  ): string {
     const url = this.authUrl('login');
     if (next) {
       url.searchParams.set('next', next);
@@ -46,6 +53,9 @@ export class AuthClient extends BaseClient {
     }
     if (prompt) {
       url.searchParams.set('prompt', prompt);
+    }
+    if (flow) {
+      url.searchParams.set('flow', flow);
     }
     return url.href;
   }

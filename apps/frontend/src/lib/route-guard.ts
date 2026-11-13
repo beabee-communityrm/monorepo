@@ -23,6 +23,21 @@ export function installRouteGuard(router: Router) {
       return false;
     }
 
+    // The identity provider has the page behind a set or reset password
+    // link, so leave before anything renders
+    if (
+      (to.name === 'set_password' || to.name === 'reset_password') &&
+      generalContent.value.oidcEnabled
+    ) {
+      window.location.href = client.auth.getLoginUrl(
+        undefined,
+        'setupCredential',
+        undefined,
+        String(to.params.id)
+      );
+      return false;
+    }
+
     // Password flow routes don't exist when the identity provider handles login
     if (to.meta.localLoginOnly && generalContent.value.oidcEnabled) {
       return { path: '/auth/login' };
