@@ -30,7 +30,7 @@ does not promise it ([ADR-0004](../adr/0004-link-to-login-v2-self-service-flows.
 | `changePassword`  | `/password/change`                      |
 | `addPasskey`      | `/passkey/set`                          |
 | `setupMfa`        | `/mfa/set`                              |
-| `setupCredential` | `/verify` with an invite code           |
+| `setupCredential` | `/verify` or `/password/set` and a code |
 | `directLogin`     | none: completed with a session          |
 
 ```mermaid
@@ -50,10 +50,17 @@ sequenceDiagram
     Note over B,Z: callback as in the login flow
 ```
 
-**Credential setup** uses the same mechanism: beabee creates an invite code via
-`POST /v2/users/{sub}/invite_code` and sends the browser to
-`/ui/v2/login/verify?requestId&userId&code&invite=true`, where the member
-chooses a password or passkey.
+**Credential setup** uses the same mechanism with a code beabee requests
+for the member. Zitadel only invites accounts without a credential
+(`GET /v2/users/{sub}/authentication_methods` is empty): for those beabee
+creates an invite code via `POST /v2/users/{sub}/invite_code` and sends the
+browser to `/ui/v2/login/verify?requestId&userId&code&invite=true`, where
+the member chooses a password or passkey. For an account with a credential
+it creates a reset code via `POST /v2/users/{sub}/password_reset` and sends
+the browser to `/ui/v2/login/password/set?requestId&userId&loginName&code`,
+where the member sets a new password; Login v2 asks for a second factor
+before it completes the login. Both codes are returned to beabee, so
+Zitadel sends no email for them.
 
 **Direct login** shows no Login v2 page: beabee creates a session for the
 user with only a user check (`POST /v2/sessions`), completes the

@@ -112,6 +112,19 @@ tab or a retried request. Later it still confirms but logs nobody in: a
 `directLogin` without a Login Grant sends a member who is logged in on to
 the next URL, and anyone else to an ordinary login.
 
+**Set and reset password links (OIDC state).** The `*|SPLINK|*` and
+`*|RPLINK|*` merge tags in emails keep their links to `/auth/set-password/{id}`
+and `/auth/reset-password/{id}`, where the ID is a Reset Security Flow valid
+for 24 hours. The frontend forwards both to
+`GET /auth/login?action=setupCredential&flow={id}`: the flow names the
+contact, so no session is needed, and beabee starts an OIDC login that
+enters the IdP's page for setting a credential. A member without one
+chooses their first; a member who has one sets a new password, and the IdP
+still asks for their second factor. The callback logs the member in and
+deletes the contact's flows, so a link works until someone completes it and
+opening it alone does not use it up. `setupCredential` without a valid flow
+is an ordinary login.
+
 **Account management (OIDC state).** beabee's account page offers three
 actions — change password, add a passkey, set up an authenticator app — each
 an OIDC login that beabee starts with a Login Action
