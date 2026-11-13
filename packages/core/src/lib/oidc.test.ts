@@ -13,6 +13,7 @@ const settings = {
 
 const mockConfig = {
   dev: false,
+  logFormat: 'json',
   audience,
   login: { provider: 'oidc', settings },
   siteLogin: undefined as object | undefined,
