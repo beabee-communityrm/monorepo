@@ -473,15 +473,30 @@ export class ZitadelProvider implements IdpProvider {
     }
     const requestId = `oidc_${authRequestId}`;
 
-    // The invite verify page lets the member choose a password or passkey
     if (action.type === 'setupCredential') {
+      const methods = await this.request<{ authMethodTypes?: string[] }>(
+        'GET',
+        `/v2/users/${action.subject}/authentication_methods`
+      );
+      // Zitadel only invites accounts without a credential. The invite
+      // verify page lets the member choose a password or passkey.
+      if (!methods?.authMethodTypes?.length) {
+        const params = new URLSearchParams({
+          requestId,
+          userId: action.subject,
+          code: await this.createInviteCode(action.subject),
+          invite: 'true',
+        });
+        return `${this.settings.url}/ui/v2/login/verify?${params}`;
+      }
+      // An account with a credential sets a new password with a reset code
       const params = new URLSearchParams({
         requestId,
         userId: action.subject,
-        code: await this.createInviteCode(action.subject),
-        invite: 'true',
+        loginName: await this.getLoginName(action.subject),
+        code: await this.createPasswordResetCode(action.subject),
       });
-      return `${this.settings.url}/ui/v2/login/verify?${params}`;
+      return `${this.settings.url}/ui/v2/login/password/set?${params}`;
     }
 
     const params = new URLSearchParams({
@@ -560,6 +575,19 @@ export class ZitadelProvider implements IdpProvider {
       throw new Error('Zitadel did not return the invite code');
     }
     return resp.inviteCode;
+  }
+
+  private async createPasswordResetCode(subject: string): Promise<string> {
+    log.info(`Create password reset code for user ${subject}`);
+    const resp = await this.request<{ verificationCode: string }>(
+      'POST',
+      `/v2/users/${subject}/password_reset`,
+      { returnCode: {} }
+    );
+    if (!resp?.verificationCode) {
+      throw new Error('Zitadel did not return the password reset code');
+    }
+    return resp.verificationCode;
   }
 
   /**

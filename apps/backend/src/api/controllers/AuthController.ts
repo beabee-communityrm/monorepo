@@ -1,4 +1,9 @@
-import { LOGIN_CODES, RoleType, RoleTypes } from '@beabee/beabee-common';
+import {
+  LOGIN_CODES,
+  RESET_SECURITY_FLOW_TYPE,
+  RoleType,
+  RoleTypes,
+} from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
 import {
@@ -20,6 +25,7 @@ import { log as mainLogger } from '@beabee/core/logging';
 import { Contact, ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import IdpService from '@beabee/core/services/IdpService';
+import ResetSecurityFlowService from '@beabee/core/services/ResetSecurityFlowService';
 import { AuthInfo, PassportLoginInfo } from '@beabee/core/type';
 import { isValidNextUrl } from '@beabee/core/utils/url';
 
@@ -161,10 +167,24 @@ export class AuthController {
     @Req() req: Request,
     @Res() res: Response,
     @CurrentAuth({ required: false }) auth: AuthInfo,
-    @QueryParams() { next, action, prompt }: OidcLoginOptsDto
+    @QueryParams() { next, action, prompt, flow }: OidcLoginOptsDto
   ): Promise<Response> {
     assertOidcAuthEnabled();
-    const contact = auth.contact;
+    let contact = auth.contact;
+    // setupCredential sets a credential without asking for the current one,
+    // so a session is not enough: it needs the Reset Security Flow of a set
+    // or reset password link, which names the contact. A link that is no
+    // longer valid leaves an ordinary login.
+    let resetFlow = false;
+    if (action === 'setupCredential') {
+      const rpFlow = flow ? await ResetSecurityFlowService.get(flow) : null;
+      if (rpFlow?.type === RESET_SECURITY_FLOW_TYPE.PASSWORD) {
+        contact = rpFlow.contact;
+        resetFlow = true;
+      } else {
+        action = undefined;
+      }
+    }
     // directLogin needs a Login Grant. Without one, a member who is logged
     // in continues to next and anyone else gets an ordinary login.
     if (
@@ -185,7 +205,7 @@ export class AuthController {
     // login from the last two hours, and one the browser still holds at
     // the IdP: the pages behind the actions work on that session. A fresh
     // login provides both and returns here. Not for setupCredential, whose
-    // account cannot log in yet, nor directLogin, which shows no IdP page.
+    // member cannot log in, nor directLogin, which shows no IdP page.
     if (
       action &&
       action !== 'setupCredential' &&
@@ -205,7 +225,7 @@ export class AuthController {
       const loginHint =
         contact && prompt === 'login' ? contact.email : undefined;
       const { url, loginState } = await startOidcLogin(next, prompt, loginHint);
-      req.session.oidc = loginState;
+      req.session.oidc = { ...loginState, resetFlow };
       res.redirect(
         action && contact
           ? await IdpService.resolveLoginUrl(url, contact, action)
@@ -290,6 +310,11 @@ export class AuthController {
           )
         );
         return res;
+      }
+
+      // The member has set their credential, so the link has done its job
+      if (loginState.resetFlow) {
+        await ResetSecurityFlowService.deleteAll(contact);
       }
 
       // Regenerates the session, dropping the pre-login state
