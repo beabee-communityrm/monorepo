@@ -31,7 +31,6 @@ jobs:
       tags: ${{ steps.meta.outputs.tags }}
       labels: ${{ steps.meta.outputs.labels }}
       version: ${{ steps.meta.outputs.version }}
-      json: ${{ steps.meta.outputs.json }}
 
     steps:
       - uses: actions/checkout@v4
@@ -45,14 +44,12 @@ jobs:
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
             type=raw,value=dev,enable=${{ github.ref == 'refs/heads/dev' }}
             type=raw,value=release,enable=${{ startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, '-') }}
+            type=raw,value=main-${{ github.run_number }}-{{sha}},enable=${{ github.ref == 'refs/heads/main' }},priority=100
+            type=raw,value=dev-${{ github.run_number }}-{{sha}},enable=${{ github.ref == 'refs/heads/dev' }},priority=100
 
   build-push-backend:
     runs-on: ubuntu-24.04
     needs: [check, test, init]
-
-    strategy:
-      matrix:
-        tag: ${{ fromJSON(needs.init.outputs.json).tags }}
 
     steps:
       - uses: docker/setup-buildx-action@v3
@@ -70,7 +67,7 @@ jobs:
             REVISION=${{ github.sha }}
           labels: ${{ needs.init.outputs.labels }}
           target: legacy_app
-          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-legacy-app:${{ matrix.tag }}
+          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-legacy-app:sha-${{ github.sha }}
 
       - name: Build and push API app
         uses: docker/build-push-action@v5
@@ -81,7 +78,7 @@ jobs:
             REVISION=${{ github.sha }}
           labels: ${{ needs.init.outputs.labels }}
           target: api_app
-          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-api-app:${{ matrix.tag }}
+          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-api-app:sha-${{ github.sha }}
 
       - name: Build and push webhook app
         uses: docker/build-push-action@v5
@@ -92,7 +89,7 @@ jobs:
             REVISION=${{ github.sha }}
           labels: ${{ needs.init.outputs.labels }}
           target: webhook_app
-          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-webhook-app:${{ matrix.tag }}
+          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-webhook-app:sha-${{ github.sha }}
 
       - name: Build and push cron app
         uses: docker/build-push-action@v5
@@ -103,15 +100,11 @@ jobs:
             REVISION=${{ github.sha }}
           labels: ${{ needs.init.outputs.labels }}
           target: cron_app
-          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-cron-app:${{ matrix.tag }}
+          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-cron-app:sha-${{ github.sha }}
 
   build-push-frontend:
     runs-on: ubuntu-24.04
     needs: [check, test, init]
-
-    strategy:
-      matrix:
-        tag: ${{ fromJSON(needs.init.outputs.json).tags }}
 
     steps:
       - uses: docker/setup-buildx-action@v3
@@ -129,15 +122,11 @@ jobs:
             VERSION=${{ needs.init.outputs.version }}
             REVISION=${{ github.sha }}
           labels: ${{ needs.init.outputs.labels }}
-          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-frontend:${{ matrix.tag }}
+          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-frontend:sha-${{ github.sha }}
 
   build-push-router:
     runs-on: ubuntu-24.04
     needs: [check, test, init]
-
-    strategy:
-      matrix:
-        tag: ${{ fromJSON(needs.init.outputs.json).tags }}
 
     steps:
       - uses: docker/setup-buildx-action@v3
@@ -154,10 +143,12 @@ jobs:
           build-args: |
             REVISION=${{ github.sha }}
           labels: ${{ needs.init.outputs.labels }}
-          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-router:${{ matrix.tag }}
+          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-router:sha-${{ github.sha }}
 
-  release:
-    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+  # Public tags are only added once every image is built: the cluster rolls
+  # out as soon as a new tag appears on beabee-api-app and expects the same
+  # tag to exist on all the other images.
+  publish-tags:
     runs-on: ubuntu-24.04
     needs:
       [
@@ -166,6 +157,32 @@ jobs:
         build-push-frontend,
         build-push-router,
       ]
+
+    steps:
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Tag images
+        env:
+          ORG: ${{ secrets.DOCKER_ORGANISATION }}
+          TAGS: ${{ needs.init.outputs.tags }}
+        run: |
+          # beabee-api-app goes last as it is the image the cluster watches
+          for image in beabee-legacy-app beabee-webhook-app beabee-cron-app beabee-frontend beabee-router beabee-api-app; do
+            args=()
+            for tag in $TAGS; do
+              args+=(-t "$ORG/$image:$tag")
+            done
+            docker buildx imagetools create "${args[@]}" "$ORG/$image:sha-$GITHUB_SHA"
+          done
+
+  release:
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+    runs-on: ubuntu-24.04
+    needs: [init, publish-tags]
 
     steps:
       - uses: actions/checkout@v4
@@ -182,36 +199,6 @@ jobs:
           ./update.sh
 
           git add VERSION docker-compose.yml
-          if ! git diff --quiet --cached; then
-            git commit -m "Deploy version ${{ needs.init.outputs.version }}"
-            git push
-          fi
-
-  release-helm:
-    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
-    runs-on: ubuntu-24.04
-    needs:
-      [
-        init,
-        build-push-backend,
-        build-push-frontend,
-        build-push-router,
-      ]
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: beabee-communityrm/helm-chart
-          ssh-key: ${{ secrets.HELM_CHART_SSH_PRIVATE_KEY }}
-          ref: main
-
-      - run: |
-          git config --global user.name "Deploy bot"
-          git config --global user.email "<>"
-
-          ./update.sh "${{ needs.init.outputs.version }}"
-
-          git add Chart.yaml
           if ! git diff --quiet --cached; then
             git commit -m "Deploy version ${{ needs.init.outputs.version }}"
             git push
