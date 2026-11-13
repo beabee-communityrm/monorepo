@@ -78,6 +78,35 @@ export function hasFreshIdpSession(req: Request): boolean {
   return !!req.cookies?.[IDP_SESSION_COOKIE] && isFreshOidcLogin(req);
 }
 
+/** How long a Login Grant can be used, in seconds */
+const LOGIN_GRANT_MAX_AGE = 10 * 60;
+
+/**
+ * Allow one `directLogin` for the contact: beabee has verified them some
+ * other way, such as the link in an email. Set after login(), which starts
+ * a new session.
+ */
+export function grantDirectLogin(req: Request, contact: Contact): void {
+  req.session.loginGrant = {
+    contactId: contact.id,
+    expiresAt: Date.now() / 1000 + LOGIN_GRANT_MAX_AGE,
+  };
+}
+
+/** Use up the session's Login Grant, whether or not it is for this contact */
+export function consumeDirectLoginGrant(
+  req: Request,
+  contact: Contact
+): boolean {
+  const grant = req.session.loginGrant;
+  delete req.session.loginGrant;
+  return (
+    !!grant &&
+    grant.contactId === contact.id &&
+    grant.expiresAt >= Date.now() / 1000
+  );
+}
+
 export function login(req: Request, contact: Contact): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     req.login(contact, (error) => {

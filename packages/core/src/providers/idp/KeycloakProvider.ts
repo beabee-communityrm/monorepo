@@ -12,7 +12,10 @@ import type { IdpLoginAction, IdpProvider } from '#type/index';
 const log = mainLogger.child({ app: 'keycloak-idp-provider' });
 
 // Application Initiated Actions, run on the member's session during login
-const KC_ACTIONS: Record<Exclude<LoginAction, 'setupCredential'>, string> = {
+const KC_ACTIONS: Record<
+  Exclude<LoginAction, 'setupCredential' | 'directLogin'>,
+  string
+> = {
   changePassword: 'UPDATE_PASSWORD',
   addPasskey: 'webauthn-register-passwordless',
   setupMfa: 'CONFIGURE_TOTP',
@@ -177,8 +180,12 @@ export class KeycloakProvider implements IdpProvider {
     authorizeUrl: string,
     action: IdpLoginAction
   ): Promise<string> {
-    if (action.type === 'setupCredential') {
-      return await this.createMagicLink(authorizeUrl, action.subject);
+    if (action.type === 'setupCredential' || action.type === 'directLogin') {
+      return await this.createMagicLink(
+        authorizeUrl,
+        action.subject,
+        action.type === 'setupCredential'
+      );
     }
     const url = new URL(authorizeUrl);
     url.searchParams.set('kc_action', KC_ACTIONS[action.type]);
@@ -188,17 +195,20 @@ export class KeycloakProvider implements IdpProvider {
   /**
    * A magic link (keycloak-magic-link extension, part of the development
    * image) logs the member in with the parameters of beabee's authorization
-   * request, so the callback matches the login state. The required action
-   * makes them set a password on the way.
+   * request, so the callback matches the login state. With setPassword the
+   * required action makes them set a password on the way.
    */
   private async createMagicLink(
     authorizeUrl: string,
-    subject: string
+    subject: string,
+    setPassword: boolean
   ): Promise<string> {
     log.info(`Create magic link for user ${subject}`);
-    await this.request('PUT', `/users/${subject}`, {
-      requiredActions: ['UPDATE_PASSWORD'],
-    });
+    if (setPassword) {
+      await this.request('PUT', `/users/${subject}`, {
+        requiredActions: ['UPDATE_PASSWORD'],
+      });
+    }
     const user = (await (
       await this.request('GET', `/users/${subject}`)
     ).json()) as {

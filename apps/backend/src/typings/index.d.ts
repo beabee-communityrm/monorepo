@@ -31,5 +31,7 @@ declare module 'express-session' {
     refreshToken?: string | undefined;
     /** When the member last authenticated at the IdP, seconds since the epoch */
     authTime?: number | undefined;
+    /** One `directLogin` beabee allows for this contact, until expiresAt (seconds since the epoch) */
+    loginGrant?: { contactId: string; expiresAt: number } | undefined;
   }
 }

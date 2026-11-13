@@ -6,8 +6,10 @@ Zitadel, the production IdP.
 ## Tenant and credential
 
 Each beabee instance has a dedicated Zitadel **virtual instance**; one
-service user with `IAM_OWNER` on that instance is the only credential beabee
-holds, as a personal access token: `BEABEE_IDP_SETTINGS_` `URL`, `PAT`.
+service user with `IAM_OWNER` and `IAM_LOGIN_CLIENT` on that instance is
+the only credential beabee holds, as a personal access token:
+`BEABEE_IDP_SETTINGS_` `URL`, `PAT`. `IAM_LOGIN_CLIENT` is for direct login
+below.
 
 Zitadel is two things in the diagrams: **Zitadel** is the OIDC endpoints
 (`/oauth/v2/authorize`, `/oauth/v2/token`, `/oidc/v1/end_session`) and the
@@ -28,7 +30,8 @@ does not promise it ([ADR-0004](../adr/0004-link-to-login-v2-self-service-flows.
 | `changePassword`  | `/password/change`                      |
 | `addPasskey`      | `/passkey/set`                          |
 | `setupMfa`        | `/mfa/set`                              |
-| `setupCredential` | `/verify` with an invite code (joining) |
+| `setupCredential` | `/verify` with an invite code           |
+| `directLogin`     | none: completed with a session          |
 
 ```mermaid
 sequenceDiagram
@@ -47,10 +50,17 @@ sequenceDiagram
     Note over B,Z: callback as in the login flow
 ```
 
-**Joining** uses the same mechanism: beabee creates an invite code via
+**Credential setup** uses the same mechanism: beabee creates an invite code via
 `POST /v2/users/{sub}/invite_code` and sends the browser to
 `/ui/v2/login/verify?requestId&userId&code&invite=true`, where the member
 chooses a password or passkey.
+
+**Direct login** shows no Login v2 page: beabee creates a session for the
+user with only a user check (`POST /v2/sessions`), completes the
+authorization request with it (`POST /v2/oidc/auth_requests/{id}`, which
+needs `IAM_LOGIN_CLIENT`) and sends the browser to the callback URL Zitadel
+returns. The session has no authentication factor, so the tokens carry no
+`auth_time` and the login never counts as fresh.
 
 **Removal** of a passkey, security key or authenticator app goes through
 `GET /v2/users/{sub}/authentication_methods` and the matching `DELETE`;

@@ -1,11 +1,13 @@
 /**
- * Actions a member can do at the identity provider inside an OIDC login,
- * requested with the `action` parameter of GET /auth/login. Setting up the
- * first credential of a new account is how the Signup Flow continues.
+ * Actions inside an OIDC login, requested with the `action` parameter of
+ * GET /auth/login. Most are something a member does at the identity
+ * provider; `directLogin` logs a member in without showing them the
+ * identity provider, and needs a Login Grant beabee issued for it.
  */
 export const LOGIN_ACTIONS = [
   'changePassword',
   'addPasskey',
   'setupMfa',
   'setupCredential',
+  'directLogin',
 ] as const;
