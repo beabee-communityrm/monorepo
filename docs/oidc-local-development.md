@@ -49,8 +49,8 @@ changes and deletions follow. Contacts that existed before the provider was
 enabled are provisioned in bulk:
 
 ```sh
-yarn backend-cli user list --unlinked
-yarn backend-cli user provision
+docker compose exec api_app yarn backend-cli user list --unlinked
+docker compose exec api_app yarn backend-cli user provision
 ```
 
 To log in as a provisioned account, give it a password in the Keycloak admin
@@ -79,12 +79,6 @@ Then:
   login is enabled.
 - http://localhost:3002/api/1.0/auth/logout ends both the beabee and the
   Keycloak session.
-
-Host-side CLI commands rely on the operating system resolving
-`auth.localhost` (Linux with systemd-resolved does; macOS does not). Where it
-doesn't, either add `127.0.0.1 auth.localhost` to `/etc/hosts` or run the
-commands inside the container with
-`docker compose exec api_app node /opt/apps/backend-cli/dist/index.js user ...`.
 
 ## Hosted Zitadel dev instance
 
@@ -120,7 +114,7 @@ Then recreate the containers and provision the existing contacts:
 
 ```sh
 docker compose up -d api_app app
-yarn backend-cli user provision
+docker compose exec api_app yarn backend-cli user provision
 ```
 
 Login, logout, invites and credential setup work as with Keycloak; invite
