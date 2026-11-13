@@ -77,7 +77,7 @@ export function createInstance(settings: SFSettings): AxiosInstance {
       }
       log.error('Salesforce API returned with status ' + status, {
         status,
-        data: error.response?.data,
+        data: truncateForLog(error.response?.data),
       });
       return Promise.reject(error);
     }

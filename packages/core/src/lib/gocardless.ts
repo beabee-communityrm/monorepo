@@ -30,6 +30,7 @@ import { v4 as uuidv4 } from 'uuid';
 import config from '#config/config';
 import { log as mainLogger } from '#logging';
 import { UpdateContributionForm } from '#type/update-contribution-form';
+import { truncateForLog } from '#utils/log';
 import { getChargeableAmount } from '#utils/payment';
 
 const log = mainLogger.child({ app: 'gocardless-api' });
@@ -79,7 +80,7 @@ gocardlessInstance.interceptors.response.use(
     } else {
       log.error(`GoCardless API returned ${error.response.status}`, {
         status: error.response.status,
-        data: error.response.data,
+        data: truncateForLog(error.response.data),
       });
       throw error;
     }
