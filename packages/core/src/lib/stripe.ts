@@ -6,7 +6,7 @@ import {
   PaymentType,
 } from '@beabee/beabee-common';
 
-import { differenceInMonths } from 'date-fns';
+import { differenceInMonths } from 'date-fns/differenceInMonths';
 import Stripe from 'stripe';
 
 import config from '#config/config';

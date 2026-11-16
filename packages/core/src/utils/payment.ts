@@ -6,7 +6,10 @@ import {
   calcPaymentFee,
 } from '@beabee/beabee-common';
 
-import { addMonths, getYear, setYear, sub } from 'date-fns';
+import { addMonths } from 'date-fns/addMonths';
+import { getYear } from 'date-fns/getYear';
+import { setYear } from 'date-fns/setYear';
+import { sub } from 'date-fns/sub';
 
 import config from '#config/config';
 import { Contact } from '#models/index';
