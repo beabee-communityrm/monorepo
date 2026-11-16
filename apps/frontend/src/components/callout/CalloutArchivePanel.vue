@@ -72,7 +72,7 @@
       </p>
 
       <AppTablePagination
-        v-show="archivedCallouts?.total"
+        v-show="(archivedCallouts?.total ?? 0) > archivePageSize"
         v-model:page="archivePage"
         :total="archivedCallouts?.total ?? 0"
         :page-size="archivePageSize"
