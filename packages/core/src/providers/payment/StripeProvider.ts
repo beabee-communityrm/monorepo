@@ -15,6 +15,7 @@ import {
   createSubscription,
   deleteSubscription,
   ensureCustomerAndAttachPayment,
+  getFailedFirstPaymentCode,
   getRequiresActionClientSecret,
   manadateToSource,
   stripe,
@@ -328,8 +329,9 @@ export class StripeProvider extends PaymentProvider {
 
   /**
    * Update or create a Stripe subscription object. If the contact has an active
-   * subscription but inactive membership, the existing subscription will be
-   * cancelled and a new one created.
+   * subscription but inactive membership, or a subscription whose first payment
+   * never completed, the existing subscription will be cancelled and a new one
+   * created.
    *
    * @param form The contribution form
    * @returns Information about the updated subscription
@@ -337,7 +339,18 @@ export class StripeProvider extends PaymentProvider {
   private async updateOrCreateSubscription(
     form: UpdateContributionForm
   ): Promise<Awaited<ReturnType<typeof updateSubscription>>> {
-    if (this.data.subscriptionId && this.contact.membership?.isActive) {
+    // Stripe rejects amount or period changes on an incomplete subscription
+    const isIncomplete =
+      !!this.data.subscriptionId &&
+      !!this.contact.membership?.isActive &&
+      (await stripe.subscriptions.retrieve(this.data.subscriptionId)).status ===
+        'incomplete';
+
+    if (
+      this.data.subscriptionId &&
+      this.contact.membership?.isActive &&
+      !isIncomplete
+    ) {
       log.info('Update subscription ' + this.data.subscriptionId);
       try {
         return await updateSubscription(
@@ -361,8 +374,20 @@ export class StripeProvider extends PaymentProvider {
         this.data.customerId!, // customerId is asserted in updateContribution
         form,
         this.method,
-        calcRenewalDate(this.contact)
+        // The membership an incomplete subscription granted was never paid
+        // for, so its replacement charges straight away
+        isIncomplete ? undefined : calcRenewalDate(this.contact)
       );
+
+      // A declined first payment would leave an incomplete subscription that
+      // grants membership until Stripe expires it
+      const failedCode = getFailedFirstPaymentCode(subscription);
+      if (failedCode) {
+        log.info(`First payment failed for ${subscription.id}, cancelling`);
+        await deleteSubscription(subscription.id);
+        throw new PaymentFailedError(failedCode);
+      }
+
       return { subscription, startNow: true };
     }
   }
