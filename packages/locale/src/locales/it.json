@@ -189,6 +189,7 @@
       "target": "Destinatario",
       "time": "Ora"
     },
+    "deleted": "Eliminato",
     "eventType": {
       "appPaymentOptionsUpdated": "Opzioni di pagamento disponibili aggiornate",
       "appSettingsUpdated": "Impostazioni dell'app aggiornate",

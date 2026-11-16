@@ -32,6 +32,18 @@ meta:
       <template #value-eventType="{ value }">
         {{ getEventTypeLabel(value) }}
       </template>
+      <template #value-actor="{ item, value }">
+        <ActivityReference
+          :reference="value"
+          :fallback="getActorTypeLabel(item.actorType)"
+        />
+      </template>
+      <template #value-target="{ item, value }">
+        <ActivityReference
+          :reference="value"
+          :fallback="item.targetId && t('activity.deleted')"
+        />
+      </template>
     </AppPaginatedTable>
   </AppFilterGrid>
 </template>
@@ -40,7 +52,8 @@ meta:
 import {
   ActivityActorType,
   ActivityEventType,
-  type GetActivityEventData,
+  type GetActivityEventDataWith,
+  GetActivityEventWith,
   type Paginated,
   type RuleGroup,
   isRuleGroup,
@@ -58,12 +71,13 @@ import { faDownload, faFileWaveform } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import ActivityReference from '#components/activity/ActivityReference.vue';
 import AppSearch from '#components/search/AppSearch.vue';
 import AppPaginatedTable from '#components/table/AppPaginatedTable.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import type { FilterGroups } from '#type/search';
 import type { Header } from '#type/table';
-import { getEventTypeLabel } from '#utils/activity';
+import { getActorTypeLabel, getEventTypeLabel } from '#utils/activity';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 import {
@@ -193,13 +207,14 @@ function getSearchRules(): RuleGroup {
 const headers = computed<Header[]>(() => [
   { value: 'createdAt', text: t('activity.data.time') },
   { value: 'eventType', text: t('activity.data.eventType') },
-  { value: 'actorId', text: t('activity.data.actor') },
-  { value: 'targetId', text: t('activity.data.target') },
+  { value: 'actor', text: t('activity.data.actor') },
+  { value: 'target', text: t('activity.data.target') },
 ]);
 
 const currentPaginatedQuery = definePaginatedQuery('createdAt');
 
-const activityTable = ref<Paginated<GetActivityEventData>>();
+const activityTable =
+  ref<Paginated<GetActivityEventDataWith<GetActivityEventWith>>>();
 
 addBreadcrumb(
   computed(() => [
@@ -224,10 +239,10 @@ async function refreshResponses() {
 
   isRefreshing.value = true;
   try {
-    activityTable.value = await client.activity.list({
-      ...currentPaginatedQuery.query,
-      rules: getSearchRules(),
-    });
+    activityTable.value = await client.activity.list(
+      { ...currentPaginatedQuery.query, rules: getSearchRules() },
+      [GetActivityEventWith.Actor, GetActivityEventWith.Target]
+    );
   } catch (err) {
     activityTable.value = { items: [], offset: 0, count: 0, total: 0 };
     addNotification({

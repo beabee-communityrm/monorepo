@@ -189,6 +189,7 @@
       "target": "",
       "time": ""
     },
+    "deleted": "",
     "eventType": {
       "appPaymentOptionsUpdated": "",
       "appSettingsUpdated": "",

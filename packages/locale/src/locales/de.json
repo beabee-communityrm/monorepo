@@ -189,6 +189,7 @@
       "target": "Ziel",
       "time": "Zeit"
     },
+    "deleted": "Gelöscht",
     "eventType": {
       "appPaymentOptionsUpdated": "Verfügbare Zahlungsoptionen aktualisiert",
       "appSettingsUpdated": "App-Einstellungen aktualisiert",

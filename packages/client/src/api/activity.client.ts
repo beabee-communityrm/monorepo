@@ -1,6 +1,7 @@
 import type {
   ActivityEventType,
-  GetActivityEventData,
+  GetActivityEventDataWith,
+  GetActivityEventWith,
   GetActivityEventsQuery,
   Paginated,
 } from '@beabee/beabee-common';
@@ -27,24 +28,50 @@ export class ActivityClient extends BaseClient {
   }
 
   /**
+   * Deserializes an activity event from the server data
+   * @param event - The serialized event data
+   * @returns The deserialized event with proper date objects
+   */
+  static deserialize<
+    T extends ActivityEventType = ActivityEventType,
+    With extends GetActivityEventWith | void = void,
+  >(
+    event: Omit<GetActivityEventDataWith<With, T>, 'createdAt'> & {
+      createdAt: string;
+    }
+  ): GetActivityEventDataWith<With, T> {
+    // The fields added by With can't be resolved while it is generic
+    return {
+      ...event,
+      createdAt: ActivityClient.deserializeDate(event.createdAt),
+    } as GetActivityEventDataWith<With, T>;
+  }
+
+  /**
    * Lists all activity feed events
    * @param query - Pagination and sorting parameters
+   * @param _with - Optional related data to include with each event
    * @returns Paginated list of activity events
    */
-  async list<T extends ActivityEventType = ActivityEventType>(
-    query: GetActivityEventsQuery = {}
-  ): Promise<Paginated<GetActivityEventData<T>>> {
+  async list<
+    T extends ActivityEventType = ActivityEventType,
+    With extends GetActivityEventWith | void = void,
+  >(
+    query: GetActivityEventsQuery = {},
+    _with?: readonly With[]
+  ): Promise<Paginated<GetActivityEventDataWith<With, T>>> {
     const { data } = await this.fetch.get<
       Paginated<
-        Omit<GetActivityEventData<T>, 'createdAt'> & { createdAt: string }
+        Omit<GetActivityEventDataWith<With, T>, 'createdAt'> & {
+          createdAt: string;
+        }
       >
-    >('/', query);
+    >('/', { with: _with, ...query });
     return {
       ...data,
-      items: data.items.map((item) => ({
-        ...item,
-        createdAt: ActivityClient.deserializeDate(item.createdAt),
-      })),
+      items: data.items.map((item) =>
+        ActivityClient.deserialize<T, With>(item)
+      ),
     };
   }
 }

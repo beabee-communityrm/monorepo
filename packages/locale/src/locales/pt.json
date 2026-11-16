@@ -189,6 +189,7 @@
       "target": "Alvo",
       "time": "Hora"
     },
+    "deleted": "Eliminado",
     "eventType": {
       "appPaymentOptionsUpdated": "Opções de pagamento disponíveis atualizadas",
       "appSettingsUpdated": "Definições da aplicação atualizadas",

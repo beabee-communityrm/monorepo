@@ -189,6 +189,7 @@
       "target": "Doel",
       "time": "Tijd"
     },
+    "deleted": "Verwijderd",
     "eventType": {
       "appPaymentOptionsUpdated": "Beschikbare betaalopties bijgewerkt",
       "appSettingsUpdated": "App-instellingen bijgewerkt",

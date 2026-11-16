@@ -4,7 +4,8 @@ import type {
   ContactOriginData,
   ContactRoleData,
   CreateContactData,
-  GetActivityEventData,
+  GetActivityEventDataWith,
+  GetActivityEventWith,
   GetActivityEventsQuery,
   GetContactData,
   GetContactDataWith,
@@ -18,6 +19,7 @@ import type {
 
 import type { BaseClientOptions } from '../types/index.js';
 import { cleanUrl } from '../utils/index.js';
+import { ActivityClient } from './activity.client.js';
 import { BaseClient } from './base.client.js';
 import { ContactAuthMethodClient } from './contact-auth-method.client.js';
 import { ContactContributionClient } from './contact-contribution.client.js';
@@ -157,23 +159,29 @@ export class ContactClient extends BaseClient {
    * Get a contact's activity from the activity feed API
    * @param id - The contact ID
    * @param query - Filtering parameters
+   * @param _with - Optional related data to include with each event
    * @returns Paginated list of activity events
    */
-  async listActivity<T extends ActivityEventType = ActivityEventType>(
+  async listActivity<
+    T extends ActivityEventType = ActivityEventType,
+    With extends GetActivityEventWith | void = void,
+  >(
     id: string,
-    query: GetActivityEventsQuery = {}
-  ): Promise<Paginated<GetActivityEventData<T>>> {
+    query: GetActivityEventsQuery = {},
+    _with?: readonly With[]
+  ): Promise<Paginated<GetActivityEventDataWith<With, T>>> {
     const { data } = await this.fetch.get<
       Paginated<
-        Omit<GetActivityEventData<T>, 'createdAt'> & { createdAt: string }
+        Omit<GetActivityEventDataWith<With, T>, 'createdAt'> & {
+          createdAt: string;
+        }
       >
-    >(`/${id}/activity`, query);
+    >(`/${id}/activity`, { with: _with, ...query });
     return {
       ...data,
-      items: data.items.map((item) => ({
-        ...item,
-        createdAt: ContactClient.deserializeDate(item.createdAt),
-      })),
+      items: data.items.map((item) =>
+        ActivityClient.deserialize<T, With>(item)
+      ),
     };
   }
 

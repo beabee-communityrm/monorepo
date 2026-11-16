@@ -189,6 +189,7 @@
       "target": "Об'єкт",
       "time": "Час"
     },
+    "deleted": "Видалено",
     "eventType": {
       "appPaymentOptionsUpdated": "Доступні способи оплати оновлено",
       "appSettingsUpdated": "Налаштування застосунку оновлено",

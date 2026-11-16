@@ -1,4 +1,8 @@
-import { ActivityEventType } from '@beabee/beabee-common';
+import {
+  ActivityActorType,
+  type ActivityEventReference,
+  ActivityEventType,
+} from '@beabee/beabee-common';
 
 import { i18n } from '#lib/i18n';
 
@@ -53,4 +57,32 @@ const eventTypeKeys: Record<ActivityEventType, string> = {
  */
 export function getEventTypeLabel(type: ActivityEventType): string {
   return t(`activity.eventType.${eventTypeKeys[type]}`);
+}
+
+/**
+ * Get the label for an actor that isn't a contact: every actor type other than
+ * user (cron, webhook, etc.) is system
+ */
+export function getActorTypeLabel(type: ActivityActorType | null): string {
+  return type === ActivityActorType.User
+    ? t('activity.actorType.user')
+    : t('activity.actorType.system');
+}
+
+/**
+ * Get the admin page for the item a reference points to, if it has one
+ */
+export function getReferenceLink(
+  reference: ActivityEventReference
+): string | undefined {
+  switch (reference.type) {
+    case 'contact':
+      return `/admin/contacts/${reference.id}`;
+    case 'callout':
+      return `/admin/crowdnewsroom/view/${reference.id}`;
+    case 'contact-segment':
+      return `/admin/contacts?segment=${reference.id}`;
+    case 'email':
+      return `/admin/contacts/email-templates/edit/${reference.id}`;
+  }
 }

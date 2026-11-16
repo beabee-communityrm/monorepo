@@ -189,6 +189,7 @@
       "target": "Объект",
       "time": "Время"
     },
+    "deleted": "Удалено",
     "eventType": {
       "appPaymentOptionsUpdated": "Доступные способы оплаты обновлены",
       "appSettingsUpdated": "Настройки приложения обновлены",

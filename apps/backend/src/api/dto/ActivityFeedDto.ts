@@ -2,8 +2,10 @@ import {
   ActivityActorType,
   ActivityEventMetadata,
   ActivityEventType,
+  GetActivityEventWith,
 } from '@beabee/beabee-common';
 
+import { Type } from 'class-transformer';
 import {
   IsDate,
   IsEnum,
@@ -11,9 +13,21 @@ import {
   IsObject,
   IsOptional,
   IsString,
+  ValidateNested,
 } from 'class-validator';
 
 import { GetPaginatedQuery } from '#api/dto/BaseDto';
+
+export class ActivityEventReferenceDto {
+  @IsString()
+  type!: string;
+
+  @IsString()
+  id!: string;
+
+  @IsString()
+  name!: string;
+}
 
 export class GetActivityEventDto {
   @IsString()
@@ -40,9 +54,29 @@ export class GetActivityEventDto {
   @IsOptional()
   @IsObject()
   metadata!: ActivityEventMetadata<ActivityEventType> | null;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => ActivityEventReferenceDto)
+  actor?: ActivityEventReferenceDto | null;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => ActivityEventReferenceDto)
+  target?: ActivityEventReferenceDto | null;
+}
+
+export class GetActivityEventOptsDto {
+  @IsOptional()
+  @IsEnum(GetActivityEventWith, { each: true })
+  with?: GetActivityEventWith[];
 }
 
 export class ListActivityEventsDto extends GetPaginatedQuery {
+  @IsOptional()
+  @IsEnum(GetActivityEventWith, { each: true })
+  with?: GetActivityEventWith[];
+
   @IsIn(['createdAt'])
   sort?: string;
 }
