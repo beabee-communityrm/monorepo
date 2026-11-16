@@ -6,6 +6,7 @@ import {
   PaginatedQuery,
   Rule,
   activityFilters,
+  getActivityTargetType,
 } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import {
@@ -75,12 +76,10 @@ function isReferenceType(type: string): type is ActivityEventReferenceType {
   return type in referenceLoaders;
 }
 
-// The type of item an event targets is the prefix of its event type. Targets
-// with any other prefix aren't stored in a table, so can't be referenced
 function getTargetType(
   event: ActivityEvent
 ): ActivityEventReferenceType | undefined {
-  const type = event.eventType.split('.')[0];
+  const type = getActivityTargetType(event.eventType);
   return isReferenceType(type) ? type : undefined;
 }
 
