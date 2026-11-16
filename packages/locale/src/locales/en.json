@@ -191,6 +191,15 @@
       "time": "Time"
     },
     "deleted": "Deleted",
+    "eventDescription": {
+      "contactContributionStarted": "Contact started contribution: {amount}",
+      "contactContributionUpdated": "Contact updated contribution: {amount}",
+      "contactCreated": "New contact created ({source})",
+      "contactEmailSent": "Email sent to contact: {email}",
+      "contactRoleAdded": "Role assigned to contact: {role}",
+      "emailSent": "Email sent to {recipient}: {email}",
+      "emailTemplateAdded": "Email template created: {template}"
+    },
     "eventType": {
       "appPaymentOptionsUpdated": "Available payment options updated",
       "appSettingsUpdated": "App settings updated",

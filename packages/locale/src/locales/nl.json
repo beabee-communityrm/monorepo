@@ -192,6 +192,15 @@
       "time": "Tijd"
     },
     "deleted": "Verwijderd",
+    "eventDescription": {
+      "contactContributionStarted": "Contact is een bijdrage gestart: {amount}",
+      "contactContributionUpdated": "Contact heeft bijdrage gewijzigd: {amount}",
+      "contactCreated": "Nieuw contact aangemaakt ({source})",
+      "contactEmailSent": "E-mail naar contact verzonden: {email}",
+      "contactRoleAdded": "Rol toegewezen aan contact: {role}",
+      "emailSent": "E-mail verzonden naar {recipient}: {email}",
+      "emailTemplateAdded": "E-mailsjabloon aangemaakt: {template}"
+    },
     "eventType": {
       "appPaymentOptionsUpdated": "Beschikbare betaalopties bijgewerkt",
       "appSettingsUpdated": "App-instellingen bijgewerkt",
