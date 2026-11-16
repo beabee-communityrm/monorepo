@@ -6,6 +6,9 @@ x-service-app: &service-app
     # Wait for the migration to be completed
     migration:
       condition: service_completed_successfully
+  environment:
+    # The webhook app also serves the legacy app
+    HIVE_SERVICE_APP: http://webhook_app
 
 x-backend-app: &backend-app
   <<: *service-app
