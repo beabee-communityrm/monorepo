@@ -218,6 +218,25 @@ export function getRequiresActionClientSecret(
 }
 
 /**
+ * Get the failure code for a new subscription whose first payment was declined
+ *
+ * @param subscription The subscription, expanded with its latest payment intent
+ * @returns The decline code, if the first payment failed
+ */
+export function getFailedFirstPaymentCode(
+  subscription: Stripe.Subscription
+): string | undefined {
+  const intent = getInvoicePaymentIntent(subscription.latest_invoice);
+  if (
+    subscription.status === 'incomplete' &&
+    intent?.status === 'requires_payment_method'
+  ) {
+    const error = intent.last_payment_error;
+    return error?.decline_code || error?.code || 'generic_decline';
+  }
+}
+
+/**
  * Get the expanded payment intent of an expanded invoice
  *
  * @param invoice The invoice, expanded with its payment intent
