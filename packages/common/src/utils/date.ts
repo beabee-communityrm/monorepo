@@ -1,14 +1,12 @@
-import {
-  add,
-  isValid,
-  parseISO,
-  startOfDay,
-  startOfHour,
-  startOfMinute,
-  startOfMonth,
-  startOfSecond,
-  startOfYear,
-} from 'date-fns';
+import { add } from 'date-fns/add';
+import { isValid } from 'date-fns/isValid';
+import { parseISO } from 'date-fns/parseISO';
+import { startOfDay } from 'date-fns/startOfDay';
+import { startOfHour } from 'date-fns/startOfHour';
+import { startOfMinute } from 'date-fns/startOfMinute';
+import { startOfMonth } from 'date-fns/startOfMonth';
+import { startOfSecond } from 'date-fns/startOfSecond';
+import { startOfYear } from 'date-fns/startOfYear';
 
 import type { DateUnit, Duration, UnitMatches } from '../types/index.js';
 

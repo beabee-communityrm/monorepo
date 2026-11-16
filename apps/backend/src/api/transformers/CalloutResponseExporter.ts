@@ -14,7 +14,7 @@ import { AuthInfo } from '@beabee/core/type';
 import { groupBy } from '@beabee/core/utils/objects';
 
 import { stringify } from 'csv-stringify/sync';
-import { format } from 'date-fns';
+import { format } from 'date-fns/format';
 import { In, SelectQueryBuilder } from 'typeorm';
 
 import { GetExportQuery } from '#api/dto/BaseDto';
