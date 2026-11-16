@@ -251,7 +251,7 @@ class EmailService {
 
     await ActivityService.addEvent({
       targetId: null,
-      eventType: ActivityEventType.ContactEmailSent,
+      eventType: ActivityEventType.EmailSent,
       metadata: { email: sentEmail, recipient: to.email },
     });
   }
@@ -345,7 +345,7 @@ class EmailService {
 
     await ActivityService.addEvent({
       targetId: null,
-      eventType: ActivityEventType.ContactEmailSent,
+      eventType: ActivityEventType.EmailSent,
       metadata: { email: sentEmail, recipient: recipient.to.email },
     });
   }

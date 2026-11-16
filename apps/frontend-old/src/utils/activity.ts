@@ -38,6 +38,7 @@ const eventTypeKeys: Record<ActivityEventType, string> = {
   [ActivityEventType.EmailTemplateAdded]: 'emailTemplateAdded',
   [ActivityEventType.EmailTemplateEdited]: 'emailTemplateEdited',
   [ActivityEventType.EmailTemplateDeleted]: 'emailTemplateDeleted',
+  [ActivityEventType.EmailSent]: 'emailSent',
   [ActivityEventType.EmailSendFailed]: 'emailSendFailed',
   [ActivityEventType.ContactPaymentInitiated]: 'contactPaymentInitiated',
   [ActivityEventType.ContactPaymentFailed]: 'contactPaymentFailed',

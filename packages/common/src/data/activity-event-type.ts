@@ -28,6 +28,7 @@ export enum ActivityEventType {
   EmailTemplateAdded = 'email.template-added',
   EmailTemplateEdited = 'email.template-edited',
   EmailTemplateDeleted = 'email.template-deleted',
+  EmailSent = 'email.sent',
   EmailSendFailed = 'email.send-failed',
   ContactPaymentInitiated = 'contact.payment.initiated',
   ContactPaymentFailed = 'contact.payment.failed',

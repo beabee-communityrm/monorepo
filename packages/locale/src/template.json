@@ -221,6 +221,7 @@
       "contactSegmentsUpdated": "",
       "contactUpdated": "",
       "emailSendFailed": "",
+      "emailSent": "",
       "emailTemplateAdded": "",
       "emailTemplateDeleted": "",
       "emailTemplateEdited": "",

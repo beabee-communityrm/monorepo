@@ -28,6 +28,7 @@ export interface ActivityEventMetadataMap {
   [ActivityEventType.ContactPaymentSuccessful]: { paymentId: string };
   [ActivityEventType.ContactRoleAdded]: { roleType: RoleType };
   [ActivityEventType.ContactEmailSent]: { email: string; recipient: string };
+  [ActivityEventType.EmailSent]: { email: string; recipient: string };
   [ActivityEventType.EmailTemplateAdded]: { templateId: string | null };
 }
 

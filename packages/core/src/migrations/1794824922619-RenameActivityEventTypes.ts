@@ -7,7 +7,6 @@ const renames = [
   ['callout.segments-added', 'callout-response-segment.added'],
   ['callout.segments-deleted', 'callout-response-segment.deleted'],
   ['callout.segments-updated', 'callout-response-segment.updated'],
-  ['email.sent', 'contact.email-sent'],
 ];
 
 export class RenameActivityEventTypes1794824922619 implements MigrationInterface {
@@ -20,6 +19,12 @@ export class RenameActivityEventTypes1794824922619 implements MigrationInterface
         [to, from]
       );
     }
+
+    // An email sent to a contact targets that contact, any other email has no
+    // target and stays as email.sent
+    await queryRunner.query(
+      `UPDATE "activity_event" SET "eventType" = 'contact.email-sent' WHERE "eventType" = 'email.sent' AND "targetId" IS NOT NULL`
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
@@ -29,5 +34,9 @@ export class RenameActivityEventTypes1794824922619 implements MigrationInterface
         [from, to]
       );
     }
+
+    await queryRunner.query(
+      `UPDATE "activity_event" SET "eventType" = 'email.sent' WHERE "eventType" = 'contact.email-sent'`
+    );
   }
 }
