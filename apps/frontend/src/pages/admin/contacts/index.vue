@@ -3,226 +3,150 @@ name: adminContacts
 meta:
   pageTitle: menu.contacts
   role: admin
+  fullBleed: true
 </route>
 
 <template>
-  <PageTitle :title="t('menu.contacts')" border>
-    <div class="ml-3 hidden flex-0 md:block">
-      <AppButton to="/admin/contacts/add">
+  <div class="nuxt-page flex flex-1 flex-col">
+    <Teleport to="#page-header-actions" defer>
+      <UButton icon="i-lucide-plus" to="/admin/contacts/add">
         {{ t('contacts.addContact') }}
-      </AppButton>
-    </div>
-    <div class="fixed right-5 bottom-5 md:hidden">
-      <AppButton
-        :icon="faPlus"
-        :title="t('contacts.addContact')"
-        class="rounded-full drop-shadow-md"
-        size="lg"
-        to="/admin/contacts/add"
+      </UButton>
+    </Teleport>
+
+    <div class="flex flex-1 flex-col md:flex-row">
+      <ContactsSegmentFilter
+        :segments="segmentItems"
+        :current-segment-id="currentSegmentId"
       />
-    </div>
-  </PageTitle>
-  <AppFilterGrid v-model="currentSegmentId" :items="segmentItems">
-    <AppSearch
-      v-model="currentRules"
-      :filter-groups="filterGroups"
-      :has-changed="hasUnsavedSegment"
-      @reset="currentRules = undefined"
-    >
-      <AppSearchInput
-        v-model="currentSearch"
-        :placeholder="t('contacts.search')"
-      />
-      <AppSelect
-        v-model="currentTag"
-        :placeholder="t('tags.searchTag')"
-        :items="tagItems"
-      />
-    </AppSearch>
-    <SaveSegment
-      v-if="hasUnsavedSegment && currentRules"
-      :segment="currentSegment"
-      :rules="currentRules"
-      :save-segment="saveSegment"
-      :update-segment="updateSegment"
-    />
-    <AppPaginatedTable
-      v-model:query="currentPaginatedQuery"
-      v-model:selection-state="selectionState"
-      keypath="contacts.showingOf"
-      :headers="headers"
-      :result="contactsTable"
-      selectable
-    >
-      <template #actions>
-        <AppButtonGroup>
-          <!-- TODO: Add support for exporting selected contacts (instead of all contacts) -->
-          <AppButton
-            :icon="faDownload"
-            variant="primaryOutlined"
-            :title="t('actions.export')"
-            :disabled="selectedCount > 0"
-            @click="handleExport"
+
+      <div class="flex min-w-0 flex-1 flex-col bg-default">
+        <div
+          class="flex flex-wrap items-center gap-3 border-b border-default p-4"
+        >
+          <AppSearchBox
+            v-model="currentSearch"
+            :placeholder="t('contacts.search')"
+            class="w-full sm:w-64"
           />
-          <ToggleTagButton
+
+          <ContactsTagFilter
+            v-model="currentTag"
             :tag-items="tagItems"
-            :selected-tags="selectedTags"
-            :manage-url="`${route.path}/tags`"
-            :loading="doingAction"
-            :disabled="selectedCount === 0"
-            @toggle="
+            @manage-tags="tagsModalOpen = true"
+          />
+
+          <UButton
+            icon="i-lucide-filter"
+            :trailing-icon="
+              filtersOpen ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'
+            "
+            :color="filtersOn ? 'primary' : 'neutral'"
+            variant="subtle"
+            :aria-expanded="filtersOpen"
+            @click="filtersOpen = !filtersOpen"
+          >
+            {{ t('advancedSearch.button') }}
+            <UBadge v-if="appliedRules.length" size="sm">
+              {{ appliedRules.length }}
+            </UBadge>
+          </UButton>
+
+          <ContactsActions
+            class="ml-auto"
+            :selected-count="selectedCount"
+            :selected-page-items="selectedPageItems"
+            :tag-items="tagItems"
+            :current-segment="currentSegment"
+            :busy="doingAction"
+            @export="handleExport"
+            @toggle-tag="
               (tagId, successText) =>
                 handleUpdateAction({ tags: [tagId] }, successText)
             "
+            @manage-tags="tagsModalOpen = true"
           />
-          <!-- TODO: Add support for emailing selected contacts (instead of all contacts) -->
-          <AppDropdownButton
-            :icon="faMailBulk"
-            variant="primaryOutlined"
-            :title="t('actions.sendEmails')"
-            :disabled="selectedCount > 0"
-          >
-            <router-link
-              v-if="currentSegment"
-              class="block px-3 py-2 hover:bg-main-5"
-              role="menuitem"
-              :to="`/admin/contacts/send-email/${currentSegment.id}`"
-              @click.stop
-            >
-              {{ t('actions.sendOneOffEmail') }}
-            </router-link>
-            <span
-              v-else
-              role="menuitem"
-              aria-disabled="true"
-              class="block cursor-not-allowed px-3 py-2 opacity-60"
-            >
-              {{ t('actions.sendOneOffEmail') }}
-            </span>
-            <router-link
-              class="block border-t border-main-40 px-3 py-2 hover:bg-main-5"
-              role="menuitem"
-              :to="{ name: 'adminContactsEmailTemplates' }"
-              @click.stop
-            >
-              {{ t('contacts.emailTemplates.manage') }}
-            </router-link>
-          </AppDropdownButton>
-        </AppButtonGroup>
-        <p v-if="selectedCount > 0" class="self-center text-sm">
-          <i18n-t keypath="contacts.selectedCount" :plural="selectedCount">
-            <template #n>
-              <b>{{ selectedCount }}</b>
-            </template>
-          </i18n-t>
-        </p>
-      </template>
-      <template #empty>
-        <p>
-          {{
+        </div>
+
+        <ContactFilterPanel
+          v-if="filtersOpen"
+          v-model="currentRules"
+          :filter-groups="filterGroups"
+          :count-matches="countMatches"
+          @reset="currentRules = undefined"
+          @close="filtersOpen = false"
+        />
+
+        <ContactAppliedFilters
+          v-else-if="currentTag || appliedRules.length"
+          v-model:rule-group="currentRules"
+          :tag-label="currentTagLabel"
+          :filter-groups="filterGroups"
+          @remove-tag="currentTag = ''"
+        >
+          <SaveSegment
+            v-if="hasUnsavedSegment && currentRules"
+            :segment="currentSegment"
+            :rules="currentRules"
+            :save-segment="saveSegment"
+            :update-segment="updateSegment"
+          />
+        </ContactAppliedFilters>
+
+        <ContactsTable
+          v-model:sort="currentPaginatedQuery.sort"
+          v-model:page="currentPaginatedQuery.page"
+          v-model:limit="currentPaginatedQuery.limit"
+          v-model:selection-state="selectionState"
+          :contacts="contactsTable?.items"
+          :total="contactsTable?.total ?? 0"
+          :empty-text="
             currentRules || currentSearch
               ? t('contacts.noResults')
               : t('contacts.noContacts')
-          }}
-        </p>
-      </template>
-      <template #value-firstname="{ item }">
-        <router-link
-          :to="'/admin/contacts/' + item.id"
-          class="text-base font-bold text-link"
-        >
-          {{ item.displayName }}
-        </router-link>
-      </template>
-      <template #value-contributionMonthlyAmount="{ item }">
-        <span v-if="item.contributionAmount" class="whitespace-nowrap">
-          {{ n(item.contributionAmount, 'currency') }}
-          {{
-            item.contributionPeriod === ContributionPeriod.Monthly
-              ? t('common.perMonth')
-              : t('common.perYear')
-          }}
-        </span>
-      </template>
-      <template #value-joined="{ value }">
-        <span class="whitespace-nowrap">{{ formatLocale(value, 'PPP') }}</span>
-      </template>
-      <template #value-membershipStarts="{ item }">
-        <span class="whitespace-nowrap">{{
-          getMembershipStartDate(item)
-        }}</span>
-      </template>
-      <template
-        #after="{
-          item,
-        }: {
-          item: GetContactDataWith<
-            GetContactWith.Profile | GetContactWith.Tags
-          >;
-        }"
-      >
-        <p v-if="item.profile.description" class="text-xs whitespace-normal">
-          {{ item.profile.description }}
-        </p>
-        <div
-          v-if="item.tags && item.tags.length > 0"
-          :class="item.profile.description && 'mt-2'"
-        >
-          <TagList :tags="item.tags" @select="currentTag = $event" />
-        </div>
-      </template>
-    </AppPaginatedTable>
-  </AppFilterGrid>
+          "
+          @select-tag="currentTag = $event"
+        />
+      </div>
+    </div>
+
+    <ContactTagsModal v-model:open="tagsModalOpen" @updated="refreshTags" />
+  </div>
 </template>
 
 <script lang="ts" setup>
 import {
-  ContributionPeriod,
   type GetContactDataWith,
   GetContactWith,
   type Paginated,
   type RuleGroup,
   type UpdateContactData,
 } from '@beabee/beabee-common';
-import {
-  AppButton,
-  AppButtonGroup,
-  AppDropdownButton,
-  AppFilterGrid,
-  AppSearchInput,
-  AppSelect,
-  PageTitle,
-  addNotification,
-  formatLocale,
-} from '@beabee/vue';
 
-import {
-  faDownload,
-  faMailBulk,
-  faPlus,
-} from '@fortawesome/free-solid-svg-icons';
+import { AppSearchBox } from '@beabee/vue';
+
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
 
+import ContactAppliedFilters from '#components/pages/admin/contacts/ContactAppliedFilters.vue';
+import ContactFilterPanel from '#components/pages/admin/contacts/ContactFilterPanel.vue';
+import ContactsActions from '#components/pages/admin/contacts/ContactsActions.vue';
+import ContactTagsModal from '#components/pages/admin/contacts/ContactTagsModal.vue';
+import ContactsTable from '#components/pages/admin/contacts/ContactsTable.vue';
+import ContactsTagFilter from '#components/pages/admin/contacts/ContactsTagFilter.vue';
+import ContactsSegmentFilter from '#components/pages/admin/contacts/ContactsSegmentFilter.vue';
 import SaveSegment from '#components/pages/admin/contacts/SaveSegment.vue';
-import {
-  headers,
-  useContactFilters,
-} from '#components/pages/admin/contacts/contacts.interface';
-import AppSearch from '#components/search/AppSearch.vue';
-import TagList from '#components/tag/TagList.vue';
-import ToggleTagButton from '#components/tag/ToggleTagButton.vue';
+import { useContactFilters } from '#components/pages/admin/contacts/contacts.interface';
+import { useAppToast } from '#composables/useAppToast';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 import { definePaginatedQuery, defineParam } from '#utils/pagination';
 import { routeIcons, routeLabels } from '#utils/route-nav';
 
-import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 import { useSegmentManagement } from '../../../composables/useSegmentManagement';
-import { useTagFilter } from '../../../composables/useTagFilter';
 import { usePaginatedSelectionState } from '../../../composables/useSelectionState';
+import { useTagFilter } from '../../../composables/useTagFilter';
 
 /**
  * Contact list page component
@@ -236,8 +160,8 @@ import { usePaginatedSelectionState } from '../../../composables/useSelectionSta
 /**
  * Props & Composables
  */
-const { t, n } = useI18n();
-const route = useRoute();
+const { t } = useI18n();
+const toast = useAppToast();
 
 /**
  * Table state
@@ -261,21 +185,11 @@ const { selectionState, selectedPageItems, selectedCount, getSelectionRules } =
  */
 const { currentTag, addTagToRules } = useTagFilter();
 
-const selectedTags = computed(() => {
-  if (selectedCount.value === 0) {
-    return [];
-  }
+const tagsModalOpen = ref(false);
 
-  const tagCount = Object.fromEntries(tagItems.value.map((t) => [t.id, 0]));
-  for (const item of selectedPageItems.value) {
-    for (const tag of item.tags || []) {
-      tagCount[tag.id]++;
-    }
-  }
-  return Object.entries(tagCount)
-    .filter((tc) => tc[1] === selectedPageItems.value.length)
-    .map(([tagId]) => tagId);
-});
+const currentTagLabel = computed(
+  () => tagItems.value.find((tag) => tag.id === currentTag.value)?.label
+);
 
 /**
  * Search & Filter state
@@ -284,7 +198,20 @@ const selectedTags = computed(() => {
 const currentPaginatedQuery = definePaginatedQuery('joined');
 const currentSearch = defineParam('s', (v) => v || '');
 
-const { filterGroups, tagItems } = useContactFilters();
+const { filterGroups, tagItems, refreshTags } = useContactFilters();
+
+const filtersOpen = ref(false);
+
+const appliedRules = computed(() => currentRules.value?.rules ?? []);
+
+const filtersOn = computed(
+  () => filtersOpen.value || appliedRules.value.length > 0
+);
+
+async function countMatches(rules: RuleGroup) {
+  return (await client.contact.list({ limit: 1, rules: getSearchRules(rules) }))
+    .total;
+}
 
 /**
  * Segment Management
@@ -300,7 +227,7 @@ const {
   handleSavedSegment,
 } = useSegmentManagement(
   '/admin/contacts',
-  'All Contacts',
+  t('contacts.allContacts'),
   listSegments,
   listTotalSegmentItems
 );
@@ -360,19 +287,9 @@ addBreadcrumb(
  */
 
 /**
- * Gets the membership start date for a contact
+ * Builds the search rules for the given filter rules
  */
-function getMembershipStartDate(
-  contact: GetContactDataWith<GetContactWith.Roles>
-): string {
-  const membership = contact.roles.find((role) => role.role === 'member');
-  return membership ? formatLocale(membership.dateAdded, 'PPP') : '';
-}
-
-/**
- * Builds the search rules for the current filter state
- */
-function getSearchRules(): RuleGroup {
+function getSearchRules(ruleGroup = currentRules.value): RuleGroup {
   const searchRules: RuleGroup = {
     condition: 'OR',
     rules: currentSearch.value
@@ -387,7 +304,7 @@ function getSearchRules(): RuleGroup {
 
   const rules: RuleGroup[] = [];
   if (currentSearch.value) rules.push(searchRules);
-  if (currentRules.value) rules.push(currentRules.value);
+  if (ruleGroup) rules.push(ruleGroup);
 
   return addTagToRules(rules, currentTag.value);
 }
@@ -427,10 +344,7 @@ async function refreshResponses() {
     ]);
   } catch (err) {
     contactsTable.value = emptyTable();
-    addNotification({
-      variant: 'error',
-      title: extractErrorText(err),
-    });
+    toast.error(extractErrorText(err));
   } finally {
     isRefreshing.value = false;
   }
@@ -460,9 +374,14 @@ async function handleUpdateAction(
   successText: string
 ): Promise<void> {
   doingAction.value = true;
-  await client.contact.updateMany(getSelectedContactsRules(), updates);
-  await refreshResponses();
-  addNotification({ variant: 'success', title: successText });
-  doingAction.value = false;
+  try {
+    await client.contact.updateMany(getSelectedContactsRules(), updates);
+    await refreshResponses();
+    toast.success(successText);
+  } catch {
+    toast.error(t('tags.notifications.updateFailed-nuxt'));
+  } finally {
+    doingAction.value = false;
+  }
 }
 </script>
