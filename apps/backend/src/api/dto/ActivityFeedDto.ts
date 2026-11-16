@@ -1,6 +1,7 @@
 import {
   ActivityActorType,
   ActivityEventMetadata,
+  ActivityEventReferenceType,
   ActivityEventType,
   GetActivityEventWith,
 } from '@beabee/beabee-common';
@@ -20,7 +21,7 @@ import { GetPaginatedQuery } from '#api/dto/BaseDto';
 
 export class ActivityEventReferenceDto {
   @IsString()
-  type!: string;
+  type!: ActivityEventReferenceType;
 
   @IsString()
   id!: string;

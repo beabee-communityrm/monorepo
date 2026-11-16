@@ -1,6 +1,7 @@
 import {
   ActivityActorType,
   type ActivityEventReference,
+  type ActivityEventReferenceType,
   ActivityEventType,
 } from '@beabee/beabee-common';
 
@@ -69,20 +70,23 @@ export function getActorTypeLabel(type: ActivityActorType | null): string {
     : t('activity.actorType.system');
 }
 
+const referenceLinks: Record<
+  ActivityEventReferenceType,
+  ((id: string) => string) | null
+> = {
+  contact: (id) => `/admin/contacts/${id}`,
+  callout: (id) => `/admin/crowdnewsroom/view/${id}`,
+  'contact-segment': (id) => `/admin/contacts?segment=${id}`,
+  email: (id) => `/admin/contacts/email-templates/edit/${id}`,
+  // Its page is under the callout it belongs to, which a reference doesn't carry
+  'callout-response-segment': null,
+};
+
 /**
  * Get the admin page for the item a reference points to, if it has one
  */
 export function getReferenceLink(
   reference: ActivityEventReference
 ): string | undefined {
-  switch (reference.type) {
-    case 'contact':
-      return `/admin/contacts/${reference.id}`;
-    case 'callout':
-      return `/admin/crowdnewsroom/view/${reference.id}`;
-    case 'contact-segment':
-      return `/admin/contacts?segment=${reference.id}`;
-    case 'email':
-      return `/admin/contacts/email-templates/edit/${reference.id}`;
-  }
+  return referenceLinks[reference.type]?.(reference.id);
 }

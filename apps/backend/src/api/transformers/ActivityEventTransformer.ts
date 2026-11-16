@@ -1,5 +1,6 @@
 import {
   ActivityEventReference,
+  ActivityEventReferenceType,
   ActivityFilterName,
   GetActivityEventWith,
   PaginatedQuery,
@@ -28,10 +29,9 @@ import {
 import { PaginatedDto } from '#api/dto/PaginatedDto';
 import { BaseTransformer } from '#api/transformers/BaseTransformer';
 
-// Loads the names of items by ID, keyed by the event type prefix of the events
-// that target them. Event types with any other prefix have no target to load
+// Loads the names of items by ID for each type of reference
 const referenceLoaders: Record<
-  string,
+  ActivityEventReferenceType,
   (ids: string[]) => Promise<{ id: string; name: string }[]>
 > = {
   contact: async (ids) => {
@@ -71,8 +71,17 @@ const referenceLoaders: Record<
     }),
 };
 
-function getTargetType(event: ActivityEvent): string {
-  return event.eventType.split('.')[0];
+function isReferenceType(type: string): type is ActivityEventReferenceType {
+  return type in referenceLoaders;
+}
+
+// The type of item an event targets is the prefix of its event type. Targets
+// with any other prefix aren't stored in a table, so can't be referenced
+function getTargetType(
+  event: ActivityEvent
+): ActivityEventReferenceType | undefined {
+  const type = event.eventType.split('.')[0];
+  return isReferenceType(type) ? type : undefined;
 }
 
 class ActivityEventTransformer extends BaseTransformer<
@@ -111,21 +120,24 @@ class ActivityEventTransformer extends BaseTransformer<
     const withTarget = query.with?.includes(GetActivityEventWith.Target);
 
     // Group the IDs by type so each type is loaded with a single query
-    const idsByType: Record<string, Set<string>> = {};
+    const idsByType = new Map<ActivityEventReferenceType, Set<string>>();
+    const addId = (type: ActivityEventReferenceType, id: string) =>
+      idsByType.set(type, (idsByType.get(type) || new Set()).add(id));
+
     for (const event of events) {
       // An actor ID is always a contact
       if (withActor && event.actorId) {
-        (idsByType.contact ||= new Set()).add(event.actorId);
+        addId('contact', event.actorId);
       }
-      if (withTarget && event.targetId) {
-        (idsByType[getTargetType(event)] ||= new Set()).add(event.targetId);
+      const targetType = getTargetType(event);
+      if (withTarget && targetType && event.targetId) {
+        addId(targetType, event.targetId);
       }
     }
 
     const references = new Map<string, ActivityEventReference>();
-    for (const [type, ids] of Object.entries(idsByType)) {
-      const items = (await referenceLoaders[type]?.([...ids])) || [];
-      for (const { id, name } of items) {
+    for (const [type, ids] of idsByType) {
+      for (const { id, name } of await referenceLoaders[type]([...ids])) {
         references.set(`${type}:${id}`, { type, id, name });
       }
     }
