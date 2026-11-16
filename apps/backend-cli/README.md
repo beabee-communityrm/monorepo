@@ -99,7 +99,7 @@ yarn backend-cli user delete --without-password -y  Delete without confirmation 
 yarn backend-cli setup support-email    Set up support email configuration
 yarn backend-cli setup payment-methods  Set up payment methods configuration
 yarn backend-cli setup admin            Set up initial admin user
-yarn backend-cli setup all              Complete system setup (all steps in sequence)
+yarn backend-cli setup system           Set up support email, payment methods and admin user in sequence
 ```
 
 ### Payment Management

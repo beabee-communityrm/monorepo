@@ -11,7 +11,8 @@ export interface SetupAdminArgs {
   lastname: string | undefined;
   email: string | undefined;
   password: string | undefined;
+  yes: boolean | undefined;
 }
 
-export interface SetupAllArgs
+export interface SetupSystemArgs
   extends SetupSupportEmailArgs, SetupPaymentMethodsArgs, SetupAdminArgs {}
