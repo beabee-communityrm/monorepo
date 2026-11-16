@@ -69,7 +69,7 @@ When user explicitly asks ("add error handling", "refactor", "add tests"), do it
 | `yarn format` | Format all packages |
 | `yarn workspace @beabee/[pkg] run [script]` | Package-specific |
 | `yarn bootstrap` | Copy env files + bootstrap |
-| `yarn setup` | Init backend (admin, payments) |
+| `yarn setup` | Init backend: migrations, support email, payment methods, admin. Run after `docker compose up -d`. Options replace the prompts, see README "Initial Setup" |
 | `yarn clear` | Clean build artifacts |
 | `yarn generate:index` | Generate index files |
 | `yarn publish:latest` | Publish packages to NPM (latest) |

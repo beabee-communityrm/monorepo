@@ -59,17 +59,27 @@ You need the following tools installed on your machine:
    yarn build
    ```
 
-5. Run the setup script to create a new user and configure the payment method and email domain:
+5. Start the Docker Compose stack, which also runs the database migrations:
+
+   ```bash
+   docker compose up -d
+   ```
+
+6. Run the setup script to configure the email domain and payment methods and to create an admin user:
 
    ```bash
    yarn setup
    ```
 
-6. Start the Docker Compose stack:
+   It prompts for what it needs. To run it without prompts, pass every value as an option:
 
    ```bash
-   docker compose up -d
+   yarn setup --emailDomain example.com --paymentMethods s_card \
+     --firstname Ada --lastname Admin \
+     --admin-email admin@example.com --admin-password <password> --yes
    ```
+
+   Integrations are set up separately, for Stripe see [Stripe setup (development)](docs/environment-variables.md#stripe-setup-development).
 
 7. Run the development mode to watch for changes on all packages:
 
@@ -107,13 +117,16 @@ The `docker-compose.yml` file defines several services, including:
 
 - `db`: PostgreSQL database
 - `mail`: MailDev for email testing
-- `app`: Backend application
+- `app`: Legacy application
 - `api_app`: API application
 - `webhook_app`: Webhook handling application
-- `img_upload_app`: Image upload service
-- `cron`: Cron job service
+- `cron_app`: Cron job service
+- `minio`: MinIO object storage for uploads
 - `frontend`: Frontend application
 - `app_router`: Router for the frontend and backend
+- `migration`: Runs the database migrations on startup
+- `stripe_cli`: Stripe CLI forwarding webhooks to `webhook_app`
+- `auth`: Keycloak identity provider for testing OIDC login
 
 The frontend service is configured to use the `BEABEE_AUDIENCE` environment variable for API requests.
 
