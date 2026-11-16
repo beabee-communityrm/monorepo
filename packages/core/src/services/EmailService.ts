@@ -175,10 +175,7 @@ class EmailService {
       contacts.map((contact) => ({
         targetId: contact.id,
         eventType: ActivityEventType.ContactEmailSent,
-        metadata: {
-          email: email.templateId ?? email.id,
-          recipient: contact.email,
-        },
+        metadata: { email: email.templateId ?? email.id },
       }))
     );
   }
@@ -300,7 +297,7 @@ class EmailService {
     await ActivityService.addEvent({
       targetId: contact.id,
       eventType: ActivityEventType.ContactEmailSent,
-      metadata: { email: sentEmail, recipient: contact.email },
+      metadata: { email: sentEmail },
     });
   }
 
