@@ -1493,7 +1493,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@beabee/legacy@workspace:apps/legacy":
+"@beabee/legacy@workspace:^, @beabee/legacy@workspace:apps/legacy":
   version: 0.0.0-use.local
   resolution: "@beabee/legacy@workspace:apps/legacy"
   dependencies:
@@ -1690,6 +1690,7 @@ __metadata:
   dependencies:
     "@beabee/beabee-common": "workspace:^"
     "@beabee/core": "workspace:^"
+    "@beabee/legacy": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
     "@types/express": "npm:^5.0.6"

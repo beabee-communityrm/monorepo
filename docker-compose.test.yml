@@ -13,14 +13,6 @@ services:
     ports:
       - ${MAIL_PORT}:1080
 
-  app:
-    extends:
-      file: docker-compose.yml
-      service: app
-    env_file:
-      - .env
-      - .env.test
-
   api_app:
     extends:
       file: docker-compose.yml

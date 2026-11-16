@@ -6,7 +6,8 @@ import {
 
 import axios from 'axios';
 import crypto from 'crypto';
-import { differenceInMonths, format } from 'date-fns';
+import { differenceInMonths } from 'date-fns/differenceInMonths';
+import { format } from 'date-fns/format';
 import { Request } from 'express';
 import type {
   Customer,
