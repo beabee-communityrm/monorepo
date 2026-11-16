@@ -110,9 +110,12 @@ function getEventCategory(type: ActivityEventType): string {
   ) {
     return 'payment';
   }
-  if (type.startsWith('callout.')) return 'callout';
-  if (type.startsWith('email.')) return 'email';
-  if (type.startsWith('contact.')) return 'contact';
+  if (type.startsWith('email.') || type.startsWith('contact.email-')) {
+    return 'email';
+  }
+  // Segment events belong with the items they segment
+  if (type.startsWith('callout')) return 'callout';
+  if (type.startsWith('contact')) return 'contact';
   return 'other';
 }
 

@@ -174,7 +174,7 @@ class EmailService {
     await ActivityService.addEvents(
       contacts.map((contact) => ({
         targetId: contact.id,
-        eventType: ActivityEventType.EmailSent,
+        eventType: ActivityEventType.ContactEmailSent,
         metadata: {
           email: email.templateId ?? email.id,
           recipient: contact.email,
@@ -251,7 +251,7 @@ class EmailService {
 
     await ActivityService.addEvent({
       targetId: null,
-      eventType: ActivityEventType.EmailSent,
+      eventType: ActivityEventType.ContactEmailSent,
       metadata: { email: sentEmail, recipient: to.email },
     });
   }
@@ -299,7 +299,7 @@ class EmailService {
 
     await ActivityService.addEvent({
       targetId: contact.id,
-      eventType: ActivityEventType.EmailSent,
+      eventType: ActivityEventType.ContactEmailSent,
       metadata: { email: sentEmail, recipient: contact.email },
     });
   }
@@ -345,7 +345,7 @@ class EmailService {
 
     await ActivityService.addEvent({
       targetId: null,
-      eventType: ActivityEventType.EmailSent,
+      eventType: ActivityEventType.ContactEmailSent,
       metadata: { email: sentEmail, recipient: recipient.to.email },
     });
   }

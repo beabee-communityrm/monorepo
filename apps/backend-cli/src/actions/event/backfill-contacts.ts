@@ -144,7 +144,7 @@ const backfillRoleAdded = createBackfill({
 });
 
 /**
- * Backfill contact.segments-added events
+ * Backfill contact-segment.added events
  * The segment is the target, as for segments added through the API
  * Segments carry no creation date, so a sentinel date is used as the event time
  */
