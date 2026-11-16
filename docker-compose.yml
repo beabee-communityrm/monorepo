@@ -34,21 +34,6 @@ services:
     ports:
       - ${MAIL_PORT}:1080
 
-  # Legacy app
-  app:
-    <<: *backend-app
-    build:
-      context: .
-      dockerfile: ./packages/docker/base.dockerfile
-      target: legacy_app
-    env_file:
-      - .env
-    volumes:
-      - ./packages/core/dist:/opt/packages/core/dist
-      - ./packages/common/dist:/opt/packages/common/dist
-      - ./packages/locale/dist:/opt/packages/locale/dist
-      - ./apps/legacy/dist:/opt/apps/legacy/dist
-
   # API app
   api_app:
     <<: *backend-app
@@ -69,7 +54,7 @@ services:
     # TODO: Use standard dist folder
     command: ["node", "--watch", "--watch-preserve-output", "./dist/api/app.js"]
 
-  # Webhook app
+  # Webhook app, also serves the legacy app
   webhook_app:
     <<: *backend-app
     build:
@@ -83,6 +68,7 @@ services:
       - ./packages/common/dist:/opt/packages/common/dist
       - ./packages/locale/dist:/opt/packages/locale/dist
       - ./apps/webhooks/dist:/opt/apps/webhooks/dist
+      - ./apps/legacy/dist:/opt/apps/legacy/dist
 
   # Cron app
   cron_app:
@@ -137,6 +123,7 @@ services:
       context: .
       dockerfile: ./apps/router/Dockerfile
     environment:
+      HIVE_SERVICE_APP: http://webhook_app
       LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN}
       TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
     ports:
@@ -146,7 +133,6 @@ services:
       - upload_data:/old_data
     depends_on:
       - api_app
-      - app
       - webhook_app
 
   # Database migration service
