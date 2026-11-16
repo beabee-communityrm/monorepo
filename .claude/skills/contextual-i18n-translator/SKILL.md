@@ -61,8 +61,15 @@ The app already has translations. New strings must match them so the UI feels co
 1. List the key terms in the new strings: product nouns ("workspace", "project"), actions ("log in", "share", "archive"), and UI words ("settings", "dashboard").
 2. For each term, search the existing locale files, in every locale, for strings that contain it. Note how each locale translates it.
 3. Build a small glossary: term → translation per locale, with an example key where you found it.
-4. Reuse these translations. If "login" is already "Anmeldung" in German, then "login required" uses "Anmeldung" too, not "Login" or "Einloggen". Adjust grammar (case, gender, verb form) as the language needs, but keep the same word.
-5. Also copy the existing style per locale:
+4. Verify the glossary against your meaning notes. If an existing translation does not match - or can be improved - suggest it to the user like this:
+   | Key | Where it appears | Current translation | Suggested translation |
+   | -------------------- | ----------------------------------- | ------------------------ | --------------------------------- |
+   | `accountPage.confirmDelete` | Confirm account deletion | Confirm deletion (EN) | Are you sure you wish to delete this account? (EN) |
+
+   Ask the user to either accept or reject each suggestion. If the user accepts your suggestion, go ahead and write the suggestion to the relevant locale file and update your glossary.
+
+5. Reuse these translations. If "login" is already "Anmeldung" in German, then "login required" uses "Anmeldung" too, not "Login" or "Einloggen". Adjust grammar (case, gender, verb form) as the language needs, but keep the same word.
+6. Also copy the existing style per locale:
    - Formal or informal "you" (German Sie/du, French vous/tu, Spanish usted/tú, Dutch u/je, etc.). Check several strings to be sure.
    - Capitalization (sentence case vs. title case), punctuation (ellipsis "…" vs "...", quote marks like « » or „ "), and whether buttons end with periods.
 
