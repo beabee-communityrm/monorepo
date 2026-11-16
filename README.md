@@ -107,9 +107,8 @@ The `docker-compose.yml` file defines several services, including:
 
 - `db`: PostgreSQL database
 - `mail`: MailDev for email testing
-- `app`: Backend application
 - `api_app`: API application
-- `webhook_app`: Webhook handling application
+- `webhook_app`: Webhook handling and legacy application
 - `img_upload_app`: Image upload service
 - `cron`: Cron job service
 - `frontend`: Frontend application

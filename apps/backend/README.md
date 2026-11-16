@@ -189,7 +189,7 @@ Various tools for administration, including nightly cron jobs
 
 #### 📡 Webhooks
 
-Webhooks are handled by the `webhook_app` service. This is a separate service from the API to allow for scaling independently.
+Webhooks are handled by the `webhook_app` service, which also serves the legacy app. This is a separate service from the API to allow for scaling independently.
 
 **`/webhook/ping`** - Used to check if the webhook service is running and available, e.g. http://localhost:3001/webhook/ping
 
