@@ -1110,6 +1110,7 @@
     "empty": {
       "active": ""
     },
+    "loadOpenError": "",
     "noArchivedCallouts": "",
     "openCallouts": "",
     "search": "",

@@ -1110,6 +1110,7 @@
     "empty": {
       "active": "No active callouts right now."
     },
+    "loadOpenError": "Failed to load open CrowdNewsrooms. Contact {support} if it keeps happening.",
     "noArchivedCallouts": "Nothing to see here",
     "openCallouts": "Open CrowdNewsrooms",
     "search": "Search",
