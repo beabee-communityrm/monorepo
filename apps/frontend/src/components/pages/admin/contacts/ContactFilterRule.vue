@@ -196,15 +196,9 @@ const operatorMenuItems = computed(() => {
   ].filter((group) => group.length);
 });
 
-/** Keeps the operator and value when the new field holds the same type */
 function handleSelectField(field: string, newItem: FilterItem) {
   fieldPickerOpen.value = false;
-  emit(
-    'update:rule',
-    item.value?.type === newItem.type
-      ? { ...props.rule, field }
-      : createNewRule(field, newItem.type)
-  );
+  emit('update:rule', createNewRule(field, newItem.type));
 }
 
 function changeOperator(operator: RuleOperator) {

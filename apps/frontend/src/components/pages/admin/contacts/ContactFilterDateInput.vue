@@ -72,10 +72,9 @@ const modelValue = defineModel<string>({ required: true });
 const example = '$now(d:-1)';
 const previewId = useId();
 
-const isRelative = ref(modelValue.value.startsWith('$now'));
-
-const relativeValue = ref(isRelative.value ? modelValue.value : '');
-const dateValue = ref(isRelative.value ? '' : modelValue.value);
+const isRelative = ref(false);
+const relativeValue = ref('');
+const dateValue = ref('');
 
 const preview = computed(() =>
   isValidDate(relativeValue.value)
@@ -88,4 +87,16 @@ const currentValue = computed(() =>
 );
 
 watch(currentValue, (value) => (modelValue.value = value));
+
+/** Picks up values set from outside, such as an operator change */
+watch(
+  modelValue,
+  (value) => {
+    if (value === currentValue.value) return;
+    isRelative.value = value.startsWith('$now');
+    relativeValue.value = isRelative.value ? value : '';
+    dateValue.value = isRelative.value ? '' : value;
+  },
+  { immediate: true }
+);
 </script>
