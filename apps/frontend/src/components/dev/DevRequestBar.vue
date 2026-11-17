@@ -2,7 +2,9 @@
   # DevRequestBar
   Dev-only panel listing the API requests the current page has made, each with
   a mode to make it hang, fail or come back empty. Modes apply from the next
-  request and last for the browser tab's session.
+  request and last for the browser tab's session. Changing a mode reruns the
+  page, or reloads it for app startup requests, and a hanging request carries
+  on once its mode changes.
 -->
 <template>
   <UPopover :content="{ side: 'top', align: 'start' }">
@@ -73,7 +75,7 @@
                       :value="item.value"
                       :checked="modeOf(key) === item.value"
                       :disabled="!canUse(key, item.value)"
-                      @change="setMode(key, item.value)"
+                      @change="choose(key, item.value)"
                     />
                     <span :class="segmentClass(item.value)">
                       {{ item.label }}
@@ -120,7 +122,7 @@
                       :value="item.value"
                       :checked="modeOf(key) === item.value"
                       :disabled="!canUse(key, item.value)"
-                      @change="setMode(key, item.value)"
+                      @change="choose(key, item.value)"
                     />
                     <span :class="segmentClass(item.value)">
                       {{ item.label }}
@@ -132,29 +134,25 @@
           </ul>
         </section>
 
-        <div class="flex justify-between gap-2">
-          <UButton
-            label="Reset all"
-            color="neutral"
-            variant="outline"
-            @click="devRequests.modes = {}"
-          />
-          <UButton
-            label="Reload"
-            icon="i-lucide-rotate-cw"
-            @click="reloadPage"
-          />
-        </div>
+        <UButton
+          label="Reset all"
+          color="neutral"
+          variant="outline"
+          class="self-start"
+          @click="resetAll"
+        />
       </div>
     </template>
   </UPopover>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, nextTick } from 'vue';
 
 import { devRequests } from '#utils/dev/requests';
 import type { DevRequestMode } from '#type';
+
+const emit = defineEmits<{ (e: 'remount'): void }>();
 
 const keys = computed(() => [
   ...new Set([...devRequests.seen, ...Object.keys(devRequests.modes)]),
@@ -217,11 +215,33 @@ function setMode(key: string, mode: DevRequestMode) {
   }
 }
 
+/** Startup requests are only made again by a full reload */
+async function rerun(reload: boolean) {
+  if (reload) {
+    await nextTick();
+    location.reload();
+  } else {
+    emit('remount');
+  }
+}
+
+function choose(key: string, mode: DevRequestMode) {
+  setMode(key, mode);
+  rerun(devRequests.appKeys.includes(key));
+}
+
 function setAll(mode: DevRequestMode) {
   for (const key of pageKeys.value) {
     if (canUse(key, mode)) setMode(key, mode);
   }
+  rerun(false);
 }
 
-const reloadPage = () => location.reload();
+function resetAll() {
+  const hadAppModes = Object.keys(devRequests.modes).some((key) =>
+    devRequests.appKeys.includes(key)
+  );
+  devRequests.modes = {};
+  rerun(hadAppModes);
+}
 </script>
