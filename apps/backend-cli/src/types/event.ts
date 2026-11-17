@@ -25,7 +25,7 @@ export interface BackfillEventsArgs {
 export interface EventBackfill extends EventDuplicateRule {
   /** `FROM … WHERE NOT EXISTS (…)` selecting rows without an event; `$1` is the event type */
   source: string;
-  /** Values for ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata") */
+  /** Values for ("targetId", "actorType", "actorId", "createdAt", "metadata") */
   fields: string;
   /** Parameters after the event type, from `$2` on */
   params?: unknown[];
