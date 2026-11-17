@@ -18,7 +18,7 @@
       </AppCardHeader>
     </template>
 
-    <LoadError v-if="error" class="p-4 sm:px-6" />
+    <LoadError v-if="error" class="p-4 sm:p-6" />
 
     <ul v-else-if="!items" class="divide-y divide-default">
       <li v-for="n in 2" :key="n" :class="rowClass">
@@ -31,7 +31,7 @@
       </li>
     </ul>
 
-    <p v-else-if="items.length === 0" class="p-4 text-muted sm:px-6">
+    <p v-else-if="items.length === 0" class="p-4 text-muted sm:p-6">
       {{ emptyText }}
     </p>
 
