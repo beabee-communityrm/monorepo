@@ -15,7 +15,7 @@ import { createBackfill, noActor, sameTarget } from '../../utils/backfill.js';
  */
 const backfillPaymentSuccessful = createBackfill({
   eventType: ActivityEventType.ContactPaymentSuccessful,
-  fields: `p."contactId", NULL, NULL, p."chargeDate", $1::varchar,
+  fields: `p."contactId", NULL, NULL, p."chargeDate",
            jsonb_build_object('paymentId', p.id)`,
   source: `
     FROM payment p
