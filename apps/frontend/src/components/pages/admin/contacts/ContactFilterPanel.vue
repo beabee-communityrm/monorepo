@@ -2,9 +2,8 @@
   # ContactFilterPanel
   Builds the rule group used to filter contacts.
 
-  Rules are added by picking a field, so every rule starts out complete; there
-  are no empty rule rows. Nested rule groups can't be edited here, matching the
-  behaviour of the previous search form.
+  Rules are added by picking a field, so there are no rule rows without one.
+  Nested rule groups can't be edited here.
 -->
 <template>
   <div ref="root" class="border-b border-default bg-elevated/40 p-4">
@@ -90,7 +89,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { Rule, RuleGroup } from '@beabee/beabee-common';
+import type { RuleGroup } from '@beabee/beabee-common';
 
 import { isRuleGroup } from '@beabee/beabee-common';
 import {
@@ -113,7 +112,7 @@ import ContactFilterToggle from './ContactFilterToggle.vue';
 const { t, n } = useI18n();
 
 const props = defineProps<{
-  /** All available filter groups, including the crowdNewsroom group */
+  /** All available filter groups, including the CrowdNewsroom group */
   filterGroups: FilterGroups;
   /** Counts the contacts some rules match, for showing before they're applied */
   countMatches: (rules: RuleGroup) => Promise<number>;
@@ -139,7 +138,7 @@ const conditions = computed(() => [
   { value: 'OR' as const, label: t('advancedSearch.createFiltersType.any') },
 ]);
 
-/** The crowdNewsroom group is browsed through the field picker instead */
+/** The CrowdNewsroom group is browsed through the field picker instead */
 const baseFilterGroups = computed(() =>
   props.filterGroups.filter((group) => !group.custom)
 );
@@ -189,16 +188,12 @@ async function handleSubmit() {
     return;
   }
 
-  modelValue.value = {
-    condition: ruleGroup.condition,
-    rules: ruleGroup.rules as (Rule | RuleGroup)[],
-  };
+  modelValue.value = copyRuleGroup(ruleGroup);
   emit('close');
 }
 
 function handleReset() {
   emit('reset');
-  reset();
   emit('close');
 }
 

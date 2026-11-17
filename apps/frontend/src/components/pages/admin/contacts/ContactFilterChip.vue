@@ -60,7 +60,7 @@ const { t } = useI18n();
 
 const props = defineProps<{
   rule: Rule | RuleGroup;
-  /** All available filter groups, including the crowdNewsroom group */
+  /** All available filter groups, including the CrowdNewsroom group */
   filterGroups: FilterGroups;
 }>();
 

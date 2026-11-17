@@ -98,7 +98,7 @@ const { t } = useI18n();
 
 const props = defineProps<{
   rule: Rule;
-  /** The field groups to pick from, excluding the crowdNewsroom group */
+  /** The field groups to pick from, excluding the CrowdNewsroom group */
   filterGroups: FilterGroups;
   /** Whether to flag missing values, once a search has been attempted */
   showErrors?: boolean;

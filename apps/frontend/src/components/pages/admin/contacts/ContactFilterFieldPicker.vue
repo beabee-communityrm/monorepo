@@ -47,6 +47,7 @@ import { ItemStatus } from '@beabee/beabee-common';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import type { FilterPickerPath } from '#type';
 import { client } from '#utils/api';
 
 import type {
@@ -67,15 +68,8 @@ const emit = defineEmits<{
   (event: 'select', field: string, item: FilterItem): void;
 }>();
 
-type PickerPath =
-  | { type: 'root' }
-  | { type: 'group'; groupId: string }
-  | { type: 'callouts' }
-  | { type: 'callout'; calloutId: string }
-  | { type: 'calloutGroup'; calloutId: string; groupId: string };
-
 const query = ref('');
-const path = ref<PickerPath>({ type: 'root' });
+const path = ref<FilterPickerPath>({ type: 'root' });
 
 const callouts = ref<GetCalloutData[]>([]);
 onBeforeMount(async () => {
@@ -118,7 +112,7 @@ function group(
 }
 
 /** An item that steps to another level, forwards or back */
-function navItem(label: string, to: PickerPath, back = false) {
+function navItem(label: string, to: FilterPickerPath, back = false) {
   return {
     label,
     ...(back ? { icon: 'i-lucide-chevron-left' } : { isBranch: true }),
@@ -182,7 +176,7 @@ const searchGroups = computed(() => {
 const browseGroups = computed(() => {
   const allFields = t('advancedSearch.allFields-nuxt');
   const calloutsLabel = t('contacts.dataGroup.callout-nuxt');
-  const back = (label: string, to: PickerPath) =>
+  const back = (label: string, to: FilterPickerPath) =>
     group('back', [navItem(label, to, true)]);
 
   const current = path.value;
@@ -268,7 +262,7 @@ const groups = computed(() =>
   query.value.trim() ? searchGroups.value : browseGroups.value
 );
 
-function goTo(newPath: PickerPath) {
+function goTo(newPath: FilterPickerPath) {
   path.value = newPath;
   query.value = '';
 }

@@ -8,6 +8,7 @@ export * from './callout-response-answer-row';
 export * from './content';
 export * from './contribution';
 export * from './email-editor';
+export * from './filter-picker-path';
 export * from './formio';
 export * from './geocode-pick-event';
 export * from './get-callout-response-map-data-with-address';

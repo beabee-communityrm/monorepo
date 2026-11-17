@@ -1,9 +1,6 @@
 <!--
   # ContactTagsModal
   Manages the organisation's contact tags: rename in place, delete, or add.
-
-  Replaces the former /admin/contacts/tags page, so it's opened from the tag
-  menus on the contact list.
 -->
 <template>
   <UModal

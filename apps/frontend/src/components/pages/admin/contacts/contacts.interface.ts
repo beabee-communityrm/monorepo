@@ -288,11 +288,11 @@ export function useContactFilters() {
   return { filterGroups, tagItems, refreshTags };
 }
 
-/** Prefix used for rule fields that filter on a crowdNewsroom response */
+/** Prefix used for rule fields that filter on a CrowdNewsroom response */
 export const calloutFilterPrefix = 'callouts.';
 
 /**
- * Extracts the crowdNewsroom id from a rule field, if it filters on one
+ * Extracts the CrowdNewsroom id from a rule field, if it filters on one
  */
 export function getCalloutIdFromField(field: string): string | undefined {
   return field.startsWith(calloutFilterPrefix)
@@ -301,10 +301,10 @@ export function getCalloutIdFromField(field: string): string | undefined {
 }
 
 /**
- * Crowd Newsroom Contact Filters Hook
- * @description Provides the filter items for a single crowdNewsroom, split into
+ * CrowdNewsroom Contact Filters Hook
+ * @description Provides the filter items for a single CrowdNewsroom, split into
  * the participation filter and the response sub-groups
- * @param calloutId - The crowdNewsroom to load filters for
+ * @param calloutId - The CrowdNewsroom to load filters for
  */
 export function useCalloutContactFilters(calloutId: Ref<string | undefined>) {
   const callout = ref<GetCalloutDataWith<'form'>>();
