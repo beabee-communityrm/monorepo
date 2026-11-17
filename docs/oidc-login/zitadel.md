@@ -33,6 +33,12 @@ does not promise it ([ADR-0004](../adr/0004-link-to-login-v2-self-service-flows.
 | `setupCredential` | `/verify` or `/password/set` and a code |
 | `directLogin`     | none: completed with a session          |
 
+### Account pages
+
+`changePassword`, `addPasskey` and `setupMfa` open a Login v2 page that
+works on the login session the member already has there, which it finds by
+login name.
+
 ```mermaid
 sequenceDiagram
     participant B as Browser
@@ -50,28 +56,77 @@ sequenceDiagram
     Note over B,Z: callback as in the login flow
 ```
 
-**Credential setup** uses the same mechanism with a code beabee requests
-for the member. Zitadel only invites accounts without a credential
-(`GET /v2/users/{sub}/authentication_methods` is empty): for those beabee
-creates an invite code via `POST /v2/users/{sub}/invite_code` and sends the
-browser to `/ui/v2/login/verify?requestId&userId&code&invite=true`, where
-the member chooses a password or passkey. For an account with a credential
-it creates a reset code via `POST /v2/users/{sub}/password_reset` and sends
-the browser to `/ui/v2/login/password/set?requestId&userId&loginName&code`,
-where the member sets a new password; Login v2 asks for a second factor
-before it completes the login. Both codes are returned to beabee, so
-Zitadel sends no email for them.
+### Credential setup
 
-**Direct login** shows no Login v2 page: beabee creates a session for the
-user with only a user check (`POST /v2/sessions`), completes the
-authorization request with it (`POST /v2/oidc/auth_requests/{id}`, which
-needs `IAM_LOGIN_CLIENT`) and sends the browser to the callback URL Zitadel
-returns. The session has no authentication factor, so the tokens carry no
-`auth_time` and the login never counts as fresh.
+`setupCredential` needs no login session at Zitadel: beabee requests a code
+for the member that stands in for one. Zitadel only invites accounts
+without a credential, so beabee asks for the account's authentication
+methods first. Without any, the invite verify page lets the member choose a
+password or passkey. With one, the member sets a new password with a reset
+code, and Login v2 asks for their second factor before it completes the
+login. Both codes are returned to beabee, so Zitadel sends no email for
+them.
 
-**Removal** of a passkey, security key or authenticator app goes through
-`GET /v2/users/{sub}/authentication_methods` and the matching `DELETE`;
-method IDs are `password`, `passkey-<id>`, `u2f-<id>` and `totp`.
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant BE as beabee
+    participant Z as Zitadel
+    participant L as Login v2
+
+    B->>BE: GET /api/1.0/auth/login?action=setupCredential&flow=…
+    Note over BE: the Reset Security Flow names the contact
+    BE->>Z: GET /oauth/v2/authorize (redirect: manual)
+    Z-->>BE: 302 Location: …?authRequest=V2_x
+    BE->>Z: GET /v2/users/{sub}/authentication_methods (PAT)
+    alt no credential
+        BE->>Z: POST /v2/users/{sub}/invite_code (returnCode)
+        Z-->>BE: invite code
+        BE-->>B: 302 /ui/v2/login/verify?requestId=oidc_V2_x&userId&code&invite=true
+        B->>L: choose a password or passkey
+    else has a credential
+        BE->>Z: GET /v2/users/{sub} → login name
+        BE->>Z: POST /v2/users/{sub}/password_reset (returnCode)
+        Z-->>BE: reset code
+        BE-->>B: 302 /ui/v2/login/password/set?requestId=oidc_V2_x&userId&loginName&code
+        B->>L: set a new password, then the second factor if there is one
+    end
+    L-->>B: 302 /api/1.0/auth/callback?code&state
+    Note over B,Z: callback as in the login flow
+    Note over BE: deletes the contact's Reset Security Flows
+```
+
+### Direct login
+
+`directLogin` shows no Login v2 page: beabee creates a session for the user
+with only a user check and completes the authorization request with it,
+which needs `IAM_LOGIN_CLIENT`. The session has no authentication factor,
+so the tokens carry no `auth_time` and the login never counts as fresh.
+
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant BE as beabee
+    participant Z as Zitadel
+
+    B->>BE: GET /api/1.0/auth/login?action=directLogin
+    Note over BE: uses up the session's Login Grant
+    BE->>Z: GET /oauth/v2/authorize (redirect: manual)
+    Z-->>BE: 302 Location: …?authRequest=V2_x
+    BE->>Z: POST /v2/sessions (PAT, user check only)
+    Z-->>BE: sessionId, sessionToken
+    BE->>Z: POST /v2/oidc/auth_requests/V2_x (session)
+    Z-->>BE: callbackUrl
+    BE-->>B: 302 /api/1.0/auth/callback?code&state
+    Note over B,Z: callback as in the login flow
+```
+
+### Removal
+
+Removing a passkey, security key or authenticator app is no Login Action:
+it goes through `GET /v2/users/{sub}/authentication_methods` and the
+matching `DELETE`; method IDs are `password`, `passkey-<id>`, `u2f-<id>`
+and `totp`.
 
 ## Server-to-server
 
