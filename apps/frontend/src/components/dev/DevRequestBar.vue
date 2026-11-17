@@ -47,10 +47,16 @@
           <ul class="mt-2 flex flex-col gap-2">
             <li v-for="key in pageKeys" :key="key">
               <fieldset class="flex min-w-0 items-center justify-between gap-3">
-                <legend class="float-left flex min-w-0">
-                  <code class="truncate text-sm" :title="key">{{
-                    pathLabel(key)
-                  }}</code>
+                <legend
+                  class="float-left flex min-w-0 items-baseline gap-2"
+                  :title="key"
+                >
+                  <code class="shrink-0 text-sm">{{ pathLabel(key) }}</code>
+                  <code
+                    v-if="queryLabel(key)"
+                    class="truncate text-xs text-muted"
+                    >{{ queryLabel(key) }}</code
+                  >
                 </legend>
                 <div
                   class="flex shrink-0 divide-x divide-default overflow-hidden rounded-md ring ring-accented"
@@ -88,10 +94,16 @@
           <ul class="mt-2 flex flex-col gap-2">
             <li v-for="key in appKeys" :key="key">
               <fieldset class="flex min-w-0 items-center justify-between gap-3">
-                <legend class="float-left flex min-w-0">
-                  <code class="truncate text-sm" :title="key">{{
-                    pathLabel(key)
-                  }}</code>
+                <legend
+                  class="float-left flex min-w-0 items-baseline gap-2"
+                  :title="key"
+                >
+                  <code class="shrink-0 text-sm">{{ pathLabel(key) }}</code>
+                  <code
+                    v-if="queryLabel(key)"
+                    class="truncate text-xs text-muted"
+                    >{{ queryLabel(key) }}</code
+                  >
                 </legend>
                 <div
                   class="flex shrink-0 divide-x divide-default overflow-hidden rounded-md ring ring-accented"
@@ -165,7 +177,24 @@ const modeItems = [
   { label: 'Empty', value: 'empty' as const },
 ];
 
-const pathLabel = (key: string) => key.replace(/^GET /, '');
+const splitKey = (key: string) => {
+  const [base, query = ''] = key.split('?');
+  return { base, params: new URLSearchParams(query) };
+};
+
+const pathLabel = (key: string) => splitKey(key).base.replace(/^GET /, '');
+
+/** The query params that tell this request apart from others to the same path */
+const queryLabel = (key: string) => {
+  const { base, params } = splitKey(key);
+  const others = keys.value
+    .filter((other) => other !== key && splitKey(other).base === base)
+    .map((other) => splitKey(other).params);
+  return [...params]
+    .filter(([name, value]) => others.some((p) => p.get(name) !== value))
+    .map(([name, value]) => `${name}=${value}`)
+    .join(' ');
+};
 
 const modeOf = (key: string) => devRequests.modes[key] ?? 'normal';
 
