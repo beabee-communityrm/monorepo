@@ -180,6 +180,7 @@
   "activity": {
     "actorType": {
       "system": "Система",
+      "unknown": "Неизвестно",
       "user": "Пользователь"
     },
     "data": {

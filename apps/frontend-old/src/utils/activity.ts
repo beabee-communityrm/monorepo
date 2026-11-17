@@ -3,6 +3,7 @@ import {
   type ActivityEventReference,
   type ActivityEventReferenceType,
   ActivityEventType,
+  type GetActivityEventData,
 } from '@beabee/beabee-common';
 
 import { i18n } from '#lib/i18n';
@@ -61,11 +62,17 @@ export function getEventTypeLabel(type: ActivityEventType): string {
 }
 
 /**
- * Get the label for an actor that isn't a contact: every actor type other than
- * user (cron, webhook, etc.) is system
+ * Get the label for an actor that has no name to show
  */
-export function getActorTypeLabel(type: ActivityActorType | null): string {
-  return type === ActivityActorType.User
+export function getActorLabel(
+  event: Pick<GetActivityEventData, 'actorType' | 'actorId'>
+): string {
+  // An actor ID is always a contact, without a name they no longer exist
+  if (event.actorId) return t('activity.deleted');
+  // Some events were recorded without any details of who triggered them
+  if (!event.actorType) return t('activity.actorType.unknown');
+  // Every actor type other than user (cron, webhook, etc.) is system
+  return event.actorType === ActivityActorType.User
     ? t('activity.actorType.user')
     : t('activity.actorType.system');
 }

@@ -180,6 +180,7 @@
   "activity": {
     "actorType": {
       "system": "Systeem",
+      "unknown": "Onbekend",
       "user": "Gebruiker"
     },
     "data": {

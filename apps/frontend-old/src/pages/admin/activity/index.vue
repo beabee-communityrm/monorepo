@@ -33,10 +33,7 @@ meta:
         {{ getEventTypeLabel(value) }}
       </template>
       <template #value-actor="{ item, value }">
-        <ActivityReference
-          :reference="value"
-          :fallback="getActorTypeLabel(item.actorType)"
-        />
+        <ActivityReference :reference="value" :fallback="getActorLabel(item)" />
       </template>
       <template #value-target="{ item, value }">
         <ActivityReference
@@ -77,7 +74,7 @@ import AppPaginatedTable from '#components/table/AppPaginatedTable.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import type { FilterGroups } from '#type/search';
 import type { Header } from '#type/table';
-import { getActorTypeLabel, getEventTypeLabel } from '#utils/activity';
+import { getActorLabel, getEventTypeLabel } from '#utils/activity';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 import {

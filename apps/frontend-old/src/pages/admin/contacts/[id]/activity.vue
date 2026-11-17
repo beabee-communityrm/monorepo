@@ -18,10 +18,7 @@ meta:
         {{ getEventTypeLabel(value) }}
       </template>
       <template #value-actor="{ item, value }">
-        <ActivityReference
-          :reference="value"
-          :fallback="getActorTypeLabel(item.actorType)"
-        />
+        <ActivityReference :reference="value" :fallback="getActorLabel(item)" />
       </template>
       <template #value-target="{ item, value }">
         <ActivityReference
@@ -44,7 +41,7 @@ import { type Header, formatLocale, addNotification } from '@beabee/vue';
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ActivityReference from '#components/activity/ActivityReference.vue';
-import { getActorTypeLabel, getEventTypeLabel } from '#utils/activity';
+import { getActorLabel, getEventTypeLabel } from '#utils/activity';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 

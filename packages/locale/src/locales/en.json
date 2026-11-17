@@ -179,6 +179,7 @@
   "activity": {
     "actorType": {
       "system": "System",
+      "unknown": "Unknown",
       "user": "User"
     },
     "data": {
