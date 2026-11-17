@@ -111,7 +111,10 @@ meta:
       </div>
     </div>
 
-    <ContactTagsModal v-model:open="tagsModalOpen" @updated="refreshTags" />
+    <ContactTagsModal
+      v-model:open="tagsModalOpen"
+      @updated="handleTagsUpdated"
+    />
   </div>
 </template>
 
@@ -353,6 +356,23 @@ watch(
   { deep: true }
 );
 refreshResponses();
+
+/**
+ * Reloads the tags and the list after they're edited, dropping the tag filter
+ * if its tag was deleted
+ */
+async function handleTagsUpdated() {
+  await refreshTags();
+  if (
+    currentTag.value &&
+    !tagItems.value.some((tag) => tag.id === currentTag.value)
+  ) {
+    // The watch on currentTag reloads the list once the route has updated
+    currentTag.value = '';
+  } else {
+    refreshResponses();
+  }
+}
 
 /**
  * Handles exporting contacts

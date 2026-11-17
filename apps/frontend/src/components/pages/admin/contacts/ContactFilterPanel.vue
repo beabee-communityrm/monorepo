@@ -93,7 +93,15 @@
 import type { Rule, RuleGroup } from '@beabee/beabee-common';
 
 import { isRuleGroup } from '@beabee/beabee-common';
-import { computed, nextTick, reactive, ref, useTemplateRef, watch } from 'vue';
+import {
+  computed,
+  nextTick,
+  onWatcherCleanup,
+  reactive,
+  ref,
+  useTemplateRef,
+  watch,
+} from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { FilterGroups, FilterItem } from '../../../../type/search';
@@ -122,7 +130,6 @@ const modelValue = defineModel<RuleGroup>();
 const addPickerOpen = ref(false);
 /** Number of contacts the unapplied rules currently match */
 const matchCount = ref<number>();
-let matchCountTimer: ReturnType<typeof setTimeout>;
 /** Set once Search is pressed with a value missing, so empty fields show it */
 const showErrors = ref(false);
 const root = useTemplateRef('root');
@@ -158,14 +165,15 @@ function reset() {
 
 function updateMatchCount() {
   const rules = copyRuleGroup(ruleGroup);
-  clearTimeout(matchCountTimer);
-  matchCountTimer = setTimeout(async () => {
-    try {
-      matchCount.value = await props.countMatches(rules);
-    } catch {
-      matchCount.value = undefined;
-    }
+  let stale = false;
+  const timer = setTimeout(async () => {
+    const count = await props.countMatches(rules).catch(() => undefined);
+    if (!stale) matchCount.value = count;
   }, 400);
+  onWatcherCleanup(() => {
+    stale = true;
+    clearTimeout(timer);
+  });
 }
 
 function handleAddRule(field: string, item: FilterItem) {

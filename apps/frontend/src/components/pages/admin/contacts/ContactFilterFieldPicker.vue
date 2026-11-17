@@ -77,29 +77,19 @@ type PickerPath =
 const query = ref('');
 const path = ref<PickerPath>({ type: 'root' });
 
-// Cached for the session: the picker is remounted every time it's opened, and
-// the CrowdNewsroom list is the same for every rule.
-let calloutsRequest: Promise<GetCalloutData[]> | undefined;
-
-function listCallouts() {
-  calloutsRequest ||= client.callout
-    .list({
-      rules: {
-        condition: 'OR',
-        rules: [
-          { field: 'status', operator: 'equal', value: [ItemStatus.Open] },
-          { field: 'status', operator: 'equal', value: [ItemStatus.Ended] },
-        ],
-      },
-      sort: 'title',
-    })
-    .then((result) => result.items);
-  return calloutsRequest;
-}
-
 const callouts = ref<GetCalloutData[]>([]);
 onBeforeMount(async () => {
-  callouts.value = await listCallouts();
+  const result = await client.callout.list({
+    rules: {
+      condition: 'OR',
+      rules: [
+        { field: 'status', operator: 'equal', value: [ItemStatus.Open] },
+        { field: 'status', operator: 'equal', value: [ItemStatus.Ended] },
+      ],
+    },
+    sort: 'title',
+  });
+  callouts.value = result.items;
 });
 
 const openCalloutId = computed(() =>
