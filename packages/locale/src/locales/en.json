@@ -178,7 +178,9 @@
   },
   "activity": {
     "actorType": {
+      "guest": "Guest user",
       "system": "System",
+      "unknown": "Unknown",
       "user": "User"
     },
     "data": {
@@ -188,6 +190,7 @@
       "target": "Target",
       "time": "Time"
     },
+    "deleted": "Deleted",
     "eventType": {
       "appPaymentOptionsUpdated": "Available payment options updated",
       "appSettingsUpdated": "App settings updated",

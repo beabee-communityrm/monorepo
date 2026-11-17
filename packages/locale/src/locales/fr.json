@@ -179,7 +179,9 @@
   },
   "activity": {
     "actorType": {
+      "guest": "Utilisateur invité",
       "system": "Système",
+      "unknown": "Inconnu",
       "user": "Utilisateur"
     },
     "data": {
@@ -189,6 +191,7 @@
       "target": "Cible",
       "time": "Heure"
     },
+    "deleted": "Supprimé",
     "eventType": {
       "appPaymentOptionsUpdated": "Options de paiement disponibles mises à jour",
       "appSettingsUpdated": "Paramètres de l'application mis à jour",

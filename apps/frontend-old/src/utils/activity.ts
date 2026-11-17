@@ -1,4 +1,10 @@
-import { ActivityEventType } from '@beabee/beabee-common';
+import {
+  ActivityActorType,
+  type ActivityEventReference,
+  type ActivityEventReferenceType,
+  ActivityEventType,
+  type GetActivityEventData,
+} from '@beabee/beabee-common';
 
 import { i18n } from '#lib/i18n';
 
@@ -53,4 +59,42 @@ const eventTypeKeys: Record<ActivityEventType, string> = {
  */
 export function getEventTypeLabel(type: ActivityEventType): string {
   return t(`activity.eventType.${eventTypeKeys[type]}`);
+}
+
+/**
+ * Get the label for an actor that has no name to show
+ */
+export function getActorLabel(
+  event: Pick<GetActivityEventData, 'actorType' | 'actorId'>
+): string {
+  // An actor ID is always a contact, without a name they no longer exist
+  if (event.actorId) return t('activity.deleted');
+  // Some events were recorded without any details of who triggered them
+  if (!event.actorType) return t('activity.actorType.unknown');
+  // A user without an ID made the request without being logged in. Every actor
+  // type other than user (cron, webhook, etc.) is system
+  return event.actorType === ActivityActorType.User
+    ? t('activity.actorType.guest')
+    : t('activity.actorType.system');
+}
+
+const referenceLinks: Record<
+  ActivityEventReferenceType,
+  ((id: string) => string) | null
+> = {
+  contact: (id) => `/admin/contacts/${id}`,
+  callout: (id) => `/admin/crowdnewsroom/view/${id}`,
+  'contact-segment': (id) => `/admin/contacts?segment=${id}`,
+  email: (id) => `/admin/contacts/email-templates/edit/${id}`,
+  // Its page is under the callout it belongs to, which a reference doesn't carry
+  'callout-response-segment': null,
+};
+
+/**
+ * Get the admin page for the item a reference points to, if it has one
+ */
+export function getReferenceLink(
+  reference: ActivityEventReference
+): string | undefined {
+  return referenceLinks[reference.type]?.(reference.id);
 }

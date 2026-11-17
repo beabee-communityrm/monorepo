@@ -179,7 +179,9 @@
   },
   "activity": {
     "actorType": {
+      "guest": "Гостевой пользователь",
       "system": "Система",
+      "unknown": "Неизвестно",
       "user": "Пользователь"
     },
     "data": {
@@ -189,6 +191,7 @@
       "target": "Объект",
       "time": "Время"
     },
+    "deleted": "Удалено",
     "eventType": {
       "appPaymentOptionsUpdated": "Доступные способы оплаты обновлены",
       "appSettingsUpdated": "Настройки приложения обновлены",

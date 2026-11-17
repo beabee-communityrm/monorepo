@@ -179,7 +179,9 @@
   },
   "activity": {
     "actorType": {
+      "guest": "Гостьовий користувач",
       "system": "Система",
+      "unknown": "Невідомо",
       "user": "Користувач"
     },
     "data": {
@@ -189,6 +191,7 @@
       "target": "Об'єкт",
       "time": "Час"
     },
+    "deleted": "Видалено",
     "eventType": {
       "appPaymentOptionsUpdated": "Доступні способи оплати оновлено",
       "appSettingsUpdated": "Налаштування застосунку оновлено",

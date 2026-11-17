@@ -179,7 +179,9 @@
   },
   "activity": {
     "actorType": {
+      "guest": "Usuario invitado",
       "system": "Sistema",
+      "unknown": "Desconocido",
       "user": "Usuario"
     },
     "data": {
@@ -189,6 +191,7 @@
       "target": "Objetivo",
       "time": "Hora"
     },
+    "deleted": "Eliminado",
     "eventType": {
       "appPaymentOptionsUpdated": "Opciones de pago disponibles actualizadas",
       "appSettingsUpdated": "Ajustes de la aplicación actualizados",
