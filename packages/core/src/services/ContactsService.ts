@@ -556,6 +556,12 @@ class ContactsService {
       mandateId: data.source || null,
       customerId: data.reference || null,
     });
+
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactContributionUpdated,
+      targetId: contact.id,
+      metadata: null,
+    });
   }
 
   /**

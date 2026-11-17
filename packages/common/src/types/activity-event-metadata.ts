@@ -20,7 +20,7 @@ export interface ActivityEventMetadataMap {
   [ActivityEventType.ContactContributionStarted]:
     | ContributionUpdateData
     | Pick<ContributionUpdateData, 'subscriptionId'>;
-  [ActivityEventType.ContactContributionUpdated]: ContributionUpdateData;
+  [ActivityEventType.ContactContributionUpdated]: ContributionUpdateData | null;
   [ActivityEventType.ContactContributionCancelled]: {
     subscriptionId: string | null;
   };
