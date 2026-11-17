@@ -1,7 +1,7 @@
 <!--
   # AppSearchBox
-  Search box that applies its value on Enter or when it loses focus, rather
-  than on every keystroke, with a button to clear it.
+  Search box that applies its value once typing pauses, or straight away on
+  Enter, with a button to clear it.
 
   ## Internal i18n usage
   - actions.clearSearch: "Clear search"
@@ -13,7 +13,6 @@
     variant="subtle"
     :placeholder="placeholder"
     @keyup.enter="search = draft"
-    @blur="search = draft"
   >
     <template v-if="draft" #trailing>
       <UButton
@@ -30,11 +29,11 @@
 
 <script lang="ts" setup>
 /**
- * Search box applied on Enter or blur.
+ * Search box applied as you type.
  *
  * @component AppSearchBox
  */
-import { ref, watch } from 'vue';
+import { onWatcherCleanup, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -50,6 +49,12 @@ const search = defineModel<string>({ required: true });
 
 const draft = ref(search.value);
 watch(search, (value) => (draft.value = value));
+
+watch(draft, (value) => {
+  if (value === search.value) return;
+  const timer = setTimeout(() => (search.value = value), 300);
+  onWatcherCleanup(() => clearTimeout(timer));
+});
 
 function clear() {
   draft.value = '';

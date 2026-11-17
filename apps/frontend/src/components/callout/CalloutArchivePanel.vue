@@ -133,7 +133,10 @@ onBeforeMount(async () => {
   archivedTotal.value = archived.total;
 });
 
-watchEffect(async () => {
+watchEffect(async (onCleanup) => {
+  let stale = false;
+  onCleanup(() => (stale = true));
+
   const query: GetCalloutsQuery = {
     offset: archivePage.value * archivePageSize,
     limit: archivePageSize,
@@ -162,9 +165,10 @@ watchEffect(async () => {
     },
   };
 
-  archivedCallouts.value = await client.callout.list(query, [
+  const result = await client.callout.list(query, [
     'hasAnswered',
     'responseCount',
   ]);
+  if (!stale) archivedCallouts.value = result;
 });
 </script>

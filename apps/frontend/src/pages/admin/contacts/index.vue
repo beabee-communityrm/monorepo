@@ -326,27 +326,26 @@ function getSelectedContactsRules(): RuleGroup {
 /**
  * Table state
  */
-const isRefreshing = ref(false);
+let latestRequest = 0;
 
 /**
- * Refreshes the contact list based on current filters
+ * Refreshes the contact list based on current filters, ignoring any response
+ * that arrives after a newer request
  */
 async function refreshResponses() {
-  if (isRefreshing.value) return;
-
-  isRefreshing.value = true;
+  const request = ++latestRequest;
   try {
     const query = { ...currentPaginatedQuery.query, rules: getSearchRules() };
-    contactsTable.value = await client.contact.list(query, [
+    const result = await client.contact.list(query, [
       GetContactWith.Profile,
       GetContactWith.Roles,
       GetContactWith.Tags,
     ]);
+    if (request === latestRequest) contactsTable.value = result;
   } catch (err) {
+    if (request !== latestRequest) return;
     contactsTable.value = emptyTable();
     toast.error(extractErrorText(err));
-  } finally {
-    isRefreshing.value = false;
   }
 }
 
