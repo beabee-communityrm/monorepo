@@ -23,6 +23,8 @@ export const devRequests = reactive({
   listKeys: (stored.listKeys ?? []) as string[],
   /** Requests made before the first page loaded, left out of "all" */
   appKeys: [] as string[],
+  /** The component file that made each request, from its call stack */
+  sources: {} as Record<string, string>,
 });
 
 watch(
@@ -83,6 +85,10 @@ export function installDevRequests() {
     }
 
     if (!devRequests.seen.includes(key)) devRequests.seen.push(key);
+    const source = new Error().stack?.match(
+      /https?:\/\/[^/]+(?:\/@fs)?(\/[^?:\s]+\.vue)/
+    )?.[1];
+    if (source) devRequests.sources[key] = source;
     if (booting && !devRequests.appKeys.includes(key)) {
       devRequests.appKeys.push(key);
     }
