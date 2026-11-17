@@ -17,7 +17,7 @@
   >
     <template v-if="mode === 'explicit'">
       <span>
-        {{ t(`${keyPrefix}.pageSelected`, { count: n(selectedCount) }) }}
+        {{ t(`${keyPrefix}.pageSelected`, { count: n(pageSelectedCount) }) }}
       </span>
       <UButton variant="link" class="p-0" @click="emit('selectAll')">
         {{ t(`${keyPrefix}.selectAll`, { count: n(total) }) }}
@@ -52,8 +52,10 @@ const { t, n } = useI18n();
 export interface AppSelectAllBannerProps {
   /** `explicit` while only rows on this page are selected, `all` once every matching row is */
   mode: 'explicit' | 'all';
-  /** Number of rows currently selected */
+  /** Number of rows currently selected, across all pages */
   selectedCount: number;
+  /** Number of rows selected on the current page */
+  pageSelectedCount: number;
   /** Number of rows matching the current filters, across all pages */
   total: number;
   /** Where the banner's strings live, for wording specific to a page */

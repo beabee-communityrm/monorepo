@@ -10,6 +10,7 @@
     v-if="showSelectAllBanner"
     :mode="selectionState.mode"
     :selected-count="selectedCount"
+    :page-selected-count="selectedPageItems.length"
     :total="total"
     key-prefix="contacts.selectAllBanner-nuxt"
     @select-all="selectAllMatching"
@@ -183,6 +184,7 @@ const selectionState = defineModel<SelectionState>('selectionState', {
 
 const {
   selectedCount,
+  selectedPageItems,
   allOnPageSelected,
   someOnPageSelected,
   isSelected,
