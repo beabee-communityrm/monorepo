@@ -13,13 +13,13 @@
 -->
 <template>
   <div
-    class="flex flex-wrap items-center justify-center gap-2 border-b border-primary/20 bg-primary/6 p-3"
+    class="flex flex-wrap items-center justify-center gap-1 border-b border-primary/20 bg-primary/6 p-3"
   >
     <template v-if="mode === 'explicit'">
       <span>
         {{ t(`${keyPrefix}.pageSelected`, { count: n(selectedCount) }) }}
       </span>
-      <UButton variant="link" @click="emit('selectAll')">
+      <UButton variant="link" class="p-0" @click="emit('selectAll')">
         {{ t(`${keyPrefix}.selectAll`, { count: n(total) }) }}
       </UButton>
     </template>
@@ -32,7 +32,7 @@
           )
         }}
       </span>
-      <UButton variant="link" @click="emit('clear')">
+      <UButton variant="link" class="p-0" @click="emit('clear')">
         {{ t(`${keyPrefix}.clearSelection`) }}
       </UButton>
     </template>
