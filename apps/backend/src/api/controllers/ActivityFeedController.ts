@@ -36,6 +36,7 @@ export class ActivityFeedController {
   /**
    * Export all activity feed events as CSV
    */
+  @Authorized('admin')
   @Get('.csv')
   async exportEvents(
     @CurrentAuth({ required: true }) auth: AuthInfo,
