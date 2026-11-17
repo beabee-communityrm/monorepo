@@ -5,6 +5,14 @@
 -->
 <template>
   <div class="flex items-center gap-1">
+    <p v-if="selectedCount > 0" class="mr-2 text-muted">
+      <i18n-t keypath="contacts.selectedCount" :plural="selectedCount">
+        <template #n>
+          <b class="font-semibold text-highlighted">{{ n(selectedCount) }}</b>
+        </template>
+      </i18n-t>
+    </p>
+
     <!-- TODO: Add support for exporting selected contacts (instead of all contacts) -->
     <UButton
       icon="i-lucide-download"
