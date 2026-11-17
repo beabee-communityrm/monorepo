@@ -15,7 +15,7 @@ const STORAGE_KEY = 'beabee-dev-requests';
 const stored = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}');
 
 export const devRequests = reactive({
-  /** Requests made on the current page, as "METHOD /path" */
+  /** Requests made on the current page, as "METHOD /path?query" */
   seen: [] as string[],
   /** Requests set to anything other than normal */
   modes: (stored.modes ?? {}) as Record<string, DevRequestMode>,
@@ -65,9 +65,9 @@ export function installDevRequests() {
       init?.method ?? (input instanceof Request ? input.method : 'GET')
     ).toUpperCase();
     const path = url.pathname.slice(env.apiUrl.length).replace(/\/+$/, '');
-    const key = `${method} /${path}`;
+    const key = `${method} /${path}${url.search}`;
 
-    if (!url.pathname.startsWith(env.apiUrl) || key === 'GET /health') {
+    if (!url.pathname.startsWith(env.apiUrl) || path === 'health') {
       return realFetch(input, init);
     }
 
