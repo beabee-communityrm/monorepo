@@ -64,6 +64,8 @@ const tabs = computed(() =>
       {
         id: 'adminContactsViewActivity',
         label: t('menu.activity'),
+        // Not shown as a tab, the page is only reachable by its URL
+        hidden: true,
       },
     ],
     {
