@@ -9,5 +9,10 @@ import { initializeTheme } from './lib/theme';
 // Initialize theme system
 initializeTheme();
 
+if (import.meta.env.DEV) {
+  const { installDevRequests } = await import('./utils/dev/requests');
+  installDevRequests();
+}
+
 // Start the initialization process
 initializeApp();
