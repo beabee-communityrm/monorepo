@@ -192,6 +192,15 @@
       "time": "Час"
     },
     "deleted": "Видалено",
+    "eventDescription": {
+      "contactContributionStarted": "Контакт оформив внесок: {amount}",
+      "contactContributionUpdated": "Контакт змінив внесок: {amount}",
+      "contactCreated": "Створено новий контакт ({source})",
+      "contactEmailSent": "Лист надіслано контакту: {email}",
+      "contactRoleAdded": "Контакту призначено роль: {role}",
+      "emailSent": "Лист надіслано на {recipient}: {email}",
+      "emailTemplateAdded": "Створено шаблон листа: {template}"
+    },
     "eventType": {
       "appPaymentOptionsUpdated": "Доступні способи оплати оновлено",
       "appSettingsUpdated": "Налаштування застосунку оновлено",

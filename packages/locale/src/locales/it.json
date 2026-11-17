@@ -192,6 +192,15 @@
       "time": "Ora"
     },
     "deleted": "Eliminato",
+    "eventDescription": {
+      "contactContributionStarted": "Il contatto ha avviato un contributo: {amount}",
+      "contactContributionUpdated": "Il contatto ha aggiornato il contributo: {amount}",
+      "contactCreated": "Nuovo contatto creato ({source})",
+      "contactEmailSent": "Email inviata al contatto: {email}",
+      "contactRoleAdded": "Ruolo assegnato al contatto: {role}",
+      "emailSent": "Email inviata a {recipient}: {email}",
+      "emailTemplateAdded": "Modello email creato: {template}"
+    },
     "eventType": {
       "appPaymentOptionsUpdated": "Opzioni di pagamento disponibili aggiornate",
       "appSettingsUpdated": "Impostazioni dell'app aggiornate",

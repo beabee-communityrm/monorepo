@@ -192,6 +192,15 @@
       "time": "Heure"
     },
     "deleted": "Supprimé",
+    "eventDescription": {
+      "contactContributionStarted": "Le contact a commencé une cotisation : {amount}",
+      "contactContributionUpdated": "Le contact a modifié sa cotisation : {amount}",
+      "contactCreated": "Nouveau contact créé ({source})",
+      "contactEmailSent": "E-mail envoyé au contact : {email}",
+      "contactRoleAdded": "Rôle attribué au contact : {role}",
+      "emailSent": "E-mail envoyé à {recipient} : {email}",
+      "emailTemplateAdded": "Modèle d'e-mail créé : {template}"
+    },
     "eventType": {
       "appPaymentOptionsUpdated": "Options de paiement disponibles mises à jour",
       "appSettingsUpdated": "Paramètres de l'application mis à jour",

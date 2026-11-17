@@ -14,8 +14,8 @@ meta:
       <template #value-createdAt="{ value }">
         {{ formatLocale(value, 'Pp') }}
       </template>
-      <template #value-eventType="{ value }">
-        {{ getEventTypeLabel(value) }}
+      <template #value-eventType="{ item }">
+        {{ getEventDescription(item) }}
       </template>
       <template #value-actor="{ item, value }">
         <ActivityReference :reference="value" :fallback="getActorLabel(item)" />
@@ -41,7 +41,7 @@ import { type Header, formatLocale, addNotification } from '@beabee/vue';
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ActivityReference from '#components/activity/ActivityReference.vue';
-import { getActorLabel, getEventTypeLabel } from '#utils/activity';
+import { getActorLabel, getEventDescription } from '#utils/activity';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 

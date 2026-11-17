@@ -192,6 +192,15 @@
       "time": "Время"
     },
     "deleted": "Удалено",
+    "eventDescription": {
+      "contactContributionStarted": "Контакт оформил взнос: {amount}",
+      "contactContributionUpdated": "Контакт изменил взнос: {amount}",
+      "contactCreated": "Создан новый контакт ({source})",
+      "contactEmailSent": "Письмо отправлено контакту: {email}",
+      "contactRoleAdded": "Контакту назначена роль: {role}",
+      "emailSent": "Письмо отправлено на {recipient}: {email}",
+      "emailTemplateAdded": "Создан шаблон письма: {template}"
+    },
     "eventType": {
       "appPaymentOptionsUpdated": "Доступные способы оплаты обновлены",
       "appSettingsUpdated": "Настройки приложения обновлены",

@@ -191,6 +191,15 @@
       "time": ""
     },
     "deleted": "",
+    "eventDescription": {
+      "contactContributionStarted": "",
+      "contactContributionUpdated": "",
+      "contactCreated": "",
+      "contactEmailSent": "",
+      "contactRoleAdded": "",
+      "emailSent": "",
+      "emailTemplateAdded": ""
+    },
     "eventType": {
       "appPaymentOptionsUpdated": "",
       "appSettingsUpdated": "",
