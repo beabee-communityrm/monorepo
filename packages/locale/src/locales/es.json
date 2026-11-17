@@ -179,6 +179,7 @@
   },
   "activity": {
     "actorType": {
+      "guest": "Usuario invitado",
       "system": "Sistema",
       "unknown": "Desconocido",
       "user": "Usuario"

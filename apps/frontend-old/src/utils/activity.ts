@@ -71,9 +71,10 @@ export function getActorLabel(
   if (event.actorId) return t('activity.deleted');
   // Some events were recorded without any details of who triggered them
   if (!event.actorType) return t('activity.actorType.unknown');
-  // Every actor type other than user (cron, webhook, etc.) is system
+  // A user without an ID made the request without being logged in. Every actor
+  // type other than user (cron, webhook, etc.) is system
   return event.actorType === ActivityActorType.User
-    ? t('activity.actorType.user')
+    ? t('activity.actorType.guest')
     : t('activity.actorType.system');
 }
 
