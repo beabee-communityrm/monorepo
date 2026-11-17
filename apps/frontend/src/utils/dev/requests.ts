@@ -31,6 +31,17 @@ watch(
   { deep: true }
 );
 
+/** Resumes hanging requests, which then check their mode again */
+const hanging = new Set<() => void>();
+watch(
+  () => devRequests.modes,
+  () => {
+    for (const resume of hanging) resume();
+    hanging.clear();
+  },
+  { deep: true }
+);
+
 const emptyBody = (data: unknown) => {
   if (Array.isArray(data)) return [];
   if (
@@ -76,8 +87,11 @@ export function installDevRequests() {
       devRequests.appKeys.push(key);
     }
 
+    while (devRequests.modes[key] === 'hang') {
+      await new Promise<void>((resume) => hanging.add(resume));
+    }
+
     const mode = devRequests.modes[key];
-    if (mode === 'hang') return new Promise<Response>(() => {});
     if (mode === 'fail') {
       return Response.json(
         {
