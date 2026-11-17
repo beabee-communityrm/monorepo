@@ -207,6 +207,7 @@
       "contactContributionUpdated": "Le contact a modifié sa cotisation",
       "contactCreated": "Nouveau contact créé",
       "contactDeleted": "Contact supprimé",
+      "contactEmailSent": "E-mail envoyé au contact",
       "contactNewsletterGroupsUpdated": "Groupes de lettre d'information du contact mis à jour",
       "contactPaymentCancelled": "Paiement annulé",
       "contactPaymentFailed": "Échec du paiement",

@@ -206,6 +206,7 @@
       "contactContributionUpdated": "",
       "contactCreated": "",
       "contactDeleted": "",
+      "contactEmailSent": "",
       "contactNewsletterGroupsUpdated": "",
       "contactPaymentCancelled": "",
       "contactPaymentFailed": "",

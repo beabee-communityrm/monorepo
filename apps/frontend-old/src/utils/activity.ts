@@ -34,6 +34,7 @@ const eventTypeKeys: Record<ActivityEventType, string> = {
     'contactContributionCancelled',
   [ActivityEventType.ContactNewsletterGroupsUpdated]:
     'contactNewsletterGroupsUpdated',
+  [ActivityEventType.ContactEmailSent]: 'contactEmailSent',
   [ActivityEventType.EmailTemplateAdded]: 'emailTemplateAdded',
   [ActivityEventType.EmailTemplateEdited]: 'emailTemplateEdited',
   [ActivityEventType.EmailTemplateDeleted]: 'emailTemplateDeleted',

@@ -43,7 +43,7 @@ const backfillAnswered = createBackfill({
 });
 
 /**
- * Backfill callout.segments-added events
+ * Backfill callout-response-segment.added events
  * The segment is the target, as for segments added through the API
  * Segments carry no creation date, so a sentinel date is used as the event time
  */

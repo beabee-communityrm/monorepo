@@ -207,6 +207,7 @@
       "contactContributionUpdated": "Kontakt hat Beitrag geändert",
       "contactCreated": "Neuer Kontakt erstellt",
       "contactDeleted": "Kontakt gelöscht",
+      "contactEmailSent": "E-Mail an Kontakt gesendet",
       "contactNewsletterGroupsUpdated": "Newsletter-Gruppen des Kontakts aktualisiert",
       "contactPaymentCancelled": "Zahlung storniert",
       "contactPaymentFailed": "Zahlung fehlgeschlagen",

@@ -206,6 +206,7 @@
       "contactContributionUpdated": "Contact updated contribution",
       "contactCreated": "New contact created",
       "contactDeleted": "Contact deleted",
+      "contactEmailSent": "Email sent to contact",
       "contactNewsletterGroupsUpdated": "Contact's newsletter groups updated",
       "contactPaymentCancelled": "Payment cancelled",
       "contactPaymentFailed": "Payment failed",
