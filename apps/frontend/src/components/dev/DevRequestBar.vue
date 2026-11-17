@@ -4,7 +4,8 @@
   a mode to make it hang, fail or come back empty. Modes apply from the next
   request and last for the browser tab's session. Changing a mode reruns the
   page, or reloads it for app startup requests, and a hanging request carries
-  on once its mode changes.
+  on once its mode changes. Hovering a page request outlines the component that
+  made it.
 -->
 <template>
   <UPopover :content="{ side: 'top', align: 'start' }">
@@ -47,7 +48,14 @@
             </div>
           </div>
           <ul class="mt-2 flex flex-col gap-2">
-            <li v-for="key in pageKeys" :key="key">
+            <li
+              v-for="key in pageKeys"
+              :key="key"
+              @mouseenter="highlight(key)"
+              @mouseleave="highlight()"
+              @focusin="highlight(key)"
+              @focusout="highlight()"
+            >
               <fieldset class="flex min-w-0 items-center justify-between gap-3">
                 <legend
                   class="float-left flex min-w-0 items-baseline gap-2"
@@ -144,11 +152,24 @@
       </div>
     </template>
   </UPopover>
+
+  <div
+    v-for="(box, i) in boxes"
+    :key="i"
+    class="pointer-events-none fixed z-40 rounded-md bg-primary/10 ring-2 ring-primary"
+    :style="{
+      top: `${box.top}px`,
+      left: `${box.left}px`,
+      width: `${box.width}px`,
+      height: `${box.height}px`,
+    }"
+  />
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick } from 'vue';
+import { computed, getCurrentInstance, nextTick, ref } from 'vue';
 
+import { componentBoxes } from '#utils/dev/components';
 import { devRequests } from '#utils/dev/requests';
 import type { DevRequestMode } from '#type';
 
@@ -193,6 +214,14 @@ const queryLabel = (key: string) => {
     .map(([name, value]) => `${name}=${value}`)
     .join(' ');
 };
+
+const app = getCurrentInstance()?.appContext.app;
+const boxes = ref<DOMRect[]>([]);
+
+function highlight(key?: string) {
+  const file = key && devRequests.sources[key];
+  boxes.value = app && file ? componentBoxes(app, file) : [];
+}
 
 const modeOf = (key: string) => devRequests.modes[key] ?? 'normal';
 
