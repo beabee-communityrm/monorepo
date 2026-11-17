@@ -192,16 +192,22 @@ class ContactsService {
 
     const oldEmail = updates.email && contact.email;
 
-    // Check if anything has changed on the contact (not contact profile)
-    // Event will be logged only if this is true
-    const mainContactChanged =
-      (updates.email !== undefined && updates.email !== contact.email) ||
-      (updates.firstname !== undefined &&
-        updates.firstname !== contact.firstname) ||
-      (updates.lastname !== undefined &&
-        updates.lastname !== contact.lastname) ||
-      // A password is always a freshly generated hash, so it's always a change
-      updates.password !== undefined;
+    const updatedFields = Object.keys(updates) as (keyof Contact)[];
+
+    // Contact fields that correspond to contribution changes
+    // No contact/contacProfile update events are logged for these fields
+    const contributionFields: (keyof Contact)[] = [
+      'contributionType',
+      'contributionPeriod',
+      'contributionMonthlyAmount',
+    ];
+
+    const contactChanged = updatedFields.some(
+      (field) =>
+        !contributionFields.includes(field) &&
+        updates[field] !== undefined &&
+        updates[field] !== contact[field]
+    );
 
     try {
       await getRepository(Contact).update(contact.id, updates);
@@ -221,7 +227,7 @@ class ContactsService {
       );
     }
 
-    if (mainContactChanged) {
+    if (contactChanged) {
       await ActivityService.addEvent({
         eventType: ActivityEventType.ContactUpdated,
         targetId: contact.id,
