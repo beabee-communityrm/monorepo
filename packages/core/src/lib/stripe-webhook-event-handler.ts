@@ -1,6 +1,6 @@
 import { ActivityEventType } from '@beabee/beabee-common';
 
-import { add } from 'date-fns';
+import { add } from 'date-fns/add';
 import Stripe from 'stripe';
 
 import { isDuplicateIndex } from '#utils/db';

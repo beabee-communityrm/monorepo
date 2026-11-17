@@ -22,7 +22,6 @@ import {
   testCommand,
   userCommand,
 } from './commands/index.js';
-import './env.js';
 
 const pkg = JSON.parse(
   readFileSync(resolve(process.cwd(), './package.json'), 'utf8')

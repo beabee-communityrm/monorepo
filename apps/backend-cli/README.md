@@ -4,13 +4,13 @@ Command line interface for managing Beabee backend operations.
 
 ## Usage
 
-You can run the CLI from here or from the monorepo root:
+The CLI runs inside the `api_app` container, which provides its environment:
 
 ```bash
-yarn backend-cli <command>
+docker compose exec api_app yarn backend-cli <command>
 ```
 
-> **Note**: When running against a remote database, make sure the `.env.remote` file is configured. See the [Environment Variables Documentation](../../docs/environment-variables.md) for details.
+The commands below are shown as they are run inside the container.
 
 The CLI provides several commands for managing different aspects of Beabee, you can see the list of commands by running `yarn backend-cli --help`:
 
@@ -99,7 +99,7 @@ yarn backend-cli user delete --without-password -y  Delete without confirmation 
 yarn backend-cli setup support-email    Set up support email configuration
 yarn backend-cli setup payment-methods  Set up payment methods configuration
 yarn backend-cli setup admin            Set up initial admin user
-yarn backend-cli setup all              Complete system setup (all steps in sequence)
+yarn backend-cli setup system           Set up support email, payment methods and admin user in sequence
 ```
 
 ### Payment Management

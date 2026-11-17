@@ -345,6 +345,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    'login-error': RouteRecordInfo<
+      'login-error',
+      '/auth/login-error',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     'lost-device': RouteRecordInfo<
       'lost-device',
       '/auth/lost-device',
@@ -802,6 +809,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/auth/login.vue': {
       routes:
         | 'login'
+      views:
+        | never
+    }
+    'src/pages/auth/login-error.vue': {
+      routes:
+        | 'login-error'
       views:
         | never
     }

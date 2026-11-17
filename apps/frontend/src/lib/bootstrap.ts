@@ -9,6 +9,7 @@ import { waitForBackend } from '#utils/api/client';
 import App from '../App.vue';
 import { init as initErrorHandler } from './appsignal';
 import { i18n } from './i18n';
+import { installRouteGuard } from './route-guard';
 import router from './router';
 
 // Flag to prevent multiple app initializations
@@ -33,6 +34,7 @@ export async function startMainApp() {
   const app = createApp(App);
   initErrorHandler(app);
 
+  installRouteGuard(router);
   app.use({ ...router });
   app.use(i18n);
   app.use(icons);

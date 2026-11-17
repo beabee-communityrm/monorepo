@@ -21,6 +21,7 @@ import {
 } from '#type/index';
 import { normalizeEmailAddress } from '#utils/email';
 import { extractJsonArchive } from '#utils/file';
+import { truncateForLog } from '#utils/log';
 
 const log = mainLogger.child({ app: 'mailchimp' });
 
@@ -65,7 +66,7 @@ export function createInstance(
         'MailChimp API returned with status ' + error.response?.status,
         {
           status: error.response?.status,
-          data: error.response?.data,
+          data: truncateForLog(error.response?.data),
         }
       );
       return Promise.reject(error);

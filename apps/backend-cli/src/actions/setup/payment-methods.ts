@@ -12,7 +12,7 @@ import type { SetupPaymentMethodsArgs } from '../../types/setup.js';
  */
 export const setupPaymentMethods = async (
   args: SetupPaymentMethodsArgs
-): Promise<void> => {
+): Promise<boolean> => {
   try {
     console.log('Setting up payment methods configuration...\n');
 
@@ -46,6 +46,7 @@ export const setupPaymentMethods = async (
       console.log('Payment methods configuration updated successfully!');
       console.log('Payment methods updated to:', paymentMethods.join(', '));
     });
+    return true;
   } catch (error) {
     if (
       error &&
@@ -54,7 +55,7 @@ export const setupPaymentMethods = async (
       error.name === 'ExitPromptError'
     ) {
       console.log('\nOperation cancelled by user.');
-      return;
+      return false;
     }
     throw error;
   }

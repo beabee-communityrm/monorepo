@@ -5,7 +5,7 @@
     :form="{ components: localizedComponents }"
     :submission="modelValue && { data: modelValue }"
     :options="formOpts"
-    language="custom"
+    :language="contentLanguage"
     @change="handleChange"
   />
 </template>
@@ -37,6 +37,7 @@ import {
   activeUploadsCount,
   resetActiveUploadsCount,
 } from '#lib/formio/providers/storage/beabee';
+import { contentLocale } from '#lib/i18n';
 
 import { Form } from '../../lib/formio';
 import { type FormChangeEvent } from './form-renderer.interface';
@@ -52,6 +53,9 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+
+/** The language the callout's content is written in, without any variant suffix */
+const contentLanguage = computed(() => contentLocale.value.split('@')[0]);
 
 const isValid = ref(false);
 
@@ -227,7 +231,7 @@ const formOpts = computed(() => {
     noAlerts: true,
     renderMode: props.readonly ? 'html' : 'form',
     i18n: {
-      custom: {
+      [contentLanguage.value]: {
         'Drop files to attach,': t('formRenderer.components.file.dropFiles'),
         'use camera': t('formRenderer.components.file.useCamera'),
         or: t('formRenderer.components.file.or'),

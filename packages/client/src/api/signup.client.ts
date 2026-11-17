@@ -1,5 +1,6 @@
 import {
   type CompleteSignupData,
+  type ConfirmSignupResult,
   ContributionPeriod,
   type PaymentFlowResult,
   type Serial,
@@ -39,12 +40,7 @@ export class SignupClient extends BaseClient {
   async start(data: SignupData): Promise<PaymentFlowResult | undefined> {
     const { data: responseData } = await this.fetch.post<
       Serial<PaymentFlowResult> | undefined
-    >('', {
-      ...data,
-      loginUrl: this.options.host + '/auth/login',
-      setPasswordUrl: this.options.host + '/auth/set-password',
-      confirmUrl: this.options.host + '/join/confirm-email',
-    });
+    >('', data);
     return responseData;
   }
 
@@ -64,8 +60,15 @@ export class SignupClient extends BaseClient {
   /**
    * Confirms a user's email address
    * @param joinFlowId - The join flow ID from the confirmation email
+   * @returns Where to send the member next
    */
-  async confirmEmail(joinFlowId: string | string[]): Promise<void> {
-    await this.fetch.post('/confirm-email', { joinFlowId });
+  async confirmEmail(
+    joinFlowId: string | string[]
+  ): Promise<ConfirmSignupResult> {
+    const { data } = await this.fetch.post<ConfirmSignupResult>(
+      '/confirm-email',
+      { joinFlowId }
+    );
+    return data;
   }
 }

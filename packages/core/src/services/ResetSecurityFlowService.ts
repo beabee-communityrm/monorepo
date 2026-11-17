@@ -1,6 +1,6 @@
 import { RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
 
-import { subHours } from 'date-fns';
+import { subHours } from 'date-fns/subHours';
 import { InsertResult, MoreThan } from 'typeorm';
 
 import { createQueryBuilder, getRepository } from '#database';

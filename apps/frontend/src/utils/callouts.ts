@@ -21,6 +21,7 @@ import { type LocaleOptions, config as localeConfig } from '@beabee/locale';
 import { format } from 'date-fns';
 import { computed } from 'vue';
 
+import noImage from '#assets/images/no-image.avif';
 import type {
   FormBuilderNavigation,
   FormBuilderSlide,
@@ -35,6 +36,7 @@ import type { LocaleProp } from '#type';
 import env from '../env';
 import { i18n } from '../lib/i18n';
 import type { FilterItem, FilterItems } from '../type/search';
+import { resolveImageUrl } from './url';
 
 const { t } = i18n.global;
 
@@ -59,6 +61,39 @@ export function getDaysLeft(expires: Date | null): number | null {
     (expires.getTime() - Date.now()) / (1000 * 60 * 60 * 24)
   );
   return days > 0 ? days : null;
+}
+
+/**
+ * The link text for responding to a callout again, which depends on its
+ * response mode
+ *
+ * @param callout - The callout
+ * @returns The locale key, or null when its mode allows no further response
+ */
+export function getRespondAgainKey(callout: {
+  responseMode: CalloutResponseMode;
+}): string | null {
+  switch (callout.responseMode) {
+    case CalloutResponseMode.SingleEditable:
+      return 'callout.actions.updateResponse';
+    case CalloutResponseMode.Multiple:
+      return 'callout.actions.participateAgain';
+  }
+  return null;
+}
+
+/**
+ * A callout's image, or the placeholder when it has none
+ *
+ * @param callout - The callout
+ * @param width - Width to resize the image to
+ * @returns The image URL
+ */
+export function getCalloutImageUrl(
+  callout: { image: string },
+  width?: number
+): string {
+  return callout.image ? resolveImageUrl(callout.image, width) : noImage;
 }
 
 /**

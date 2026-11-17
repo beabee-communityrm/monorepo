@@ -8,8 +8,10 @@ import { createUser } from '../user/create.js';
  * Interactive setup for creating an initial admin user
  * Role is automatically set to superadmin and membership to permanent
  * Accepts command line arguments or prompts for missing information
+ *
+ * @returns Whether the admin user was created, false if the user cancelled
  */
-export async function setupAdmin(args: SetupAdminArgs): Promise<void> {
+export async function setupAdmin(args: SetupAdminArgs): Promise<boolean> {
   try {
     console.log('Setting up initial admin user...\n');
 
@@ -88,14 +90,16 @@ export async function setupAdmin(args: SetupAdminArgs): Promise<void> {
     console.log(`Membership: none`);
     console.log(`Role: superadmin`);
 
-    const confirmCreate = await confirm({
-      message: 'Create this admin user?',
-      default: true,
-    });
+    const confirmCreate =
+      args.yes ||
+      (await confirm({
+        message: 'Create this admin user?',
+        default: true,
+      }));
 
     if (!confirmCreate) {
       console.log('Admin user creation cancelled.');
-      return;
+      return false;
     }
 
     // Create the admin user with collected data
@@ -110,6 +114,7 @@ export async function setupAdmin(args: SetupAdminArgs): Promise<void> {
 
     await createUser(userArgs);
     console.log('✅ Initial admin user created successfully!');
+    return true;
   } catch (error) {
     if (
       error &&
@@ -118,7 +123,7 @@ export async function setupAdmin(args: SetupAdminArgs): Promise<void> {
       error.name === 'ExitPromptError'
     ) {
       console.log('\nOperation cancelled by user.');
-      return;
+      return false;
     }
     throw error;
   }

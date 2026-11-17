@@ -12,4 +12,6 @@ export interface SignupData {
   origin?: ContactOriginData;
   newsletterStatus?: NewsletterStatus;
   newsletterGroups?: string[];
+  /** Where to send the member after confirming their email, defaults to the setup page */
+  postConfirmUrl?: string;
 }

@@ -16,10 +16,11 @@
   <div>
     <AppChoice
       v-if="showPeriod"
-      v-model="period"
+      :model-value="period"
       :items="periodItems"
       :disabled="disabled"
       class="mb-4"
+      @update:model-value="changePeriod"
     />
 
     <ContributionAmount
@@ -146,9 +147,25 @@ const periodItems = computed(() => {
     }));
 });
 
-watch(isAnnually, (value) => {
-  amount.value = value ? amount.value * 12 : Math.floor(amount.value / 12);
-});
+// Adjusts the amount only when the user switches period; a period set by the
+// parent comes with an amount that already matches it. A preset maps to the
+// preset at the same position, a custom amount is converted.
+function changePeriod(newPeriod: PaymentPeriod) {
+  const presetIndex = definedAmounts.value.indexOf(amount.value);
+  const newPresets =
+    props.content.periods.find((p) => p.name === newPeriod)?.presetAmounts ||
+    [];
+  const wasAnnually = isAnnually.value;
+  period.value = newPeriod;
+  const nowAnnually = newPeriod === ContributionPeriod.Annually;
+  if (presetIndex !== -1 && newPresets.length > 0) {
+    amount.value = newPresets[Math.min(presetIndex, newPresets.length - 1)];
+  } else if (nowAnnually !== wasAnnually) {
+    amount.value = nowAnnually
+      ? amount.value * 12
+      : Math.floor(amount.value / 12);
+  }
+}
 
 const shouldForceFee = computed(() => {
   return props.content.showAbsorbFee && amount.value === 1 && !isAnnually.value;

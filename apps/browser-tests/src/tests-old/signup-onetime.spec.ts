@@ -136,10 +136,10 @@ test("Join Flow", async ({ page, browserName }) => {
     await page.locator('input[name="password"]').fill(testPw);
 
     await expect(
-      page.getByRole("button", { name: /login/i }),
+      page.getByRole("button", { name: /log ?in/i }),
       "Login button enabled",
     ).toBeEnabled();
-    await page.getByRole("button", { name: /login/i }).click();
+    await page.getByRole("button", { name: /log ?in/i }).click();
 
     await page.waitForURL(/\/profile/);
     console.log("Login successful");

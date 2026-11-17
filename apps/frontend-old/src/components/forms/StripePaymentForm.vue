@@ -213,11 +213,15 @@ onBeforeMount(async () => {
       });
       if (result.error) {
         loading.value = false;
+        // A failed 3D Secure check has type invalid_request_error, but its
+        // message is written for the customer like those of the other two.
+        const hasCustomerMessage =
+          result.error.type === 'card_error' ||
+          result.error.type === 'validation_error' ||
+          result.error.code === 'setup_intent_authentication_failure';
         error.value =
-          result.error.message &&
-          (result.error.type === 'card_error' ||
-            result.error.type === 'validation_error')
-            ? (error.value = result.error.message)
+          result.error.message && hasCustomerMessage
+            ? result.error.message
             : t('joinPayment.genericError', { type: result.error.type });
       }
     };

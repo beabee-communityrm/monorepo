@@ -136,6 +136,7 @@ import { AddCalloutResponseMode1789404005434 } from './migrations/1789404005434-
 import { MakeActorTypeNullable1790585189483 } from './migrations/1790585189483-MakeActorTypeNullable.js';
 import { RemoveContactLoginOverride1790855215072 } from './migrations/1790855215072-RemoveContactLoginOverride.js';
 import { AddSignupFlowNewsletter1792506342771 } from './migrations/1792506342771-AddSignupFlowNewsletter.js';
+import { AddSignupFlowPostConfirmUrl1793892212089 } from './migrations/1793892212089-AddSignupFlowPostConfirmUrl.js';
 
 export const migrations = [
   SessionTable1616677358190,
@@ -275,4 +276,5 @@ export const migrations = [
   MakeActorTypeNullable1790585189483,
   RemoveContactLoginOverride1790855215072,
   AddSignupFlowNewsletter1792506342771,
+  AddSignupFlowPostConfirmUrl1793892212089,
 ];

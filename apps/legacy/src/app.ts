@@ -1,7 +1,6 @@
 import { resolveImageUrl } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { log, requestErrorLogger, requestLogger } from '@beabee/core/logging';
-import { initApp, startServer } from '@beabee/core/server';
 import OptionsService, {
   OptionKey,
 } from '@beabee/core/services/OptionsService';
@@ -10,7 +9,7 @@ import { isInvalidType } from '@beabee/core/utils/db';
 
 import csrf from 'csurf';
 // TODO: This package is deprecated, see https://www.npmjs.com/package/csurf
-import express, { ErrorRequestHandler } from 'express';
+import express, { ErrorRequestHandler, Express } from 'express';
 import flash from 'express-flash';
 // TODO: Last release was 2013
 import helmet from 'helmet';
@@ -69,69 +68,66 @@ app.get('/favicon.png', (req, res) => {
 // Log the rest
 app.use(requestLogger);
 
-initApp()
-  .then(async () => {
-    // Load some caches and make them immediately available
-    await PageSettingsService.reload();
-    app.use((req, res, next) => {
-      res.locals.Options = (opt: OptionKey) => OptionsService.getText(opt);
-      res.locals.Options.list = (opt: OptionKey) => OptionsService.getList(opt);
-      res.locals.Options.bool = (opt: OptionKey) => OptionsService.getBool(opt);
-      res.locals.pageSettings = PageSettingsService.getPath(req.path);
-      next();
-    });
-
-    // Handle sessions
-    sessions(app);
-
-    // CSRF
-    app.use(csrf());
-
-    app.use(function (err, req, res, next) {
-      if (err.code == 'EBADCSRFTOKEN') {
-        return res
-          .status(403)
-          .send(
-            'Error: Please make sure cookies are enabled. (CSRF token invalid)'
-          );
-      }
-      next(err);
-    } as ErrorRequestHandler);
-
-    // Include support for notifications
-    app.use(flash()); // TODO: Last release was 2013
-    app.use(quickflash);
-
-    // Load apps
-    await appLoader(app);
-
-    // Hook to handle special URLs
-    //app.use( '/s', specialUrlHandler );
-
-    // Ignore QueryFailedError for invalid type and URIError for malformed
-    // percent-encoding, probably just bad URL
-    app.use(function (err, req, res, next) {
-      next(isInvalidType(err) || err instanceof URIError ? undefined : err);
-    } as ErrorRequestHandler);
-
-    // Error 404
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    app.use(function (req, res, next) {
-      res.status(404);
-      res.render('404');
-    });
-
-    app.use(requestErrorLogger);
-
-    // Error 500
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    app.use(function (err, req, res, next) {
-      res.status(500);
-      res.render('500', { error: config.dev ? err.stack : undefined });
-    } as ErrorRequestHandler);
-
-    startServer(app);
-  })
-  .catch((err) => {
-    log.error('Error during initialization', err);
+/** Finish setting up the app, call after initApp() */
+export async function initLegacyApp(): Promise<Express> {
+  // Load some caches and make them immediately available
+  await PageSettingsService.reload();
+  app.use((req, res, next) => {
+    res.locals.Options = (opt: OptionKey) => OptionsService.getText(opt);
+    res.locals.Options.list = (opt: OptionKey) => OptionsService.getList(opt);
+    res.locals.Options.bool = (opt: OptionKey) => OptionsService.getBool(opt);
+    res.locals.pageSettings = PageSettingsService.getPath(req.path);
+    next();
   });
+
+  // Handle sessions
+  sessions(app);
+
+  // CSRF
+  app.use(csrf());
+
+  app.use(function (err, req, res, next) {
+    if (err.code == 'EBADCSRFTOKEN') {
+      return res
+        .status(403)
+        .send(
+          'Error: Please make sure cookies are enabled. (CSRF token invalid)'
+        );
+    }
+    next(err);
+  } as ErrorRequestHandler);
+
+  // Include support for notifications
+  app.use(flash()); // TODO: Last release was 2013
+  app.use(quickflash);
+
+  // Load apps
+  await appLoader(app);
+
+  // Hook to handle special URLs
+  //app.use( '/s', specialUrlHandler );
+
+  // Ignore QueryFailedError for invalid type and URIError for malformed
+  // percent-encoding, probably just bad URL
+  app.use(function (err, req, res, next) {
+    next(isInvalidType(err) || err instanceof URIError ? undefined : err);
+  } as ErrorRequestHandler);
+
+  // Error 404
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  app.use(function (req, res, next) {
+    res.status(404);
+    res.render('404');
+  });
+
+  app.use(requestErrorLogger);
+
+  // Error 500
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  app.use(function (err, req, res, next) {
+    res.status(500);
+    res.render('500', { error: config.dev ? err.stack : undefined });
+  } as ErrorRequestHandler);
+
+  return app;
+}

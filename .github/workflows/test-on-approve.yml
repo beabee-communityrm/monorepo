@@ -12,7 +12,7 @@ jobs:
   test:
     # Run for workflow_dispatch, push to main, or approved pull request reviews
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.review.state == 'approved'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repository

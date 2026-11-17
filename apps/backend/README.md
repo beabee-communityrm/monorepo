@@ -35,10 +35,10 @@ docker compose up -d
 
 #### Complete system setup (recommended)
 
-The easiest way to set up your beabee instance is using the all-in-one setup command:
+The easiest way to set up your beabee instance is using the system setup command:
 
 ```bash
-docker compose run --rm api_app yarn backend-cli setup all
+docker compose run --rm api_app yarn backend-cli setup system
 ```
 
 This will guide you through setting up:
@@ -50,12 +50,13 @@ This will guide you through setting up:
 You can also provide additional options to skip some prompts:
 
 ```bash
-docker compose run --rm api_app yarn backend-cli setup all \
+docker compose run --rm api_app yarn backend-cli setup system \
   --emailDomain <yourdomain.com> \
   --firstname <YourFirstname> \
   --lastname <YourLastname> \
   --admin-email <YourEmail> \
-  --admin-password <YourPassword>
+  --admin-password <YourPassword> \
+  --yes
 ```
 
 #### Alternative: Manual step-by-step setup
@@ -189,7 +190,7 @@ Various tools for administration, including nightly cron jobs
 
 #### 📡 Webhooks
 
-Webhooks are handled by the `webhook_app` service. This is a separate service from the API to allow for scaling independently.
+Webhooks are handled by the `webhook_app` service, which also serves the legacy app. This is a separate service from the API to allow for scaling independently.
 
 **`/webhook/ping`** - Used to check if the webhook service is running and available, e.g. http://localhost:3001/webhook/ping
 

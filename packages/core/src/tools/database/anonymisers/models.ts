@@ -279,12 +279,17 @@ function randomId(len: number, prefix?: string) {
     crypto.randomBytes(6).toString('hex').slice(0, len).toUpperCase();
 }
 
+const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 let codeNo = 0;
 function uniqueCode(): string {
   codeNo++;
-  const letter = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[Math.floor(codeNo / 1000)];
+  const block = Math.floor(codeNo / 1000);
   const no = codeNo % 1000;
-  return letter.padStart(2, 'A') + (no + '').padStart(3, '0');
+  return (
+    letters[Math.floor(block / 26)] +
+    letters[block % 26] +
+    (no + '').padStart(3, '0')
+  );
 }
 
 // Model anonymisers

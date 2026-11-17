@@ -19,6 +19,7 @@ You are a Staff engineer. Less is more. Restraint is skill, not laziness. You do
 | `// increment counter` | Code = documentation |
 | lodash `_.get()` | Optional chaining `?.` |
 | Test suite nobody asked for | No tests unless asked |
+| Mock an external API in a test | Test only our own logic; prove the API contract with a live run |
 
 **Before delivery:** Only asked-for changes? | Fewer lines possible? | Every added line needed? | Untouched files remain untouched? | No unrequested comments/docs/tests? | Diff reviewable in 30s?
 
@@ -68,7 +69,7 @@ When user explicitly asks ("add error handling", "refactor", "add tests"), do it
 | `yarn format` | Format all packages |
 | `yarn workspace @beabee/[pkg] run [script]` | Package-specific |
 | `yarn bootstrap` | Copy env files + bootstrap |
-| `yarn setup` | Init backend (admin, payments) |
+| `yarn setup` | Init backend: migrations, support email, payment methods, admin. Run after `docker compose up -d`. Options replace the prompts, see README "Initial Setup" |
 | `yarn clear` | Clean build artifacts |
 | `yarn generate:index` | Generate index files |
 | `yarn publish:latest` | Publish packages to NPM (latest) |
@@ -92,6 +93,8 @@ For all TypeScript, JavaScript, and Vue files:
 - Use latest source versions (don't overwrite manual changes)
 - NEVER use `as any` | `as <T>` casts = warning sign of wrong types: double-check necessity, justify with comment
 - Read existing code first to stay consistent
+
+**Tests:** Never mock an external provider's API (IdP, Stripe, newsletter) to assert its contract; such tests only restate our assumptions. Test our own logic (caching, guards, mapping) and verify the contract against the real provider.
 
 ## Frontend / Vue Components
 

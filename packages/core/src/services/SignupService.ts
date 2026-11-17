@@ -9,6 +9,7 @@ import {
   RESET_SECURITY_FLOW_TYPE,
 } from '@beabee/beabee-common';
 
+import config from '#config/config';
 import { getRepository } from '#database';
 import { DuplicateEmailError, NotFoundError } from '#errors/index';
 import { isOidcEnabled } from '#lib/oidc';
@@ -27,9 +28,10 @@ const log = mainLogger.child({ app: 'signup-service' });
 interface SignupData {
   email: string;
   password: Password;
-  loginUrl: string;
-  setPasswordUrl: string;
-  confirmUrl: string;
+  loginUrl: string | null;
+  setPasswordUrl: string | null;
+  confirmUrl: string | null;
+  postConfirmUrl: string | null;
   origin: ContactOriginData | null;
   newsletterStatus: NewsletterStatus | null;
   newsletterGroups: string[] | null;
@@ -147,7 +149,7 @@ class SignupService {
           'email-exists-login',
           contact,
           {
-            loginLink: signupFlow.loginUrl,
+            loginLink: signupFlow.loginUrl ?? config.audience + '/auth/login',
           }
         );
       } else {
@@ -159,7 +161,11 @@ class SignupService {
           'email-exists-set-password',
           contact,
           {
-            spLink: signupFlow.setPasswordUrl + '/' + rpFlow.id,
+            spLink:
+              (signupFlow.setPasswordUrl ??
+                config.audience + '/auth/set-password') +
+              '/' +
+              rpFlow.id,
           }
         );
       }
@@ -186,7 +192,10 @@ class SignupService {
         {
           firstName,
           lastName,
-          confirmLink: signupFlow.confirmUrl + '/' + signupFlow.id,
+          confirmLink:
+            (signupFlow.confirmUrl ?? config.audience + '/join/confirm-email') +
+            '/' +
+            signupFlow.id,
         }
       );
     }
@@ -194,11 +203,16 @@ class SignupService {
   /**
    * Finalizes a signup flow after email confirmation, creating the contact
    * @param signupFlowId - The ID of the signup flow to finalize
-   * @returns The created contact
+   * @returns The created contact and where to send them next
    */
-  async finalizeSignup(
-    signupFlowId: string
-  ): Promise<{ contact: Contact; clientSecret?: string } | undefined> {
+  async finalizeSignup(signupFlowId: string): Promise<
+    | {
+        contact: Contact;
+        clientSecret?: string;
+        postConfirmUrl: string | null;
+      }
+    | undefined
+  > {
     const signupFlow = await getRepository(SignupFlow).findOne({
       where: { id: signupFlowId },
       relations: { contact: true, paymentFlow: true },
@@ -210,7 +224,10 @@ class SignupService {
 
     // This flow has already been finalized
     if (signupFlow.contact) {
-      return { contact: signupFlow.contact };
+      return {
+        contact: signupFlow.contact,
+        postConfirmUrl: signupFlow.postConfirmUrl,
+      };
     }
 
     // Use atomic update to prevent multiple simultaneous attempts to finalize
@@ -317,7 +334,11 @@ class SignupService {
       contactId: contact.id,
     });
 
-    return { contact, ...(clientSecret && { clientSecret }) };
+    return {
+      contact,
+      postConfirmUrl: signupFlow.postConfirmUrl,
+      ...(clientSecret && { clientSecret }),
+    };
   }
 
   /**

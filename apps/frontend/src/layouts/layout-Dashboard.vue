@@ -3,37 +3,20 @@
     <router-view />
   </div>
   <UDashboardGroup v-else unit="rem">
-    <TheMenu />
+    <TheSidebar v-if="currentUser" />
     <main
       id="top"
       class="flex h-screen w-full flex-col overflow-y-auto bg-background"
     >
       <div class="sticky top-0 z-20">
-        <UDashboardNavbar :ui="{ root: 'bg-default' }">
-          <template #left>
-            <UDashboardSidebarCollapse />
-            <UBreadcrumb
-              :items="breadcrumbs"
-              class="truncate p-1.5"
-              :ui="{ link: breadcrumbs.length > 1 ? 'text-base' : 'text-xl' }"
-            />
-            <!-- A lone breadcrumb stands in as the page title. A longer trail does
-                 not, so those pages render their own heading. -->
-            <h1 v-if="breadcrumbs.length === 1" class="sr-only">
-              {{ t(route.meta.pageTitle) }}
-            </h1>
-          </template>
-          <template #right>
-            <!-- Teleport target for page-level header actions -->
-            <div id="page-header-actions" class="flex items-center gap-2"></div>
-          </template>
-        </UDashboardNavbar>
+        <TheNavbar />
         <div id="sticky-top-banner" class="bg-default"></div>
       </div>
       <div
+        class="flex flex-col"
         :class="[
-          'flex flex-col',
           route.meta.fullBleed ? 'flex-1' : 'p-4 md:p-5',
+          !currentUser && 'mx-auto w-full max-w-3xl',
         ]"
       >
         <router-view />
@@ -53,14 +36,12 @@
  *
  * @component
  */
-import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 import TheFooter from '../components/TheFooter.vue';
-import { isEmbed } from '../store';
-import { breadcrumbs } from '../store/breadcrumb';
-import TheMenu from './menu/TheMenu.vue';
+import { currentUser, isEmbed } from '../store';
+import TheSidebar from './menu/TheSidebar.vue';
+import TheNavbar from './menu/TheNavbar.vue';
 
-const { t } = useI18n();
 const route = useRoute();
 </script>

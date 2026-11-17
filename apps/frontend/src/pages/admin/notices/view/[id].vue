@@ -11,7 +11,9 @@ meta:
     <div class="flex flex-col-reverse gap-8 lg:flex-row lg:justify-between">
       <div class="flex-initial basis-3/4">
         <AppHeading>{{ t('noticeAdminOverview.summary') }}</AppHeading>
-        <AppNotice :notice="notice"></AppNotice>
+        <div class="nuxt-page mb-2">
+          <NoticeBanner :notice="notice" />
+        </div>
         <ItemStatusText :item="notice" />
         <ItemDateRange :item="notice" />
       </div>
@@ -59,7 +61,7 @@ import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
-import AppNotice from '#components/notice/AppNotice.vue';
+import NoticeBanner from '#components/notice/NoticeBanner.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { routeIcons, routeLabels } from '#utils/route-nav';
