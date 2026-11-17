@@ -40,7 +40,7 @@
           :aria-label="row.original.displayName"
           @update:model-value="
             (checked: boolean | 'indeterminate') =>
-              setSelected(row.original.id, checked === true)
+              setSelected([row.original.id], checked === true)
           "
         />
       </template>

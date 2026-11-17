@@ -69,28 +69,30 @@ export function useSelectionState<I extends { id: string }>(
     () => selectedPageItems.value.length > 0 && !allOnPageSelected.value
   );
 
-  function setSelected(id: string, selected: boolean) {
+  /** Writes the selection once, as a shared v-model only updates on render */
+  function setSelected(ids: string[], selected: boolean) {
     const state = selectionState.value;
+    const without = (list: string[]) => list.filter((id) => !ids.includes(id));
     if (state.mode === 'all') {
       selectionState.value = {
         mode: 'all',
         excludedIds: selected
-          ? state.excludedIds.filter((x) => x !== id)
-          : [...state.excludedIds, id],
+          ? without(state.excludedIds)
+          : [...without(state.excludedIds), ...ids],
       };
     } else {
       selectionState.value = {
         mode: 'explicit',
-        ids: selected ? [...state.ids, id] : state.ids.filter((x) => x !== id),
+        ids: selected ? [...without(state.ids), ...ids] : without(state.ids),
       };
     }
   }
 
   function toggleAllOnPage() {
-    const selected = !allOnPageSelected.value;
-    for (const item of items.value) {
-      if (isSelected(item.id) !== selected) setSelected(item.id, selected);
-    }
+    setSelected(
+      items.value.map((item) => item.id),
+      !allOnPageSelected.value
+    );
   }
 
   /** Extends the selection to every item matching the current filters */
