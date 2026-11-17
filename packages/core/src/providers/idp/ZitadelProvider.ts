@@ -465,45 +465,50 @@ export class ZitadelProvider implements IdpProvider {
    */
   async resolveLoginUrl(
     authorizeUrl: string,
-    action: IdpLoginAction
+    { type, subject }: IdpLoginAction
   ): Promise<string> {
     const authRequestId = await this.startAuthRequest(authorizeUrl);
-    if (action.type === 'directLogin') {
-      return await this.finishWithSession(authRequestId, action.subject);
-    }
     const requestId = `oidc_${authRequestId}`;
 
-    if (action.type === 'setupCredential') {
-      const methods = await this.request<{ authMethodTypes?: string[] }>(
-        'GET',
-        `/v2/users/${action.subject}/authentication_methods`
-      );
-      // Zitadel only invites accounts without a credential. The invite
-      // verify page lets the member choose a password or passkey.
-      if (!methods?.authMethodTypes?.length) {
-        const params = new URLSearchParams({
-          requestId,
-          userId: action.subject,
-          code: await this.createInviteCode(action.subject),
-          invite: 'true',
-        });
-        return `${this.settings.url}/ui/v2/login/verify?${params}`;
-      }
-      // An account with a credential sets a new password with a reset code
-      const params = new URLSearchParams({
-        requestId,
-        userId: action.subject,
-        loginName: await this.getLoginName(action.subject),
-        code: await this.createPasswordResetCode(action.subject),
-      });
-      return `${this.settings.url}/ui/v2/login/password/set?${params}`;
-    }
+    switch (type) {
+      case 'directLogin':
+        return await this.finishWithSession(authRequestId, subject);
 
-    const params = new URLSearchParams({
-      requestId,
-      loginName: await this.getLoginName(action.subject),
-    });
-    return `${this.settings.url}/ui/v2/login/${LOGIN_V2_PAGES[action.type]}?${params}`;
+      case 'setupCredential': {
+        const methods = await this.request<{ authMethodTypes?: string[] }>(
+          'GET',
+          `/v2/users/${subject}/authentication_methods`
+        );
+        // Zitadel only invites accounts without a credential. The invite
+        // verify page lets the member choose a password or passkey; an
+        // account with a credential sets a new password with a reset code.
+        return methods?.authMethodTypes?.length
+          ? this.loginV2Url('password/set', {
+              requestId,
+              userId: subject,
+              loginName: await this.getLoginName(subject),
+              code: await this.createPasswordResetCode(subject),
+            })
+          : this.loginV2Url('verify', {
+              requestId,
+              userId: subject,
+              code: await this.createInviteCode(subject),
+              invite: 'true',
+            });
+      }
+
+      case 'changePassword':
+      case 'addPasskey':
+      case 'setupMfa':
+        return this.loginV2Url(LOGIN_V2_PAGES[type], {
+          requestId,
+          loginName: await this.getLoginName(subject),
+        });
+    }
+  }
+
+  private loginV2Url(page: string, params: Record<string, string>): string {
+    return `${this.settings.url}/ui/v2/login/${page}?${new URLSearchParams(params)}`;
   }
 
   /**
