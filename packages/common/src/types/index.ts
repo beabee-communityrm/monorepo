@@ -3,6 +3,7 @@ export type * from './activity-event-metadata.js';
 export type * from './activity-event-reference-type.js';
 export type * from './activity-event-reference.js';
 export type * from './activity-filter-name.js';
+export type * from './activity-target-type.js';
 export type * from './address.js';
 export type * from './allow-null.js';
 export type * from './api-error-data.js';

@@ -53,6 +53,7 @@ import {
   GetActivityEventWith,
   type Paginated,
   type RuleGroup,
+  getActivityTargetType,
   isRuleGroup,
 } from '@beabee/beabee-common';
 import {
@@ -124,10 +125,16 @@ function getEventCategory(type: ActivityEventType): string {
   if (type.startsWith('email.') || type.startsWith('contact.email-')) {
     return 'email';
   }
-  // Segment events belong with the items they segment
-  if (type.startsWith('callout')) return 'callout';
-  if (type.startsWith('contact')) return 'contact';
-  return 'other';
+  switch (getActivityTargetType(type)) {
+    case 'callout':
+    case 'callout-response-segment':
+      return 'callout';
+    case 'contact':
+    case 'contact-segment':
+      return 'contact';
+    default:
+      return 'other';
+  }
 }
 
 function getCategoryRules(): RuleGroup | undefined {
