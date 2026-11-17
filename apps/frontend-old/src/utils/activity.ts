@@ -85,7 +85,9 @@ function getContributionAmount(form: ContributionUpdateData['form']): string {
 // return undefined when this particular event can't be described
 const eventDescriptions: {
   [T in keyof ActivityEventMetadataMap]:
-    | ((metadata: ActivityEventMetadataMap[T]) => string | undefined)
+    | ((
+        metadata: NonNullable<ActivityEventMetadataMap[T]>
+      ) => string | undefined)
     | null;
 } = {
   [ActivityEventType.CalloutAnswered]: null,
@@ -143,7 +145,7 @@ function hasDescription(
 
 function describeEvent<T extends keyof ActivityEventMetadataMap>(
   eventType: T,
-  metadata: ActivityEventMetadataMap[T]
+  metadata: NonNullable<ActivityEventMetadataMap[T]>
 ): string | undefined {
   return eventDescriptions[eventType]?.(metadata);
 }
