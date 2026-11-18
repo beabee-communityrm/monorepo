@@ -165,13 +165,19 @@ export class AuthController {
   ): Promise<Response> {
     assertOidcAuthEnabled();
     const contact = auth.contact;
-    if (action && !contact) {
-      throw new UnauthorizedError();
-    }
+    // directLogin needs a Login Grant. Without one, a member who is logged
+    // in continues to next and anyone else gets an ordinary login.
     if (
       action === 'directLogin' &&
       !(contact && consumeDirectLoginGrant(req, contact))
     ) {
+      if (contact) {
+        res.redirect(resolveNext(next));
+        return res;
+      }
+      action = undefined;
+    }
+    if (action && !contact) {
       throw new UnauthorizedError();
     }
 
