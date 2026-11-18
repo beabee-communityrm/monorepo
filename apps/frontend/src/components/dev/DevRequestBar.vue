@@ -12,6 +12,7 @@
   <UPopover
     :content="{ side: 'top', align: 'start' }"
     :ui="{ content: 'dark [--ui-bg:black]' }"
+    @update:open="(open) => open || highlight()"
   >
     <UButton
       icon="i-lucide-bug"
