@@ -23,6 +23,7 @@
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",
     "@beabee/core": "workspace:^",
+    "@beabee/legacy": "workspace:^",
     "body-parser": "^2.2.2",
     "date-fns": "^4.1.0",
     "express": "^5.2.1",

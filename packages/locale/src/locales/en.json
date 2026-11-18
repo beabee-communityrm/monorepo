@@ -176,6 +176,74 @@
     "yesRemove": "Yes, remove it",
     "yesReset": "Yes, reset it"
   },
+  "activity": {
+    "actorType": {
+      "guest": "Guest user",
+      "system": "System",
+      "unknown": "Unknown",
+      "user": "User"
+    },
+    "data": {
+      "actor": "Actor",
+      "actorType": "Actor type",
+      "eventType": "Event type",
+      "target": "Target",
+      "time": "Time"
+    },
+    "deleted": "Deleted",
+    "eventDescription": {
+      "contactContributionStarted": "Contact started contribution: {amount}",
+      "contactContributionUpdated": "Contact updated contribution: {amount}",
+      "contactCreated": "New contact created ({source})",
+      "contactEmailSent": "Email sent to contact: {email}",
+      "contactRoleAdded": "Role assigned to contact: {role}",
+      "emailSent": "Email sent to {recipient}: {email}",
+      "emailTemplateAdded": "Email template created: {template}"
+    },
+    "eventType": {
+      "appPaymentOptionsUpdated": "Available payment options updated",
+      "appSettingsUpdated": "App settings updated",
+      "appWebhookUpdated": "Webhook updated",
+      "calloutAnswered": "CrowdNewsroom answered",
+      "calloutCreated": "New CrowdNewsroom created",
+      "calloutDeleted": "CrowdNewsroom deleted",
+      "calloutEdited": "CrowdNewsroom edited",
+      "calloutPublished": "CrowdNewsroom published",
+      "calloutSegmentsAdded": "CrowdNewsroom segment created",
+      "calloutSegmentsDeleted": "CrowdNewsroom segment deleted",
+      "calloutSegmentsUpdated": "CrowdNewsroom segment updated",
+      "calloutUnpublished": "CrowdNewsroom unpublished",
+      "contactContributionCancelled": "Contact cancelled contribution",
+      "contactContributionStarted": "Contact started contribution",
+      "contactContributionUpdated": "Contact updated contribution",
+      "contactCreated": "New contact created",
+      "contactDeleted": "Contact deleted",
+      "contactEmailSent": "Email sent to contact",
+      "contactNewsletterGroupsUpdated": "Contact's newsletter groups updated",
+      "contactPaymentCancelled": "Payment cancelled",
+      "contactPaymentFailed": "Payment failed",
+      "contactPaymentInitiated": "Payment started",
+      "contactPaymentRefunded": "Payment refunded",
+      "contactPaymentSuccessful": "Payment succeeded",
+      "contactProfileUpdated": "Contact profile updated",
+      "contactRoleAdded": "Role assigned to contact",
+      "contactRoleRevoked": "Contact role revoked",
+      "contactSegmentsAdded": "Contact segment created",
+      "contactSegmentsDeleted": "Contact segment deleted",
+      "contactSegmentsUpdated": "Contact segment updated",
+      "contactUpdated": "Contact updated",
+      "emailSendFailed": "Failed to send email",
+      "emailSent": "Email sent",
+      "emailTemplateAdded": "Email template created",
+      "emailTemplateDeleted": "Email template deleted",
+      "emailTemplateEdited": "Email template updated",
+      "newsletterGroupsUpdated": "Newsletter groups updated"
+    },
+    "filters": {
+      "all": "All",
+      "other": "Others"
+    }
+  },
   "addContact": {
     "contactSaved": "Contact saved",
     "errors": {
@@ -1083,7 +1151,7 @@
     "itemsPerPage": "{items} items per page",
     "label": "Label",
     "loading": "Loading...",
-    "login": "Login",
+    "login": "Log in",
     "manualPaymentSource": {
       "none": "None"
     },
@@ -1898,6 +1966,7 @@
   },
   "menu": {
     "account": "Account",
+    "activity": "Activity",
     "admin": "Administration",
     "adminSettings": "Settings",
     "callouts": "CrowdNewsroom",

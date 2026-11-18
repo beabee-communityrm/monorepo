@@ -32,7 +32,7 @@ const noStartedEvent = `
  */
 const backfillCreated = createBackfill({
   eventType: ActivityEventType.ContactCreated,
-  fields: `c.id, NULL, NULL, c.joined, $1, NULL`,
+  fields: `c.id, NULL, NULL, c.joined, NULL`,
   source: `
     FROM contact c
     WHERE NOT EXISTS (
@@ -109,7 +109,7 @@ const backfillContributionStarted: EventBackfiller = {
  */
 const backfillContributionCancelled = createBackfill({
   eventType: ActivityEventType.ContactContributionCancelled,
-  fields: `cc."contactId", $2, cc."contactId", cc."cancelledAt", $1, NULL`,
+  fields: `cc."contactId", $2, cc."contactId", cc."cancelledAt", NULL`,
   source: `
     FROM contact_contribution cc
     WHERE cc."cancelledAt" IS NOT NULL
@@ -130,7 +130,7 @@ const backfillContributionCancelled = createBackfill({
  */
 const backfillRoleAdded = createBackfill({
   eventType: ActivityEventType.ContactRoleAdded,
-  fields: `cr."contactId", NULL, NULL, LEAST(cr."dateAdded", now()), $1,
+  fields: `cr."contactId", NULL, NULL, LEAST(cr."dateAdded", now()),
            jsonb_build_object('roleType', cr.type)`,
   source: `
     FROM contact_role cr
@@ -144,13 +144,13 @@ const backfillRoleAdded = createBackfill({
 });
 
 /**
- * Backfill contact.segments-added events
+ * Backfill contact-segment.added events
  * The segment is the target, as for segments added through the API
  * Segments carry no creation date, so a sentinel date is used as the event time
  */
 const backfillSegmentsAdded = createBackfill({
   eventType: ActivityEventType.ContactSegmentsAdded,
-  fields: `s.id, NULL, NULL, TIMESTAMP '0001-01-01 00:00:00', $1, NULL`,
+  fields: `s.id, NULL, NULL, TIMESTAMP '0001-01-01 00:00:00', NULL`,
   source: `
     FROM segment s
     WHERE NOT EXISTS (

@@ -4,7 +4,7 @@ import {
   NewsletterStatus,
 } from '@beabee/beabee-common';
 
-import { sub } from 'date-fns';
+import { sub } from 'date-fns/sub';
 import { describe, expect, it } from 'vitest';
 
 import { Contact, ContactProfile, ContactRole, Password } from '#models/index';

@@ -8,10 +8,12 @@ import type { SetupSupportEmailArgs } from '../../types/setup.js';
 /**
  * Set up the support email based on the provided email domain
  * Accepts command line arguments or prompts for missing information
+ *
+ * @returns Whether the support email was set, false if the user cancelled
  */
 export const setupSupportEmail = async (
   args: SetupSupportEmailArgs
-): Promise<void> => {
+): Promise<boolean> => {
   try {
     console.log('Setting up support email configuration...\n');
 
@@ -43,6 +45,7 @@ export const setupSupportEmail = async (
       console.log('Support email configuration updated successfully!');
       console.log(`Support email set to: ${supportEmail}`);
     });
+    return true;
   } catch (error) {
     if (
       error &&
@@ -51,7 +54,7 @@ export const setupSupportEmail = async (
       error.name === 'ExitPromptError'
     ) {
       console.log('\nOperation cancelled by user.');
-      return;
+      return false;
     }
     throw error;
   }

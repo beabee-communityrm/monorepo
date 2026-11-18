@@ -1,4 +1,5 @@
 import type { BaseClientOptions } from '../types/index.js';
+import { ActivityClient } from './activity.client.js';
 import { ApiKeyClient } from './api-key.client.js';
 import { AuthClient } from './auth.client.js';
 import { BaseClient } from './base.client.js';
@@ -78,6 +79,9 @@ export class BeabeeClient extends BaseClient {
   /** Client for managing file uploads */
   readonly upload: UploadClient;
 
+  /** Client for managing activity feed */
+  readonly activity: ActivityClient;
+
   /**
    * Creates a new Beabee API client instance
    * @param options - Configuration options for the client
@@ -102,5 +106,6 @@ export class BeabeeClient extends BaseClient {
     this.signup = new SignupClient(options);
     this.stats = new StatsClient(options);
     this.upload = new UploadClient(options);
+    this.activity = new ActivityClient(options);
   }
 }

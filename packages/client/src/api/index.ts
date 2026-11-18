@@ -3,6 +3,7 @@ export * from './api-key.client.js';
 export * from './auth.client.js';
 export * from './base.client.js';
 export * from './beabee.client.js';
+export * from './activity.client.js';
 export * from './callout-response-comment.client.js';
 export * from './callout-response-segment.client.js';
 export * from './callout-response.client.js';

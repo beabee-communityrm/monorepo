@@ -177,6 +177,74 @@
     "yesRemove": "Oui, retirer",
     "yesReset": "Oui, réinitialiser"
   },
+  "activity": {
+    "actorType": {
+      "guest": "Utilisateur invité",
+      "system": "Système",
+      "unknown": "Inconnu",
+      "user": "Utilisateur"
+    },
+    "data": {
+      "actor": "Acteur",
+      "actorType": "Type d'acteur",
+      "eventType": "Type d'événement",
+      "target": "Cible",
+      "time": "Heure"
+    },
+    "deleted": "Supprimé",
+    "eventDescription": {
+      "contactContributionStarted": "Le contact a commencé une cotisation : {amount}",
+      "contactContributionUpdated": "Le contact a modifié sa cotisation : {amount}",
+      "contactCreated": "Nouveau contact créé ({source})",
+      "contactEmailSent": "E-mail envoyé au contact : {email}",
+      "contactRoleAdded": "Rôle attribué au contact : {role}",
+      "emailSent": "E-mail envoyé à {recipient} : {email}",
+      "emailTemplateAdded": "Modèle d'e-mail créé : {template}"
+    },
+    "eventType": {
+      "appPaymentOptionsUpdated": "Options de paiement disponibles mises à jour",
+      "appSettingsUpdated": "Paramètres de l'application mis à jour",
+      "appWebhookUpdated": "Webhook mis à jour",
+      "calloutAnswered": "Réponse à un CrowdNewsroom",
+      "calloutCreated": "Nouveau CrowdNewsroom créé",
+      "calloutDeleted": "CrowdNewsroom supprimé",
+      "calloutEdited": "CrowdNewsroom modifié",
+      "calloutPublished": "CrowdNewsroom publié",
+      "calloutSegmentsAdded": "Segment de CrowdNewsroom créé",
+      "calloutSegmentsDeleted": "Segment de CrowdNewsroom supprimé",
+      "calloutSegmentsUpdated": "Segment de CrowdNewsroom mis à jour",
+      "calloutUnpublished": "CrowdNewsroom dépublié",
+      "contactContributionCancelled": "Le contact a annulé sa cotisation",
+      "contactContributionStarted": "Le contact a commencé une cotisation",
+      "contactContributionUpdated": "Le contact a modifié sa cotisation",
+      "contactCreated": "Nouveau contact créé",
+      "contactDeleted": "Contact supprimé",
+      "contactEmailSent": "E-mail envoyé au contact",
+      "contactNewsletterGroupsUpdated": "Groupes de lettre d'information du contact mis à jour",
+      "contactPaymentCancelled": "Paiement annulé",
+      "contactPaymentFailed": "Échec du paiement",
+      "contactPaymentInitiated": "Paiement initié",
+      "contactPaymentRefunded": "Paiement remboursé",
+      "contactPaymentSuccessful": "Paiement réussi",
+      "contactProfileUpdated": "Profil du contact mis à jour",
+      "contactRoleAdded": "Rôle attribué au contact",
+      "contactRoleRevoked": "Rôle du contact révoqué",
+      "contactSegmentsAdded": "Segment de contacts créé",
+      "contactSegmentsDeleted": "Segment de contacts supprimé",
+      "contactSegmentsUpdated": "Segment de contacts mis à jour",
+      "contactUpdated": "Contact mis à jour",
+      "emailSendFailed": "Échec de l'envoi de l'e-mail",
+      "emailSent": "E-mail envoyé",
+      "emailTemplateAdded": "Modèle d'e-mail créé",
+      "emailTemplateDeleted": "Modèle d'e-mail supprimé",
+      "emailTemplateEdited": "Modèle d'e-mail mis à jour",
+      "newsletterGroupsUpdated": "Groupes de lettre d'information mis à jour"
+    },
+    "filters": {
+      "all": "Tout",
+      "other": "Autres"
+    }
+  },
   "addContact": {
     "contactSaved": "Contact enregistré",
     "errors": {
@@ -1905,6 +1973,7 @@
   },
   "menu": {
     "account": "Compte",
+    "activity": "Activité",
     "admin": "Administration",
     "adminSettings": "Paramètres",
     "callouts": "CrowdNewsrooms",

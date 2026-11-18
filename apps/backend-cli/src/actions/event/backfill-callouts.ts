@@ -10,7 +10,7 @@ import { createBackfill, noActor, sameTarget } from '../../utils/backfill.js';
  */
 const backfillCreated = createBackfill({
   eventType: ActivityEventType.CalloutCreated,
-  fields: `c.id, NULL, NULL, c.date, $1, NULL`,
+  fields: `c.id, NULL, NULL, c.date, NULL`,
   source: `
     FROM callout c
     WHERE NOT EXISTS (
@@ -28,7 +28,7 @@ const backfillCreated = createBackfill({
  */
 const backfillAnswered = createBackfill({
   eventType: ActivityEventType.CalloutAnswered,
-  fields: `r."calloutId", $2, r."contactId", r."createdAt", $1,
+  fields: `r."calloutId", $2, r."contactId", r."createdAt",
            jsonb_build_object('responseId', r.id)`,
   source: `
     FROM callout_response r
@@ -43,13 +43,13 @@ const backfillAnswered = createBackfill({
 });
 
 /**
- * Backfill callout.segments-added events
+ * Backfill callout-response-segment.added events
  * The segment is the target, as for segments added through the API
  * Segments carry no creation date, so a sentinel date is used as the event time
  */
 const backfillSegmentsAdded = createBackfill({
   eventType: ActivityEventType.CalloutSegmentsAdded,
-  fields: `s.id, NULL, NULL, TIMESTAMP '0001-01-01 00:00:00', $1, NULL`,
+  fields: `s.id, NULL, NULL, TIMESTAMP '0001-01-01 00:00:00', NULL`,
   source: `
     FROM callout_response_segment s
     WHERE NOT EXISTS (

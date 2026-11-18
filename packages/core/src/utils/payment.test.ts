@@ -4,7 +4,8 @@ import {
   PaymentMethod,
 } from '@beabee/beabee-common';
 
-import { add, sub } from 'date-fns';
+import { add } from 'date-fns/add';
+import { sub } from 'date-fns/sub';
 import { describe, expect, test } from 'vitest';
 
 import config from '#config/config';

@@ -1,0 +1,389 @@
+import type { Locator, Page } from "@playwright/test";
+import {
+  CalloutAccess,
+  CalloutComponentType,
+  CalloutResponseMode,
+  type CalloutComponentSchema,
+} from "@beabee/beabee-common";
+import { test, expect } from "../utils/fixtures";
+import { getResponses } from "../utils/callout-response";
+
+const slideId = "slide1";
+
+// 1x1 PNG
+const png = Buffer.from(
+  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+  "base64",
+);
+
+// One second of silence, as 8-bit mono WAV at 8kHz
+const sampleRate = 8000;
+const wav = Buffer.alloc(44 + sampleRate, 128);
+wav.write("RIFF", 0);
+wav.writeUInt32LE(36 + sampleRate, 4);
+wav.write("WAVEfmt ", 8);
+wav.writeUInt32LE(16, 16);
+wav.writeUInt16LE(1, 20); // PCM
+wav.writeUInt16LE(1, 22); // Mono
+wav.writeUInt32LE(sampleRate, 24);
+wav.writeUInt32LE(sampleRate, 28); // Bytes per second
+wav.writeUInt16LE(1, 32); // Bytes per sample
+wav.writeUInt16LE(8, 34); // Bits per sample
+wav.write("data", 36);
+wav.writeUInt32LE(sampleRate, 40);
+
+const address = "1 Test Street, 10115 Berlin, Germany";
+
+interface Question {
+  key: string;
+  type: CalloutComponentType;
+  /** Extra schema for the component, on top of type, key and label */
+  schema?: Record<string, unknown>;
+  /** Left out to leave the question alone */
+  fill?: (page: Page, field: Locator) => Promise<void>;
+  /** What the API should hold for the answer */
+  stored: (answer: unknown) => void;
+  /** What the response list should show for the answer */
+  shown: (row: Locator) => Promise<void>;
+}
+
+const hasText = (text: string | RegExp) => (row: Locator) =>
+  expect.soft(row).toHaveText(text);
+
+const options = (...labels: string[]) =>
+  labels.map((label) => ({ label, value: label.toLowerCase() }));
+
+const questions: Question[] = [
+  {
+    key: "textfield",
+    type: CalloutComponentType.INPUT_TEXT_FIELD,
+    fill: (_, field) => field.locator("input").fill("Hello"),
+    stored: (a) => expect.soft(a).toBe("Hello"),
+    shown: hasText("Hello"),
+  },
+  {
+    key: "textarea",
+    type: CalloutComponentType.INPUT_TEXT_AREA,
+    fill: (_, field) => field.locator("textarea").fill("Line one\nLine two"),
+    stored: (a) => expect.soft(a).toBe("Line one\nLine two"),
+    shown: hasText(/Line one\s+Line two/),
+  },
+  {
+    key: "email",
+    type: CalloutComponentType.INPUT_EMAIL,
+    fill: (_, field) => field.locator("input").fill("someone@example.com"),
+    stored: (a) => expect.soft(a).toBe("someone@example.com"),
+    shown: hasText("someone@example.com"),
+  },
+  {
+    key: "number",
+    type: CalloutComponentType.INPUT_NUMBER,
+    fill: (_, field) => field.locator("input").pressSequentially("42"),
+    stored: (a) => expect.soft(a).toBe(42),
+    shown: hasText("42"),
+  },
+  {
+    key: "phoneNumber",
+    type: CalloutComponentType.INPUT_PHONE_NUMBER,
+    fill: (_, field) => field.locator("input").pressSequentially("2079460000"),
+    stored: (a) => expect.soft(a).toBe("(207) 946-0000"),
+    shown: hasText("(207) 946-0000"),
+  },
+  {
+    key: "url",
+    type: CalloutComponentType.INPUT_URL,
+    fill: (_, field) => field.locator("input").fill("https://example.com"),
+    stored: (a) => expect.soft(a).toBe("https://example.com"),
+    shown: hasText("https://example.com"),
+  },
+  {
+    key: "currency",
+    type: CalloutComponentType.INPUT_CURRENCY,
+    schema: { currency: "EUR" },
+    fill: (_, field) => field.locator("input").pressSequentially("12.5"),
+    stored: (a) => expect.soft(a).toBe(12.5),
+    shown: hasText("€12.50"),
+  },
+  {
+    key: "datetime",
+    type: CalloutComponentType.INPUT_DATE_TIME,
+    schema: { enableTime: false, format: "yyyy-MM-dd" },
+    fill: async (page, field) => {
+      await field.locator("input:visible").first().click();
+      // Enter would submit the form
+      await page.keyboard.type("2026-10-01");
+    },
+    stored: (a) => expect.soft(String(a)).toContain("2026-10-01"),
+    shown: hasText(/2026/),
+  },
+  {
+    key: "time",
+    type: CalloutComponentType.INPUT_TIME,
+    fill: (_, field) => field.locator("input").fill("14:30"),
+    stored: (a) => expect.soft(String(a)).toMatch(/^14:30/),
+    shown: hasText(/14:30/),
+  },
+  {
+    key: "checkbox",
+    type: CalloutComponentType.INPUT_CHECKBOX,
+    fill: (_, field) => field.getByRole("checkbox").check(),
+    stored: (a) => expect.soft(a).toBe(true),
+    shown: hasText("Yes"),
+  },
+  {
+    key: "checkboxUnchecked",
+    type: CalloutComponentType.INPUT_CHECKBOX,
+    stored: (a) => expect.soft(a).toBe(false),
+    shown: hasText("No"),
+  },
+  {
+    key: "radio",
+    type: CalloutComponentType.INPUT_SELECTABLE_RADIO,
+    schema: { values: options("Red", "Blue") },
+    fill: (_, field) => field.getByRole("radio", { name: "Blue" }).check(),
+    stored: (a) => expect.soft(a).toBe("blue"),
+    shown: hasText("Blue"),
+  },
+  {
+    // Stored as a number, so shown by looking its label up
+    key: "radioNumber",
+    type: CalloutComponentType.INPUT_SELECTABLE_RADIO,
+    schema: {
+      values: [
+        { label: "One", value: "1" },
+        { label: "Two", value: "2" },
+      ],
+    },
+    fill: (_, field) => field.getByRole("radio", { name: "Two" }).check(),
+    stored: (a) => expect.soft(a).toBe(2),
+    shown: hasText("Two"),
+  },
+  {
+    key: "selectboxes",
+    type: CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES,
+    schema: { values: options("Tea", "Coffee") },
+    fill: (_, field) => field.getByRole("checkbox", { name: "Coffee" }).check(),
+    stored: (a) => expect.soft(a).toEqual({ tea: false, coffee: true }),
+    shown: hasText("Coffee"),
+  },
+  {
+    key: "select",
+    type: CalloutComponentType.INPUT_SELECT,
+    schema: { data: { values: options("Small", "Large") } },
+    fill: async (page, field) => {
+      await field.getByRole("combobox").first().click();
+      await page.getByRole("option", { name: "Large" }).click();
+    },
+    stored: (a) => expect.soft(a).toBe("large"),
+    shown: hasText("Large"),
+  },
+  {
+    key: "address",
+    type: CalloutComponentType.INPUT_ADDRESS,
+    schema: { provider: "maptiler" },
+    fill: async (page, field) => {
+      await field.locator("input:visible").first().pressSequentially("1 Test");
+      await page.getByText(address).click();
+    },
+    stored: (a) =>
+      expect.soft(a).toMatchObject({
+        formatted_address: address,
+        geometry: { location: { lat: 52.5, lng: 13.4 } },
+      }),
+    shown: hasText(address),
+  },
+  {
+    key: "addressUntouched",
+    type: CalloutComponentType.INPUT_ADDRESS,
+    schema: { provider: "maptiler" },
+    stored: (a) => expect.soft(a).toEqual({}),
+    shown: hasText("Not answered"),
+  },
+  {
+    key: "file",
+    type: CalloutComponentType.INPUT_FILE,
+    schema: { storage: "beabee" },
+    fill: async (page, field) => {
+      const fileChooser = page.waitForEvent("filechooser");
+      await field.getByRole("link", { name: /upload from device/i }).click();
+      await (
+        await fileChooser
+      ).setFiles({ name: "photo.png", mimeType: "image/png", buffer: png });
+      // Wait for the upload to finish before submitting
+      await expect(field.getByText("photo.png")).toBeVisible();
+    },
+    stored: (a) =>
+      expect
+        .soft(a)
+        .toEqual([
+          expect.objectContaining({ path: expect.stringMatching(/^images\//) }),
+        ]),
+    shown: (row) => expect.soft(row.locator("img")).toBeVisible(),
+  },
+  {
+    // Uploaded rather than recorded, as tests have no microphone
+    key: "audio",
+    type: CalloutComponentType.INPUT_AUDIO_RECORDER,
+    schema: { storage: "beabee" },
+    fill: async (_, field) => {
+      await field
+        .getByLabel("Upload an audio file", { exact: true })
+        .setInputFiles({
+          name: "clip.wav",
+          mimeType: "audio/wav",
+          buffer: wav,
+        });
+      // Wait for the upload to finish before submitting
+      await expect(field.getByText("Attached")).toBeVisible();
+    },
+    stored: (a) =>
+      expect.soft(a).toEqual([
+        expect.objectContaining({
+          path: expect.stringMatching(/^audio\//),
+          duration: 1,
+        }),
+      ]),
+    shown: async (row) => {
+      await expect
+        .soft(row.getByRole("button", { name: "Play or pause" }))
+        .toBeVisible();
+      await expect.soft(row).toContainText("clip.wav");
+    },
+  },
+  {
+    key: "unanswered",
+    type: CalloutComponentType.INPUT_TEXT_FIELD,
+    stored: (a) => expect.soft(a ?? "").toBe(""),
+    shown: hasText("Not answered"),
+  },
+  {
+    key: "adminOnly",
+    type: CalloutComponentType.INPUT_TEXT_FIELD,
+    schema: { adminOnly: true },
+    fill: (_, field) => field.locator("input").fill("For admins"),
+    stored: (a) => expect.soft(a).toBe("For admins"),
+    shown: (row) => expect.soft(row).toBeHidden(),
+  },
+];
+
+const label = (key: string) => `Question ${key}`;
+
+// Prefixed, as formio adds both the type and the key as classes
+const fieldKey = (key: string) => `q_${key}`;
+
+// Cast, as the fields each type needs come from the question's schema
+const component = (key: string, type: CalloutComponentType, schema = {}) =>
+  ({
+    id: fieldKey(key),
+    key: fieldKey(key),
+    type,
+    label: label(key),
+    input: true,
+    validate: { required: false },
+    ...schema,
+  }) as CalloutComponentSchema;
+
+const getRow = (page: Page, key: string) =>
+  page
+    .locator("dl > div")
+    .filter({
+      has: page.getByRole("term").getByText(label(key), { exact: true }),
+    })
+    .getByRole("definition");
+
+test("Answer every question type", async ({
+  page,
+  context,
+  createCallout,
+  createContact,
+}) => {
+  const slug = await createCallout({
+    access: CalloutAccess.Anonymous,
+    responseMode: CalloutResponseMode.Multiple,
+    slides: [
+      {
+        id: slideId,
+        components: questions.map((q) => component(q.key, q.type, q.schema)),
+      },
+    ],
+  });
+  await createContact();
+
+  // A canned MapTiler answer, so the address lookup needs no network. The
+  // key in .env.test only has to be non-empty
+  await context.route("https://api.maptiler.com/geocoding/**", (route) =>
+    route.fulfill({
+      json: {
+        type: "FeatureCollection",
+        query: ["1", "test"],
+        features: [
+          {
+            type: "Feature",
+            id: "address.1",
+            text: "Test Street",
+            address: "1",
+            place_name: address,
+            place_type: ["address"],
+            relevance: 1,
+            center: [13.4, 52.5],
+            bbox: [13.4, 52.5, 13.4, 52.5],
+            geometry: { type: "Point", coordinates: [13.4, 52.5] },
+            properties: {},
+            context: [],
+          },
+        ],
+      },
+    }),
+  );
+
+  // The date question loads its date picker from formio's CDN, and the form
+  // is rebuilt when it arrives, clearing anything already filled in. So wait
+  // for that rebuild to settle
+  await page.addInitScript(() => {
+    const timer = setInterval(() => {
+      const w = window as unknown as {
+        flatpickr?: unknown;
+        flatpickrAt: number;
+      };
+      if (w.flatpickr) {
+        w.flatpickrAt = performance.now();
+        clearInterval(timer);
+      }
+    }, 20);
+  });
+  await page.goto(`/crowdnewsroom/${slug}/respond`);
+  await page.waitForFunction(() => {
+    const w = window as unknown as {
+      flatpickrAt?: number;
+      formBuiltAt?: number;
+    };
+    return (
+      w.flatpickrAt !== undefined &&
+      w.formBuiltAt !== undefined &&
+      w.formBuiltAt > w.flatpickrAt &&
+      performance.now() - w.formBuiltAt > 1000
+    );
+  });
+
+  for (const q of questions) {
+    if (!q.fill) continue;
+    await test.step(`Fill ${q.key}`, async () => {
+      await q.fill!(page, page.locator(`.formio-component-${fieldKey(q.key)}`));
+      // Some inputs only commit their value on blur
+      await page.keyboard.press("Tab");
+    });
+  }
+
+  await page.getByRole("button", { name: "Submit" }).click();
+  await page.waitForURL(`**/crowdnewsroom/${slug}/thanks`);
+
+  const [response] = await getResponses(slug);
+  const answers = response.answers[slideId];
+
+  for (const q of questions) {
+    await test.step(`Check ${q.key}`, async () => {
+      await q.shown(getRow(page, q.key));
+      q.stored(answers?.[fieldKey(q.key)]);
+    });
+  }
+});

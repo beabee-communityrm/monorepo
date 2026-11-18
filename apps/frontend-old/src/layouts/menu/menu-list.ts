@@ -4,6 +4,7 @@ import {
   faChartLine,
   faCog,
   faCreditCard,
+  faFileWaveform,
   faHandsHelping,
   faHouse,
   faSignHanging,
@@ -72,6 +73,14 @@ export const adminMenu = computed<MenuSection[]>(() => [
         icon: faUsers,
         isActive: /^\/admin\/contacts.*/,
         visible: canAdmin.value,
+      },
+      {
+        title: 'menu.activity',
+        href: '/admin/activity',
+        icon: faFileWaveform,
+        isActive: /^\/admin\/activity.*/,
+        // Not shown in the menu, the page is only reachable by its URL
+        visible: false,
       },
       {
         title: 'menu.callouts',

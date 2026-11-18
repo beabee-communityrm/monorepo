@@ -177,6 +177,74 @@
     "yesRemove": "Да, удалить",
     "yesReset": "Да, сбросить"
   },
+  "activity": {
+    "actorType": {
+      "guest": "Гостевой пользователь",
+      "system": "Система",
+      "unknown": "Неизвестно",
+      "user": "Пользователь"
+    },
+    "data": {
+      "actor": "Инициатор",
+      "actorType": "Тип инициатора",
+      "eventType": "Тип события",
+      "target": "Объект",
+      "time": "Время"
+    },
+    "deleted": "Удалено",
+    "eventDescription": {
+      "contactContributionStarted": "Контакт оформил взнос: {amount}",
+      "contactContributionUpdated": "Контакт изменил взнос: {amount}",
+      "contactCreated": "Создан новый контакт ({source})",
+      "contactEmailSent": "Письмо отправлено контакту: {email}",
+      "contactRoleAdded": "Контакту назначена роль: {role}",
+      "emailSent": "Письмо отправлено на {recipient}: {email}",
+      "emailTemplateAdded": "Создан шаблон письма: {template}"
+    },
+    "eventType": {
+      "appPaymentOptionsUpdated": "Доступные способы оплаты обновлены",
+      "appSettingsUpdated": "Настройки приложения обновлены",
+      "appWebhookUpdated": "Вебхук обновлён",
+      "calloutAnswered": "Получен ответ на CrowdNewsroom",
+      "calloutCreated": "Создана новая CrowdNewsroom",
+      "calloutDeleted": "CrowdNewsroom удалена",
+      "calloutEdited": "CrowdNewsroom изменена",
+      "calloutPublished": "CrowdNewsroom опубликована",
+      "calloutSegmentsAdded": "Создан сегмент CrowdNewsroom",
+      "calloutSegmentsDeleted": "Сегмент CrowdNewsroom удалён",
+      "calloutSegmentsUpdated": "Сегмент CrowdNewsroom обновлён",
+      "calloutUnpublished": "CrowdNewsroom снята с публикации",
+      "contactContributionCancelled": "Контакт отменил взнос",
+      "contactContributionStarted": "Контакт оформил взнос",
+      "contactContributionUpdated": "Контакт изменил взнос",
+      "contactCreated": "Создан новый контакт",
+      "contactDeleted": "Контакт удалён",
+      "contactEmailSent": "Письмо отправлено контакту",
+      "contactNewsletterGroupsUpdated": "Группы рассылки контакта обновлены",
+      "contactPaymentCancelled": "Платёж отменён",
+      "contactPaymentFailed": "Платёж не прошёл",
+      "contactPaymentInitiated": "Платёж инициирован",
+      "contactPaymentRefunded": "Платёж возвращён",
+      "contactPaymentSuccessful": "Платёж выполнен успешно",
+      "contactProfileUpdated": "Профиль контакта обновлён",
+      "contactRoleAdded": "Контакту назначена роль",
+      "contactRoleRevoked": "Роль контакта отозвана",
+      "contactSegmentsAdded": "Создан сегмент контактов",
+      "contactSegmentsDeleted": "Сегмент контактов удалён",
+      "contactSegmentsUpdated": "Сегмент контактов обновлён",
+      "contactUpdated": "Контакт обновлён",
+      "emailSendFailed": "Не удалось отправить письмо",
+      "emailSent": "Письмо отправлено",
+      "emailTemplateAdded": "Создан шаблон письма",
+      "emailTemplateDeleted": "Шаблон письма удалён",
+      "emailTemplateEdited": "Шаблон письма обновлён",
+      "newsletterGroupsUpdated": "Группы рассылки обновлены"
+    },
+    "filters": {
+      "all": "Все",
+      "other": "Другое"
+    }
+  },
   "addContact": {
     "contactSaved": "",
     "errors": {
@@ -1906,6 +1974,7 @@
   },
   "menu": {
     "account": "Аккаунт",
+    "activity": "Активность",
     "admin": "Администрирование",
     "adminSettings": "Настройки",
     "callouts": "CrowdNewsroom",

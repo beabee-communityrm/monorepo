@@ -26,5 +26,4 @@ auto-imports.d.ts
 components.d.ts
 
 # Claude Code local state
-.claude/
 .mcp.json

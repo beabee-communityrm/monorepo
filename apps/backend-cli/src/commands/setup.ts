@@ -18,7 +18,7 @@ export const setupCommand: CommandModule = {
         handler: async (argv) => {
           const { setupSupportEmail } =
             await import('../actions/setup/support-email.js');
-          return setupSupportEmail(argv);
+          await setupSupportEmail(argv);
         },
       })
       .command({
@@ -41,7 +41,7 @@ export const setupCommand: CommandModule = {
         handler: async (argv) => {
           const { setupPaymentMethods } =
             await import('../actions/setup/payment-methods.js');
-          return setupPaymentMethods(argv);
+          await setupPaymentMethods(argv);
         },
       })
       .command({
@@ -69,11 +69,17 @@ export const setupCommand: CommandModule = {
               type: 'string',
               describe:
                 'Password for the admin user (leave empty to generate reset link)',
+            })
+            .option('yes', {
+              alias: 'y',
+              type: 'boolean',
+              describe: 'Skip the confirmation prompt',
+              default: false,
             });
         },
         handler: async (argv) => {
           const { setupAdmin } = await import('../actions/setup/admin.js');
-          return setupAdmin(argv);
+          await setupAdmin(argv);
         },
       })
       .command({
@@ -131,8 +137,9 @@ export const setupCommand: CommandModule = {
         handler: () => {},
       })
       .command({
-        command: 'all',
-        describe: 'Complete system setup (all steps in sequence)',
+        command: 'system',
+        describe:
+          'Set up support email, payment methods and admin user in sequence',
         builder: (yargs) => {
           return yargs
             .option('emailDomain', {
@@ -172,11 +179,17 @@ export const setupCommand: CommandModule = {
               type: 'string',
               describe:
                 'Password for the admin user (leave empty to generate reset link)',
+            })
+            .option('yes', {
+              alias: 'y',
+              type: 'boolean',
+              describe: 'Skip the confirmation prompt',
+              default: false,
             });
         },
         handler: async (argv) => {
-          const { setupAll } = await import('../actions/setup/all.js');
-          return setupAll(argv);
+          const { setupSystem } = await import('../actions/setup/system.js');
+          return setupSystem(argv);
         },
       });
   },

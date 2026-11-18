@@ -7,7 +7,8 @@ import { runApp } from '@beabee/core/server';
 import PaymentService from '@beabee/core/services/PaymentService';
 
 import { parse } from 'csv-parse';
-import { add, startOfDay } from 'date-fns';
+import { add } from 'date-fns/add';
+import { startOfDay } from 'date-fns/startOfDay';
 import Stripe from 'stripe';
 import { Equal, In } from 'typeorm';
 

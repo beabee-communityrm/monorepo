@@ -192,6 +192,23 @@ class ContactsService {
 
     const oldEmail = updates.email && contact.email;
 
+    const updatedFields = Object.keys(updates) as (keyof Contact)[];
+
+    // Contact fields that correspond to contribution changes
+    // No contact/contacProfile update events are logged for these fields
+    const contributionFields: (keyof Contact)[] = [
+      'contributionType',
+      'contributionPeriod',
+      'contributionMonthlyAmount',
+    ];
+
+    const contactChanged = updatedFields.some(
+      (field) =>
+        !contributionFields.includes(field) &&
+        updates[field] !== undefined &&
+        updates[field] !== contact[field]
+    );
+
     try {
       await getRepository(Contact).update(contact.id, updates);
     } catch (err) {
@@ -210,11 +227,13 @@ class ContactsService {
       );
     }
 
-    await ActivityService.addEvent({
-      eventType: ActivityEventType.ContactUpdated,
-      targetId: contact.id,
-      metadata: null,
-    });
+    if (contactChanged) {
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.ContactUpdated,
+        targetId: contact.id,
+        metadata: null,
+      });
+    }
 
     await PaymentService.updateContact(contact, updates);
 
@@ -542,6 +561,12 @@ class ContactsService {
     await PaymentService.updateData(contact, {
       mandateId: data.source || null,
       customerId: data.reference || null,
+    });
+
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactContributionUpdated,
+      targetId: contact.id,
+      metadata: null,
     });
   }
 

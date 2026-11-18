@@ -138,21 +138,17 @@ RUN crontab ./crontab
 # 3. Start cron in the foreground with log level 15
 CMD [ "sh", "-c", "env > /etc/environment; rsyslogd; exec cron -fL 15" ]
 
-## Legacy image
-FROM dist-common AS legacy_app
+## Webhooks image, also serves the legacy app
+FROM dist-common AS webhook_app
 
 COPY --chown=node:node --from=builder /opt/apps/legacy/dist /opt/apps/legacy/dist
+COPY --chown=node:node --from=builder /opt/apps/webhooks/dist /opt/apps/webhooks/dist
 
 ARG REVISION=DEV
 RUN echo -n ${REVISION} > /opt/apps/legacy/dist/revision.txt && chown node:node /opt/apps/legacy/dist/revision.txt
 
-WORKDIR /opt/apps/legacy
-USER node
-
-## Webhooks image
-FROM dist-common AS webhook_app
-
-COPY --chown=node:node --from=builder /opt/apps/webhooks/dist /opt/apps/webhooks/dist
-
 WORKDIR /opt/apps/webhooks
 USER node
+
+## Legacy image, the same image for stacks that run a separate legacy service
+FROM webhook_app AS legacy_app

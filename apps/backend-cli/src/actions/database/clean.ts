@@ -6,7 +6,7 @@ import {
 } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 
-import { subDays } from 'date-fns';
+import { subDays } from 'date-fns/subDays';
 import {
   EntityTarget,
   FindOptionsWhere,

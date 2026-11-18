@@ -5,6 +5,7 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
+    "declaration": true,
     "paths": {},
 
     // Add additional type root for local typings
