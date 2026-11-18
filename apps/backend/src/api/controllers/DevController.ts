@@ -6,7 +6,7 @@ import {
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
 import { NotFoundError } from '@beabee/core/errors';
-import { Contact, ContactRole } from '@beabee/core/models';
+import { Contact, ContactRole, SignupFlow } from '@beabee/core/models';
 import { TestProvider } from '@beabee/core/providers/newsletter/TestProvider';
 import ContactsService from '@beabee/core/services/ContactsService';
 
@@ -61,6 +61,26 @@ export class DevController {
 
     TestProvider.testGroups = groups;
     return { message: 'Test newsletter groups updated' };
+  }
+
+  /**
+   * Get the ID of the latest signup flow for an email address, which is
+   * otherwise only sent in the confirmation email.
+   * Only available in development mode.
+   */
+  @Get('/signup-flow/:email')
+  async getSignupFlow(@Param('email') email: string): Promise<{ id: string }> {
+    if (!config.dev) {
+      throw new NotFoundError();
+    }
+    const signupFlow = await getRepository(SignupFlow).findOne({
+      where: { email },
+      order: { date: 'DESC' },
+    });
+    if (!signupFlow) {
+      throw new NotFoundError();
+    }
+    return { id: signupFlow.id };
   }
 
   /**
