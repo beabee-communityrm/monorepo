@@ -128,7 +128,10 @@ class ContactsService {
 
       await PaymentService.createContact(contact);
       if (opts.sync) {
-        await NewsletterService.upsertContact(contact);
+        await NewsletterService.upsertContact(contact, {
+          newsletterStatus: partialProfile.newsletterStatus,
+          newsletterGroups: partialProfile.newsletterGroups,
+        });
       }
 
       await EmailService.sendTemplateToAdmin('new-member', { contact });
