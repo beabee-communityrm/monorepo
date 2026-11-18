@@ -286,7 +286,9 @@ class CalloutsService {
     }
 
     let response = await this.getResponse(callout, contact);
+    let isNewResponse = false;
     if (!response || callout.responseMode === CalloutResponseMode.Multiple) {
+      isNewResponse = true;
       response = new CalloutResponse();
       response.callout = callout;
       response.contact = contact;
@@ -318,11 +320,13 @@ class CalloutsService {
       });
     }
 
-    await ActivityService.addEvent({
-      targetId: callout.id,
-      eventType: ActivityEventType.CalloutAnswered,
-      metadata: { responseId: savedResponse.id },
-    });
+    if (isNewResponse) {
+      await ActivityService.addEvent({
+        targetId: callout.id,
+        eventType: ActivityEventType.CalloutAnswered,
+        metadata: { responseId: savedResponse.id },
+      });
+    }
 
     // Send confirmation email to the contact
     await this.sendResponseEmail(callout, contact);
