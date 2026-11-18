@@ -138,6 +138,7 @@ import { RemoveContactLoginOverride1790855215072 } from './migrations/1790855215
 import { AddSignupFlowNewsletter1792506342771 } from './migrations/1792506342771-AddSignupFlowNewsletter.js';
 import { AddSignupFlowPostConfirmUrl1793892212089 } from './migrations/1793892212089-AddSignupFlowPostConfirmUrl.js';
 import { RenameActivityEventTypes1794824922619 } from './migrations/1794824922619-RenameActivityEventTypes.js';
+import { AddSignupFlowName1795015781454 } from './migrations/1795015781454-AddSignupFlowName.js';
 
 export const migrations = [
   SessionTable1616677358190,
@@ -279,4 +280,5 @@ export const migrations = [
   AddSignupFlowNewsletter1792506342771,
   AddSignupFlowPostConfirmUrl1793892212089,
   RenameActivityEventTypes1794824922619,
+  AddSignupFlowName1795015781454,
 ];

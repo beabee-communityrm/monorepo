@@ -65,6 +65,14 @@ export class StartSignupFlowDto {
   @IsOptional()
   @IsString({ each: true })
   newsletterGroups?: string[];
+
+  @IsOptional()
+  @IsString()
+  firstname?: string;
+
+  @IsOptional()
+  @IsString()
+  lastname?: string;
 }
 
 export class ConfirmSignupResultDto implements ConfirmSignupResult {
