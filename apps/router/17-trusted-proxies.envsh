@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Converts TRUSTED_PROXIES, a comma separated list of CIDRs, into the
+# set_real_ip_from directives nginx.conf uses to decide whose X-Forwarded-For
+# to believe. The default trusts every source, so a client can set its own IP.
+# Set it to the reverse proxy's addresses, e.g.
+# 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7 for a proxy on the same host
+# or container network.
+# It must be ahead of 20-envsubst-on-templates.sh
+
+TRUSTED_PROXIES=${TRUSTED_PROXIES:-0.0.0.0/0,::/0}
+export SET_REAL_IP_FROM=$(printf 'set_real_ip_from %s; ' ${TRUSTED_PROXIES//,/ })
