@@ -184,11 +184,11 @@
       "user": "User"
     },
     "data": {
-      "actor": "Actor",
-      "actorType": "Actor type",
-      "eventType": "Event type",
-      "target": "Target",
-      "time": "Time"
+      "actor": "Initiated by",
+      "actorType": "User or system",
+      "eventType": "Event",
+      "target": "Applies to",
+      "time": "Date"
     },
     "deleted": "Deleted",
     "eventDescription": {
@@ -204,7 +204,7 @@
       "appPaymentOptionsUpdated": "Available payment options updated",
       "appSettingsUpdated": "App settings updated",
       "appWebhookUpdated": "Webhook updated",
-      "calloutAnswered": "CrowdNewsroom answered",
+      "calloutAnswered": "CrowdNewsroom response submitted",
       "calloutCreated": "New CrowdNewsroom created",
       "calloutDeleted": "CrowdNewsroom deleted",
       "calloutEdited": "CrowdNewsroom edited",
@@ -227,7 +227,7 @@
       "contactPaymentSuccessful": "Payment succeeded",
       "contactProfileUpdated": "Contact profile updated",
       "contactRoleAdded": "Role assigned to contact",
-      "contactRoleRevoked": "Contact role revoked",
+      "contactRoleRevoked": "Role revoked from contact",
       "contactSegmentsAdded": "Contact segment created",
       "contactSegmentsDeleted": "Contact segment deleted",
       "contactSegmentsUpdated": "Contact segment updated",
