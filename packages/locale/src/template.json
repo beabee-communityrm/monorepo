@@ -378,6 +378,12 @@
         "text": "",
         "title": "",
         "twitterHandle": ""
+      },
+      "trustedOrigins": {
+        "add": "",
+        "label": "",
+        "text": "",
+        "title": ""
       }
     },
     "integrations": {
@@ -1640,6 +1646,11 @@
       },
       "name": {
         "required": ""
+      },
+      "origin": {
+        "pattern": "",
+        "required": "",
+        "url": ""
       },
       "password": {
         "password": "",

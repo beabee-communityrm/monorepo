@@ -128,7 +128,6 @@ services:
     environment:
       HIVE_SERVICE_APP: http://webhook_app
       LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN}
-      TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
     ports:
       - ${ROUTER_PORT}:80
     volumes:

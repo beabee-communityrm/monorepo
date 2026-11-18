@@ -380,6 +380,12 @@
         "text": "",
         "title": "",
         "twitterHandle": ""
+      },
+      "trustedOrigins": {
+        "add": "",
+        "label": "",
+        "text": "",
+        "title": ""
       }
     },
     "integrations": {
@@ -1644,6 +1650,11 @@
       },
       "name": {
         "required": "Нужно добавить имя"
+      },
+      "origin": {
+        "pattern": "Только схема и хост, например https://example.com",
+        "required": "Укажите origin",
+        "url": "Неверная ссылка"
       },
       "password": {
         "password": "Некорректный пароль",

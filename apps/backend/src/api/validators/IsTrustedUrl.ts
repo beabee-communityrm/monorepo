@@ -1,4 +1,5 @@
 import config from '@beabee/core/config';
+import { optionsService } from '@beabee/core/services';
 import { isAllowedReturnUrl, isValidNextUrl } from '@beabee/core/utils/url';
 
 import { ValidateBy, ValidationOptions, buildMessage } from 'class-validator';
@@ -18,14 +19,22 @@ export default function IsTrustedUrl(
       name: 'isTrustedUrl',
       validator: {
         validate(value) {
-          return (
-            typeof value === 'string' &&
-            ((allowRelative && isValidNextUrl(value)) ||
-              isAllowedReturnUrl(value, [
-                new URL(config.audience).origin,
-                ...config.trustedOrigins,
-              ]))
-          );
+          if (typeof value !== 'string') return false;
+          if (allowRelative && isValidNextUrl(value)) return true;
+
+          const origins = [
+            new URL(config.audience).origin,
+            ...optionsService.getList('trusted-origins'),
+          ];
+          // Any localhost port in development
+          const localhost =
+            config.dev &&
+            value.match(
+              /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?(?=[/?#]|$)/
+            );
+          if (localhost) origins.push(localhost[0]);
+
+          return isAllowedReturnUrl(value, origins);
         },
         defaultMessage: buildMessage(
           (eachPrefix) =>

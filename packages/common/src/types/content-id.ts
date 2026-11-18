@@ -7,4 +7,5 @@ export type ContentId =
   | 'share'
   | 'email'
   | 'payment'
-  | 'telegram';
+  | 'telegram'
+  | 'system';

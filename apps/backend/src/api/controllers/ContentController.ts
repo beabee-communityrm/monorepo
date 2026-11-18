@@ -1,5 +1,7 @@
+import { UnauthorizedError } from '@beabee/core/errors';
 import { updateSalesTaxRate } from '@beabee/core/lib/stripe';
 import { idpService } from '@beabee/core/services/IdpService';
+import { AuthInfo } from '@beabee/core/type';
 
 import {
   Authorized,
@@ -10,6 +12,7 @@ import {
   Patch,
 } from 'routing-controllers';
 
+import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import PartialBody from '#api/decorators/PartialBody';
 import {
   GetContentContactsDto,
@@ -21,6 +24,7 @@ import {
   GetContentPaymentDto,
   GetContentProfileDto,
   GetContentShareDto,
+  GetContentSystemDto,
   GetContentTelegramDto,
 } from '#api/dto';
 import { ContentParams } from '#api/params/ContentParams';
@@ -32,7 +36,13 @@ export class ContentController {
   // wildcard that the legacy `:id(?:*)` syntax used to express; the
   // ContentParams transformer reassembles the captured segments.
   @Get('/*id')
-  async get(@Params() { id }: ContentParams): Promise<GetContentDto> {
+  async get(
+    @Params() { id }: ContentParams,
+    @CurrentAuth() auth: AuthInfo
+  ): Promise<GetContentDto> {
+    if (id === 'system' && !auth.roles.includes('admin')) {
+      throw new UnauthorizedError();
+    }
     return await ContentTransformer.fetchOne(id);
   }
 
@@ -127,5 +137,14 @@ export class ContentController {
   ): Promise<GetContentTelegramDto> {
     await ContentTransformer.updateOne('telegram', data);
     return ContentTransformer.fetchOne('telegram');
+  }
+
+  @Authorized('admin')
+  @Patch('/system')
+  async updateSystem(
+    @PartialBody() data: GetContentSystemDto
+  ): Promise<GetContentSystemDto> {
+    await ContentTransformer.updateOne('system', data);
+    return ContentTransformer.fetchOne('system');
   }
 }
