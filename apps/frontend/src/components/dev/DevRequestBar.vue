@@ -9,7 +9,10 @@
   makes, whatever their mode, until Succeed, Fail or Empty is picked for them.
 -->
 <template>
-  <UPopover :content="{ side: 'top', align: 'start' }">
+  <UPopover
+    :content="{ side: 'top', align: 'start' }"
+    :ui="{ content: 'dark [--ui-bg:black]' }"
+  >
     <UButton
       icon="i-lucide-bug"
       color="neutral"
@@ -25,7 +28,7 @@
 
     <template #content>
       <div
-        class="flex w-xl max-w-[calc(100vw-2rem)] flex-col gap-5 p-5"
+        class="flex w-xl max-w-[calc(100vw-2rem)] flex-col gap-5 p-5 text-default"
         data-dev-bar
       >
         <div class="flex flex-col gap-1">
@@ -50,7 +53,7 @@
                 :key="item.value"
                 type="button"
                 :aria-label="`Set all page requests to ${item.label}`"
-                class="w-14 cursor-pointer py-1 text-xs text-muted hover:bg-elevated focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:ring-inset"
+                class="w-14 cursor-pointer py-1 text-xs text-muted hover:bg-elevated focus-visible:ring-2 focus-visible:ring-(--ui-color-neutral-500) focus-visible:outline-none focus-visible:ring-inset"
                 @click="setAll(item.value)"
               >
                 {{ item.label }}
@@ -95,7 +98,7 @@
                       :disabled="!canUse(key, item.value)"
                       @change="choose(key, item.value)"
                     />
-                    <span :class="segmentClass(item.value)">
+                    <span :class="segmentClass">
                       {{ item.label }}
                     </span>
                   </label>
@@ -142,7 +145,7 @@
                       :disabled="!canUse(key, item.value)"
                       @change="choose(key, item.value)"
                     />
-                    <span :class="segmentClass(item.value)">
+                    <span :class="segmentClass">
                       {{ item.label }}
                     </span>
                   </label>
@@ -166,7 +169,7 @@
   <div
     v-for="hold in shownHolds"
     :key="hold.id"
-    class="fixed z-50 flex w-80 flex-col gap-2 rounded-md bg-default p-3 text-sm shadow-lg ring ring-default"
+    class="dark fixed z-50 flex w-80 flex-col gap-2 rounded-md bg-default p-3 text-sm text-default shadow-lg ring ring-default [--ui-bg:black]"
     :style="{ top: `${hold.top}px`, left: `${hold.left}px` }"
     data-dev-bar
   >
@@ -197,7 +200,7 @@
   <div
     v-for="(box, i) in boxes"
     :key="i"
-    class="pointer-events-none fixed z-40 rounded-md bg-primary/10 ring-2 ring-primary"
+    class="pointer-events-none fixed z-40 rounded-md bg-black/10 ring-2 ring-black"
     :style="{
       top: `${box.top}px`,
       left: `${box.left}px`,
@@ -312,11 +315,10 @@ const modeOf = (key: string) => devRequests.modes[key] ?? 'normal';
 const canUse = (key: string, mode: DevRequestMode) =>
   mode !== 'empty' || devRequests.listKeys.includes(key);
 
-const segmentClass = (mode: DevRequestMode) => [
-  'block py-1 text-center text-xs peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-inset',
+const segmentClass = [
+  'block py-1 text-center text-xs peer-focus-visible:ring-2 peer-focus-visible:ring-(--ui-color-neutral-500) peer-focus-visible:ring-inset',
   'peer-disabled:cursor-not-allowed peer-disabled:opacity-40',
-  'peer-checked:font-semibold peer-checked:text-inverted',
-  mode === 'normal' ? 'peer-checked:bg-inverted' : 'peer-checked:bg-primary',
+  'peer-checked:bg-inverted peer-checked:font-semibold peer-checked:text-inverted',
   'cursor-pointer text-muted peer-[:enabled:not(:checked)]:hover:bg-elevated',
 ];
 
