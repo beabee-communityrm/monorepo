@@ -24,7 +24,7 @@
       </AppCardHeader>
     </template>
 
-    <LoadError v-if="error" />
+    <LoadError v-if="error" :retry="load" />
 
     <div v-else-if="!view" class="space-y-3">
       <USkeleton class="h-8 w-1/3" />
@@ -135,14 +135,8 @@ const fetchLastPayment = async () => {
   return payments.items[0] ?? null;
 };
 
-onBeforeMount(async () => {
-  let info: ContributionInfo;
-  try {
-    info = await client.contact.contribution.get();
-  } catch {
-    error.value = true;
-    return;
-  }
+const load = async () => {
+  const info = await client.contact.contribution.get();
 
   const hasCurrentContribution =
     info.membershipStatus === MembershipStatus.Expiring ||
@@ -153,7 +147,14 @@ onBeforeMount(async () => {
   }
 
   contribution.value = info;
-});
+  error.value = false;
+};
+
+onBeforeMount(() =>
+  load().catch(() => {
+    error.value = true;
+  })
+);
 
 const formatDate = (date: Date) => formatLocale(date, 'd MMM yyyy');
 

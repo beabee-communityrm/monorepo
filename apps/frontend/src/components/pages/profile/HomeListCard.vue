@@ -6,7 +6,7 @@
   Renders a row per item, with the row's content from the default slot. While
   `items` is undefined, two rows of the `loading` slot show instead (plain
   skeleton lines by default); when it's empty, `emptyText` does. With `error`,
-  a load error replaces the rows and the footer.
+  a load error replaces the rows and the footer, offering `retry`.
 -->
 <template>
   <UCard :ui="{ body: 'p-0 sm:p-0', footer: 'p-0 sm:p-0' }">
@@ -18,7 +18,7 @@
       </AppCardHeader>
     </template>
 
-    <LoadError v-if="error" class="p-4 sm:p-6" />
+    <LoadError v-if="error" :retry="retry" class="p-4 sm:p-6" />
 
     <ul v-else-if="!items" class="divide-y divide-default">
       <li v-for="n in 2" :key="n" :class="rowClass">
@@ -108,6 +108,8 @@ export interface HomeListCardProps<T> {
   emptyText?: string;
   /** The items couldn't be loaded */
   error?: boolean;
+  /** Loads the items again after an error; rejects if that fails */
+  retry: () => Promise<unknown>;
   /** Footer label; no footer without it */
   footerLabel?: string;
   /** Where the footer links to; without it the footer is a button */
