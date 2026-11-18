@@ -11,6 +11,7 @@
     :count="t('homePage.openCount', { n: total })"
     :items="callouts"
     :error="error"
+    :retry="load"
     :item-key="(callout) => callout.slug"
     :empty-text="t('homePage.noOpenCallouts')"
     :footer-label="
@@ -78,25 +79,28 @@ const error = ref(false);
 const callouts = computed(() => page.value?.items);
 const total = computed(() => page.value?.total ?? 0);
 
-onBeforeMount(async () => {
-  try {
-    page.value = await client.callout.list(
-      {
-        order: 'DESC',
-        sort: 'starts',
-        limit: 3,
-        rules: {
-          condition: 'AND',
-          rules: [
-            { field: 'status', operator: 'equal', value: [ItemStatus.Open] },
-            { field: 'hidden', operator: 'equal', value: [false] },
-          ],
-        },
+const load = async () => {
+  page.value = await client.callout.list(
+    {
+      order: 'DESC',
+      sort: 'starts',
+      limit: 3,
+      rules: {
+        condition: 'AND',
+        rules: [
+          { field: 'status', operator: 'equal', value: [ItemStatus.Open] },
+          { field: 'hidden', operator: 'equal', value: [false] },
+        ],
       },
-      ['hasAnswered', 'responseCount']
-    );
-  } catch {
+    },
+    ['hasAnswered', 'responseCount']
+  );
+  error.value = false;
+};
+
+onBeforeMount(() =>
+  load().catch(() => {
     error.value = true;
-  }
-});
+  })
+);
 </script>
