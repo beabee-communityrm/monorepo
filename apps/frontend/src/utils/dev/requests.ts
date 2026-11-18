@@ -8,7 +8,7 @@ import { reactive, watch } from 'vue';
 
 import env from '#env';
 import router from '#lib/router';
-import type { DevRequestMode } from '#type';
+import type { DevRequestHold, DevRequestMode } from '#type';
 
 const STORAGE_KEY = 'beabee-dev-requests';
 
@@ -25,6 +25,8 @@ export const devRequests = reactive({
   appKeys: [] as string[],
   /** The component file that made each request, from its call stack */
   sources: {} as Record<string, string>,
+  /** Requests held by Alt-clicks, oldest first */
+  holds: [] as DevRequestHold[],
 });
 
 watch(
@@ -56,8 +58,53 @@ const emptyBody = (data: unknown) => {
   }
 };
 
+const dropHold = (hold: DevRequestHold) => {
+  const index = devRequests.holds.indexOf(hold);
+  if (index >= 0) devRequests.holds.splice(index, 1);
+};
+
 export function installDevRequests() {
   const realFetch = globalThis.fetch.bind(globalThis);
+
+  /** The latest Alt-click's hold, while it still takes new requests */
+  let openHold:
+    | { hold: DevRequestHold; resumes: ((mode: DevRequestMode) => void)[] }
+    | undefined;
+  let holdCount = 0;
+
+  document.addEventListener(
+    'click',
+    (event) => {
+      if (
+        !event.altKey ||
+        !(event.target instanceof Element) ||
+        event.target.closest('[data-dev-bar]')
+      ) {
+        return;
+      }
+
+      const rect = event.target.getBoundingClientRect();
+      const resumes: ((mode: DevRequestMode) => void)[] = [];
+      const hold: DevRequestHold = reactive({
+        id: ++holdCount,
+        keys: [],
+        top: rect.bottom + 120 < innerHeight ? rect.bottom + 8 : rect.top - 112,
+        left: Math.max(16, Math.min(rect.left, innerWidth - 336)),
+        settle: (mode) => {
+          for (const resume of resumes) resume(mode);
+          dropHold(hold);
+        },
+      });
+      devRequests.holds.push(hold);
+      openHold = { hold, resumes };
+
+      setTimeout(() => {
+        if (openHold?.hold === hold) openHold = undefined;
+        if (!hold.keys.length) dropHold(hold);
+      }, 500);
+    },
+    true
+  );
 
   router.beforeEach((to, from) => {
     if (from.matched.length && to.path !== from.path) devRequests.seen = [];
@@ -93,11 +140,18 @@ export function installDevRequests() {
       devRequests.appKeys.push(key);
     }
 
-    while (devRequests.modes[key] === 'hang') {
-      await new Promise<void>((resume) => hanging.add(resume));
+    let mode: DevRequestMode | undefined;
+    if (openHold) {
+      const { hold, resumes } = openHold;
+      hold.keys.push(key);
+      mode = await new Promise((resume) => resumes.push(resume));
+    } else {
+      while (devRequests.modes[key] === 'hang') {
+        await new Promise<void>((resume) => hanging.add(resume));
+      }
+      mode = devRequests.modes[key];
     }
 
-    const mode = devRequests.modes[key];
     if (mode === 'fail') {
       return Response.json(
         {

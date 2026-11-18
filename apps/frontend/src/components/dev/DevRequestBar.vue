@@ -5,7 +5,8 @@
   request and last for the browser tab's session. Changing a mode reruns the
   page, or reloads it for app startup requests, and a hanging request carries
   on once its mode changes. Hovering a page request outlines the component that
-  made it.
+  made it. Alt-clicking anything on the page holds the requests the click
+  makes, whatever their mode, until Succeed, Fail or Empty is picked for them.
 -->
 <template>
   <UPopover :content="{ side: 'top', align: 'start' }">
@@ -19,11 +20,20 @@
           : 'Dev requests'
       "
       class="fixed bottom-4 left-4 z-50"
+      data-dev-bar
     />
 
     <template #content>
-      <div class="flex w-xl max-w-[calc(100vw-2rem)] flex-col gap-5 p-5">
-        <h2 class="text-lg font-semibold">Simulate API responses</h2>
+      <div
+        class="flex w-xl max-w-[calc(100vw-2rem)] flex-col gap-5 p-5"
+        data-dev-bar
+      >
+        <div class="flex flex-col gap-1">
+          <h2 class="text-lg font-semibold">Simulate API responses</h2>
+          <p class="text-sm text-muted">
+            Alt-click a button on the page to hold the requests it makes.
+          </p>
+        </div>
 
         <p v-if="!keys.length" class="text-muted">No API requests yet.</p>
 
@@ -154,6 +164,37 @@
   </UPopover>
 
   <div
+    v-for="hold in shownHolds"
+    :key="hold.id"
+    class="fixed z-50 flex w-80 flex-col gap-2 rounded-md bg-default p-3 text-sm shadow-lg ring ring-default"
+    :style="{ top: `${hold.top}px`, left: `${hold.left}px` }"
+    data-dev-bar
+  >
+    <p>
+      Holding
+      <template v-for="(key, i) in hold.keys" :key="key">
+        <template v-if="i">, </template>
+        <code :title="key">{{ pathLabel(key) }}</code>
+      </template>
+    </p>
+    <div class="flex gap-2">
+      <UButton
+        v-for="outcome in outcomes"
+        :key="outcome.value"
+        size="xs"
+        color="neutral"
+        variant="outline"
+        :disabled="outcome.value === 'empty' && !canEmpty(hold)"
+        :aria-keyshortcuts="outcome.shortcut"
+        @click="hold.settle(outcome.value)"
+      >
+        {{ outcome.label }}
+        <UKbd :value="outcome.shortcut.toUpperCase()" />
+      </UButton>
+    </div>
+  </div>
+
+  <div
     v-for="(box, i) in boxes"
     :key="i"
     class="pointer-events-none fixed z-40 rounded-md bg-primary/10 ring-2 ring-primary"
@@ -167,11 +208,18 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, getCurrentInstance, nextTick, ref } from 'vue';
+import {
+  computed,
+  getCurrentInstance,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+} from 'vue';
 
 import { componentBoxes } from '#utils/dev/components';
 import { devRequests } from '#utils/dev/requests';
-import type { DevRequestMode } from '#type';
+import type { DevRequestHold, DevRequestMode } from '#type';
 
 const emit = defineEmits<{ (e: 'remount'): void }>();
 
@@ -222,6 +270,42 @@ function highlight(key?: string) {
   const file = key && devRequests.sources[key];
   boxes.value = app && file ? componentBoxes(app, file) : [];
 }
+
+const shownHolds = computed(() =>
+  devRequests.holds.filter((hold) => hold.keys.length)
+);
+
+const outcomes = [
+  { label: 'Succeed', value: 'normal', shortcut: 's' },
+  { label: 'Fail', value: 'fail', shortcut: 'f' },
+  { label: 'Empty', value: 'empty', shortcut: 'e' },
+] as const;
+
+const canEmpty = (hold: DevRequestHold) =>
+  hold.keys.every((key) => devRequests.listKeys.includes(key));
+
+/** S, F or E settles the latest hold, unless typing in a field */
+function onKeydown(event: KeyboardEvent) {
+  const hold = shownHolds.value.at(-1);
+  const outcome = outcomes.find((item) => item.shortcut === event.key);
+  if (
+    !hold ||
+    !outcome ||
+    event.altKey ||
+    event.ctrlKey ||
+    event.metaKey ||
+    (outcome.value === 'empty' && !canEmpty(hold)) ||
+    (event.target instanceof Element &&
+      event.target.closest('input, textarea, select, [contenteditable]'))
+  ) {
+    return;
+  }
+  event.preventDefault();
+  hold.settle(outcome.value);
+}
+
+onMounted(() => addEventListener('keydown', onKeydown));
+onBeforeUnmount(() => removeEventListener('keydown', onKeydown));
 
 const modeOf = (key: string) => devRequests.modes[key] ?? 'normal';
 
