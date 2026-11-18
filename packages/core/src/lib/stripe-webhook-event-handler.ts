@@ -59,7 +59,14 @@ export class StripeWebhookEventHandler {
         await this.handleInvoiceCreated(event.data.object);
         break;
       case 'invoice.updated':
-        await this.handleInvoiceUpdated(event.data.object);
+        try {
+          await this.handleInvoiceUpdated(event.data.object);
+        } catch (err) {
+          // A concurrent event for the same invoice inserted the payment
+          // first, a second attempt finds that payment and updates it
+          if (!isDuplicateIndex(err, 'id')) throw err;
+          await this.handleInvoiceUpdated(event.data.object);
+        }
         break;
       case 'invoice.paid':
         await this.handleInvoicePaid(event.data.object);
