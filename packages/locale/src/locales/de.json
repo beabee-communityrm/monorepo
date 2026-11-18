@@ -186,10 +186,10 @@
     },
     "data": {
       "actor": "Ausgeführt von",
-      "actorType": "Ausgeführt von",
-      "eventType": "Ereignistyp",
-      "target": "Ziel",
-      "time": "Zeit"
+      "actorType": "Nutzer oder System",
+      "eventType": "Ereignis",
+      "target": "Betrifft",
+      "time": "Datum"
     },
     "deleted": "Gelöscht",
     "eventDescription": {
@@ -205,7 +205,7 @@
       "appPaymentOptionsUpdated": "Verfügbare Zahlungsoptionen aktualisiert",
       "appSettingsUpdated": "App-Einstellungen aktualisiert",
       "appWebhookUpdated": "Webhook aktualisiert",
-      "calloutAnswered": "CrowdNewsroom beantwortet",
+      "calloutAnswered": "Antwort auf CrowdNewsroom abgegeben",
       "calloutCreated": "Neuer CrowdNewsroom erstellt",
       "calloutDeleted": "CrowdNewsroom gelöscht",
       "calloutEdited": "CrowdNewsroom bearbeitet",
@@ -228,7 +228,7 @@
       "contactPaymentSuccessful": "Zahlung erfolgreich",
       "contactProfileUpdated": "Kontaktprofil aktualisiert",
       "contactRoleAdded": "Rolle dem Kontakt zugewiesen",
-      "contactRoleRevoked": "Rolle des Kontakts entzogen",
+      "contactRoleRevoked": "Rolle dem Kontakt entzogen",
       "contactSegmentsAdded": "Kontaktsegment erstellt",
       "contactSegmentsDeleted": "Kontaktsegment gelöscht",
       "contactSegmentsUpdated": "Kontaktsegment aktualisiert",
