@@ -62,4 +62,10 @@ export class SignupFlow {
 
   @Column({ type: 'jsonb', nullable: true })
   newsletterGroups!: string[] | null;
+
+  @Column({ type: String, nullable: true })
+  firstname!: string | null;
+
+  @Column({ type: String, nullable: true })
+  lastname!: string | null;
 }

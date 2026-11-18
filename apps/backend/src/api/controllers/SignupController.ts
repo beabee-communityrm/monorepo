@@ -64,6 +64,8 @@ export class SignupController {
       origin: data.origin || null,
       newsletterStatus: data.newsletterStatus ?? null,
       newsletterGroups: data.newsletterGroups ?? null,
+      firstname: data.firstname ?? null,
+      lastname: data.lastname ?? null,
     };
 
     if (data.contribution) {

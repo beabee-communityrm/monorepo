@@ -35,6 +35,8 @@ interface SignupData {
   origin: ContactOriginData | null;
   newsletterStatus: NewsletterStatus | null;
   newsletterGroups: string[] | null;
+  firstname: string | null;
+  lastname: string | null;
 }
 
 /**
@@ -170,8 +172,8 @@ class SignupService {
         );
       }
     } else {
-      let firstName = '',
-        lastName = '';
+      let firstName = signupFlow.firstname || '',
+        lastName = signupFlow.lastname || '';
 
       // TODO: remove once payment flow logic is reworked
       if (
@@ -179,8 +181,8 @@ class SignupService {
         signupFlow.paymentFlow.params.paymentMethod !==
           PaymentMethod.GoCardlessDirectDebit
       ) {
-        firstName = signupFlow.paymentFlow.params.firstname || '';
-        lastName = signupFlow.paymentFlow.params.lastname || '';
+        firstName ||= signupFlow.paymentFlow.params.firstname || '';
+        lastName ||= signupFlow.paymentFlow.params.lastname || '';
       }
 
       // User doesn't exist, their membership is inactive or they are not
@@ -257,6 +259,8 @@ class SignupService {
     const partialContact: Partial<Contact> & { email: string } = {
       email: signupFlow.email,
       password: signupFlow.password,
+      ...(signupFlow.firstname && { firstname: signupFlow.firstname }),
+      ...(signupFlow.lastname && { lastname: signupFlow.lastname }),
     };
 
     // Groups may have been removed since the flow started, drop unknown IDs
@@ -275,10 +279,10 @@ class SignupService {
         return;
       }
 
-      if (completedFlow.data.firstname) {
+      if (!partialContact.firstname && completedFlow.data.firstname) {
         partialContact.firstname = completedFlow.data.firstname;
       }
-      if (completedFlow.data.lastname) {
+      if (!partialContact.lastname && completedFlow.data.lastname) {
         partialContact.lastname = completedFlow.data.lastname;
       }
     }
