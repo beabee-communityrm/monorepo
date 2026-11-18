@@ -1,8 +1,12 @@
-import { GetContactWith, NewsletterStatus } from '@beabee/beabee-common';
+import {
+  GetContactWith,
+  NewsletterStatus,
+  type Rule,
+} from '@beabee/beabee-common';
 import { BeabeeClient } from '@beabee/client';
 import { api, newsletterGroups, testUser } from '@beabee/test-utils/test-data';
 
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import {
   createTestCallout,
@@ -217,6 +221,129 @@ describe('Contact newsletter groups API', () => {
       const newsletter = await getNewsletter(unsubscribedMember.id);
       expect(newsletter.groups).toEqual([TEA.id]);
       expect(newsletter.status).toBe(NewsletterStatus.Pending);
+    });
+  });
+
+  describe('segment filters', () => {
+    let subscribedMember: TestMember;
+    let noStatusMember: TestMember;
+
+    beforeAll(async () => {
+      subscribedMember = await createMember([TEA.id]);
+      noStatusMember = await createMember();
+    });
+
+    async function matches(contactId: string, rule: Rule): Promise<boolean> {
+      const result = await admin.contact.list({
+        rules: {
+          condition: 'AND',
+          rules: [{ field: 'id', operator: 'equal', value: [contactId] }, rule],
+        },
+      });
+      return result.total === 1;
+    }
+
+    it('should filter by newsletter status', async () => {
+      const rule: Rule = {
+        field: 'newsletterStatus',
+        operator: 'equal',
+        value: [NewsletterStatus.Subscribed],
+      };
+      expect(await matches(subscribedMember.id, rule)).toBe(true);
+      expect(await matches(noStatusMember.id, rule)).toBe(false);
+    });
+
+    it('should filter by newsletter group', async () => {
+      const rule: Rule = {
+        field: 'newsletterGroups',
+        operator: 'contains',
+        value: [TEA.id],
+      };
+      expect(await matches(subscribedMember.id, rule)).toBe(true);
+      expect(await matches(noStatusMember.id, rule)).toBe(false);
+    });
+  });
+
+  describe('signup', () => {
+    async function signUp(
+      email: string,
+      newsletter?: {
+        newsletterStatus: NewsletterStatus;
+        newsletterGroups: string[];
+      }
+    ): Promise<string> {
+      await admin.signup.start({ email, ...newsletter });
+      const { data: signupFlow } = await admin.fetch.get<{ id: string }>(
+        `/dev/signup-flow/${email}`
+      );
+      await admin.signup.confirmEmail(signupFlow.id);
+
+      const { items } = await admin.contact.list({
+        rules: {
+          condition: 'AND',
+          rules: [{ field: 'email', operator: 'equal', value: [email] }],
+        },
+      });
+      expect(items).toHaveLength(1);
+      return items[0].id;
+    }
+
+    function uniqueEmail(): string {
+      return `nl-signup-${Date.now()}-${Math.random().toString(36).slice(2)}@example.com`;
+    }
+
+    // Starting and confirming a signup are both rate limited per user
+    beforeEach(async () => {
+      await admin.fetch.post('/dev/clear-rate-limiter-cache');
+    });
+
+    afterAll(async () => {
+      await admin.fetch.post('/dev/clear-rate-limiter-cache');
+    });
+
+    it('should apply the default status to a new contact', async () => {
+      const contactId = await signUp(uniqueEmail());
+      createdContactIds.push(contactId);
+
+      const newsletter = await getNewsletter(contactId);
+      expect(newsletter.status).toBe(NewsletterStatus.None);
+      expect(newsletter.groups).toEqual([]);
+    });
+
+    it('should apply the chosen status and groups to a new contact', async () => {
+      const contactId = await signUp(uniqueEmail(), {
+        newsletterStatus: NewsletterStatus.Subscribed,
+        newsletterGroups: [TEA.id],
+      });
+      createdContactIds.push(contactId);
+
+      const newsletter = await getNewsletter(contactId);
+      expect(newsletter.status).toBe(NewsletterStatus.Subscribed);
+      expect(newsletter.groups).toEqual([TEA.id]);
+    });
+
+    it('should subscribe an existing contact that opts in', async () => {
+      const existing = await createMember();
+      const contact = await admin.contact.get(existing.id);
+      const contactId = await signUp(contact.email, {
+        newsletterStatus: NewsletterStatus.Subscribed,
+        newsletterGroups: [KOMBUCHA.id],
+      });
+      expect(contactId).toBe(existing.id);
+
+      const newsletter = await getNewsletter(existing.id);
+      expect(newsletter.status).toBe(NewsletterStatus.Subscribed);
+      expect(newsletter.groups).toEqual([KOMBUCHA.id]);
+    });
+
+    it('should leave an existing contact alone without an opt-in', async () => {
+      const existing = await createMember([KOMBUCHA.id]);
+      const contact = await admin.contact.get(existing.id);
+      await signUp(contact.email);
+
+      const newsletter = await getNewsletter(existing.id);
+      expect(newsletter.status).toBe(NewsletterStatus.Subscribed);
+      expect(newsletter.groups).toEqual([KOMBUCHA.id]);
     });
   });
 });
