@@ -16,6 +16,7 @@ import { In, Like } from 'typeorm';
 import type {
   StripeInvoicePayment,
   StripePaymentReconciliation,
+  StripeResources,
   SyncStripeReconcileArgs,
 } from '../../../types/sync.js';
 import {
@@ -60,23 +61,21 @@ async function retryRateLimited<T>(request: () => Promise<T>): Promise<T> {
 }
 
 /**
- * Helper function to fetch the invoices matching the given filter, a page at
- * a time
+ * Helper function to fetch a Stripe list, a page at a time
  *
  * Pages by cursor instead of using the SDK's auto-pagination, which does not
  * retry a rate limited request: one rate limit would end the listing and it
  * would have to start again from the first page.
  *
- * @param params The invoice filter
+ * @param list Requests the page of the list at the given cursor
  */
-async function* fetchInvoicePages(
-  params: Stripe.InvoiceListParams
-): AsyncGenerator<Stripe.Invoice[]> {
+async function* fetchPages<T extends { id: string }>(
+  list: (page: Stripe.PaginationParams) => Promise<Stripe.ApiList<T>>
+): AsyncGenerator<T[]> {
   let startingAfter: string | undefined;
   do {
     const page = await retryRateLimited(() =>
-      stripe.invoices.list({
-        ...params,
+      list({
         limit: 100,
         ...(startingAfter && { starting_after: startingAfter }),
       })
@@ -84,6 +83,36 @@ async function* fetchInvoicePages(
     yield page.data;
     startingAfter = page.has_more ? page.data.at(-1)?.id : undefined;
   } while (startingAfter);
+}
+
+/**
+ * Fetch a whole Stripe list and keep the objects with the given ids. The
+ * Stripe account can be shared with other integrations, so only objects
+ * linked to our own data are ours.
+ *
+ * @param name The name of the objects, for the log
+ * @param ids The ids of the objects to keep
+ * @param list Requests the page of the list at the given cursor
+ * @returns The kept objects by id
+ */
+async function fetchKnown<T extends { id: string }>(
+  name: string,
+  ids: Set<string | null>,
+  list: (page: Stripe.PaginationParams) => Promise<Stripe.ApiList<T>>
+): Promise<Map<string, T>> {
+  log.info(`📡 Fetching Stripe ${name}...`);
+  const known = new Map<string, T>();
+  let fetched = 0;
+  for await (const page of fetchPages(list)) {
+    for (const item of page) {
+      if (ids.has(item.id)) {
+        known.set(item.id, item);
+      }
+    }
+    fetched += page.length;
+    log.info(`  • Fetched ${fetched} ${name}`);
+  }
+  return known;
 }
 
 /**
@@ -108,15 +137,18 @@ function toInvoicePayment(invoice: Stripe.Invoice): StripeInvoicePayment {
  * @param subscriptionId The Stripe subscription ID to check
  * @param contact The contact associated with the subscription
  * @param dryRun Whether to perform a dry run (no changes applied)
+ * @param listed The subscription if it was already fetched
  * @returns Any updates to be applied to the contribution
  */
 async function syncSubscription(
   subscriptionId: string,
   contact: Contact,
-  dryRun: boolean
+  dryRun: boolean,
+  listed: Stripe.Subscription | undefined
 ): Promise<{ subscriptionId: null; cancelledAt?: Date } | undefined> {
   try {
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    const subscription =
+      listed || (await stripe.subscriptions.retrieve(subscriptionId));
     if (subscription.status === 'canceled') {
       log.info(`    🚫 Cancelling subscription ${subscriptionId}`);
 
@@ -149,11 +181,18 @@ async function syncSubscription(
  * Sync our payment method data with the live Stripe data
  *
  * @param mandateId The Stripe payment method ID
+ * @param customer The customer if it was already fetched
  * @returns Any updates to be applied to the contribution
  */
 async function syncPaymentMethod(
-  mandateId: string
+  mandateId: string,
+  customer: Stripe.Customer | undefined
 ): Promise<{ mandateId: null } | undefined> {
+  // A customer's default payment method is attached to that customer
+  if (customer?.invoice_settings.default_payment_method === mandateId) {
+    return;
+  }
+
   try {
     const paymentMethod = await stripe.paymentMethods.retrieve(mandateId);
     if (!paymentMethod.customer) {
@@ -174,15 +213,17 @@ async function syncPaymentMethod(
  * Sync our customer data with the live Stripe data
  *
  * @param customerId The Stripe customer Id
+ * @param listed The customer if it was already fetched
  * @returns Any updates to be applied to the contribution
  */
 async function syncCustomer(
-  customerId: string
+  customerId: string,
+  listed: Stripe.Customer | undefined
 ): Promise<
   { customerId: null; mandateId: null; subscriptionId: null } | undefined
 > {
   try {
-    const customer = await stripe.customers.retrieve(customerId);
+    const customer = listed || (await stripe.customers.retrieve(customerId));
     if (customer.deleted) {
       log.info(`    🗑️ Removing deleted customer ${customerId}`);
       return { customerId: null, mandateId: null, subscriptionId: null };
@@ -248,7 +289,9 @@ async function fetchPayments(
   const checkedIds = new Set<string>();
   for (const filter of filters) {
     try {
-      for await (const invoices of fetchInvoicePages(filter)) {
+      for await (const invoices of fetchPages((page) =>
+        stripe.invoices.list({ ...filter, ...page })
+      )) {
         const payments = await getRepository(Payment).findBy({
           id: In(invoices.map((invoice) => invoice.id)),
         });
@@ -415,34 +458,46 @@ async function fixPayments(
  *
  * @param contribution The contribution to process
  * @param argv The command line arguments
+ * @param resources The Stripe objects that were already fetched
  */
 async function processContribution(
   contribution: ContactContribution,
-  argv: SyncStripeReconcileArgs
+  argv: SyncStripeReconcileArgs,
+  resources: StripeResources
 ) {
   log.info(`👤 Syncing ${contribution.contact.email}`);
 
   const updates: Partial<ContactContribution> = {};
+  const customer = contribution.customerId
+    ? resources.customers.get(contribution.customerId)
+    : undefined;
 
   if (contribution.subscriptionId && argv.fix.includes('subscriptions')) {
     log.info(`  📋 Syncing subscription ${contribution.subscriptionId}`);
     const subscriptionUpdates = await syncSubscription(
       contribution.subscriptionId,
       contribution.contact,
-      argv.dryRun
+      argv.dryRun,
+      resources.subscriptions.get(contribution.subscriptionId)
     );
     Object.assign(updates, subscriptionUpdates);
   }
 
   if (contribution.mandateId && argv.fix.includes('mandates')) {
     log.info(`  💳 Syncing mandate ${contribution.mandateId}`);
-    const mandateUpdates = await syncPaymentMethod(contribution.mandateId);
+    const mandateUpdates = await syncPaymentMethod(
+      contribution.mandateId,
+      customer
+    );
     Object.assign(updates, mandateUpdates);
   }
 
   if (contribution.customerId && argv.fix.includes('customers')) {
     log.info(`  👤 Syncing customer ${contribution.customerId}`);
-    const customerUpdates = await syncCustomer(contribution.customerId);
+    const customerUpdates = await syncCustomer(
+      contribution.customerId,
+      customer
+    );
     Object.assign(updates, customerUpdates);
   }
 
@@ -502,8 +557,33 @@ export const reconcile = async (
       argv.fix.includes('mandates') ||
       argv.fix.includes('customers')
     ) {
+      const resources: StripeResources = {
+        subscriptions: new Map(),
+        customers: new Map(),
+      };
+      // Listing the whole account takes far fewer requests than retrieving
+      // each object, so only retrieve them all one by one when limited to
+      // specific contacts. An object missing from a list is still retrieved,
+      // so nothing is removed on the word of a list alone.
+      if (!argv.contactIds) {
+        if (argv.fix.includes('subscriptions')) {
+          resources.subscriptions = await fetchKnown(
+            'subscriptions',
+            new Set(contributions.map((c) => c.subscriptionId)),
+            (page) => stripe.subscriptions.list({ status: 'all', ...page })
+          );
+        }
+        if (argv.fix.includes('mandates') || argv.fix.includes('customers')) {
+          resources.customers = await fetchKnown(
+            'customers',
+            new Set(contributions.map((c) => c.customerId)),
+            (page) => stripe.customers.list(page)
+          );
+        }
+      }
+
       for (const contribution of contributions) {
-        await processContribution(contribution, argv);
+        await processContribution(contribution, argv, resources);
       }
     }
 
