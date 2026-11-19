@@ -6,12 +6,12 @@ import {
   stripe,
 } from '@beabee/core/lib/stripe';
 import { log as mainLogger } from '@beabee/core/logging';
-import { Contact, ContactContribution, Payment } from '@beabee/core/models';
+import { ContactContribution, Payment } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 import { activityService, contactsService } from '@beabee/core/services';
 
 import { setTimeout } from 'node:timers/promises';
-import { In, Like } from 'typeorm';
+import { In, IsNull, Like } from 'typeorm';
 
 import type {
   StripeInvoicePayment,
@@ -135,17 +135,20 @@ function toInvoicePayment(invoice: Stripe.Invoice): StripeInvoicePayment {
  * Sync our subscription data with the live Stripe data
  *
  * @param subscriptionId The Stripe subscription ID to check
- * @param contact The contact associated with the subscription
- * @param dryRun Whether to perform a dry run (no changes applied)
  * @param listed The subscription if it was already fetched
- * @returns Any updates to be applied to the contribution
+ * @returns Any updates to be applied to the contribution, and whether the
+ * contact should lose their membership
  */
 async function syncSubscription(
   subscriptionId: string,
-  contact: Contact,
-  dryRun: boolean,
   listed: Stripe.Subscription | undefined
-): Promise<{ subscriptionId: null; cancelledAt?: Date } | undefined> {
+): Promise<
+  | {
+      updates: { subscriptionId: null; cancelledAt?: Date };
+      revokeMember: boolean;
+    }
+  | undefined
+> {
   try {
     const subscription =
       listed || (await stripe.subscriptions.retrieve(subscriptionId));
@@ -153,24 +156,23 @@ async function syncSubscription(
       log.info(`    🚫 Cancelling subscription ${subscriptionId}`);
 
       return {
-        cancelledAt: subscription.canceled_at
-          ? new Date(subscription.canceled_at * 1000)
-          : new Date(),
-        subscriptionId: null,
+        updates: {
+          cancelledAt: subscription.canceled_at
+            ? new Date(subscription.canceled_at * 1000)
+            : new Date(),
+          subscriptionId: null,
+        },
+        revokeMember: false,
       };
     } else if (subscription.status === 'incomplete_expired') {
       log.info(`    🗑️ Removing incomplete subscription ${subscriptionId}`);
 
-      if (!dryRun) {
-        await contactsService.revokeContactRole(contact, 'member');
-      }
-
-      return { subscriptionId: null };
+      return { updates: { subscriptionId: null }, revokeMember: true };
     }
   } catch (e) {
     if (isResourceMissingError(e)) {
       log.info(`    🗑️ Removing missing subscription ${subscriptionId}`);
-      return { subscriptionId: null };
+      return { updates: { subscriptionId: null }, revokeMember: false };
     } else {
       throw e;
     }
@@ -243,6 +245,11 @@ async function syncCustomer(
  * created in the reconciliation window, plus the invoices of all payments we
  * hold as unfinished, as those can change long after they were created.
  *
+ * Our payments are read before the first invoice, so an invoice is never
+ * older than the payment it is compared with. Read the other way round, a
+ * payment that a webhook updated in between would be set back to the
+ * invoice's earlier state.
+ *
  * @param contributions The Stripe contributions to reconcile payments for
  * @param argv The command line arguments
  * @returns The payment reconciliation data
@@ -285,6 +292,28 @@ async function fetchPayments(
       }))
     : [window];
 
+  log.info('📡 Loading Stripe payments...');
+  const payments = new Map(
+    (
+      await getRepository(Payment).find({
+        where: {
+          id: Like('in_%'),
+          ...(argv.contactIds && { contactId: In(argv.contactIds) }),
+        },
+        select: {
+          id: true,
+          status: true,
+          amount: true,
+          chargeDate: true,
+          description: true,
+          subscriptionId: true,
+          type: true,
+        },
+      })
+    ).map((payment) => [payment.id, payment])
+  );
+  log.info(`📊 Found ${payments.size} Stripe payments`);
+
   log.info('📡 Fetching Stripe invoices...');
   const checkedIds = new Set<string>();
   for (const filter of filters) {
@@ -292,9 +321,6 @@ async function fetchPayments(
       for await (const invoices of fetchPages((page) =>
         stripe.invoices.list({ ...filter, ...page })
       )) {
-        const payments = await getRepository(Payment).findBy({
-          id: In(invoices.map((invoice) => invoice.id)),
-        });
         const { mismatches, missing } = classifyInvoicePayments(
           invoices.map(toInvoicePayment),
           payments,
@@ -316,13 +342,14 @@ async function fetchPayments(
   }
 
   log.info('📡 Fetching Stripe invoices of unfinished payments...');
-  const unfinishedPayments = await getRepository(Payment).findBy({
-    id: Like('in_%'),
-    status: In([PaymentStatus.Draft, PaymentStatus.Pending]),
-    ...(argv.contactIds && { contactId: In(argv.contactIds) }),
-  });
-  for (const payment of unfinishedPayments) {
-    if (checkedIds.has(payment.id)) continue;
+  for (const payment of payments.values()) {
+    if (
+      checkedIds.has(payment.id) ||
+      (payment.status !== PaymentStatus.Draft &&
+        payment.status !== PaymentStatus.Pending)
+    ) {
+      continue;
+    }
 
     try {
       const invoice = await retryRateLimited(() =>
@@ -330,7 +357,7 @@ async function fetchPayments(
       );
       const { mismatches } = classifyInvoicePayments(
         [toInvoicePayment(invoice)],
-        [payment],
+        payments,
         contactIdByCustomerId
       );
       data.mismatches.push(...mismatches);
@@ -468,19 +495,19 @@ async function processContribution(
   log.info(`👤 Syncing ${contribution.contact.email}`);
 
   const updates: Partial<ContactContribution> = {};
+  let revokeMember = false;
   const customer = contribution.customerId
     ? resources.customers.get(contribution.customerId)
     : undefined;
 
   if (contribution.subscriptionId && argv.fix.includes('subscriptions')) {
     log.info(`  📋 Syncing subscription ${contribution.subscriptionId}`);
-    const subscriptionUpdates = await syncSubscription(
+    const result = await syncSubscription(
       contribution.subscriptionId,
-      contribution.contact,
-      argv.dryRun,
       resources.subscriptions.get(contribution.subscriptionId)
     );
-    Object.assign(updates, subscriptionUpdates);
+    Object.assign(updates, result?.updates);
+    revokeMember = !!result?.revokeMember;
   }
 
   if (contribution.mandateId && argv.fix.includes('mandates')) {
@@ -510,11 +537,25 @@ async function processContribution(
     );
 
     if (!argv.dryRun) {
-      await getRepository(ContactContribution).update(
-        contribution.contact.id,
+      // The contribution can change while the Stripe objects are fetched, so
+      // only write if it still has the ids that were checked
+      const result = await getRepository(ContactContribution).update(
+        {
+          contactId: contribution.contact.id,
+          subscriptionId: contribution.subscriptionId ?? IsNull(),
+          mandateId: contribution.mandateId ?? IsNull(),
+          customerId: contribution.customerId ?? IsNull(),
+        },
         updates
       );
+      if (!result.affected) {
+        log.info('  ⏭️ Skipped, the contribution changed in the meantime');
+        return;
+      }
 
+      if (revokeMember) {
+        await contactsService.revokeContactRole(contribution.contact, 'member');
+      }
       if (updates.cancelledAt) {
         await activityService.addEvent({
           eventType: ActivityEventType.ContactContributionCancelled,

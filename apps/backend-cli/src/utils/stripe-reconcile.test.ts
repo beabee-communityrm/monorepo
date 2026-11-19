@@ -78,7 +78,7 @@ describe('classifyInvoicePayments', () => {
     expect(
       classifyInvoicePayments(
         [{ id: 'in_1', customerId: 'cus_known', data }],
-        [payment],
+        new Map([[payment.id, payment]]),
         contactIdByCustomerId
       )
     ).toEqual({
@@ -91,7 +91,7 @@ describe('classifyInvoicePayments', () => {
     expect(
       classifyInvoicePayments(
         [{ id: 'in_1', customerId: 'cus_known', data: createData() }],
-        [createPayment('in_1')],
+        new Map([['in_1', createPayment('in_1')]]),
         contactIdByCustomerId
       )
     ).toEqual({ mismatches: [], missing: [] });
@@ -100,7 +100,9 @@ describe('classifyInvoicePayments', () => {
   it('reports a mismatch even if the customer is unknown', () => {
     const { mismatches } = classifyInvoicePayments(
       [{ id: 'in_1', customerId: 'cus_unknown', data: createData() }],
-      [createPayment('in_1', { status: PaymentStatus.Draft })],
+      new Map([
+        ['in_1', createPayment('in_1', { status: PaymentStatus.Draft })],
+      ]),
       contactIdByCustomerId
     );
 
@@ -113,7 +115,7 @@ describe('classifyInvoicePayments', () => {
     expect(
       classifyInvoicePayments(
         [{ id: 'in_1', customerId: 'cus_known', data }],
-        [],
+        new Map(),
         contactIdByCustomerId
       )
     ).toEqual({
@@ -129,7 +131,7 @@ describe('classifyInvoicePayments', () => {
           { id: 'in_1', customerId: 'cus_unknown', data: createData() },
           { id: 'in_2', customerId: null, data: createData() },
         ],
-        [],
+        new Map(),
         contactIdByCustomerId
       )
     ).toEqual({ mismatches: [], missing: [] });

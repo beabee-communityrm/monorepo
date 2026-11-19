@@ -67,20 +67,20 @@ export function printPaymentMismatch({
  * contact, other invoices on the Stripe account are not ours.
  *
  * @param invoicePayments The Stripe invoices as payment data
- * @param payments The local payments found for those invoices
+ * @param payments The local payments by id
  * @param contactIdByCustomerId The contact of each known Stripe customer
  * @returns The mismatched and the missing payments
  */
 export function classifyInvoicePayments(
   invoicePayments: StripeInvoicePayment[],
-  payments: StripeLocalPayment[],
+  payments: Map<string, StripeLocalPayment>,
   contactIdByCustomerId: Map<string, string>
 ): { mismatches: StripePaymentMismatch[]; missing: StripeMissingPayment[] } {
   const mismatches: StripePaymentMismatch[] = [];
   const missing: StripeMissingPayment[] = [];
 
   for (const { id, customerId, data } of invoicePayments) {
-    const payment = payments.find((p) => p.id === id);
+    const payment = payments.get(id);
     if (payment) {
       const fields = getMismatchedPaymentFields(payment, data);
       if (fields.length > 0) {
