@@ -262,6 +262,7 @@ async function fetchPayments(
         for (const invoice of invoices) {
           checkedIds.add(invoice.id);
         }
+        log.info(`  • Fetched ${checkedIds.size} invoices`);
       }
     } catch (e) {
       // A missing customer is handled by the customers fix
