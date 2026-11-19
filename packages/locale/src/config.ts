@@ -90,10 +90,18 @@ export const config: LocaleOptions = {
   },
   ro: {
     baseLocale: 'ro',
-    name: 'Română',
+    name: 'Română (formal)',
     displayName: 'Română',
     adminLocale: 'en',
     fallbackLocale: 'en',
+    availableIn: [LocaleContext.Callout],
+  },
+  'ro@informal': {
+    baseLocale: 'ro',
+    name: 'Română (informal)',
+    displayName: 'Română',
+    adminLocale: 'en',
+    fallbackLocale: 'ro',
     availableIn: [LocaleContext.Callout],
   },
 };

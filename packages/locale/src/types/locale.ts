@@ -11,4 +11,5 @@ export type Locale =
   | 'uk'
   | 'fr'
   | 'el'
-  | 'ro';
+  | 'ro'
+  | 'ro@informal';
