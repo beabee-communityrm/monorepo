@@ -26,17 +26,16 @@ meta:
       />
     </template>
 
-    <LoadError
-      v-else-if="responsesError"
-      :retry="loadResponses"
-      keypath="callout.loadResponsesError"
-      class="py-8 text-center"
-    />
-
     <div v-else class="flex flex-col gap-3">
       <h3 class="text-lg">{{ t('callout.yourResponse') }}</h3>
       <UCard :ui="{ body: 'p-0 sm:p-0' }">
-        <div class="divide-y divide-muted/50">
+        <LoadError
+          v-if="responsesError"
+          :retry="loadResponses"
+          keypath="callout.loadResponseError"
+          class="p-4 sm:p-6"
+        />
+        <div v-else class="divide-y divide-muted/50">
           <div
             v-for="n in 3"
             :key="n"

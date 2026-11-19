@@ -919,6 +919,7 @@
     "language": "Language",
     "leavePreview": "Leave preview",
     "loadError": "Failed to load this CrowdNewsroom. Contact {support} if it keeps happening.",
+    "loadResponseError": "Failed to load your response. Contact {support} if it keeps happening.",
     "loadResponsesError": "Failed to load your responses. Contact {support} if it keeps happening.",
     "logInOrSignUp": "Log in or join to take part.",
     "loginToYourAccount": "Login to your account",

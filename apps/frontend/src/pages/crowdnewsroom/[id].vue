@@ -52,19 +52,8 @@
     <template v-else>
       <USkeleton class="h-16 w-full bg-accented" />
       <div class="flex flex-col gap-3">
-        <h3 class="text-lg">{{ t('callout.yourResponse') }}</h3>
-        <UCard :ui="{ body: 'p-0 sm:p-0' }">
-          <div class="divide-y divide-muted/50">
-            <div
-              v-for="n in 3"
-              :key="n"
-              class="flex flex-col gap-1 px-4 py-4 sm:px-6"
-            >
-              <USkeleton class="h-5 w-1/3" />
-              <USkeleton class="h-5 w-1/2" />
-            </div>
-          </div>
-        </UCard>
+        <USkeleton class="h-7 w-36 bg-accented" />
+        <USkeleton class="h-56 w-full bg-accented" />
       </div>
       <USkeleton class="h-20 w-full bg-accented" />
     </template>
