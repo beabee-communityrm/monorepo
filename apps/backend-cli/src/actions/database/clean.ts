@@ -1,4 +1,5 @@
 import { getRepository } from '@beabee/core/database';
+import { log as mainLogger } from '@beabee/core/logging';
 import {
   PaymentFlow,
   ResetSecurityFlow,
@@ -14,6 +15,8 @@ import {
   ObjectLiteral,
 } from 'typeorm';
 
+const log = mainLogger.child({ app: 'database-clean' });
+
 /**
  * Clean old data from a specific entity
  *
@@ -26,7 +29,7 @@ async function clean<T extends ObjectLiteral>(
 ): Promise<void> {
   const repo = getRepository(entity);
   const { affected } = await repo.delete(findOptions);
-  console.log(`Cleaned ${affected || 0} records from ${repo.metadata.name}`);
+  log.info(`Cleaned ${affected || 0} records from ${repo.metadata.name}`);
 }
 
 /**
@@ -34,7 +37,7 @@ async function clean<T extends ObjectLiteral>(
  */
 export const cleanDatabase = async (): Promise<void> => {
   await runApp(async () => {
-    console.log('🧹 Starting database cleanup...\n');
+    log.info('🧹 Starting database cleanup...');
 
     const now = new Date();
 
@@ -42,6 +45,6 @@ export const cleanDatabase = async (): Promise<void> => {
     await clean(SignupFlow, { date: LessThan(subDays(now, 1)) });
     await clean(PaymentFlow, { date: LessThan(subDays(now, 7)) });
 
-    console.log('\n✅ Database cleanup completed successfully!');
+    log.info('✅ Database cleanup completed successfully!');
   });
 };

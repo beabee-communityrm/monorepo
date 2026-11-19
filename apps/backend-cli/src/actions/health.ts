@@ -7,8 +7,6 @@ import { imageService } from '@beabee/core/services/ImageService';
 import { newsletterService } from '@beabee/core/services/NewsletterService';
 import { paymentService } from '@beabee/core/services/PaymentService';
 
-import chalk from 'chalk';
-
 import type { HealthIntegration } from '../types/health.js';
 
 const log = mainLogger.child({ app: 'health-check' });
@@ -25,11 +23,11 @@ const checks: Record<HealthIntegration, () => Promise<ApiHealthStatus>> = {
 };
 
 /**
- * Run the health checks for the given integrations, printing the status of
+ * Run the health checks for the given integrations, logging the status of
  * each. Defaults to all integrations. Exits with a non-zero code if any
  * integration is unhealthy.
  * @param integrations The integrations to check
- * @param notify Whether to send log notifications
+ * @param notify Whether to log failures at error level, which alerts
  */
 export const checkHealth = async (
   integrations: HealthIntegration[] = Object.keys(
@@ -40,6 +38,8 @@ export const checkHealth = async (
   await runApp(async () => {
     let allHealthy = true;
 
+    const failureLevel = notify ? 'error' : 'warning';
+
     for (const name of integrations) {
       let status: ApiHealthStatus;
       let logged = false;
@@ -48,29 +48,20 @@ export const checkHealth = async (
       } catch (err) {
         status = ApiHealthStatus.UNHEALTHY;
         logged = true;
-        if (notify) {
-          log.error(`Health check failed for ${name}`, {
-            integration: name,
-            error: err instanceof Error ? err.message : String(err),
-          });
-        }
+        log.log(failureLevel, `Health check failed for ${name}`, {
+          integration: name,
+          error: err instanceof Error ? err.message : String(err),
+        });
       }
 
       if (status === ApiHealthStatus.HEALTHY) {
-        console.log(`${chalk.green('✓')} ${name.padEnd(10)} healthy`);
-        if (notify) log.info(`Integration healthy: ${name}`);
+        log.info(`Integration healthy: ${name}`);
       } else if (status === ApiHealthStatus.DISABLED) {
-        if (notify) log.info(`Integration disabled: ${name}`);
-        console.log(
-          `${chalk.gray('-')} ${name.padEnd(10)} ${chalk.gray('disabled')}`
-        );
+        log.info(`Integration disabled: ${name}`);
       } else {
         allHealthy = false;
-        console.log(
-          `${chalk.red('✗')} ${name.padEnd(10)} ${chalk.red('unhealthy')}`
-        );
-        if (!logged && notify) {
-          log.error(`Integration unhealthy: ${name}`);
+        if (!logged) {
+          log.log(failureLevel, `Integration unhealthy: ${name}`);
         }
       }
     }
