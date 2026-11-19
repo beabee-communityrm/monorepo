@@ -25,6 +25,7 @@ const logger = winston.createLogger({
     logFormats[config.logFormat]
   ),
   levels: winston.config.syslog.levels,
+  defaultMeta: config.logFields,
   transports: [
     new winston.transports.Console({
       stderrLevels: ['error', 'warning', 'info', 'debug'],

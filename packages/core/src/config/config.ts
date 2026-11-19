@@ -506,6 +506,7 @@ export const config = {
   // Logging configuration
   logging: env.ss('BEABEE_LOGGING', []), // Enable logging (default: false)
   logFormat: env.e('BEABEE_LOGFORMAT', ['json', 'simple'] as const, 'json'), // Log format (default: json)
+  logFields: env.json('BEABEE_LOGFIELDS', {}) as Record<string, unknown>, // JSON of fields added to every log line
 
   // Rate limiting configuration
   disableRateLimit: env.b('BEABEE_DISABLERATELIMIT', false), // Disable rate limiting in test mode (default: false)
