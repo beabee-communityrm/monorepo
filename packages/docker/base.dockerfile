@@ -130,6 +130,7 @@ RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf
 RUN ln -s /proc/1/fd/1 /var/log/cron.log
 
 # Configure cron jobs
+COPY apps/backend/cron-run /usr/local/bin/cron-run
 COPY apps/backend/crontab crontab
 RUN crontab ./crontab
 

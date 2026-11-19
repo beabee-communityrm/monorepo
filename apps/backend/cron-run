@@ -1,0 +1,30 @@
+#!/bin/sh
+# Usage: cron-run <job> <command> [args...]
+#
+# Runs one crontab job as a single traceable run: logs a JSON line when it
+# starts and when it finishes (with exit code and duration), and sets
+# BEABEE_LOGFIELDS so every line the job logs carries the same job and run.
+
+job=$1
+shift
+
+export HOME=/home/node
+cd /opt/apps/backend || exit 1
+
+# The per-pod offset described in the crontab
+sleep $(($(cksum < /etc/hostname | cut -d' ' -f1) % 300))
+
+run=$(cat /proc/sys/kernel/random/uuid)
+fields="\"cronJob\":\"$job\",\"cronRun\":\"$run\""
+export BEABEE_LOGFIELDS="{$fields}"
+
+echo "{\"app\":\"cron\",$fields,\"level\":\"info\",\"event\":\"started\",\"message\":\"Started $job\"}"
+start=$(date +%s)
+
+"$@"
+code=$?
+
+level=info
+[ "$code" -ne 0 ] && level=error
+echo "{\"app\":\"cron\",$fields,\"level\":\"$level\",\"event\":\"finished\",\"exitCode\":$code,\"durationSeconds\":$(($(date +%s) - start)),\"message\":\"Finished $job with exit code $code\"}"
+exit "$code"
