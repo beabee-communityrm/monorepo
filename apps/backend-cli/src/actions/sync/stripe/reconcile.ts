@@ -63,6 +63,10 @@ async function retryRateLimited<T>(request: () => Promise<T>): Promise<T> {
  * Helper function to fetch the invoices matching the given filter, a page at
  * a time
  *
+ * Pages by cursor instead of using the SDK's auto-pagination, which does not
+ * retry a rate limited request: one rate limit would end the listing and it
+ * would have to start again from the first page.
+ *
  * @param params The invoice filter
  */
 async function* fetchInvoicePages(
