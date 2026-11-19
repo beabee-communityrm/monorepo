@@ -8,11 +8,24 @@ import { truncateForLog } from '#utils/log';
 
 const log = mainLogger.child({ app: 'salesforce' });
 
-type SFSettings = SalesforceContactSyncConfig['settings'];
+type SFSettings = Pick<
+  SalesforceContactSyncConfig['settings'],
+  'authUrl' | 'clientId' | 'clientSecret' | 'apiVersion'
+>;
 
 export const PROFILE_OBJECT = 'beabee_Profile__c';
 /** External ID on the profile object holding the beabee contact ID. */
 export const PROFILE_ID_FIELD = 'beabeeID_bee__c';
+
+/**
+ * The REST resource of a contact's profile, addressed by the beabee contact ID
+ *
+ * @param contactId The beabee contact ID
+ * @returns The resource path relative to the API base URL
+ */
+export function profileUrl(contactId: string): string {
+  return `sobjects/${PROFILE_OBJECT}/${PROFILE_ID_FIELD}/${contactId}`;
+}
 
 /**
  * Create a Salesforce REST client. Handles OAuth2 client-credentials token
@@ -109,14 +122,9 @@ export function contactToProfileFields(
   contact: Contact
 ): Record<string, unknown> {
   const address = contact.profile.deliveryAddress;
-  const name =
-    `${contact.firstname} ${contact.lastname}`.trim() || contact.email;
 
   return {
-    Name: name.slice(0, 80),
-    EMail_bee__c: contact.email,
-    FirstName_bee__c: contact.firstname.slice(0, 40),
-    LastName_bee__c: contact.lastname.slice(0, 50),
+    ...identityFields(contact),
     ProfileCreateDate_bee__c: contact.joined.toISOString(),
     LastLogin_bee__c: null,
     beabeeProfileLink_bee__c: `${config.audience}/admin/contacts/${contact.id}`,
@@ -126,5 +134,26 @@ export function contactToProfileFields(
     MailingCity_bee__c: address?.city.slice(0, 100) ?? null,
     MailingPostcode_bee__c: address?.postcode.slice(0, 12) ?? null,
     MailingCountry_bee__c: address?.country?.slice(0, 100) ?? null,
+  };
+}
+
+/**
+ * The profile fields identifying a contact. Both the contact sync and the
+ * newsletter provider write them, as `Name` and `EMail_bee__c` are required to
+ * create the record. Text values are cut to the field lengths in Salesforce.
+ *
+ * @param contact The contact's email and names
+ * @returns A record of Salesforce field API names to values
+ */
+export function identityFields(
+  contact: Pick<Contact, 'email' | 'firstname' | 'lastname'>
+): Record<string, string> {
+  const name =
+    `${contact.firstname} ${contact.lastname}`.trim() || contact.email;
+  return {
+    Name: name.slice(0, 80),
+    EMail_bee__c: contact.email,
+    FirstName_bee__c: contact.firstname.slice(0, 40),
+    LastName_bee__c: contact.lastname.slice(0, 50),
   };
 }
