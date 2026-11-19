@@ -22,12 +22,16 @@ import type {
 import {
   classifyInvoicePayments,
   countStatusChanges,
+  getCreatedWindows,
   printPaymentMismatch,
 } from '../../../utils/stripe-reconcile.js';
 
 const log = mainLogger.child({ app: 'sync-stripe-reconcile' });
 
 const MAX_RATE_LIMIT_RETRIES = 5;
+
+/** The number of invoice lists fetched at the same time */
+const INVOICE_LIST_CONCURRENCY = 4;
 
 /**
  * Helper function to determine if an error is a Stripe "resource missing" error
@@ -274,24 +278,6 @@ async function fetchPayments(
     }
   }
 
-  const window: Stripe.InvoiceListParams =
-    argv.since || argv.until
-      ? {
-          created: {
-            ...(argv.since && { gte: Math.floor(argv.since.getTime() / 1000) }),
-            ...(argv.until && { lte: Math.floor(argv.until.getTime() / 1000) }),
-          },
-        }
-      : {};
-  // Listing the whole account takes far fewer requests than listing each
-  // customer, so only list by customer when limited to specific contacts
-  const filters: Stripe.InvoiceListParams[] = argv.contactIds
-    ? [...contactIdByCustomerId.keys()].map((customer) => ({
-        ...window,
-        customer,
-      }))
-    : [window];
-
   log.info('📡 Loading Stripe payments...');
   const payments = new Map(
     (
@@ -314,32 +300,71 @@ async function fetchPayments(
   );
   log.info(`📊 Found ${payments.size} Stripe payments`);
 
-  log.info('📡 Fetching Stripe invoices...');
-  const checkedIds = new Set<string>();
-  for (const filter of filters) {
-    try {
-      for await (const invoices of fetchPages((page) =>
-        stripe.invoices.list({ ...filter, ...page })
-      )) {
-        const { mismatches, missing } = classifyInvoicePayments(
-          invoices.map(toInvoicePayment),
-          payments,
-          contactIdByCustomerId
-        );
-        data.mismatches.push(...mismatches);
-        data.missing.push(...missing);
-        for (const invoice of invoices) {
-          checkedIds.add(invoice.id);
+  const window: Stripe.InvoiceListParams =
+    argv.since || argv.until
+      ? {
+          created: {
+            ...(argv.since && { gte: Math.floor(argv.since.getTime() / 1000) }),
+            ...(argv.until && { lte: Math.floor(argv.until.getTime() / 1000) }),
+          },
         }
-        log.info(`  • Fetched ${checkedIds.size} invoices`);
-      }
-    } catch (e) {
-      // A missing customer is handled by the customers fix
-      if (!isResourceMissingError(e)) {
-        throw e;
-      }
+      : {};
+  const now = new Date();
+  let oldest = now;
+  for (const payment of payments.values()) {
+    if (payment.chargeDate < oldest) {
+      oldest = payment.chargeDate;
     }
   }
+  // Listing the whole account takes far fewer requests than listing each
+  // customer, so only list by customer when limited to specific contacts.
+  // The account is listed a month at a time: one list can only be read page
+  // after page, separate months can be fetched at the same time.
+  const filters: Stripe.InvoiceListParams[] = argv.contactIds
+    ? [...contactIdByCustomerId.keys()].map((customer) => ({
+        ...window,
+        customer,
+      }))
+    : getCreatedWindows(oldest, now, argv.since, argv.until).map((created) =>
+        Object.keys(created).length > 0 ? { created } : {}
+      );
+
+  log.info(`📡 Fetching Stripe invoices in ${filters.length} lists...`);
+  const checkedIds = new Set<string>();
+  const queue = [...filters];
+  let done = 0;
+  await Promise.all(
+    Array.from({ length: INVOICE_LIST_CONCURRENCY }, async () => {
+      for (let filter = queue.shift(); filter; filter = queue.shift()) {
+        const params = filter;
+        try {
+          for await (const invoices of fetchPages((page) =>
+            stripe.invoices.list({ ...params, ...page })
+          )) {
+            const { mismatches, missing } = classifyInvoicePayments(
+              invoices.map(toInvoicePayment),
+              payments,
+              contactIdByCustomerId
+            );
+            data.mismatches.push(...mismatches);
+            data.missing.push(...missing);
+            for (const invoice of invoices) {
+              checkedIds.add(invoice.id);
+            }
+            log.info(
+              `  • Fetched ${checkedIds.size} invoices, ${done} of ${filters.length} lists done`
+            );
+          }
+        } catch (e) {
+          // A missing customer is handled by the customers fix
+          if (!isResourceMissingError(e)) {
+            throw e;
+          }
+        }
+        done++;
+      }
+    })
+  );
 
   log.info('📡 Fetching Stripe invoices of unfinished payments...');
   for (const payment of payments.values()) {
