@@ -7,14 +7,20 @@ import {
 import { sub } from 'date-fns/sub';
 import { describe, expect, it } from 'vitest';
 
-import { Contact, ContactProfile, ContactRole, Password } from '#models/index';
+import {
+  Contact,
+  ContactNewsletter,
+  ContactProfile,
+  ContactRole,
+  Password,
+} from '#models/index';
 import type { ContactNewsletterUpdates } from '#type/index';
 
 import { convertContactToNlUpdate } from './newsletter';
 
 // Helper function to create a mock contact
 function createMockContact(
-  profileOverrides: Partial<ContactProfile> = {},
+  newsletterOverrides: ContactNewsletterUpdates = {},
   overrides: Partial<Contact> = {},
   activeMembership: boolean = false
 ): Contact {
@@ -48,9 +54,13 @@ function createMockContact(
     preferredContact: '',
     deliveryOptIn: false,
     deliveryAddress: null,
-    newsletterStatus: NewsletterStatus.None,
-    newsletterGroups: [],
-    ...profileOverrides,
+  });
+
+  const mockNewsletter: ContactNewsletter = new ContactNewsletter();
+  Object.assign(mockNewsletter, {
+    contact,
+    status: newsletterOverrides.status ?? NewsletterStatus.None,
+    groups: newsletterOverrides.groups ?? [],
   });
 
   const mockMembership = new ContactRole();
@@ -62,6 +72,7 @@ function createMockContact(
   });
 
   contact.profile = mockProfile;
+  contact.newsletter = mockNewsletter;
   contact.roles.push(mockMembership);
 
   return contact;
@@ -72,7 +83,7 @@ describe('convertContactToNlUpdate', () => {
     it('should return undefined when both current and new status are None', () => {
       const contact = createMockContact();
       const updates = {
-        newsletterStatus: NewsletterStatus.None,
+        status: NewsletterStatus.None,
       };
 
       const result = convertContactToNlUpdate(contact, updates);
@@ -90,8 +101,8 @@ describe('convertContactToNlUpdate', () => {
 
     it('should return update object when contact has non-None newsletter status', () => {
       const contact = createMockContact({
-        newsletterStatus: NewsletterStatus.Subscribed,
-        newsletterGroups: ['group1'],
+        status: NewsletterStatus.Subscribed,
+        groups: ['group1'],
       });
 
       const result = convertContactToNlUpdate(contact);
@@ -116,7 +127,7 @@ describe('convertContactToNlUpdate', () => {
     it('should return update object when updates change status from None to active', () => {
       const contact = createMockContact();
       const updates: ContactNewsletterUpdates = {
-        newsletterStatus: NewsletterStatus.Pending,
+        status: NewsletterStatus.Pending,
       };
 
       const result = convertContactToNlUpdate(contact, updates);
@@ -142,10 +153,10 @@ describe('convertContactToNlUpdate', () => {
   describe('Newsletter status handling', () => {
     it('should prevent downgrade from Subscribed to Pending', () => {
       const contact = createMockContact({
-        newsletterStatus: NewsletterStatus.Subscribed,
+        status: NewsletterStatus.Subscribed,
       });
       const updates: ContactNewsletterUpdates = {
-        newsletterStatus: NewsletterStatus.Pending,
+        status: NewsletterStatus.Pending,
       };
 
       const result = convertContactToNlUpdate(contact, updates);
@@ -169,9 +180,9 @@ describe('convertContactToNlUpdate', () => {
       ];
 
       testCases.forEach(({ from, to }) => {
-        const contact = createMockContact({ newsletterStatus: from });
+        const contact = createMockContact({ status: from });
         const updates: ContactNewsletterUpdates = {
-          newsletterStatus: to,
+          status: to,
         };
 
         const result = convertContactToNlUpdate(contact, updates);
@@ -182,7 +193,7 @@ describe('convertContactToNlUpdate', () => {
 
     it('should use contact status when no updates provided', () => {
       const contact = createMockContact({
-        newsletterStatus: NewsletterStatus.Subscribed,
+        status: NewsletterStatus.Subscribed,
       });
 
       const result = convertContactToNlUpdate(contact);
@@ -192,10 +203,10 @@ describe('convertContactToNlUpdate', () => {
 
     it('should use updates status when provided', () => {
       const contact = createMockContact({
-        newsletterStatus: NewsletterStatus.Pending,
+        status: NewsletterStatus.Pending,
       });
       const updates: ContactNewsletterUpdates = {
-        newsletterStatus: NewsletterStatus.Subscribed,
+        status: NewsletterStatus.Subscribed,
       };
 
       const result = convertContactToNlUpdate(contact, updates);
@@ -207,8 +218,8 @@ describe('convertContactToNlUpdate', () => {
   describe('Group handling', () => {
     it('should leave groups untouched when no group updates provided', () => {
       const contact = createMockContact({
-        newsletterStatus: NewsletterStatus.Subscribed,
-        newsletterGroups: ['group1', 'group2'],
+        status: NewsletterStatus.Subscribed,
+        groups: ['group1', 'group2'],
       });
 
       const result = convertContactToNlUpdate(contact);
@@ -218,11 +229,11 @@ describe('convertContactToNlUpdate', () => {
 
     it('should replace groups when updates provided without a change type', () => {
       const contact = createMockContact({
-        newsletterStatus: NewsletterStatus.Subscribed,
-        newsletterGroups: ['group1', 'group2'],
+        status: NewsletterStatus.Subscribed,
+        groups: ['group1', 'group2'],
       });
       const updates: ContactNewsletterUpdates = {
-        newsletterGroups: ['group3', 'group4'],
+        groups: ['group3', 'group4'],
       };
 
       const result = convertContactToNlUpdate(contact, updates);
@@ -233,10 +244,10 @@ describe('convertContactToNlUpdate', () => {
 
     it('should pass newsletterGroupChange through to the update', () => {
       const contact = createMockContact({
-        newsletterStatus: NewsletterStatus.Subscribed,
+        status: NewsletterStatus.Subscribed,
       });
       const updates: ContactNewsletterUpdates = {
-        newsletterGroups: ['group1'],
+        groups: ['group1'],
       };
 
       const result = convertContactToNlUpdate(contact, updates, {
@@ -251,7 +262,7 @@ describe('convertContactToNlUpdate', () => {
     it('should map contribution information correctly', () => {
       const contact = createMockContact(
         {
-          newsletterStatus: NewsletterStatus.Subscribed,
+          status: NewsletterStatus.Subscribed,
         },
         {
           contributionType: ContributionType.Automatic,
@@ -269,7 +280,7 @@ describe('convertContactToNlUpdate', () => {
     it('should handle null contribution values', () => {
       const contact = createMockContact(
         {
-          newsletterStatus: NewsletterStatus.Subscribed,
+          status: NewsletterStatus.Subscribed,
         },
         {
           contributionType: ContributionType.None,
@@ -289,7 +300,7 @@ describe('convertContactToNlUpdate', () => {
     it('should correctly identify active member', () => {
       const contact = createMockContact(
         {
-          newsletterStatus: NewsletterStatus.Subscribed,
+          status: NewsletterStatus.Subscribed,
         },
         undefined,
         true
@@ -302,7 +313,7 @@ describe('convertContactToNlUpdate', () => {
 
     it('should correctly identify inactive member', () => {
       const contact = createMockContact({
-        newsletterStatus: NewsletterStatus.Subscribed,
+        status: NewsletterStatus.Subscribed,
       });
 
       const result = convertContactToNlUpdate(contact);
@@ -313,7 +324,7 @@ describe('convertContactToNlUpdate', () => {
     it('should correctly identify active user (has password)', () => {
       const contact = createMockContact(
         {
-          newsletterStatus: NewsletterStatus.Subscribed,
+          status: NewsletterStatus.Subscribed,
         },
         {
           password: { hash: 'hashedpassword' } as Password,
@@ -327,7 +338,7 @@ describe('convertContactToNlUpdate', () => {
 
     it('should correctly identify inactive user (no password)', () => {
       const contact = createMockContact({
-        newsletterStatus: NewsletterStatus.Subscribed,
+        status: NewsletterStatus.Subscribed,
       });
 
       const result = convertContactToNlUpdate(contact);
@@ -339,12 +350,12 @@ describe('convertContactToNlUpdate', () => {
   describe('Edge cases and complex scenarios', () => {
     it('should handle complex status and group updates with add change', () => {
       const contact = createMockContact({
-        newsletterStatus: NewsletterStatus.Pending,
-        newsletterGroups: ['oldGroup1', 'oldGroup2'],
+        status: NewsletterStatus.Pending,
+        groups: ['oldGroup1', 'oldGroup2'],
       });
       const updates: ContactNewsletterUpdates = {
-        newsletterStatus: NewsletterStatus.Subscribed,
-        newsletterGroups: ['newGroup1', 'oldGroup1'],
+        status: NewsletterStatus.Subscribed,
+        groups: ['newGroup1', 'oldGroup1'],
       };
 
       const result = convertContactToNlUpdate(contact, updates, {
@@ -358,8 +369,8 @@ describe('convertContactToNlUpdate', () => {
     it('should handle contact with minimal data', () => {
       const contact = createMockContact(
         {
-          newsletterStatus: NewsletterStatus.Subscribed,
-          newsletterGroups: [],
+          status: NewsletterStatus.Subscribed,
+          groups: [],
         },
         {
           email: 'min@test.com',

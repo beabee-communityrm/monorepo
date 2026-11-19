@@ -1,10 +1,6 @@
-import { NewsletterStatus } from '@beabee/beabee-common';
-
 import { Type } from 'class-transformer';
 import {
-  IsArray,
   IsBoolean,
-  IsEnum,
   IsOptional,
   IsString,
   ValidateNested,
@@ -34,13 +30,6 @@ export class GetContactProfileDto {
   @IsOptional()
   @ValidateNested()
   deliveryAddress!: GetAddressDto | null;
-
-  @IsEnum(NewsletterStatus)
-  newsletterStatus!: NewsletterStatus;
-
-  @IsArray()
-  @IsString({ each: true })
-  newsletterGroups!: string[];
 
   @IsString({ groups: ['admin'] })
   notes?: string;
@@ -78,14 +67,6 @@ export class UpdateContactProfileDto implements Partial<GetContactProfileDto> {
   @ValidateNested()
   @Type(() => UpdateAddressDto)
   deliveryAddress?: UpdateAddressDto;
-
-  @IsOptional()
-  @IsEnum(NewsletterStatus)
-  newsletterStatus?: NewsletterStatus;
-
-  @IsOptional()
-  @IsString({ each: true })
-  newsletterGroups?: string[];
 
   // Admin only
   @IsOptional()

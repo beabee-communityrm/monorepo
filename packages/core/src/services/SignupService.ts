@@ -17,6 +17,7 @@ import { log as mainLogger } from '#logging';
 import { Contact, Password, PaymentFlow, SignupFlow } from '#models/index';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
+import NewsletterService from '#services/NewsletterService';
 import OptionsService from '#services/OptionsService';
 import PaymentFlowService from '#services/PaymentFlowService';
 import { PaymentFlowForm } from '#type/index';
@@ -264,7 +265,7 @@ class SignupService {
 
     let contact = await ContactsService.findOne({
       where: { email: signupFlow.email },
-      relations: { profile: true },
+      relations: { profile: true, newsletter: true },
     });
 
     // Check if contact already exists with active membership
@@ -311,19 +312,15 @@ class SignupService {
       await ContactsService.updateContact(contact, partialContact);
       // Only an explicit subscription may overwrite an existing contact's preferences
       if (signupFlow.newsletterStatus === NewsletterStatus.Subscribed) {
-        await ContactsService.updateContactProfile(contact, {
-          newsletterStatus: signupFlow.newsletterStatus,
-          ...(newsletterGroups && { newsletterGroups }),
+        await NewsletterService.upsertContact(contact, {
+          status: signupFlow.newsletterStatus,
+          ...(newsletterGroups && { groups: newsletterGroups }),
         });
       }
     } else {
       contact = await ContactsService.createContact(
         partialContact,
         {
-          newsletterStatus:
-            signupFlow.newsletterStatus ??
-            OptionsService.getText('newsletter-default-status'),
-          ...(newsletterGroups && { newsletterGroups }),
           ...(completedFlow?.data.vatNumber && {
             vatNumber: completedFlow.data.vatNumber,
           }),
@@ -331,6 +328,12 @@ class SignupService {
             OptionsService.getBool('show-mail-opt-in') && {
               deliveryAddress: completedFlow.data.billingAddress,
             }),
+        },
+        {
+          status:
+            signupFlow.newsletterStatus ??
+            OptionsService.getText('newsletter-default-status'),
+          ...(newsletterGroups && { groups: newsletterGroups }),
         },
         signupFlow.origin
       );

@@ -22,7 +22,7 @@ export const syncActiveMemberTag = async (
         type: 'member',
         dateExpires: Between(args.since, args.until),
       },
-      relations: { contact: { profile: true } },
+      relations: { contact: { newsletter: true } },
     });
 
     log.info(`📊 Got ${memberships.length} memberships`);
@@ -31,7 +31,7 @@ export const syncActiveMemberTag = async (
     const inactiveContacts = memberships
       .filter(
         (m) =>
-          m.contact.profile.newsletterStatus !== NewsletterStatus.None &&
+          m.contact.newsletter.status !== NewsletterStatus.None &&
           !m.contact.membership?.isActive
       )
       .map((m) => m.contact);

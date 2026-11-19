@@ -34,9 +34,9 @@ describe('Newsletter integrations API', () => {
     });
     contactId = contact.id;
     await client.contact.update(contactId, {
-      profile: {
-        newsletterStatus: NewsletterStatus.Subscribed,
-        newsletterGroups: [KOMBUCHA.id, TEA.id, COFFEE.id],
+      newsletter: {
+        status: NewsletterStatus.Subscribed,
+        groups: [KOMBUCHA.id, TEA.id, COFFEE.id],
       },
     });
   });
@@ -92,11 +92,11 @@ describe('Newsletter integrations API', () => {
           [KOMBUCHA.id, TEA.id, 'd0g6ced973'].sort()
         );
 
-        // 3. Deleted group should be removed from contact profile
-        const contactProfile = await client.contact.get(contactId, [
-          GetContactWith.Profile,
+        // 3. Deleted group should be removed from the contact
+        const contact = await client.contact.get(contactId, [
+          GetContactWith.Newsletter,
         ]);
-        expect(contactProfile.profile.newsletterGroups.sort()).toEqual(
+        expect(contact.newsletter.groups.sort()).toEqual(
           [KOMBUCHA.id, TEA.id].sort()
         );
 

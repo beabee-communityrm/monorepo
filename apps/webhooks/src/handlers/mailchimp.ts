@@ -214,8 +214,8 @@ async function handleSubscribe(data: MCProfileData) {
 
   const contact = await ContactsService.findOneBy({ email });
   if (contact) {
-    await ContactsService.updateContactProfile(contact, {
-      newsletterStatus: NewsletterStatus.Subscribed,
+    await NewsletterService.upsertContact(contact, {
+      status: NewsletterStatus.Subscribed,
     });
   } else {
     const nlContact = await NewsletterService.getNewsletterContact(email);
@@ -226,9 +226,10 @@ async function handleSubscribe(data: MCProfileData) {
         firstname: data.merges.FNAME || '',
         lastname: data.merges.LNAME || '',
       },
+      {},
       {
-        newsletterStatus: NewsletterStatus.Subscribed,
-        newsletterGroups: nlContact?.groups || [],
+        status: NewsletterStatus.Subscribed,
+        groups: nlContact?.groups || [],
       },
       {
         source: 'newsletter',
@@ -253,10 +254,10 @@ async function handleUnsubscribe(data: MCProfileData) {
   const contact = await ContactsService.findOneBy({ email });
   if (contact) {
     const nlContact = await NewsletterService.getNewsletterContact(email);
-    await ContactsService.updateContactProfile(contact, {
+    await NewsletterService.upsertContact(contact, {
       // Use the status from the newsletter system in case it has changed
       // since the webhook was sent
-      newsletterStatus: nlContact?.status || NewsletterStatus.Unsubscribed,
+      status: nlContact?.status || NewsletterStatus.Unsubscribed,
     });
   }
 }
@@ -273,8 +274,8 @@ async function handleCleaned(data: MCCleanedEmailData) {
 
   const contact = await ContactsService.findOneBy({ email });
   if (contact) {
-    await ContactsService.updateContactProfile(contact, {
-      newsletterStatus: NewsletterStatus.Cleaned,
+    await NewsletterService.upsertContact(contact, {
+      status: NewsletterStatus.Cleaned,
     });
   }
 }
@@ -300,8 +301,8 @@ async function handleUpdateProfile(data: MCProfileData) {
       lastname: data.merges.LNAME || contact.lastname,
     });
     // This will also overwrite any other changes made to merge tags
-    await ContactsService.updateContactProfile(contact, {
-      newsletterGroups: nlContact?.groups || [],
+    await NewsletterService.upsertContact(contact, {
+      groups: nlContact?.groups || [],
     });
   } else {
     log.info('Contact not found for ' + email);
