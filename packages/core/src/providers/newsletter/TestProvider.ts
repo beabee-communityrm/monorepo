@@ -5,6 +5,7 @@ import {
 } from '@beabee/beabee-common';
 
 import { CantUpdateNewsletterGroupsError } from '#errors/index';
+import type { Contact } from '#models/index';
 import OptionsService from '#services/OptionsService';
 import {
   NewsletterContact,
@@ -27,15 +28,20 @@ export class TestProvider implements NewsletterProvider {
 
   private readonly contacts = new Map<string, NewsletterContact>();
 
+  getContactKey(contact: Pick<Contact, 'id' | 'email'>): string {
+    return contact.email;
+  }
+
   async getContact(email: string): Promise<NewsletterContact | undefined> {
     return this.contacts.get(email);
   }
 
   async upsertContact(
     contact: UpdateNewsletterContact,
-    oldEmail = contact.email
+    key: string,
+    oldKey = key
   ): Promise<NewsletterContact> {
-    const existing = this.contacts.get(oldEmail);
+    const existing = this.contacts.get(oldKey);
 
     const updated: NewsletterContact = {
       ...contact,
@@ -44,8 +50,8 @@ export class TestProvider implements NewsletterProvider {
       tags: existing?.tags ?? [],
     };
 
-    this.contacts.delete(oldEmail);
-    this.contacts.set(contact.email, updated);
+    this.contacts.delete(oldKey);
+    this.contacts.set(key, updated);
     return updated;
   }
 

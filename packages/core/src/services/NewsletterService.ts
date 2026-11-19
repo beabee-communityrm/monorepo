@@ -110,7 +110,16 @@ class NewsletterService {
     const newState: Pick<NewsletterContact, 'status' | 'groups'> =
       nlUpdate.status === NewsletterStatus.None
         ? { status: NewsletterStatus.None, groups: [] }
-        : await this.upsertContactToProvider(contact, nlUpdate, opts?.oldEmail);
+        : await this.upsertContactToProvider(
+            contact,
+            nlUpdate,
+            opts?.oldEmail
+              ? this.provider.getContactKey({
+                  id: contact.id,
+                  email: opts.oldEmail,
+                })
+              : undefined
+          );
 
     // TODO: remove dependency on ContactProfile
     await getRepository(ContactProfile).update(contact.id, {
@@ -142,12 +151,16 @@ class NewsletterService {
   private async upsertContactToProvider(
     contact: Contact,
     nlUpdate: UpdateNewsletterContact,
-    oldEmail: string | undefined,
+    oldKey: string | undefined,
     attempt = 0
   ): Promise<Pick<NewsletterContact, 'status' | 'groups'>> {
     try {
       log.info('Upsert contact ' + contact.id);
-      const newState = await this.provider.upsertContact(nlUpdate, oldEmail);
+      const newState = await this.provider.upsertContact(
+        nlUpdate,
+        this.provider.getContactKey(contact),
+        oldKey
+      );
 
       log.info(
         `Got newsletter groups and status ${newState.status} for contact ${contact.id}`,
@@ -187,7 +200,7 @@ class NewsletterService {
         return this.upsertContactToProvider(
           contact,
           nlUpdate,
-          oldEmail,
+          oldKey,
           attempt + 1
         );
       }
@@ -212,7 +225,10 @@ class NewsletterService {
     log.info(`Update contact fields for ${contact.id}`, fields);
     const nlUpdate = await contactToNlUpdate(contact);
     if (nlUpdate) {
-      await this.provider.updateContactFields(nlUpdate.email, fields);
+      await this.provider.updateContactFields(
+        this.provider.getContactKey(contact),
+        fields
+      );
     } else {
       log.info('Ignoring contact field update for ' + contact.id);
     }
@@ -227,20 +243,22 @@ class NewsletterService {
     log.info(`Delete contact ${contact.id}`);
     const nlUpdate = await contactToNlUpdate(contact);
     if (nlUpdate) {
-      await this.provider.permanentlyDeleteContact(nlUpdate.email);
+      await this.provider.permanentlyDeleteContact(
+        this.provider.getContactKey(contact)
+      );
     }
   }
 
   /**
    * Get a single newsletter contact from the newsletter provider
    *
-   * @param email The contact's email address
+   * @param key The provider's key for the contact
    * @returns The newsletter contact
    */
   async getNewsletterContact(
-    email: string
+    key: string
   ): Promise<NewsletterContact | undefined> {
-    return await this.provider.getContact(email);
+    return await this.provider.getContact(key);
   }
 
   /**

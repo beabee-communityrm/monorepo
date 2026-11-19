@@ -17,6 +17,7 @@ import {
   nlContactToMCMember,
 } from '#lib/mailchimp';
 import { log as mainLogger } from '#logging';
+import type { Contact } from '#models/index';
 import OptionsService from '#services/OptionsService';
 import {
   MCWebhook,
@@ -50,6 +51,10 @@ export class MailchimpProvider implements NewsletterProvider {
     this.api = createInstance(settings);
     this.listId = settings.listId;
     this.webhookSecret = settings.webhookSecret;
+  }
+
+  getContactKey(contact: Pick<Contact, 'id' | 'email'>): string {
+    return contact.email;
   }
 
   /**
@@ -138,18 +143,20 @@ export class MailchimpProvider implements NewsletterProvider {
    * Upsert a contact and synchronise their active member status
    *
    * @param contact The newsletter contact to upsert
-   * @param oldEmail The old email address of the contact, if it has changed
+   * @param key The contact's email address
+   * @param oldKey The old email address of the contact, if it has changed
    * @returns The newsletter contact's new newsletter status
    */
   async upsertContact(
     contact: UpdateNewsletterContact,
-    oldEmail = contact.email
+    key: string,
+    oldKey = key
   ): Promise<NewsletterContact> {
     log.info('Upsert contact ' + contact.email);
 
     const updatedContact = await this.upsertContactOrTryPending(
       contact,
-      oldEmail
+      oldKey
     );
 
     // Add/remove the active member tag if the statuses don't match
