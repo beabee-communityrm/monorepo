@@ -1073,7 +1073,7 @@
   },
   "calloutReviewerManager": {
     "add": "Auswerter hinzufügen",
-    "canEdit": "Der Auswerter kann auch die CrowdNewsroom bearbeiten",
+    "canEdit": "Der Auswerter kann auch den CrowdNewsroom bearbeiten",
     "confirmDelete": {
       "text": "Bist du sicher, dass du {reviewerName} entfernen willst? Er/Sie kann diesen CrowdNewsroom dann nicht mehr auswerten.",
       "title": "Auswerter entfernen"
@@ -2003,7 +2003,7 @@
       "ANSWERS": "Formatierte Antwort-Zusammenfassung",
       "CALLOUTLINK": "Link zur CrowdNewsroom",
       "CALLOUTSLUG": "CrowdNewsroom-Slug",
-      "CALLOUTTITLE": "Titel der CrowdNewsroom",
+      "CALLOUTTITLE": "Titel des CrowdNewsrooms",
       "CONFIRMLINK": "E-Mail-Bestätigungslink",
       "EMAIL": "E-Mail-Adresse des Kontakts",
       "EXPIRES": "Ablaufdatum der Mitgliedschaft",

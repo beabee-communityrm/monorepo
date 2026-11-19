@@ -1073,7 +1073,7 @@
   },
   "calloutReviewerManager": {
     "add": "Aggiungere un verificatore",
-    "canEdit": "Il verificatore può anche modificare il CrowdNewsroom",
+    "canEdit": "Il verificatore può anche modificare la CrowdNewsroom",
     "confirmDelete": {
       "text": "Sei sicuro di voler rimuovere {reviewerName}? Non potrà più revisionare questa CrowdNewsroom.",
       "title": "Rimuovere il verificatore"
@@ -1512,7 +1512,7 @@
         "email-exists-login": "Inviato quando qualcuno tenta di registrarsi con un indirizzo email che esiste già e appartiene a un membro attivo con password impostata. Fornisce un link di accesso per accedere al proprio account esistente.",
         "email-exists-set-password": "Inviato quando qualcuno tenta di registrarsi con un indirizzo email che esiste già e appartiene a un membro attivo che non ha ancora impostato una password. Fornisce un link per impostare una password.",
         "manual-to-automatic": "Inviato ai membri quando il loro metodo di pagamento è stato modificato con successo da manuale a pagamento ricorrente automatico. Conferma la modifica riuscita.",
-        "new-callout-response": "Inviato agli amministratori quando viene inviata una nuova risposta a un CrowdNewsroom. Include generalmente una notifica con i dettagli del CrowdNewsroom e il nome della persona che risponde.",
+        "new-callout-response": "Inviato agli amministratori quando viene inviata una nuova risposta a una CrowdNewsroom. Include generalmente una notifica con i dettagli della CrowdNewsroom e il nome della persona che risponde.",
         "new-member": "Inviato agli amministratori quando un nuovo membro si unisce con successo alla community. Include generalmente una notifica con l'ID e il nome del nuovo membro.",
         "one-time-donation": "Inviato agli utenti dopo che hanno completato un contributo una tantum (pagamento non ricorrente). Conferma generalmente l'importo del contributo e funge da ricevuta.",
         "one-time-donation-failed": "",
