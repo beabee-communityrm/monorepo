@@ -1,6 +1,10 @@
 import { ActivityActorType } from '@beabee/beabee-common';
 import { actorContext } from '@beabee/core/lib/actor-context';
-import { log, requestErrorLogger, requestLogger } from '@beabee/core/logging';
+import {
+  createRequestLogger,
+  log,
+  requestErrorLogger,
+} from '@beabee/core/logging';
 import { initApp, startServer } from '@beabee/core/server';
 import OptionsService, {
   OptionKey,
@@ -30,7 +34,7 @@ const webhookPaths = ['/ping', '/gc', '/mailchimp', '/stripe', '/zitadel'];
 
 const app = express();
 
-app.use(webhookPaths, requestLogger);
+app.use(webhookPaths, createRequestLogger('webhook'));
 
 app.get('/ping', function (req: Request, res: Response) {
   res.sendStatus(200);
