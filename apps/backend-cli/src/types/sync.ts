@@ -1,3 +1,4 @@
+import type { Stripe } from '@beabee/core/lib/stripe';
 import type { Payment } from '@beabee/core/models';
 
 import {
@@ -85,4 +86,10 @@ export interface StripePaymentReconciliation {
   missing: StripeMissingPayment[];
   /** Local payments whose invoice no longer exists on Stripe */
   orphans: StripeLocalPayment[];
+}
+
+/** The Stripe objects of our contributions that were fetched in bulk, by id */
+export interface StripeResources {
+  subscriptions: Map<string, Stripe.Subscription>;
+  customers: Map<string, Stripe.Customer>;
 }
