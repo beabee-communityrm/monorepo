@@ -53,9 +53,9 @@ meta:
 
     <h1 class="text-xl">{{ callout.title }}</h1>
 
-    <template v-if="responses /* Avoids layout thrashing */">
+    <template v-if="responses || responsesError">
       <CalloutThankYouBanner
-        v-if="responses.length"
+        v-if="responses?.length"
         :callout="callout"
         :submitted-at="responses[0].createdAt"
       />
@@ -67,6 +67,13 @@ meta:
 
       <CalloutContributionGate
         v-else-if="showMemberOnlyPrompt && isOpen && !isPreview"
+      />
+
+      <LoadError
+        v-else-if="responsesError"
+        :retry="loadResponses"
+        keypath="callout.loadResponsesError"
+        class="py-8 text-center"
       />
 
       <UButton
@@ -86,6 +93,16 @@ meta:
         :edit-to="respondAction === 'edit' ? respondTo : undefined"
       />
     </template>
+
+    <template v-else>
+      <USkeleton class="aspect-video w-full bg-accented" />
+      <div class="space-y-2">
+        <USkeleton class="h-4 w-full bg-accented" />
+        <USkeleton class="h-4 w-full bg-accented" />
+        <USkeleton class="h-4 w-2/3 bg-accented" />
+      </div>
+      <USkeleton class="h-12 w-full bg-accented" />
+    </template>
   </div>
 </template>
 <script lang="ts" setup>
@@ -102,6 +119,7 @@ import CalloutPreviewBar from '#components/callout/CalloutPreviewBar.vue';
 import CalloutResponseList from '#components/callout/CalloutResponseList.vue';
 import CalloutSharePopover from '#components/callout/CalloutSharePopover.vue';
 import CalloutThankYouBanner from '#components/callout/CalloutThankYouBanner.vue';
+import LoadError from '#components/LoadError.vue';
 import CalloutRespond from '#components/pages/callouts/CalloutRespond.vue';
 import {
   useCallout,
@@ -161,8 +179,14 @@ const daysLeft = computed(() => getDaysLeft(props.callout.expires));
 
 // Embeds render CalloutRespond directly instead, which fetches its own
 // response state, so skip fetching it twice here.
-const { responses, responsesPaginated, respondAction, respondTo } =
-  useCalloutResponse(calloutRef, {
-    fetchResponses: !isEmbed,
-  });
+const {
+  responses,
+  responsesPaginated,
+  responsesError,
+  loadResponses,
+  respondAction,
+  respondTo,
+} = useCalloutResponse(calloutRef, {
+  fetchResponses: !isEmbed,
+});
 </script>
