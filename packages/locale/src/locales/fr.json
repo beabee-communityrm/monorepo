@@ -185,11 +185,11 @@
       "user": "Utilisateur"
     },
     "data": {
-      "actor": "Acteur",
-      "actorType": "Type d'acteur",
-      "eventType": "Type d'événement",
-      "target": "Cible",
-      "time": "Heure"
+      "actor": "Initié par",
+      "actorType": "Utilisateur ou système",
+      "eventType": "Événement",
+      "target": "Concerne",
+      "time": "Date"
     },
     "deleted": "Supprimé",
     "eventDescription": {
@@ -205,7 +205,7 @@
       "appPaymentOptionsUpdated": "Options de paiement disponibles mises à jour",
       "appSettingsUpdated": "Paramètres de l'application mis à jour",
       "appWebhookUpdated": "Webhook mis à jour",
-      "calloutAnswered": "Réponse à un CrowdNewsroom",
+      "calloutAnswered": "Réponse envoyée à un CrowdNewsroom",
       "calloutCreated": "Nouveau CrowdNewsroom créé",
       "calloutDeleted": "CrowdNewsroom supprimé",
       "calloutEdited": "CrowdNewsroom modifié",
@@ -228,7 +228,7 @@
       "contactPaymentSuccessful": "Paiement réussi",
       "contactProfileUpdated": "Profil du contact mis à jour",
       "contactRoleAdded": "Rôle attribué au contact",
-      "contactRoleRevoked": "Rôle du contact révoqué",
+      "contactRoleRevoked": "Rôle retiré au contact",
       "contactSegmentsAdded": "Segment de contacts créé",
       "contactSegmentsDeleted": "Segment de contacts supprimé",
       "contactSegmentsUpdated": "Segment de contacts mis à jour",

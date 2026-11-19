@@ -186,10 +186,10 @@
     },
     "data": {
       "actor": "Инициатор",
-      "actorType": "Тип инициатора",
-      "eventType": "Тип события",
+      "actorType": "Пользователь или система",
+      "eventType": "Событие",
       "target": "Объект",
-      "time": "Время"
+      "time": "Дата"
     },
     "deleted": "Удалено",
     "eventDescription": {
@@ -228,7 +228,7 @@
       "contactPaymentSuccessful": "Платёж выполнен успешно",
       "contactProfileUpdated": "Профиль контакта обновлён",
       "contactRoleAdded": "Контакту назначена роль",
-      "contactRoleRevoked": "Роль контакта отозвана",
+      "contactRoleRevoked": "У контакта отозвана роль",
       "contactSegmentsAdded": "Создан сегмент контактов",
       "contactSegmentsDeleted": "Сегмент контактов удалён",
       "contactSegmentsUpdated": "Сегмент контактов обновлён",

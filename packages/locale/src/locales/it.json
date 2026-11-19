@@ -185,11 +185,11 @@
       "user": "Utente"
     },
     "data": {
-      "actor": "Autore",
-      "actorType": "Tipo di autore",
-      "eventType": "Tipo di evento",
-      "target": "Destinatario",
-      "time": "Ora"
+      "actor": "Avviato da",
+      "actorType": "Utente o sistema",
+      "eventType": "Evento",
+      "target": "Riguarda",
+      "time": "Data"
     },
     "deleted": "Eliminato",
     "eventDescription": {
@@ -205,7 +205,7 @@
       "appPaymentOptionsUpdated": "Opzioni di pagamento disponibili aggiornate",
       "appSettingsUpdated": "Impostazioni dell'app aggiornate",
       "appWebhookUpdated": "Webhook aggiornato",
-      "calloutAnswered": "Risposta a una callout",
+      "calloutAnswered": "Risposta inviata a una callout",
       "calloutCreated": "Nuova callout creata",
       "calloutDeleted": "Callout eliminata",
       "calloutEdited": "Callout modificata",
@@ -228,7 +228,7 @@
       "contactPaymentSuccessful": "Pagamento riuscito",
       "contactProfileUpdated": "Profilo del contatto aggiornato",
       "contactRoleAdded": "Ruolo assegnato al contatto",
-      "contactRoleRevoked": "Ruolo del contatto revocato",
+      "contactRoleRevoked": "Ruolo revocato al contatto",
       "contactSegmentsAdded": "Segmento di contatti creato",
       "contactSegmentsDeleted": "Segmento di contatti eliminato",
       "contactSegmentsUpdated": "Segmento di contatti aggiornato",
