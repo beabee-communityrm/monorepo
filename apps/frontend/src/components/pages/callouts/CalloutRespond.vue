@@ -8,36 +8,49 @@
 
     <h1 v-if="!isEmbed" class="text-xl">{{ callout.title }}</h1>
 
-    <template v-if="responses /* Avoids layout thrashing */">
-      <CalloutClosedNotice
-        v-if="
-          callout.status === ItemStatus.Ended && callout.expires && !isPreview
-        "
-        :expires="callout.expires"
-      />
+    <CalloutForm
+      v-if="canRespond"
+      :callout="callout"
+      :answers="prefilledAnswers"
+      :preview="isPreview"
+      :no-bg="isEmbed"
+      @submitted="handleSubmitResponse"
+    />
 
-      <CalloutLoginGate v-if="showLoginPrompt && isOpen" />
+    <CalloutLoginGate v-else-if="showLoginPrompt && isOpen" />
 
-      <CalloutContributionGate
-        v-else-if="showMemberOnlyPrompt && isOpen && !isPreview"
-      />
+    <CalloutContributionGate
+      v-else-if="showMemberOnlyPrompt && isOpen && !isPreview"
+    />
 
-      <CalloutForm
-        v-else-if="canRespond"
-        :callout="callout"
-        :answers="prefilledAnswers"
-        :preview="isPreview"
-        :no-bg="isEmbed"
-        @submitted="handleSubmitResponse"
-      />
+    <CalloutClosedNotice
+      v-else-if="
+        callout.status === ItemStatus.Ended && callout.expires && !isPreview
+      "
+      :expires="callout.expires"
+    />
 
-      <!-- Landing here without being able to respond, so show what they sent -->
-      <CalloutResponseList
-        v-if="!canRespond && responsesPaginated?.items.length"
-        :form-schema="callout.formSchema"
-        :responses="responsesPaginated"
-      />
-    </template>
+    <LoadError
+      v-else-if="responsesError"
+      :retry="loadResponses"
+      keypath="callout.loadResponsesError"
+      class="py-8 text-center"
+    />
+
+    <UCard v-else-if="!responses" :ui="{ body: 'space-y-6' }">
+      <div v-for="n in 3" :key="n" class="space-y-2">
+        <USkeleton class="h-4 w-1/3" />
+        <USkeleton class="h-10 w-full" />
+      </div>
+      <USkeleton class="h-10 w-28" />
+    </UCard>
+
+    <!-- Landing here without being able to respond, so show what they sent -->
+    <CalloutResponseList
+      v-if="!canRespond && responsesPaginated?.items.length"
+      :form-schema="callout.formSchema"
+      :responses="responsesPaginated"
+    />
   </div>
 </template>
 <script lang="ts" setup>
@@ -58,6 +71,7 @@ import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue
 import CalloutLoginGate from '#components/callout/CalloutLoginGate.vue';
 import CalloutPreviewBar from '#components/callout/CalloutPreviewBar.vue';
 import CalloutResponseList from '#components/callout/CalloutResponseList.vue';
+import LoadError from '#components/LoadError.vue';
 import CalloutForm from '#components/pages/callouts/CalloutForm.vue';
 import {
   useCallout,
@@ -78,8 +92,14 @@ const calloutRef = toRef(props, 'callout');
 const { isOpen, isPreview, showLoginPrompt, showMemberOnlyPrompt } =
   useCallout(calloutRef);
 
-const { responses, responsesPaginated, canRespond, respondAction } =
-  useCalloutResponse(calloutRef);
+const {
+  responses,
+  responsesPaginated,
+  responsesError,
+  loadResponses,
+  canRespond,
+  respondAction,
+} = useCalloutResponse(calloutRef);
 
 /** An explicit answers override from the URL, or the user's own response
  * when it's the single one they're allowed to edit */

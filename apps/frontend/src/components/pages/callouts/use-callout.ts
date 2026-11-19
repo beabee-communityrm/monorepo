@@ -99,9 +99,11 @@ export function useCalloutResponse(
     query: route.query,
   }));
 
-  onBeforeMount(async () => {
-    if (!fetchResponses) return;
+  /** Whether the current user's responses failed to load */
+  const responsesError = ref(false);
 
+  /** Loads the current user's responses; rejects if they can't be loaded */
+  const loadResponses = async () => {
     if (isPreview.value || !currentUser.value) {
       responsesPaginated.value = { total: 0, count: 0, offset: 0, items: [] };
       return;
@@ -119,11 +121,21 @@ export function useCalloutResponse(
       },
       [GetCalloutResponseWith.Answers]
     );
+    responsesError.value = false;
+  };
+
+  onBeforeMount(() => {
+    if (!fetchResponses) return;
+    loadResponses().catch(() => {
+      responsesError.value = true;
+    });
   });
 
   return {
     responses,
     responsesPaginated,
+    responsesError,
+    loadResponses,
     canRespond,
     respondAction,
     respondTo,

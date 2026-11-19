@@ -13,9 +13,9 @@ meta:
 
     <h1 v-if="!isEmbed" class="text-xl">{{ callout.title }}</h1>
 
-    <template v-if="responses /* Avoids layout thrashing */">
-      <CalloutThankYouBanner :callout="callout" :level="2" size="lg" />
+    <CalloutThankYouBanner :callout="callout" :level="2" size="lg" />
 
+    <template v-if="responses">
       <CalloutResponseList
         v-if="responses.length"
         :form-schema="callout.formSchema"
@@ -25,6 +25,29 @@ meta:
         :edit-to="respondAction === 'edit' ? respondTo : undefined"
       />
     </template>
+
+    <LoadError
+      v-else-if="responsesError"
+      :retry="loadResponses"
+      keypath="callout.loadResponsesError"
+      class="py-8 text-center"
+    />
+
+    <div v-else class="flex flex-col gap-3">
+      <h3 class="text-lg">{{ t('callout.yourResponse') }}</h3>
+      <UCard :ui="{ body: 'p-0 sm:p-0' }">
+        <div class="divide-y divide-muted/50">
+          <div
+            v-for="n in 3"
+            :key="n"
+            class="flex flex-col gap-1 px-4 py-4 sm:px-6"
+          >
+            <USkeleton class="h-5 w-1/3" />
+            <USkeleton class="h-5 w-1/2" />
+          </div>
+        </div>
+      </UCard>
+    </div>
 
     <UCard
       v-if="callout.status === ItemStatus.Open"
@@ -60,6 +83,7 @@ import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue
 import CalloutResponseList from '#components/callout/CalloutResponseList.vue';
 import CalloutSharePopover from '#components/callout/CalloutSharePopover.vue';
 import CalloutThankYouBanner from '#components/callout/CalloutThankYouBanner.vue';
+import LoadError from '#components/LoadError.vue';
 import { useCalloutResponse } from '#components/pages/callouts/use-callout';
 import env from '#env';
 import { addBreadcrumb } from '#store/breadcrumb';
@@ -91,9 +115,8 @@ addBreadcrumb(
   )
 );
 
-const { responses, respondAction, respondTo } = useCalloutResponse(
-  toRef(props, 'callout')
-);
+const { responses, responsesError, loadResponses, respondAction, respondTo } =
+  useCalloutResponse(toRef(props, 'callout'));
 
 /** Only the response just submitted, so the list shows it on its own */
 const latestResponse = computed(() => ({
