@@ -905,7 +905,7 @@
     "confirmHuman": "Du musst hier klicken. Dann weiß der Computer: Dass du ein Mensch bist. Und keine Maschine.",
     "contactDetails": "Kontaktdaten",
     "editResponse": "",
-    "ended": "Den CrowdNewsroom gibt es nicht mehr.",
+    "ended": "Die CrowdNewsroom gibt es nicht mehr.",
     "entryOf": "Eintrag {no} von {total}",
     "form": {
       "email": "",
@@ -931,7 +931,7 @@
     "responseNumber": "",
     "responseSubmitted": "Dein Brief / Deine Mail wurde weg-geschickt.",
     "share": {
-      "address": "Hier kannst du den CrowdNewsroom an andere schicken. Drücke dazu hier.",
+      "address": "Hier kannst du die CrowdNewsroom an andere schicken. Drücke dazu hier.",
       "aria": {
         "email": "",
         "facebook": "",
@@ -940,7 +940,7 @@
         "twitter": "",
         "whatsapp": ""
       },
-      "services": "Diesen CrowdNewsroom kannst du hier auch an andere Menschen schicken. Zum Beispiel über Facebook oder über TikTok oder über Instagram."
+      "services": "Diese CrowdNewsroom kannst du hier auch an andere Menschen schicken. Zum Beispiel über Facebook oder über TikTok oder über Instagram."
     },
     "showingPreview": "",
     "showingPreview-nuxt": "",
