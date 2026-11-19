@@ -10,4 +10,5 @@ export type Locale =
   | 'es'
   | 'uk'
   | 'fr'
-  | 'el';
+  | 'el'
+  | 'ro';

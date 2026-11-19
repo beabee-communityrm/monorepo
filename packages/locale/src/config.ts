@@ -88,4 +88,12 @@ export const config: LocaleOptions = {
     adminLocale: 'en',
     availableIn: [LocaleContext.Callout],
   },
+  ro: {
+    baseLocale: 'ro',
+    name: 'Română',
+    displayName: 'Română',
+    adminLocale: 'en',
+    fallbackLocale: 'en',
+    availableIn: [LocaleContext.Callout],
+  },
 };
