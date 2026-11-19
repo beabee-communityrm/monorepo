@@ -1,4 +1,5 @@
 import type {
+  StripeCreatedWindow,
   StripeInvoicePayment,
   StripeLocalPayment,
   StripeMissingPayment,
@@ -67,20 +68,20 @@ export function printPaymentMismatch({
  * contact, other invoices on the Stripe account are not ours.
  *
  * @param invoicePayments The Stripe invoices as payment data
- * @param payments The local payments found for those invoices
+ * @param payments The local payments by id
  * @param contactIdByCustomerId The contact of each known Stripe customer
  * @returns The mismatched and the missing payments
  */
 export function classifyInvoicePayments(
   invoicePayments: StripeInvoicePayment[],
-  payments: StripeLocalPayment[],
+  payments: Map<string, StripeLocalPayment>,
   contactIdByCustomerId: Map<string, string>
 ): { mismatches: StripePaymentMismatch[]; missing: StripeMissingPayment[] } {
   const mismatches: StripePaymentMismatch[] = [];
   const missing: StripeMissingPayment[] = [];
 
   for (const { id, customerId, data } of invoicePayments) {
-    const payment = payments.find((p) => p.id === id);
+    const payment = payments.get(id);
     if (payment) {
       const fields = getMismatchedPaymentFields(payment, data);
       if (fields.length > 0) {
@@ -114,4 +115,47 @@ export function countStatusChanges(
     counts.set(change, (counts.get(change) || 0) + 1);
   }
   return counts;
+}
+
+/**
+ * Splits a time range into consecutive windows of one calendar month, for
+ * listing Stripe objects by creation time. Each window ends where the next
+ * begins, so together they cover the range exactly once.
+ *
+ * Without `since` the first window has no start and without `until` the last
+ * has no end, so objects older or newer than expected are still covered.
+ *
+ * @param oldest Where to start splitting if there is no `since`
+ * @param now Where to stop splitting if there is no `until`
+ * @param since The start of the range, if it is limited
+ * @param until The end of the range, if it is limited
+ * @returns The windows as Stripe `created` filters
+ */
+export function getCreatedWindows(
+  oldest: Date,
+  now: Date,
+  since: Date | undefined,
+  until: Date | undefined
+): StripeCreatedWindow[] {
+  const from = since || oldest;
+  const to = until || now;
+
+  const windows: StripeCreatedWindow[] = [];
+  let start = since && Math.floor(since.getTime() / 1000);
+  for (let month = from.getUTCMonth() + 1; ; month++) {
+    const cut = Date.UTC(from.getUTCFullYear(), month, 1);
+    if (cut >= to.getTime()) break;
+
+    windows.push({
+      ...(start !== undefined && { gte: start }),
+      lt: cut / 1000,
+    });
+    start = cut / 1000;
+  }
+  windows.push({
+    ...(start !== undefined && { gte: start }),
+    ...(until && { lte: Math.floor(until.getTime() / 1000) }),
+  });
+
+  return windows;
 }

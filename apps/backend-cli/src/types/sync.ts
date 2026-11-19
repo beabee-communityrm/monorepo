@@ -88,6 +88,13 @@ export interface StripePaymentReconciliation {
   orphans: StripeLocalPayment[];
 }
 
+/** A Stripe `created` filter, in seconds */
+export interface StripeCreatedWindow {
+  gte?: number;
+  lt?: number;
+  lte?: number;
+}
+
 /** The Stripe objects of our contributions that were fetched in bulk, by id */
 export interface StripeResources {
   subscriptions: Map<string, Stripe.Subscription>;
