@@ -15,38 +15,16 @@ meta:
 
     <CalloutThankYouBanner :callout="callout" :level="2" size="lg" />
 
-    <template v-if="responses">
-      <CalloutResponseList
-        v-if="responses.length"
-        :form-schema="callout.formSchema"
-        :responses="latestResponse"
-        hide-date
-        :add-to="respondAction === 'add' ? respondTo : undefined"
-        :edit-to="respondAction === 'edit' ? respondTo : undefined"
-      />
-    </template>
-
-    <div v-else class="flex flex-col gap-3">
-      <h3 class="text-lg">{{ t('callout.yourResponse') }}</h3>
-      <UCard :ui="{ body: 'p-0 sm:p-0' }">
-        <LoadError
-          v-if="responsesError"
-          :retry="loadResponses"
-          keypath="callout.loadResponseError"
-          class="p-4 sm:p-6"
-        />
-        <div v-else class="divide-y divide-muted/50">
-          <div
-            v-for="n in 3"
-            :key="n"
-            class="flex flex-col gap-1 px-4 py-4 sm:px-6"
-          >
-            <USkeleton class="h-5 w-1/3" />
-            <USkeleton class="h-5 w-1/2" />
-          </div>
-        </div>
-      </UCard>
-    </div>
+    <CalloutResponseList
+      v-if="!responses || responses.length"
+      :form-schema="callout.formSchema"
+      :responses="latestResponse"
+      hide-date
+      :add-to="respondAction === 'add' ? respondTo : undefined"
+      :edit-to="respondAction === 'edit' ? respondTo : undefined"
+      :error="responsesError"
+      :retry="loadResponses"
+    />
 
     <UCard
       v-if="callout.status === ItemStatus.Open"
@@ -82,7 +60,6 @@ import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue
 import CalloutResponseList from '#components/callout/CalloutResponseList.vue';
 import CalloutSharePopover from '#components/callout/CalloutSharePopover.vue';
 import CalloutThankYouBanner from '#components/callout/CalloutThankYouBanner.vue';
-import LoadError from '#components/LoadError.vue';
 import { useCalloutResponse } from '#components/pages/callouts/use-callout';
 import env from '#env';
 import { addBreadcrumb } from '#store/breadcrumb';
@@ -118,10 +95,13 @@ const { responses, responsesError, loadResponses, respondAction, respondTo } =
   useCalloutResponse(toRef(props, 'callout'));
 
 /** Only the response just submitted, so the list shows it on its own */
-const latestResponse = computed(() => ({
-  total: 1,
-  count: 1,
-  offset: 0,
-  items: responses.value?.slice(0, 1) ?? [],
-}));
+const latestResponse = computed(
+  () =>
+    responses.value && {
+      total: 1,
+      count: 1,
+      offset: 0,
+      items: responses.value.slice(0, 1),
+    }
+);
 </script>
