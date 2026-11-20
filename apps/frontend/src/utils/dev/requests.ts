@@ -131,10 +131,15 @@ export function installDevRequests() {
       return realFetch(input, init);
     }
 
-    if (!devRequests.seen.includes(key)) devRequests.seen.push(key);
     const source = new Error().stack?.match(
       /https?:\/\/[^/]+(?:\/@fs)?(\/[^?:\s]+\.vue)/
     )?.[1];
+
+    // Leaves the caller's reactive effect first, or a watchEffect that fetches
+    // would track this state and refetch whenever another request is made
+    await Promise.resolve();
+
+    if (!devRequests.seen.includes(key)) devRequests.seen.push(key);
     if (source) devRequests.sources[key] = source;
     if (booting && !devRequests.appKeys.includes(key)) {
       devRequests.appKeys.push(key);
