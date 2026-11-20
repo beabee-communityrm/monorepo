@@ -30,12 +30,9 @@
       :expires="callout.expires"
     />
 
-    <LoadError
-      v-else-if="responsesError"
-      :retry="loadResponses"
-      keypath="callout.loadResponsesError"
-      class="py-8 text-center"
-    />
+    <UCard v-else-if="responsesError">
+      <LoadError :retry="loadResponses" keypath="callout.loadError" />
+    </UCard>
 
     <UCard v-else-if="!responses" :ui="{ body: 'space-y-6' }">
       <div v-for="n in 3" :key="n" class="space-y-2">
