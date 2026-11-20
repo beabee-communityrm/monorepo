@@ -53,9 +53,9 @@ meta:
 
     <h1 class="text-xl">{{ callout.title }}</h1>
 
-    <template v-if="responses /* Avoids layout thrashing */">
+    <template v-if="responses || responsesError">
       <CalloutThankYouBanner
-        v-if="responses.length"
+        v-if="responses?.length"
         :callout="callout"
         :submitted-at="responses[0].createdAt"
       />
@@ -69,6 +69,13 @@ meta:
         v-else-if="showMemberOnlyPrompt && isOpen && !isPreview"
       />
 
+      <LoadError
+        v-else-if="responsesError"
+        :retry="retryResponses"
+        keypath="callout.loadResponsesError"
+        class="py-8 text-center"
+      />
+
       <UButton
         v-else-if="respondAction === 'start'"
         size="xl"
@@ -80,11 +87,22 @@ meta:
 
       <CalloutResponseList
         v-if="responsesPaginated?.items.length"
+        ref="responseList"
         :form-schema="callout.formSchema"
         :responses="responsesPaginated"
         :add-to="respondAction === 'add' ? respondTo : undefined"
         :edit-to="respondAction === 'edit' ? respondTo : undefined"
       />
+    </template>
+
+    <template v-else>
+      <USkeleton class="aspect-video w-full bg-accented" />
+      <div class="space-y-2">
+        <USkeleton class="h-4 w-full bg-accented" />
+        <USkeleton class="h-4 w-full bg-accented" />
+        <USkeleton class="h-4 w-2/3 bg-accented" />
+      </div>
+      <USkeleton class="h-12 w-full bg-accented" />
     </template>
   </div>
 </template>
@@ -92,7 +110,7 @@ meta:
 import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
 import { formatLocale } from '@beabee/vue';
 
-import { computed, toRef } from 'vue';
+import { computed, nextTick, toRef, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import CalloutContributionGate from '#components/callout/CalloutContributionGate.vue';
@@ -102,6 +120,7 @@ import CalloutPreviewBar from '#components/callout/CalloutPreviewBar.vue';
 import CalloutResponseList from '#components/callout/CalloutResponseList.vue';
 import CalloutSharePopover from '#components/callout/CalloutSharePopover.vue';
 import CalloutThankYouBanner from '#components/callout/CalloutThankYouBanner.vue';
+import LoadError from '#components/LoadError.vue';
 import CalloutRespond from '#components/pages/callouts/CalloutRespond.vue';
 import {
   useCallout,
@@ -161,8 +180,23 @@ const daysLeft = computed(() => getDaysLeft(props.callout.expires));
 
 // Embeds render CalloutRespond directly instead, which fetches its own
 // response state, so skip fetching it twice here.
-const { responses, responsesPaginated, respondAction, respondTo } =
-  useCalloutResponse(calloutRef, {
-    fetchResponses: !isEmbed,
-  });
+const {
+  responses,
+  responsesPaginated,
+  responsesError,
+  loadResponses,
+  respondAction,
+  respondTo,
+} = useCalloutResponse(calloutRef, {
+  fetchResponses: !isEmbed,
+});
+
+const responseList = useTemplateRef('responseList');
+
+/** Loads the responses again, moving focus to them if there are any */
+async function retryResponses() {
+  await loadResponses();
+  await nextTick();
+  await responseList.value?.focusHeading();
+}
 </script>
