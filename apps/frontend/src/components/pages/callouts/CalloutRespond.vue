@@ -31,7 +31,7 @@
     />
 
     <UCard v-else-if="responsesError">
-      <LoadError :retry="loadResponses" keypath="callout.loadError" />
+      <LoadError :retry="retryResponses" keypath="callout.loadError" />
     </UCard>
 
     <UCard v-else-if="!responses" :ui="{ body: 'space-y-6' }">
@@ -45,6 +45,7 @@
     <!-- Landing here without being able to respond, so show what they sent -->
     <CalloutResponseList
       v-if="!canRespond && responsesPaginated?.items.length"
+      ref="responseList"
       :form-schema="callout.formSchema"
       :responses="responsesPaginated"
     />
@@ -58,7 +59,7 @@ import {
 } from '@beabee/beabee-common';
 import { addNotification } from '@beabee/vue';
 
-import { computed, toRef } from 'vue';
+import { computed, nextTick, toRef, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -97,6 +98,15 @@ const {
   canRespond,
   respondAction,
 } = useCalloutResponse(calloutRef);
+
+const responseList = useTemplateRef('responseList');
+
+/** Loads the responses again, moving focus to them if there are any */
+async function retryResponses() {
+  await loadResponses();
+  await nextTick();
+  await responseList.value?.focusHeading();
+}
 
 /** An explicit answers override from the URL, or the user's own response
  * when it's the single one they're allowed to edit */

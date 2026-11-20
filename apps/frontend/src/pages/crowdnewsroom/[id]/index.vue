@@ -71,7 +71,7 @@ meta:
 
       <LoadError
         v-else-if="responsesError"
-        :retry="loadResponses"
+        :retry="retryResponses"
         keypath="callout.loadResponsesError"
         class="py-8 text-center"
       />
@@ -87,6 +87,7 @@ meta:
 
       <CalloutResponseList
         v-if="responsesPaginated?.items.length"
+        ref="responseList"
         :form-schema="callout.formSchema"
         :responses="responsesPaginated"
         :add-to="respondAction === 'add' ? respondTo : undefined"
@@ -109,7 +110,7 @@ meta:
 import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
 import { formatLocale } from '@beabee/vue';
 
-import { computed, toRef } from 'vue';
+import { computed, nextTick, toRef, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import CalloutContributionGate from '#components/callout/CalloutContributionGate.vue';
@@ -189,4 +190,13 @@ const {
 } = useCalloutResponse(calloutRef, {
   fetchResponses: !isEmbed,
 });
+
+const responseList = useTemplateRef('responseList');
+
+/** Loads the responses again, moving focus to them if there are any */
+async function retryResponses() {
+  await loadResponses();
+  await nextTick();
+  await responseList.value?.focusHeading();
+}
 </script>
