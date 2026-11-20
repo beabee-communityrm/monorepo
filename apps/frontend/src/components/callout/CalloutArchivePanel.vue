@@ -14,8 +14,18 @@
           >
             <UIcon name="i-lucide-archive" class="size-4 text-muted" />
             {{ t('callouts.archive') }}
-            <UBadge color="neutral" variant="subtle" size="sm">
-              {{ archivedTotal ?? 0 }}
+            <USkeleton
+              v-if="archivedTotal === undefined && !totalError"
+              as="span"
+              class="h-5 w-6"
+            />
+            <UBadge
+              v-else-if="archivedTotal !== undefined"
+              color="neutral"
+              variant="subtle"
+              size="sm"
+            >
+              {{ archivedTotal }}
             </UBadge>
           </span>
           <UIcon
@@ -69,8 +79,24 @@
         </UButton>
       </div>
 
+      <LoadError
+        v-if="listError"
+        :retry="loadList"
+        class="border-t border-default p-4"
+      />
+
       <div
-        v-if="archivedCallouts && archivedCallouts.items.length > 0"
+        v-else-if="!archivedCallouts"
+        class="divide-y divide-default border-t border-default"
+      >
+        <div v-for="n in 2" :key="n" class="space-y-2 p-3">
+          <USkeleton class="h-4 w-1/2" />
+          <USkeleton class="h-4 w-1/3" />
+        </div>
+      </div>
+
+      <div
+        v-else-if="archivedCallouts.items.length > 0"
         class="divide-y divide-default border-t border-default"
       >
         <CalloutArchiveRow
@@ -126,6 +152,7 @@ import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import CalloutArchiveRow from '#components/callout/CalloutArchiveRow.vue';
+import LoadError from '#components/LoadError.vue';
 import { client } from '#utils/api';
 import { defineParam } from '#utils/pagination';
 import type { CalloutCardData } from '#type';
@@ -157,6 +184,8 @@ const archivePageSize = 10;
 
 const archivedCallouts = ref<Paginated<CalloutCardData>>();
 const archivedTotal = ref<number>();
+const totalError = ref(false);
+const listError = ref(false);
 
 const archiveTotalPages = computed(() =>
   archivedCallouts.value
@@ -170,20 +199,24 @@ watch(archiveTotalPages, (value) => {
 });
 
 onBeforeMount(async () => {
-  const archived = await client.callout.list({
-    limit: 1,
-    rules: {
-      condition: 'AND',
-      rules: [
-        { field: 'status', operator: 'equal', value: [ItemStatus.Ended] },
-        { field: 'hidden', operator: 'equal', value: [false] },
-      ],
-    },
-  });
-  archivedTotal.value = archived.total;
+  try {
+    const archived = await client.callout.list({
+      limit: 1,
+      rules: {
+        condition: 'AND',
+        rules: [
+          { field: 'status', operator: 'equal', value: [ItemStatus.Ended] },
+          { field: 'hidden', operator: 'equal', value: [false] },
+        ],
+      },
+    });
+    archivedTotal.value = archived.total;
+  } catch {
+    totalError.value = true;
+  }
 });
 
-watchEffect(async () => {
+const loadList = async () => {
   const query: GetCalloutsQuery = {
     offset: archivePage.value * archivePageSize,
     limit: archivePageSize,
@@ -216,5 +249,12 @@ watchEffect(async () => {
     'hasAnswered',
     'responseCount',
   ]);
-});
+  listError.value = false;
+};
+
+watchEffect(() =>
+  loadList().catch(() => {
+    listError.value = true;
+  })
+);
 </script>
