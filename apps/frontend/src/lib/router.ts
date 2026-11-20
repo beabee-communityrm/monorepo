@@ -5,7 +5,10 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from) {
-    return from && to.name === from.name ? undefined : { top: 0 };
+    if (from && to.name === from.name) return;
+    // The dashboard layout scrolls its main element rather than the window
+    document.getElementById('top')?.scrollTo({ top: 0 });
+    return { top: 0 };
   },
 });
 
