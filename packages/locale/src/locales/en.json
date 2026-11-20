@@ -1781,7 +1781,7 @@
     },
     "groupCount": "{n} group | {n} groups",
     "loadAllResponsesError": "Couldn't load all your responses. Try again.",
-    "loadError": "Failed to load. Try reloading the page, and contact {support} if it keeps happening.",
+    "loadError": "Failed to load. Contact {support} if it keeps happening.",
     "makeOneTimeDonationButton": "Make contribution",
     "makeOneTimeDonationTitle": "Make one-time contribution",
     "manageContribution": "Manage your contribution",

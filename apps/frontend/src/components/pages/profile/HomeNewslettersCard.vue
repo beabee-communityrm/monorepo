@@ -15,6 +15,7 @@
     "
     :items="groups"
     :error="error"
+    :retry="load"
     :item-key="(group) => group.id"
     :interactive="false"
     :footer-label="t('homePage.manageSubscriptions')"
@@ -40,11 +41,14 @@ const { t } = useI18n();
 const groups = ref<BaseNewsletterGroupData[]>();
 const error = ref(false);
 
-onBeforeMount(async () => {
-  try {
-    groups.value = await client.contact.newsletter.getGroups('me');
-  } catch {
+const load = async () => {
+  groups.value = await client.contact.newsletter.getGroups('me');
+  error.value = false;
+};
+
+onBeforeMount(() =>
+  load().catch(() => {
     error.value = true;
-  }
-});
+  })
+);
 </script>

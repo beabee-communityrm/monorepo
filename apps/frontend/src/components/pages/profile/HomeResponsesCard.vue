@@ -11,6 +11,7 @@
     :count="t('callouts.data.responses', { n: total }, total)"
     :items="shown"
     :error="error"
+    :retry="load"
     :item-key="(response) => response.id"
     :empty-text="t('homePage.noResponses')"
     :footer-label="footerLabel"
@@ -95,13 +96,16 @@ const fetchResponses = (limit: number) =>
     [GetCalloutResponseWith.Callout]
   );
 
-onBeforeMount(async () => {
-  try {
-    page.value = await fetchResponses(3);
-  } catch {
+const load = async () => {
+  page.value = await fetchResponses(3);
+  error.value = false;
+};
+
+onBeforeMount(() =>
+  load().catch(() => {
     error.value = true;
-  }
-});
+  })
+);
 
 const collapsedCount = 3;
 const expanded = ref(false);
