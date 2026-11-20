@@ -1,4 +1,7 @@
 import { ActivityActorType, ActivityEventType } from '@beabee/beabee-common';
+import { dataSource } from '@beabee/core/database';
+
+import chalk from 'chalk';
 
 import type { EventBackfiller } from '../../types/index.js';
 import { createBackfill, noActor, sameTarget } from '../../utils/backfill.js';
@@ -42,6 +45,35 @@ const backfillAnswered = createBackfill({
   sameEvent: `y.metadata->>'responseId' = x.metadata->>'responseId'`,
 });
 
+// Replace all callout.answered events with one per callout response
+// Event details are the same as for backfillAnswered
+const insertAnswered = createBackfill({
+  eventType: ActivityEventType.CalloutAnswered,
+  fields: `r."calloutId", $2, r."contactId", r."createdAt",
+           jsonb_build_object('responseId', r.id)`,
+  source: `FROM callout_response r`,
+  params: [ActivityActorType.User],
+  isBackfilled: () => 'FALSE',
+  sameEvent: `y.metadata->>'responseId' = x.metadata->>'responseId'`,
+});
+
+// Remove all `callout.answered` events, then backfill
+const refillAnswered: EventBackfiller = {
+  ...insertAnswered,
+  backfill: async (dryRun) => {
+    if (!dryRun) {
+      const [, deleted] = await dataSource.query(
+        `DELETE FROM activity_event WHERE "eventType" = $1`,
+        [insertAnswered.eventType]
+      );
+      console.log(
+        `${chalk.green('✓')} Deleted ${deleted} ${insertAnswered.eventType} event(s)`
+      );
+    }
+    return insertAnswered.backfill(dryRun);
+  },
+};
+
 /**
  * Backfill callout-response-segment.added events
  * The segment is the target, as for segments added through the API
@@ -63,6 +95,7 @@ const backfillSegmentsAdded = createBackfill({
 /** Callout activity events that pre-date the activity feed */
 export const calloutBackfills: EventBackfiller[] = [
   backfillCreated,
-  backfillAnswered,
+  //backfillAnswered,
+  refillAnswered,
   backfillSegmentsAdded,
 ];

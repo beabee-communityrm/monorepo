@@ -34,6 +34,37 @@ const backfillPaymentSuccessful = createBackfill({
       OR (y.metadata->>'paymentId' IS NULL AND y."createdAt" <= x."createdAt"))`,
 });
 
+//  Replace all contact.payment.successful events with one per successful payment
+//  Event details are the same as for backfillPaymentSuccessful
+const insertPaymentSuccessful = createBackfill({
+  eventType: ActivityEventType.ContactPaymentSuccessful,
+  fields: `p."contactId", NULL, NULL, p."chargeDate",
+           jsonb_build_object('paymentId', p.id)`,
+  source: `FROM payment p WHERE p.status = $2 AND p."contactId" IS NOT NULL`,
+  params: [PaymentStatus.Successful],
+  isBackfilled: noActor,
+  sameEvent: `${sameTarget}
+    AND (y.metadata->>'paymentId' = x.metadata->>'paymentId'
+      OR (y.metadata->>'paymentId' IS NULL AND y."createdAt" <= x."createdAt"))`,
+});
+
+// Remove all successful payment events, then backfill
+const refillPaymentSuccessful: EventBackfiller = {
+  ...insertPaymentSuccessful,
+  backfill: async (dryRun) => {
+    if (!dryRun) {
+      const [, deleted] = await dataSource.query(
+        `DELETE FROM activity_event WHERE "eventType" = $1`,
+        [insertPaymentSuccessful.eventType]
+      );
+      console.log(
+        `${chalk.green('✓')} Deleted ${deleted} ${insertPaymentSuccessful.eventType} event(s)`
+      );
+    }
+    return insertPaymentSuccessful.backfill(dryRun);
+  },
+};
+
 // Find uncollectible invoices ($2 ids, $3 dates) with a contact-linked payment
 // (a Stripe payment's id is its invoice id) but without a failed event
 const noFailedEvent = `
@@ -104,6 +135,7 @@ const backfillPaymentFailed: EventBackfiller = {
 
 /** Payment activity events from existing payment records that pre-date the activity feed */
 export const paymentBackfills: EventBackfiller[] = [
-  backfillPaymentSuccessful,
+  //backfillPaymentSuccessful,
+  refillPaymentSuccessful,
   backfillPaymentFailed,
 ];
