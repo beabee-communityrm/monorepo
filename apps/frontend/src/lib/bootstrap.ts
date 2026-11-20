@@ -3,6 +3,7 @@ import { icons } from '@beabee/vue/plugins/icons';
 
 import ui from '@nuxt/ui/vue-plugin';
 import { type App as VueApp, createApp, h } from 'vue';
+import { DataLoaderPlugin } from 'vue-router/experimental';
 
 import { waitForBackend } from '#utils/api/client';
 
@@ -10,7 +11,7 @@ import App from '../App.vue';
 import { init as initErrorHandler } from './appsignal';
 import { i18n } from './i18n';
 import { installRouteGuard } from './route-guard';
-import router from './router';
+import router, { waitForHolds } from './router';
 
 // Flag to prevent multiple app initializations
 let isAppInitialized = false;
@@ -35,6 +36,10 @@ export async function startMainApp() {
   initErrorHandler(app);
 
   installRouteGuard(router);
+  // Before the router, which starts the first navigation
+  app.use(DataLoaderPlugin, { router });
+  // After the data loaders, whose guard starts the loads
+  router.beforeResolve(waitForHolds);
   app.use({ ...router });
   app.use(i18n);
   app.use(icons);
