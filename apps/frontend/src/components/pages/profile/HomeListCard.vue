@@ -18,7 +18,7 @@
       </AppCardHeader>
     </template>
 
-    <HomeLoadError v-if="error" class="p-4 sm:px-6" />
+    <LoadError v-if="error" class="p-4 sm:px-6" />
 
     <ul v-else-if="!items" class="divide-y divide-default">
       <li v-for="n in 2" :key="n" :class="rowClass">
@@ -86,7 +86,7 @@ import { AppCardHeader } from '@beabee/vue';
 
 import { RouterLink } from 'vue-router';
 
-import HomeLoadError from '#components/pages/profile/HomeLoadError.vue';
+import LoadError from '#components/LoadError.vue';
 
 /** Props for HomeListCard */
 export interface HomeListCardProps<T> {

@@ -1793,6 +1793,7 @@
     "openCallouts": "CrowdNewsroom",
     "openCount": "{n} open",
     "quickActions": "Quick actions",
+    "retryError": "Still couldn't load. Try again in a moment.",
     "seeAllOpen": "See all {n} open CrowdNewsrooms",
     "showAllResponses": "Show all {n} responses",
     "showFewer": "Show fewer",
