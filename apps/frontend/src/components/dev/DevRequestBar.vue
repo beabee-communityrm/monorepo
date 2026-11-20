@@ -1,13 +1,14 @@
 <!--
   # DevRequestBar
   Dev-only panel listing the API requests the current page has made, each with
-  a mode to make it hang, fail or come back empty. Modes apply from the next
-  request and last for the browser tab's session. Changing a mode reruns the
-  page, including its route loaders, or reloads it for app startup requests,
-  and a hanging request carries on once its mode changes. Hovering a page
-  request outlines the component that made it. Alt-clicking anything on the
-  page holds the requests the click makes, whatever their mode, until Succeed,
-  Fail or Empty is picked for them.
+  a mode to make it hang, fail or come back empty, and a delay for every
+  request. Modes and the delay apply from the next request and last for the
+  browser tab's session. Changing a mode reruns the page, including its route
+  loaders, or reloads it for app startup requests, and a hanging request
+  carries on once its mode changes. Hovering a page request outlines the
+  component that made it. Alt-clicking anything on the page holds the
+  requests the click makes, whatever their mode, until Succeed, Fail or Empty
+  is picked for them.
 -->
 <template>
   <UPopover
@@ -18,12 +19,8 @@
     <UButton
       icon="i-lucide-bug"
       color="neutral"
-      :label="overrideCount ? String(overrideCount) : undefined"
-      :aria-label="
-        overrideCount
-          ? `Dev requests, ${overrideCount} overridden`
-          : 'Dev requests'
-      "
+      :label="buttonLabel"
+      :aria-label="buttonAriaLabel"
       class="fixed bottom-4 left-4 z-50"
       data-dev-bar
     />
@@ -39,6 +36,18 @@
             Alt-click a button on the page to hold the requests it makes.
           </p>
         </div>
+
+        <label class="flex items-center gap-3 text-sm">
+          Delay every request
+          <select
+            v-model.number="devRequests.delay"
+            class="cursor-pointer rounded-md bg-default px-2 py-1 ring ring-accented focus-visible:ring-2 focus-visible:ring-(--ui-color-neutral-500) focus-visible:outline-none"
+          >
+            <option v-for="ms in delays" :key="ms" :value="ms">
+              {{ ms ? formatDelay(ms) : 'Off' }}
+            </option>
+          </select>
+        </label>
 
         <p v-if="!keys.length" class="text-muted">No API requests yet.</p>
 
@@ -245,12 +254,39 @@ const appKeys = computed(() =>
 
 const overrideCount = computed(() => Object.keys(devRequests.modes).length);
 
+const formatDelay = (ms: number) => (ms < 1000 ? `${ms} ms` : `${ms / 1000} s`);
+
+/** Shows what's in force, so a forgotten delay or mode doesn't go unnoticed */
+const buttonLabel = computed(
+  () =>
+    [
+      overrideCount.value && String(overrideCount.value),
+      devRequests.delay && formatDelay(devRequests.delay),
+    ]
+      .filter(Boolean)
+      .join(' · ') || undefined
+);
+
+const buttonAriaLabel = computed(() =>
+  [
+    'Dev requests',
+    overrideCount.value && `${overrideCount.value} overridden`,
+    devRequests.delay && `${formatDelay(devRequests.delay)} delay`,
+  ]
+    .filter(Boolean)
+    .join(', ')
+);
+
 const modeItems = [
   { label: 'Normal', value: 'normal' as const },
   { label: 'Hang', value: 'hang' as const },
   { label: 'Error', value: 'fail' as const },
   { label: 'Empty', value: 'empty' as const },
 ];
+
+/** Delays to pick from: under the loading bar's 150 ms, between that and
+ * the skeletons' 300 ms, just past it, and clearly slow */
+const delays = [0, 100, 250, 400, 1000, 3000];
 
 const splitKey = (key: string) => {
   const [base, query = ''] = key.split('?');
