@@ -19,6 +19,8 @@ export const devRequests = reactive({
   seen: [] as string[],
   /** Requests set to anything other than normal */
   modes: (stored.modes ?? {}) as Record<string, DevRequestMode>,
+  /** How long every request is held back, in milliseconds */
+  delay: (stored.delay ?? 0) as number,
   /** Requests seen to return a list, which can be forced empty */
   listKeys: (stored.listKeys ?? []) as string[],
   /** Requests made before the first page loaded, left out of "all" */
@@ -30,7 +32,11 @@ export const devRequests = reactive({
 });
 
 watch(
-  () => ({ modes: devRequests.modes, listKeys: devRequests.listKeys }),
+  () => ({
+    modes: devRequests.modes,
+    delay: devRequests.delay,
+    listKeys: devRequests.listKeys,
+  }),
   (value) => sessionStorage.setItem(STORAGE_KEY, JSON.stringify(value)),
   { deep: true }
 );
@@ -161,6 +167,10 @@ export function installDevRequests() {
         await new Promise<void>((resume) => hanging.add(resume));
       }
       mode = devRequests.modes[key];
+    }
+
+    if (devRequests.delay) {
+      await new Promise((resume) => setTimeout(resume, devRequests.delay));
     }
 
     if (mode === 'fail') {
