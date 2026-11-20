@@ -3,10 +3,11 @@
   Dev-only panel listing the API requests the current page has made, each with
   a mode to make it hang, fail or come back empty. Modes apply from the next
   request and last for the browser tab's session. Changing a mode reruns the
-  page, or reloads it for app startup requests, and a hanging request carries
-  on once its mode changes. Hovering a page request outlines the component that
-  made it. Alt-clicking anything on the page holds the requests the click
-  makes, whatever their mode, until Succeed, Fail or Empty is picked for them.
+  page, including its route loaders, or reloads it for app startup requests,
+  and a hanging request carries on once its mode changes. Hovering a page
+  request outlines the component that made it. Alt-clicking anything on the
+  page holds the requests the click makes, whatever their mode, until Succeed,
+  Fail or Empty is picked for them.
 -->
 <template>
   <UPopover
@@ -220,12 +221,15 @@ import {
   onMounted,
   ref,
 } from 'vue';
+import { useRouter } from 'vue-router';
 
 import { componentBoxes } from '#utils/dev/components';
 import { devRequests } from '#utils/dev/requests';
 import type { DevRequestHold, DevRequestMode } from '#type';
 
 const emit = defineEmits<{ (e: 'remount'): void }>();
+
+const router = useRouter();
 
 const keys = computed(() => [
   ...new Set([...devRequests.seen, ...Object.keys(devRequests.modes)]),
@@ -331,13 +335,16 @@ function setMode(key: string, mode: DevRequestMode) {
   }
 }
 
-/** Startup requests are only made again by a full reload */
+/** Startup requests are only made again by a full reload. Route loaders run
+ * on navigation, so the page navigates to itself to run them again. */
 async function rerun(reload: boolean) {
   if (reload) {
     await nextTick();
     location.reload();
   } else {
     emit('remount');
+    const { path, query, hash } = router.currentRoute.value;
+    router.replace({ path, query, hash, force: true });
   }
 }
 
