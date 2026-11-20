@@ -9,14 +9,15 @@
   heading instead.
 
   Until the responses arrive, the heading stays and the card shows skeleton
-  rows, or the error if they failed, so focus can return to the heading once a
-  retry loads them.
+  rows, or the error if they failed. A successful retry moves focus to the
+  heading, as does `focusHeading`, for pages whose own retry brings the list
+  in.
 -->
 <template>
   <div class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-3">
       <div class="flex flex-wrap items-baseline gap-x-3">
-        <h3 class="text-lg">{{ heading }}</h3>
+        <h3 ref="headingEl" class="text-lg">{{ heading }}</h3>
         <p v-if="count === 1 && !hideDate" class="text-muted">
           {{ submittedOn }}
         </p>
@@ -83,7 +84,7 @@
 
       <LoadError
         v-if="!responses && error && retry"
-        :retry="retry"
+        :retry="retryAndFocus"
         keypath="callout.loadResponseError"
         class="p-4 sm:p-6"
       />
@@ -218,6 +219,22 @@ const rows = computed(() =>
     ? getResponseAnswerRows(props.formSchema, response.value.answers)
     : []
 );
+
+const headingEl = useTemplateRef('headingEl');
+
+async function focusHeading() {
+  await nextTick();
+  if (!headingEl.value) return;
+  headingEl.value.tabIndex = -1;
+  headingEl.value.focus();
+}
+
+async function retryAndFocus() {
+  await props.retry?.();
+  await focusHeading();
+}
+
+defineExpose({ focusHeading });
 
 const previousButton = useTemplateRef('previousButton');
 const nextButton = useTemplateRef('nextButton');
