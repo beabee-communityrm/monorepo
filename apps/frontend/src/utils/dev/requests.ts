@@ -110,11 +110,17 @@ export function installDevRequests() {
     if (from.matched.length && to.path !== from.path) devRequests.seen = [];
   });
 
+  // Startup ends once the first navigation is past its guards, before its
+  // route loaders run, or when it's abandoned
   let booting = true;
-  const stopBooting = router.afterEach(() => {
+  const stopBooting = () => {
     booting = false;
-    stopBooting();
-  });
+    removers.forEach((remove) => remove());
+  };
+  const removers = [
+    router.beforeResolve(stopBooting),
+    router.afterEach(stopBooting),
+  ];
 
   globalThis.fetch = async (input, init) => {
     const url = new URL(
