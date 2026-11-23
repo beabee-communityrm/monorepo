@@ -8,7 +8,7 @@
   header. A single response has no card header, so its date sits alongside the
   heading instead.
 
-  Until the responses arrive, the heading stays and the card shows skeleton
+  While the responses load, the heading stays and the card shows skeleton
   rows, or the error if they failed. A successful retry moves focus to the
   heading, as does `focusHeading`, for pages whose own retry brings the list
   in.
@@ -89,7 +89,7 @@
         class="p-4 sm:p-6"
       />
 
-      <div v-else-if="!responses" class="divide-y divide-muted/50">
+      <div v-else-if="loading" class="divide-y divide-muted/50">
         <div
           v-for="n in 3"
           :key="n"
@@ -100,7 +100,7 @@
         </div>
       </div>
 
-      <dl v-else class="divide-y divide-muted/50">
+      <dl v-else-if="responses" class="divide-y divide-muted/50">
         <div
           v-for="row in rows"
           :key="row.key"
@@ -173,7 +173,7 @@ export interface CalloutResponseListProps {
   formSchema: GetCalloutFormSchema;
   /**
    * The current user's responses, newest first. Expects at least one once
-   * loaded; undefined until then
+   * loaded; undefined until then, or if they failed
    */
   responses?: Paginated<
     GetCalloutResponseDataWith<GetCalloutResponseWith.Answers>
@@ -184,6 +184,8 @@ export interface CalloutResponseListProps {
   editTo?: RouteLocationRaw;
   /** Leaves out the submission date */
   hideDate?: boolean;
+  /** Shows skeleton rows while the responses load */
+  loading?: boolean;
   /** Whether the responses failed to load */
   error?: boolean;
   /** Loads the responses again; rejects if they still can't be loaded */

@@ -34,14 +34,6 @@
       <LoadError :retry="retryResponses" keypath="callout.loadError" />
     </UCard>
 
-    <UCard v-else-if="!responses" :ui="{ body: 'space-y-6' }">
-      <div v-for="n in 3" :key="n" class="space-y-2">
-        <USkeleton class="h-4 w-1/3" />
-        <USkeleton class="h-10 w-full" />
-      </div>
-      <USkeleton class="h-10 w-28" />
-    </UCard>
-
     <!-- Landing here without being able to respond, so show what they sent -->
     <CalloutResponseList
       v-if="!canRespond && responsesPaginated?.items.length"

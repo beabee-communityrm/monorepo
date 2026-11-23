@@ -53,59 +53,51 @@ meta:
 
     <h1 class="text-xl">{{ callout.title }}</h1>
 
-    <template v-if="responses || responsesError">
-      <CalloutThankYouBanner
-        v-if="responses?.length"
-        :callout="callout"
-        :submitted-at="responses[0].createdAt"
-      />
+    <CalloutThankYouBanner
+      v-if="responses?.length"
+      :callout="callout"
+      :submitted-at="responses[0].createdAt"
+    />
 
-      <img class="w-full" :src="imageUrl" alt="" />
-      <div class="nuxt-prose text-base" v-html="callout.intro" />
+    <img class="w-full" :src="imageUrl" alt="" />
+    <div class="nuxt-prose text-base" v-html="callout.intro" />
 
-      <CalloutLoginGate v-if="showLoginPrompt && isOpen" />
+    <CalloutLoginGate v-if="showLoginPrompt && isOpen" />
 
-      <CalloutContributionGate
-        v-else-if="showMemberOnlyPrompt && isOpen && !isPreview"
-      />
+    <CalloutContributionGate
+      v-else-if="showMemberOnlyPrompt && isOpen && !isPreview"
+    />
 
-      <LoadError
-        v-else-if="responsesError"
-        :retry="retryResponses"
-        keypath="callout.loadResponsesError"
-        class="py-8 text-center"
-      />
+    <LoadError
+      v-else-if="responsesError"
+      :retry="retryResponses"
+      keypath="callout.loadResponsesError"
+      class="py-8 text-center"
+    />
 
-      <UButton
-        v-else-if="respondAction === 'start'"
-        size="xl"
-        class="w-full"
-        :to="respondTo"
-      >
-        {{ t('actions.getStarted') }}
-      </UButton>
+    <UButton
+      v-else-if="respondAction === 'start'"
+      size="xl"
+      class="w-full"
+      :to="respondTo"
+    >
+      {{ t('actions.getStarted') }}
+    </UButton>
 
-      <CalloutResponseList
-        v-if="responsesPaginated?.items.length"
-        ref="responseList"
-        :form-schema="callout.formSchema"
-        :responses="responsesPaginated"
-        :add-to="respondAction === 'add' ? respondTo : undefined"
-        :edit-to="respondAction === 'edit' ? respondTo : undefined"
-      />
-    </template>
-
-    <template v-else>
-      <USkeleton class="aspect-video w-full bg-accented" />
-      <div class="space-y-2">
-        <USkeleton class="h-4 w-full bg-accented" />
-        <USkeleton class="h-4 w-full bg-accented" />
-        <USkeleton class="h-4 w-2/3 bg-accented" />
-      </div>
-      <USkeleton class="h-12 w-full bg-accented" />
-    </template>
+    <CalloutResponseList
+      v-if="responsesPaginated?.items.length"
+      ref="responseList"
+      :form-schema="callout.formSchema"
+      :responses="responsesPaginated"
+      :add-to="respondAction === 'add' ? respondTo : undefined"
+      :edit-to="respondAction === 'edit' ? respondTo : undefined"
+    />
   </div>
 </template>
+<script lang="ts">
+export { useCalloutResponsesData } from '#components/pages/callouts/use-callout';
+</script>
+
 <script lang="ts" setup>
 import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
 import { formatLocale } from '@beabee/vue';
@@ -178,8 +170,6 @@ const imageUrl = computed(() => getCalloutImageUrl(props.callout));
 
 const daysLeft = computed(() => getDaysLeft(props.callout.expires));
 
-// Embeds render CalloutRespond directly instead, which fetches its own
-// response state, so skip fetching it twice here.
 const {
   responses,
   responsesPaginated,
@@ -187,9 +177,7 @@ const {
   loadResponses,
   respondAction,
   respondTo,
-} = useCalloutResponse(calloutRef, {
-  fetchResponses: !isEmbed,
-});
+} = useCalloutResponse(calloutRef);
 
 const responseList = useTemplateRef('responseList');
 

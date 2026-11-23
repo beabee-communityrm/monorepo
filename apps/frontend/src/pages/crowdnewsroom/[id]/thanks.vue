@@ -16,12 +16,13 @@ meta:
     <CalloutThankYouBanner :callout="callout" :level="2" size="lg" />
 
     <CalloutResponseList
-      v-if="!responses || responses.length"
+      v-if="responsesSkeleton || responsesError || responses?.length"
       :form-schema="callout.formSchema"
       :responses="latestResponse"
       hide-date
       :add-to="respondAction === 'add' ? respondTo : undefined"
       :edit-to="respondAction === 'edit' ? respondTo : undefined"
+      :loading="responsesSkeleton"
       :error="responsesError"
       :retry="loadResponses"
     />
@@ -50,6 +51,10 @@ meta:
     </div>
   </div>
 </template>
+<script lang="ts">
+export { useCalloutResponsesData } from '#components/pages/callouts/use-callout';
+</script>
+
 <script lang="ts" setup>
 import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
 import { computed, toRef } from 'vue';
@@ -91,8 +96,14 @@ addBreadcrumb(
   )
 );
 
-const { responses, responsesError, loadResponses, respondAction, respondTo } =
-  useCalloutResponse(toRef(props, 'callout'));
+const {
+  responses,
+  responsesError,
+  responsesSkeleton,
+  loadResponses,
+  respondAction,
+  respondTo,
+} = useCalloutResponse(toRef(props, 'callout'));
 
 /** Only the response just submitted, so the list shows it on its own */
 const latestResponse = computed(

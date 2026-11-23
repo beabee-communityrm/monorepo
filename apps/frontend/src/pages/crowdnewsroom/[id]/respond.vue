@@ -7,6 +7,10 @@ meta:
 <template>
   <CalloutRespond :callout="callout" />
 </template>
+<script lang="ts">
+export { useCalloutResponsesData } from '#components/pages/callouts/use-callout';
+</script>
+
 <script lang="ts" setup>
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
 

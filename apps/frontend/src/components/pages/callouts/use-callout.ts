@@ -9,11 +9,15 @@ import {
 } from '@beabee/beabee-common';
 import { isLocale, config as localeConfig } from '@beabee/locale';
 
-import { type Ref, computed, onBeforeMount, ref } from 'vue';
+import { type Ref, computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { defineBasicLoader } from 'vue-router/experimental';
 
+import { useDelayedSkeleton } from '#composables/useDelayedSkeleton';
+import { holdNavigation } from '#lib/router';
 import { currentUser, generalContent } from '#store';
 import { client } from '#utils/api';
+import { trackLoaderReader } from '#utils/dev/loader-readers';
 
 export const HASH_PREFIX = '#response-' as const;
 
@@ -49,24 +53,112 @@ export function useCallout(callout: Ref<GetCalloutData>) {
   };
 }
 
+/** The path of the page the responses loader last started loading for */
+const responsesLoadingPath = ref<string>();
+
+/** The path of the page the responses loader last failed for */
+let responsesFailedPath: string | undefined;
+
+/**
+ * Loads the current user's responses for the details, respond and thanks
+ * pages, as they decide what those pages offer. Each of those pages exports
+ * it. The details and respond pages wait for them. The thanks page waits up
+ * to 300 ms, then shows without them and fills in when they arrive. A failed
+ * request still shows the page, with the error. The responses come with the
+ * path of the page they're for, and a failure notes its page too.
+ */
+export const useCalloutResponsesData = defineBasicLoader(
+  async (
+    to
+  ): Promise<{
+    path: string;
+    responses: Paginated<
+      GetCalloutResponseDataWith<GetCalloutResponseWith.Answers>
+    >;
+  }> => {
+    responsesLoadingPath.value = to.path;
+
+    const isPreview =
+      to.query.preview === null && currentUser.value?.isReviewer;
+    if (isPreview || !currentUser.value || !('id' in to.params)) {
+      return {
+        path: to.path,
+        responses: { total: 0, count: 0, offset: 0, items: [] },
+      };
+    }
+
+    try {
+      const responses = await holdNavigation(
+        client.callout.listResponses(
+          to.params.id,
+          {
+            rules: {
+              condition: 'AND',
+              rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
+            },
+            sort: 'createdAt',
+            order: 'DESC',
+          },
+          [GetCalloutResponseWith.Answers]
+        )
+      );
+      return { path: to.path, responses };
+    } catch (error) {
+      responsesFailedPath = to.path;
+      throw error;
+    }
+  },
+  {
+    errors: () => true,
+    lazy: (to) => to.name === 'calloutThanks',
+  }
+);
+
 /**
  * The current user's own responses, and what they can do about responding,
  * for the callout details, respond and thanks pages.
  */
-export function useCalloutResponse(
-  callout: Ref<GetCalloutData>,
-  { fetchResponses = true }: { fetchResponses?: boolean } = {}
-) {
+export function useCalloutResponse(callout: Ref<GetCalloutData>) {
   const route = useRoute();
   const { isOpen, isPreview, showLoginPrompt, showMemberOnlyPrompt } =
     useCallout(callout);
 
-  const responsesPaginated =
-    ref<
-      Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Answers>>
-    >();
+  const { data, error, isLoading, reload } = useCalloutResponsesData();
+  trackLoaderReader(data);
 
-  /** The current user's responses, newest first; undefined until loaded */
+  /** A load for this page is under way, rather than for the page being
+   * navigated to */
+  const loadingHere = computed(
+    () => isLoading.value && responsesLoadingPath.value === route.path
+  );
+
+  /** The loaded responses are this page's. The loader keeps the previous
+   * page's until the new ones arrive. */
+  const loadedHere = computed(() => data.value?.path === route.path);
+
+  /** Whether the current user's responses failed to load for this page. It
+   * stays up while a new load runs, and an error from another page doesn't
+   * show. */
+  const responsesError = computed(
+    () => !!error.value && responsesFailedPath === route.path
+  );
+
+  /** Whether to show a skeleton where the responses go */
+  const responsesSkeleton = useDelayedSkeleton(
+    computed(
+      () => loadingHere.value && !loadedHere.value && !responsesError.value
+    )
+  );
+
+  /** This page's responses, held back while a skeleton is still showing */
+  const responsesPaginated = computed(() =>
+    loadedHere.value && !responsesError.value && !responsesSkeleton.value
+      ? data.value?.responses
+      : undefined
+  );
+
+  /** The current user's responses, newest first; undefined until they've
+   * loaded, or if they failed */
   const responses = computed(() => responsesPaginated.value?.items);
 
   /** Which respond action is open to them, if any */
@@ -99,42 +191,17 @@ export function useCalloutResponse(
     query: route.query,
   }));
 
-  /** Whether the current user's responses failed to load */
-  const responsesError = ref(false);
-
-  /** Loads the current user's responses; rejects if they can't be loaded */
-  const loadResponses = async () => {
-    if (isPreview.value || !currentUser.value) {
-      responsesPaginated.value = { total: 0, count: 0, offset: 0, items: [] };
-      return;
-    }
-
-    responsesPaginated.value = await client.callout.listResponses(
-      callout.value.slug,
-      {
-        rules: {
-          condition: 'AND',
-          rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
-        },
-        sort: 'createdAt',
-        order: 'DESC',
-      },
-      [GetCalloutResponseWith.Answers]
-    );
-    responsesError.value = false;
-  };
-
-  onBeforeMount(() => {
-    if (!fetchResponses) return;
-    loadResponses().catch(() => {
-      responsesError.value = true;
-    });
-  });
+  /** Loads the current user's responses again; rejects if they still fail */
+  async function loadResponses() {
+    await reload();
+    if (error.value) throw error.value;
+  }
 
   return {
     responses,
     responsesPaginated,
     responsesError,
+    responsesSkeleton,
     loadResponses,
     canRespond,
     respondAction,
