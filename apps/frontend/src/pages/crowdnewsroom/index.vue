@@ -9,8 +9,8 @@ meta:
     <h2 class="sr-only">{{ t('callouts.openCallouts') }}</h2>
 
     <LoadError
-      v-if="error"
-      :retry="load"
+      v-if="failed"
+      :retry="retry"
       keypath="callouts.loadOpenError"
       class="py-16 text-center"
     />
@@ -23,10 +23,10 @@ meta:
     </p>
 
     <div
-      v-else
+      v-else-if="skeleton || activeCallouts"
       class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
     >
-      <template v-if="!activeCallouts">
+      <template v-if="skeleton">
         <UCard
           v-for="n in 4"
           :key="n"
@@ -44,6 +44,7 @@ meta:
 
       <CalloutCard
         v-for="callout in activeCallouts?.items"
+        v-else
         :key="callout.slug"
         :callout="callout"
       />
@@ -55,19 +56,25 @@ meta:
   </div>
 </template>
 
-<script lang="ts" setup>
-import { ItemStatus, type Paginated } from '@beabee/beabee-common';
+<script lang="ts">
+export {
+  useArchivedCalloutsData,
+  useArchivedTotalData,
+  useOpenCalloutsData,
+} from '#components/pages/callouts/use-callout-list';
+</script>
 
-import { computed, onBeforeMount, ref } from 'vue';
+<script lang="ts" setup>
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import CalloutArchivePanel from '#components/callout/CalloutArchivePanel.vue';
 import CalloutCard from '#components/callout/CalloutCard.vue';
 import LoadError from '#components/LoadError.vue';
+import { useOpenCalloutsData } from '#components/pages/callouts/use-callout-list';
+import { useLazyLoad } from '#composables/useLazyLoad';
 import { addBreadcrumb } from '#store/breadcrumb';
-import { client } from '#utils/api';
 import { routeIcons, routeLabels } from '#utils/route-nav';
-import type { CalloutCardData } from '#type';
 
 const { t } = useI18n();
 
@@ -81,30 +88,10 @@ addBreadcrumb(
   ])
 );
 
-const activeCallouts = ref<Paginated<CalloutCardData>>();
-const error = ref(false);
-
-const load = async () => {
-  activeCallouts.value = await client.callout.list(
-    {
-      sort: 'starts',
-      order: 'DESC',
-      rules: {
-        condition: 'AND',
-        rules: [
-          { field: 'status', operator: 'equal', value: [ItemStatus.Open] },
-          { field: 'hidden', operator: 'equal', value: [false] },
-        ],
-      },
-    },
-    ['hasAnswered', 'responseCount']
-  );
-  error.value = false;
-};
-
-onBeforeMount(() =>
-  load().catch(() => {
-    error.value = true;
-  })
-);
+const {
+  data: activeCallouts,
+  skeleton,
+  failed,
+  retry,
+} = useLazyLoad(useOpenCalloutsData());
 </script>
