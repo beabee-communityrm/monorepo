@@ -10,8 +10,6 @@ import { createBackfill, noActor, sameTarget } from '../../utils/backfill.js';
 /**
  * Backfill contact.payment.successful events
  * Payment charge dates are used as the event time
- * Payments charged after a contact's first event lacking a paymentId
- * (i.e. created live) are skipped
  */
 const backfillPaymentSuccessful = createBackfill({
   eventType: ActivityEventType.ContactPaymentSuccessful,
@@ -24,14 +22,11 @@ const backfillPaymentSuccessful = createBackfill({
       AND NOT EXISTS (
         SELECT 1 FROM activity_event e
         WHERE e."targetId" = p."contactId" AND e."eventType" = $1
-          AND (e.metadata->>'paymentId' = p.id
-            OR (e.metadata->>'paymentId' IS NULL AND e."createdAt" <= p."chargeDate"))
+          AND e.metadata->>'paymentId' = p.id
       )`,
   params: [PaymentStatus.Successful],
   isBackfilled: noActor,
-  sameEvent: `${sameTarget}
-    AND (y.metadata->>'paymentId' = x.metadata->>'paymentId'
-      OR (y.metadata->>'paymentId' IS NULL AND y."createdAt" <= x."createdAt"))`,
+  sameEvent: `${sameTarget} AND y.metadata->>'paymentId' = x.metadata->>'paymentId'`,
 });
 
 //  Replace all contact.payment.successful events with one per successful payment
@@ -43,9 +38,7 @@ const insertPaymentSuccessful = createBackfill({
   source: `FROM payment p WHERE p.status = $2 AND p."contactId" IS NOT NULL`,
   params: [PaymentStatus.Successful],
   isBackfilled: noActor,
-  sameEvent: `${sameTarget}
-    AND (y.metadata->>'paymentId' = x.metadata->>'paymentId'
-      OR (y.metadata->>'paymentId' IS NULL AND y."createdAt" <= x."createdAt"))`,
+  sameEvent: `${sameTarget} AND y.metadata->>'paymentId' = x.metadata->>'paymentId'`,
 });
 
 // Remove all successful payment events, then backfill
