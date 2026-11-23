@@ -186,10 +186,10 @@
     },
     "data": {
       "actor": "Ausgeführt von",
-      "actorType": "Ausgeführt von",
-      "eventType": "Ereignistyp",
-      "target": "Ziel",
-      "time": "Zeit"
+      "actorType": "Nutzer oder System",
+      "eventType": "Ereignis",
+      "target": "Betrifft",
+      "time": "Datum"
     },
     "deleted": "Gelöscht",
     "eventDescription": {
@@ -227,8 +227,8 @@
       "contactPaymentRefunded": "Zahlung erstattet",
       "contactPaymentSuccessful": "Zahlung erfolgreich",
       "contactProfileUpdated": "Kontaktprofil aktualisiert",
-      "contactRoleAdded": "Rolle dem Kontakt zugewiesen",
-      "contactRoleRevoked": "Rolle des Kontakts entzogen",
+      "contactRoleAdded": "Rolle zugewiesen",
+      "contactRoleRevoked": "Rolle entzogen",
       "contactSegmentsAdded": "Kontaktsegment erstellt",
       "contactSegmentsDeleted": "Kontaktsegment gelöscht",
       "contactSegmentsUpdated": "Kontaktsegment aktualisiert",

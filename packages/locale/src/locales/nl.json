@@ -185,11 +185,11 @@
       "user": "Gebruiker"
     },
     "data": {
-      "actor": "Actor",
-      "actorType": "Type actor",
-      "eventType": "Type gebeurtenis",
-      "target": "Doel",
-      "time": "Tijd"
+      "actor": "Gestart door",
+      "actorType": "Gebruiker of systeem",
+      "eventType": "Gebeurtenis",
+      "target": "Betreft",
+      "time": "Datum"
     },
     "deleted": "Verwijderd",
     "eventDescription": {
@@ -228,7 +228,7 @@
       "contactPaymentSuccessful": "Betaling geslaagd",
       "contactProfileUpdated": "Contactprofiel bijgewerkt",
       "contactRoleAdded": "Rol toegewezen aan contact",
-      "contactRoleRevoked": "Rol van contact ingetrokken",
+      "contactRoleRevoked": "Rol ingetrokken bij contact",
       "contactSegmentsAdded": "Contactsegment aangemaakt",
       "contactSegmentsDeleted": "Contactsegment verwijderd",
       "contactSegmentsUpdated": "Contactsegment bijgewerkt",
