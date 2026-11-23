@@ -436,7 +436,7 @@ function printPaymentReport(data: StripePaymentReconciliation) {
   }
   for (const { id, contactId, data: payment } of data.missing) {
     log.info(
-      `  • ${id}: contact=${contactId}, status=${payment.status}, amount=${payment.amount}`
+      `  • ${id}: contact=${contactId}, status=${payment.status}, amount=${payment.amount}, chargeDate=${payment.chargeDate.toISOString()}`
     );
   }
 
