@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import type { UseDataLoaderResult } from 'vue-router/experimental';
 
 import { useDelayedSkeleton } from '#composables/useDelayedSkeleton';
@@ -6,28 +6,27 @@ import { trackLoaderReader } from '#utils/dev/loader-readers';
 
 /**
  * A block's view of a lazy route loader, for a block that loads on its own.
- * Data from an earlier visit shows straight away while it refreshes. Without
- * any, a skeleton shows if the load is slow. The error stays up while a retry
- * runs, and the retry rejects if it fails again.
+ * What the last load gave, data or an error, stays up while a new load runs,
+ * so a revisit shows the block straight away. Without either, a skeleton
+ * shows until the load finishes. A retry rejects if it fails again.
  *
  * @param result What the loader's composable returns
  */
 export function useLazyLoad<T>(result: UseDataLoaderResult<T | undefined>) {
-  const { data, error, isLoading, reload } = result;
+  const { data, error, reload } = result;
   trackLoaderReader(data);
 
-  const retrying = ref(false);
+  /** Whether the last load failed */
+  const failed = computed(() => !!error.value);
 
-  /** Loading on the way into the page, which a retry isn't */
-  const loading = computed(() => isLoading.value && !retrying.value);
-
-  /** Whether to show a skeleton in place of the block's content */
+  /**
+   * Whether to show a skeleton in place of the block's content: whenever it
+   * has neither data nor an error, so it's never empty. The navigation's hold
+   * keeps quick loads from showing one.
+   */
   const skeleton = useDelayedSkeleton(
-    computed(() => loading.value && data.value === undefined)
+    computed(() => data.value === undefined && !failed.value)
   );
-
-  /** Whether the latest load failed, hidden while a fresh one runs */
-  const failed = computed(() => !!error.value && !loading.value);
 
   /** The loaded data, held back while a skeleton is still showing */
   const loaded = computed(() =>
@@ -36,13 +35,8 @@ export function useLazyLoad<T>(result: UseDataLoaderResult<T | undefined>) {
 
   /** Loads the data again; rejects if it still fails */
   async function retry() {
-    retrying.value = true;
-    try {
-      await reload();
-      if (error.value) throw error.value;
-    } finally {
-      retrying.value = false;
-    }
+    await reload();
+    if (error.value) throw error.value;
   }
 
   return { data: loaded, skeleton, failed, retry };
