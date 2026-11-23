@@ -21,6 +21,11 @@ export function useDelayedSkeleton(loading: Ref<boolean>) {
   let timer: ReturnType<typeof setTimeout> | undefined;
   let shownAt = 0;
 
+  function show() {
+    visible.value = true;
+    shownAt = performance.now();
+  }
+
   watch(
     loading,
     (isLoading, wasLoading) => {
@@ -30,13 +35,10 @@ export function useDelayedSkeleton(loading: Ref<boolean>) {
         if (visible.value) return;
         const start =
           wasLoading === undefined ? getNavigationStart() : performance.now();
-        timer = setTimeout(
-          () => {
-            visible.value = true;
-            shownAt = performance.now();
-          },
-          Math.max(0, DELAY - (performance.now() - start))
-        );
+        const delay = DELAY - (performance.now() - start);
+        // Already past it, as when the page arrived after its hold
+        if (delay <= 0) show();
+        else timer = setTimeout(show, delay);
       } else if (visible.value) {
         timer = setTimeout(
           () => (visible.value = false),
