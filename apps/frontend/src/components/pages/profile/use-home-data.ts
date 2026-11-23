@@ -6,7 +6,7 @@ import {
   PaymentStatus,
 } from '@beabee/beabee-common';
 
-import { defineBasicLoader } from 'vue-router/experimental';
+import { defineBasicLoader, withLoaderContext } from 'vue-router/experimental';
 
 import { holdUntilLoaded } from '#lib/router';
 import { generalContent } from '#store';
@@ -91,7 +91,8 @@ const fetchLastPayment = async () => {
  * recent successful payment. If the payment fails to load, it's left out.
  */
 const loadContribution = async () => {
-  const info = await client.contact.contribution.get();
+  // Keeps the loader current for the payment request after it
+  const info = await withLoaderContext(client.contact.contribution.get());
 
   const hasCurrentContribution =
     info.membershipStatus === MembershipStatus.Expiring ||

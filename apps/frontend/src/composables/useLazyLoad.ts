@@ -2,6 +2,7 @@ import { computed, ref } from 'vue';
 import type { UseDataLoaderResult } from 'vue-router/experimental';
 
 import { useDelayedSkeleton } from '#composables/useDelayedSkeleton';
+import { trackLoaderReader } from '#utils/dev/loader-readers';
 
 /**
  * A block's view of a lazy route loader, for a block that loads on its own.
@@ -13,6 +14,7 @@ import { useDelayedSkeleton } from '#composables/useDelayedSkeleton';
  */
 export function useLazyLoad<T>(result: UseDataLoaderResult<T | undefined>) {
   const { data, error, isLoading, reload } = result;
+  trackLoaderReader(data);
 
   const retrying = ref(false);
 
