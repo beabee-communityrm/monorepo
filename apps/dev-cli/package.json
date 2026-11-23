@@ -22,7 +22,7 @@
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
     "@beabee/tsconfig": "workspace:^",
-    "@types/node": "^24.12.2",
+    "@types/node": "^26.6.6",
     "@types/yargs": "^17.0.35",
     "prettier": "^3.8.3"
   }

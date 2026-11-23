@@ -1,4 +1,4 @@
-ARG NODE_VERSION=24.22.1-bookworm-slim
+ARG NODE_VERSION=26.13.0-bookworm-slim
 
 ##################################
 # The base stage
@@ -8,6 +8,9 @@ FROM node:${NODE_VERSION} AS base
 
 # https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#handling-kernel-signals
 RUN apt-get update && apt-get install -y tini curl libjemalloc2 && rm -rf /var/lib/apt/lists/*
+
+# Node 26 images no longer ship Yarn; the global Yarn Classic delegates to .yarn/releases via yarnPath
+RUN npm install -g yarn@1.22.22
 
 # Copy the workspace configuration
 COPY --chown=node:node package.json yarn.lock .yarnrc.yml /opt/

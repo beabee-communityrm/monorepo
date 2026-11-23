@@ -442,7 +442,7 @@ export class ImageService extends BaseS3ObjectService<ImageServiceConfig> {
   async getImageBuffer(
     id: string,
     width?: number
-  ): Promise<{ buffer: Buffer; contentType: string }> {
+  ): Promise<{ buffer: Buffer<ArrayBuffer>; contentType: string }> {
     try {
       const { stream, contentType } = await this.getImageStream(id, width);
 
