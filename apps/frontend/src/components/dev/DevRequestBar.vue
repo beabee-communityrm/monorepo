@@ -234,7 +234,12 @@ import {
 import { useRouter } from 'vue-router';
 
 import { componentBoxes } from '#utils/dev/components';
-import { devRequests, sourcesOf } from '#utils/dev/requests';
+import { forgetLoads } from '#lib/router';
+import {
+  devRequests,
+  forgetLoadingLazyData,
+  sourcesOf,
+} from '#utils/dev/requests';
 import type { DevRequestHold, DevRequestMode } from '#type';
 
 const emit = defineEmits<{ (e: 'remount'): void }>();
@@ -376,16 +381,21 @@ function setMode(key: string, mode: DevRequestMode) {
   }
 }
 
-/** Startup requests are only made again by a full reload. Route loaders run
- * on navigation, so the page navigates to itself to run them again. */
+/**
+ * Startup requests are only made again by a full reload. Otherwise the page
+ * reruns as a first visit would: it navigates to itself, so route loaders run
+ * again and hold the navigation, then remounts with whatever has arrived.
+ */
 async function rerun(reload: boolean) {
   if (reload) {
     await nextTick();
     location.reload();
   } else {
-    emit('remount');
+    forgetLoads();
     const { path, query, hash } = router.currentRoute.value;
-    router.replace({ path, query, hash, force: true });
+    await router.replace({ path, query, hash, force: true });
+    forgetLoadingLazyData();
+    emit('remount');
   }
 }
 

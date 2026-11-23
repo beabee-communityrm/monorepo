@@ -5,7 +5,7 @@
 import { ApiErrorCode } from '@beabee/beabee-common';
 
 import { reactive, watch } from 'vue';
-import { getCurrentContext } from 'vue-router/experimental';
+import { getCurrentContext, toLazyValue } from 'vue-router/experimental';
 
 import env from '#env';
 import router from '#lib/router';
@@ -82,6 +82,24 @@ export function sourcesOf(key: string) {
   if (readers.length) return readers;
   const source = devRequests.sources[key];
   return source ? [source] : [];
+}
+
+/**
+ * Clears the data of the lazy loaders still loading, so their blocks show a
+ * skeleton as on a first visit, rather than what they had while they refresh.
+ * Loaders that have finished, and loaders the page waits for, keep theirs.
+ */
+export function forgetLoadingLazyData() {
+  const route = router.currentRoute.value;
+  for (const entry of new Set(loaderOf.values())) {
+    if (
+      entry.isLoading.value &&
+      toLazyValue(entry.options.lazy, route, route)
+    ) {
+      entry.data.value = undefined;
+      entry.error.value = null;
+    }
+  }
 }
 
 const dropHold = (hold: DevRequestHold) => {
