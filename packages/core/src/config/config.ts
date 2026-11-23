@@ -138,6 +138,7 @@ export interface ZitadelIdpConfig {
   settings: {
     url: string; // BEABEE_IDP_SETTINGS_URL - Zitadel instance URL
     pat: string; // BEABEE_IDP_SETTINGS_PAT - Service user personal access token
+    apiUrl?: string; // BEABEE_IDP_SETTINGS_APIURL - Optional internal URL for API calls
   };
 }
 
@@ -426,6 +427,7 @@ export const config = {
         ? {
             url: env.s('BEABEE_IDP_SETTINGS_URL'), // Zitadel instance URL
             pat: env.s('BEABEE_IDP_SETTINGS_PAT'), // Service user personal access token
+            apiUrl: env.s('BEABEE_IDP_SETTINGS_APIURL', ''), // Optional internal URL for API calls
           }
         : idpProvider === 'keycloak'
           ? {
