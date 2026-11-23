@@ -49,10 +49,12 @@ When user explicitly asks ("add error handling", "refactor", "add tests"), do it
 |---|---|
 | `@beabee/backend` | Main API server |
 | `@beabee/frontend` | Vue 3 frontend |
+| `@beabee/frontend-old` | Outgoing Vue frontend, served by default (`DEFAULT_FRONTEND`): user-facing fixes go into both frontends |
 | `@beabee/webhooks` | External integrations (Stripe, GoCardless) |
 | `@beabee/backend-cli` | Admin CLI |
-| `@beabee/legacy` | Legacy frontend (phasing out) |
+| `@beabee/legacy` | Older separate UI, no tests (phasing out). "Legacy" names only this app; anything paired with `frontend-old` takes the suffix `-old` |
 | `@beabee/e2e-api-tests` | API tests |
+| `@beabee/browser-tests` | Playwright tests |
 | `@beabee/dev-cli` | Dev tools (index gen, building) |
 | `@beabee/router` | Nginx routing |
 
@@ -79,6 +81,13 @@ When user explicitly asks ("add error handling", "refactor", "add tests"), do it
 
 Build follows topological order (deps first).
 
+**Gotchas:**
+- Fresh worktree: `yarn install`, then build `@beabee/beabee-common` + `@beabee/locale` before `yarn workspace @beabee/core check:tsc` (else TS6305/TS2307 on every import)
+- `packages/core` tests: `#*` imports resolve to `dist/` → rebuild core before trusting tests of src changes
+- `yarn generate:index` re-sorts unrelated entries: keep only the lines for files you added | new migrations/models: `yarn workspace @beabee/core generate:class-index`
+- `docker-compose.yml` is dev-only; deployments use the helm chart → production rollout steps go in the PR description
+- Hosted IdP testing: your own Zitadel dev instance (`docs/oidc-local-development.md`), never a tenant or demo instance
+
 ## General Code Standards
 
 For all TypeScript, JavaScript, and Vue files:
@@ -88,6 +97,7 @@ For all TypeScript, JavaScript, and Vue files:
 - Types/interfaces: package-local in `<pkg>/src/types/` (app or package) | shared across backend+frontend in `packages/common/src/types/` — NEVER inline in action/component/util files. Utils in `src/utils/`.
 - Modularize into smaller reusable pieces
 - Document in code (not separate docs) | Reference existing docs, don't rewrite
+- Local-run docs: verify the README steps from an empty state and fix/extend those; new pages, scripts or feature recipes only when asked
 - English for comments/docs/code
 - Common, understandable naming
 - Use latest source versions (don't overwrite manual changes)
@@ -95,6 +105,11 @@ For all TypeScript, JavaScript, and Vue files:
 - Read existing code first to stay consistent
 
 **Tests:** Never mock an external provider's API (IdP, Stripe, newsletter) to assert its contract; such tests only restate our assumptions. Test our own logic (caching, guards, mapping) and verify the contract against the real provider.
+
+## Backend
+
+- Validate request input declaratively: `@QueryParams()` + `api/dto/*OptsDto`, `@Params()` + `api/params/`, `@Body()` + DTO | custom rules → `api/validators/` (`ValidateBy` + `buildMessage`, e.g. `IsTrustedUrl`) | handlers receive validated input
+- Stripe accounts may be shared with other integrations: an object is ours only if it links to our rows (`customerId`, `subscriptionId`, payment id) | bulk listings filter by that link
 
 ## Frontend / Vue Components
 
@@ -105,6 +120,8 @@ For all TypeScript, JavaScript, and Vue files:
 **Code:** TypeScript prop interfaces with JSDoc | `defineEmits<>()` syntax | `computed` for class logic | `withDefaults()` for props | Defensive event handlers
 
 **Features:** Props for customization | Slots for content projection | Event system | Proper disabled states
+
+**CNR mode:** CNR instances always get `hideContribution: true` at setup (policy, not code) → `!hideContribution` alone hides contribution UI
 
 ### New Vue Component
 
@@ -132,6 +149,10 @@ Ref: `packages/vue/src/components/template/AppTemplate.story.vue`
 **Format:** `<type>[scope]: <description>` — feat|fix|docs|refactor|test|chore
 
 **Rules:** Commit at logical breakpoints | Atomic changes (one logical change per commit) | Check `git log --oneline -10` to match existing patterns | Imperative mood | Subject <50 chars | Use `git mv` for moves | Pipe interactive git commands through `| cat`
+
+**Language:** Commits, PR titles and PR bodies in English, whatever language the chat is in
+
+**`main` ruleset:** 1 approval + `test` check required | every push dismisses existing approvals → warn before force-pushing an approved PR
 
 **Authorization:** Always ask before committing unless user explicitly requests auto-commit. Show planned message + changed files, wait for confirmation.
 
