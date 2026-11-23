@@ -8,28 +8,13 @@ import {
 
 import { defineBasicLoader } from 'vue-router/experimental';
 
-import { holdNavigation } from '#lib/router';
+import { holdUntilLoaded } from '#lib/router';
 import { generalContent } from '#store';
 import { client } from '#utils/api';
 
 // The home page cards' data. The home page exports these loaders, and each
 // card reads its own. They're lazy, so a slow card doesn't hold up the rest,
-// but the page waits up to 300 ms for them all.
-
-/** Cards whose data has loaded, which show it straight away on a revisit */
-const loaded = new Set<string>();
-
-/**
- * Holds the navigation for a card's request until the card has loaded once.
- * After that, the page shows what the card had while the request refreshes it.
- */
-function holdUntilLoaded<T>(card: string, load: Promise<T>) {
-  if (loaded.has(card)) return load;
-  return holdNavigation(load).then((data) => {
-    loaded.add(card);
-    return data;
-  });
-}
+// but the page waits up to 300 ms for them all, until each has loaded once.
 
 /** The open CrowdNewsrooms, newest first */
 export const useHomeCalloutsData = defineBasicLoader(
