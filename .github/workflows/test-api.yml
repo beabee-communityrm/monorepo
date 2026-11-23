@@ -29,7 +29,6 @@ jobs:
 
       - uses: ./.github/actions/test-setup
         with:
-          stripe_webhook_secret: ${{ secrets.BEABEE_STRIPE_WEBHOOKSECRET }}
           stripe_membership_product_id: ${{ secrets.BEABEE_STRIPE_MEMBERSHIPPRODUCTID }}
 
       - name: Run API tests
