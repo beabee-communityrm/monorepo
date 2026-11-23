@@ -7,7 +7,7 @@
   "type": "module",
   "main": "./src/index.ts",
   "engines": {
-    "node": ">=24"
+    "node": ">=26"
   },
   "scripts": {
     "docs:start": "histoire preview",

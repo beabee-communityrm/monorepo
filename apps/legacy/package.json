@@ -76,7 +76,7 @@
     "@types/express-flash": "0.0.5",
     "@types/express-session": "^1.19.0",
     "@types/lodash": "^4.17.24",
-    "@types/node": "^24.12.2",
+    "@types/node": "^26.6.6",
     "@types/papaparse": "^5.5.2",
     "@types/passport": "^1.0.17",
     "@types/passport-local": "^1.0.38",

@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
-          node-version: 24.x
+          node-version: 26.x
       - name: Install dependencies, compile and bootstrap
         run: yarn install && yarn build && yarn bootstrap
         shell: bash
