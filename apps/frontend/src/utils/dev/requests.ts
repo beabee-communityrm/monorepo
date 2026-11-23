@@ -5,10 +5,13 @@
 import { ApiErrorCode } from '@beabee/beabee-common';
 
 import { reactive, watch } from 'vue';
+import { getCurrentContext } from 'vue-router/experimental';
 
 import env from '#env';
 import router from '#lib/router';
 import type { DevRequestHold, DevRequestMode } from '#type';
+
+import { loaderReaders } from './loader-readers';
 
 const STORAGE_KEY = 'beabee-dev-requests';
 
@@ -63,6 +66,23 @@ const emptyBody = (data: unknown) => {
     return { items: [], total: 0, offset: 0, count: 0 };
   }
 };
+
+type LoaderEntry = NonNullable<ReturnType<typeof getCurrentContext>[0]>;
+
+/** The route loader that made each request, if one did */
+const loaderOf = new Map<string, LoaderEntry>();
+
+/**
+ * The files of the components behind a request: those that read the route
+ * loader that made it, or else the one in its call stack
+ */
+export function sourcesOf(key: string) {
+  const entry = loaderOf.get(key);
+  const readers = entry ? loaderReaders(entry.data) : [];
+  if (readers.length) return readers;
+  const source = devRequests.sources[key];
+  return source ? [source] : [];
+}
 
 const dropHold = (hold: DevRequestHold) => {
   const index = devRequests.holds.indexOf(hold);
@@ -146,6 +166,8 @@ export function installDevRequests() {
     const source = new Error().stack?.match(
       /https?:\/\/[^/]+(?:\/@fs)?(\/[^?:\s]+\.vue)/
     )?.[1];
+    // Only set while a route loader runs, up to the request
+    const loader = getCurrentContext()[0];
 
     // Leaves the caller's reactive effect first, or a watchEffect that fetches
     // would track this state and refetch whenever another request is made
@@ -159,6 +181,7 @@ export function installDevRequests() {
 
     if (!devRequests.seen.includes(key)) devRequests.seen.push(key);
     if (source) devRequests.sources[key] = source;
+    if (loader) loaderOf.set(key, loader);
     if (booting && !devRequests.appKeys.includes(key)) {
       devRequests.appKeys.push(key);
     }

@@ -3,12 +3,13 @@
   Dev-only panel listing the API requests the current page has made, each with
   a mode to make it hang, fail or come back empty, and a minimum time for
   every request. Modes and the minimum apply from the next request and last
-  for the browser tab's session. Changing a mode reruns the page, including its route
-  loaders, or reloads it for app startup requests, and a hanging request
-  carries on once its mode changes. Hovering a page request outlines the
-  component that made it. Alt-clicking anything on the page holds the
-  requests the click makes, whatever their mode, until Succeed, Fail or Empty
-  is picked for them.
+  for the browser tab's session. Changing a mode reruns the page, including
+  its route loaders, or reloads it for app startup requests, and a hanging
+  request carries on once its mode changes. Hovering a page request outlines
+  the component that made it, or for a route loader's request, the components
+  that read the loader. Alt-clicking anything on the page holds the requests
+  the click makes, whatever their mode, until Succeed, Fail or Empty is picked
+  for them.
 -->
 <template>
   <UPopover
@@ -233,7 +234,7 @@ import {
 import { useRouter } from 'vue-router';
 
 import { componentBoxes } from '#utils/dev/components';
-import { devRequests } from '#utils/dev/requests';
+import { devRequests, sourcesOf } from '#utils/dev/requests';
 import type { DevRequestHold, DevRequestMode } from '#type';
 
 const emit = defineEmits<{ (e: 'remount'): void }>();
@@ -313,8 +314,10 @@ const app = getCurrentInstance()?.appContext.app;
 const boxes = ref<DOMRect[]>([]);
 
 function highlight(key?: string) {
-  const file = key && devRequests.sources[key];
-  boxes.value = app && file ? componentBoxes(app, file) : [];
+  boxes.value =
+    app && key
+      ? sourcesOf(key).flatMap((file) => componentBoxes(app, file))
+      : [];
 }
 
 const shownHolds = computed(() =>
