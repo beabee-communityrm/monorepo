@@ -155,7 +155,10 @@ async function syncSubscription(
 > {
   try {
     const subscription =
-      listed || (await stripe.subscriptions.retrieve(subscriptionId));
+      listed ||
+      (await retryRateLimited(() =>
+        stripe.subscriptions.retrieve(subscriptionId)
+      ));
     if (subscription.status === 'canceled') {
       log.info(`    🚫 Cancelling subscription ${subscriptionId}`);
 
@@ -200,7 +203,9 @@ async function syncPaymentMethod(
   }
 
   try {
-    const paymentMethod = await stripe.paymentMethods.retrieve(mandateId);
+    const paymentMethod = await retryRateLimited(() =>
+      stripe.paymentMethods.retrieve(mandateId)
+    );
     if (!paymentMethod.customer) {
       log.info(`    🔌 Detaching payment method ${mandateId}`);
       return { mandateId: null };
@@ -229,7 +234,9 @@ async function syncCustomer(
   { customerId: null; mandateId: null; subscriptionId: null } | undefined
 > {
   try {
-    const customer = listed || (await stripe.customers.retrieve(customerId));
+    const customer =
+      listed ||
+      (await retryRateLimited(() => stripe.customers.retrieve(customerId)));
     if (customer.deleted) {
       log.info(`    🗑️ Removing deleted customer ${customerId}`);
       return { customerId: null, mandateId: null, subscriptionId: null };
@@ -618,6 +625,7 @@ export const reconcile = async (
       log.info('🔍 DRY RUN - No changes will actually be made');
     }
 
+    let failed = 0;
     if (
       argv.fix.includes('subscriptions') ||
       argv.fix.includes('mandates') ||
@@ -649,11 +657,15 @@ export const reconcile = async (
       }
 
       for (const contribution of contributions) {
-        await processContribution(contribution, argv, resources);
+        try {
+          await processContribution(contribution, argv, resources);
+        } catch (e) {
+          failed++;
+          log.error(`  ❌ Failed to sync ${contribution.contact.email}`, e);
+        }
       }
     }
 
-    let failed = 0;
     if (
       argv.fix.includes('payments') ||
       argv.fix.includes('missing-payments')
@@ -662,7 +674,7 @@ export const reconcile = async (
       if (argv.report) {
         printPaymentReport(data);
       }
-      failed = await fixPayments(data, argv);
+      failed += await fixPayments(data, argv);
     }
 
     if (failed > 0) {
