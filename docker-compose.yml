@@ -33,7 +33,7 @@ services:
       - ${DB_PORT}:5432
 
   mail:
-    image: maildev/maildev:2.2.1
+    image: maildev/maildev:3.0.0
     ports:
       - ${MAIL_PORT}:1080
 
@@ -172,7 +172,7 @@ services:
   # Stripe CLI for webhook forwarding
   # Only used in local development
   stripe_cli:
-    image: stripe/stripe-cli:v1.50.11
+    image: stripe/stripe-cli:v1.55.9
     command: "listen --api-key ${BEABEE_STRIPE_SECRETKEY} --forward-to webhook_app:3000/stripe"
     depends_on:
       - webhook_app
