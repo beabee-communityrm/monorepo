@@ -1,3 +1,5 @@
+import { PaymentStatus } from '@beabee/beabee-common';
+
 import type {
   StripeCreatedWindow,
   StripeInvoicePayment,
@@ -80,9 +82,17 @@ export function classifyInvoicePayments(
   const mismatches: StripePaymentMismatch[] = [];
   const missing: StripeMissingPayment[] = [];
 
-  for (const { id, customerId, data } of invoicePayments) {
+  for (const { id, customerId, data: invoiceData } of invoicePayments) {
     const payment = payments.get(id);
     if (payment) {
+      // An invoice stays open after its payment fails, so open is no reason
+      // to set a failed payment back to pending
+      const data =
+        payment.status === PaymentStatus.Failed &&
+        invoiceData.status === PaymentStatus.Pending
+          ? { ...invoiceData, status: payment.status }
+          : invoiceData;
+
       const fields = getMismatchedPaymentFields(payment, data);
       if (fields.length > 0) {
         mismatches.push({ payment, data, fields });
@@ -90,7 +100,7 @@ export function classifyInvoicePayments(
     } else {
       const contactId = customerId && contactIdByCustomerId.get(customerId);
       if (contactId) {
-        missing.push({ id, contactId, data });
+        missing.push({ id, contactId, data: invoiceData });
       }
     }
   }
