@@ -34,6 +34,10 @@ meta:
   </div>
 </template>
 
+<script lang="ts">
+export * from '#components/pages/profile/use-home-data';
+</script>
+
 <script lang="ts" setup>
 import type { ContentProfileData, GetContactData } from '@beabee/beabee-common';
 import { type Ref, computed, onBeforeMount, ref } from 'vue';

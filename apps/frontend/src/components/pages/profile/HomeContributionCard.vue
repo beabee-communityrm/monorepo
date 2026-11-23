@@ -24,15 +24,15 @@
       </AppCardHeader>
     </template>
 
-    <LoadError v-if="error" :retry="load" />
+    <LoadError v-if="failed" :retry="retry" />
 
-    <div v-else-if="!view" class="space-y-3">
+    <div v-else-if="skeleton" class="space-y-3">
       <USkeleton class="h-8 w-1/3" />
       <USkeleton class="h-4 w-2/3" />
       <USkeleton class="h-4 w-1/2" />
     </div>
 
-    <div v-else class="flex flex-col gap-5">
+    <div v-else-if="view" class="flex flex-col gap-5">
       <div class="flex flex-col gap-3">
         <p v-if="view.amount" class="flex items-baseline gap-2">
           <span class="text-3xl font-semibold text-highlighted">
@@ -93,68 +93,29 @@
 
 <script lang="ts" setup>
 import {
-  type ContributionInfo,
   ContributionPeriod,
   ContributionType,
-  type GetPaymentData,
   MembershipStatus,
   type PaymentSource,
-  PaymentStatus,
 } from '@beabee/beabee-common';
 import { AppCardHeader, formatLocale } from '@beabee/vue';
 
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import LoadError from '#components/LoadError.vue';
-import { client } from '#utils/api';
+import { useHomeContributionData } from '#components/pages/profile/use-home-data';
+import { useLazyLoad } from '#composables/useLazyLoad';
 import { routeIcons } from '#utils/route-nav';
 
 const { t, n } = useI18n();
 
-const contribution = ref<ContributionInfo>();
-const lastPayment = ref<GetPaymentData | null>();
-const error = ref(false);
-
-const fetchLastPayment = async () => {
-  const payments = await client.contact.payment.list('me', {
-    sort: 'chargeDate',
-    order: 'DESC',
-    limit: 1,
-    rules: {
-      condition: 'AND',
-      rules: [
-        {
-          field: 'status',
-          operator: 'equal',
-          value: [PaymentStatus.Successful],
-        },
-      ],
-    },
-  });
-  return payments.items[0] ?? null;
-};
-
-const load = async () => {
-  const info = await client.contact.contribution.get();
-
-  const hasCurrentContribution =
-    info.membershipStatus === MembershipStatus.Expiring ||
-    (info.membershipStatus === MembershipStatus.Active &&
-      info.type !== ContributionType.None);
-  if (!hasCurrentContribution) {
-    lastPayment.value = await fetchLastPayment().catch(() => null);
-  }
-
-  contribution.value = info;
-  error.value = false;
-};
-
-onBeforeMount(() =>
-  load().catch(() => {
-    error.value = true;
-  })
+const { data, skeleton, failed, retry } = useLazyLoad(
+  useHomeContributionData()
 );
+
+const contribution = computed(() => data.value?.info);
+const lastPayment = computed(() => data.value?.lastPayment);
 
 const formatDate = (date: Date) => formatLocale(date, 'd MMM yyyy');
 
