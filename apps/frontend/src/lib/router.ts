@@ -36,6 +36,29 @@ export function holdNavigation<T>(load: Promise<T>) {
   return load;
 }
 
+/** Blocks whose data has loaded, which show it straight away on a revisit */
+const loaded = new Set<string>();
+
+/**
+ * Holds the navigation for a block's request, as `holdNavigation` does, until
+ * the block has loaded once. After that, the page shows what the block had
+ * while the request refreshes it. Returns the request.
+ *
+ * @param block A name for the block, unique across the app
+ * @param load The block's request
+ */
+export function holdUntilLoaded<T>(block: string, load: Promise<T>) {
+  if (loaded.has(block)) return load;
+  return holdNavigation(load).then((data) => {
+    loaded.add(block);
+    return data;
+  });
+}
+
+/** Forgets which blocks have loaded, so their next load is held again, as on
+ * a first visit. For the dev bar's reruns. */
+export const forgetLoads = () => loaded.clear();
+
 /** Waits for held loads, until 300 ms into the navigation. Runs after the
  * route loaders have started. */
 export async function waitForHolds() {
