@@ -6,7 +6,7 @@ jobs:
   check:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
         with:
           stripe_public_key: ${{ secrets.BEABEE_STRIPE_PUBLICKEY }}
