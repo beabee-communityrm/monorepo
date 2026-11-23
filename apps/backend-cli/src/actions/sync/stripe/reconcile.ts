@@ -1,4 +1,5 @@
 import { ActivityEventType, PaymentStatus } from '@beabee/beabee-common';
+import { config } from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
 import {
   Stripe,
@@ -609,6 +610,12 @@ async function processContribution(
 export const reconcile = async (
   argv: SyncStripeReconcileArgs
 ): Promise<void> => {
+  if (!config.stripe.secretKey) {
+    log.error('❌ BEABEE_STRIPE_SECRETKEY is not set');
+    process.exitCode = 1;
+    return;
+  }
+
   await runApp(async () => {
     log.info('📡 Loading Stripe contributions...');
     const contributions = await getRepository(ContactContribution).find({
