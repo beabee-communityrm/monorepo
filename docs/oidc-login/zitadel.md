@@ -11,6 +11,11 @@ the only credential beabee holds, as a personal access token:
 `BEABEE_IDP_SETTINGS_` `URL`, `PAT`. `IAM_LOGIN_CLIENT` is for direct login
 below.
 
+`URL` is the instance's public issuer URL. An optional `APIURL` sends
+beabee's API calls to an internal address instead, such as the in-cluster
+service, selecting the instance with `X-Forwarded-Host`; calls through the
+public ingress share its per-client rate limit.
+
 Zitadel is two things in the diagrams: **Zitadel** is the OIDC endpoints
 (`/oauth/v2/authorize`, `/oauth/v2/token`, `/oidc/v1/end_session`) and the
 management API; **Login v2** is the separate login UI under `/ui/v2/login`.

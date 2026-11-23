@@ -89,19 +89,41 @@ const LOGIN_V2_PAGES: Record<
 export class ZitadelProvider implements IdpProvider {
   constructor(protected readonly settings: ZitadelIdpConfig['settings']) {}
 
+  // With apiUrl, calls bypass the public ingress and its per-client rate
+  // limit; Zitadel then picks the virtual instance from X-Forwarded-Host
+  private apiFetch(
+    method: string,
+    path: string,
+    body?: string | FormData,
+    headers?: Record<string, string>
+  ): Promise<Response> {
+    const { url, apiUrl, pat } = this.settings;
+    const publicUrl = new URL(url);
+    return fetch((apiUrl || url) + path, {
+      method,
+      headers: {
+        ...headers,
+        Authorization: `Bearer ${pat}`,
+        ...(apiUrl && {
+          'X-Forwarded-Host': publicUrl.host,
+          'X-Forwarded-Proto': publicUrl.protocol.slice(0, -1),
+        }),
+      },
+      ...(body && { body }),
+    });
+  }
+
   private async request<T>(
     method: string,
     path: string,
     body?: object
   ): Promise<T | undefined> {
-    const resp = await fetch(this.settings.url + path, {
+    const resp = await this.apiFetch(
       method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.settings.pat}`,
-      },
-      ...(body && { body: JSON.stringify(body) }),
-    });
+      path,
+      body && JSON.stringify(body),
+      { 'Content-Type': 'application/json' }
+    );
     const text = await resp.text();
     if (!resp.ok) {
       throw new ZitadelApiError(method, path, resp.status, text);
@@ -199,11 +221,7 @@ export class ZitadelProvider implements IdpProvider {
   private async uploadAsset(path: string, file: Blob): Promise<void> {
     const body = new FormData();
     body.append('file', file);
-    const resp = await fetch(this.settings.url + path, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${this.settings.pat}` },
-      body,
-    });
+    const resp = await this.apiFetch('POST', path, body);
     if (!resp.ok) {
       throw new Error(
         `Zitadel API error: POST ${path} returned ${resp.status}: ${await resp.text()}`
