@@ -13,7 +13,6 @@
  * The experimental flags used:
  * - --experimental-specifier-resolution=node: Enables Node.js-style module resolution
  * - --experimental-strip-types: Strips TypeScript types during execution
- * - --experimental-transform-types: Transforms TypeScript syntax to JavaScript
  * - --no-warnings: Suppresses experimental feature warnings
  */
 import { spawn } from 'node:child_process';
@@ -31,7 +30,6 @@ const tsPath = resolve(__dirname, '../src/index.ts');
 const nodeArgs = [
   '--experimental-specifier-resolution=node',
   '--experimental-strip-types',
-  '--experimental-transform-types',
   '--no-warnings',
   tsPath,
   ...process.argv.slice(2), // Forward all CLI arguments to the TypeScript file

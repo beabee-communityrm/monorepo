@@ -73,7 +73,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/express-session": "^1.19.0",
-    "@types/node": "^24.12.2",
+    "@types/node": "^26.6.6",
     "@types/passport": "^1.0.17",
     "@types/passport-local": "^1.0.38",
     "concurrently": "^9.2.1",
