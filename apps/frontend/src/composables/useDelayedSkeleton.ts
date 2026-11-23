@@ -12,7 +12,7 @@ const MINIMUM = 400;
  * once the load has taken 300 ms, so quick loads go straight to the content,
  * and then stays for at least 400 ms so it doesn't flash. A load already
  * under way when the component appears counts from the start of the
- * navigation.
+ * navigation that showed the page.
  *
  * @param loading Whether the content is loading
  */

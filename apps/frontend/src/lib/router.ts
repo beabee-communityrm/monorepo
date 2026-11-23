@@ -13,12 +13,19 @@ const router = createRouter({
 });
 
 let navigationStart = 0;
+let shownNavigationStart = 0;
 router.beforeEach(() => {
   navigationStart = performance.now();
 });
+router.afterEach((to, from, failure) => {
+  if (!failure) shownNavigationStart = navigationStart;
+});
 
-/** When the latest navigation started, as a `performance.now()` time */
-export const getNavigationStart = () => navigationStart;
+/**
+ * When the navigation that showed the current page started, as a
+ * `performance.now()` time. A navigation still under way doesn't count.
+ */
+export const getNavigationStart = () => shownNavigationStart;
 
 /** How long a navigation waits for held loads, in milliseconds */
 const HOLD = 300;
