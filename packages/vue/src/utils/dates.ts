@@ -10,6 +10,7 @@ import {
   it,
   nl,
   pt,
+  ro,
   ru,
   uk,
 } from 'date-fns/locale';
@@ -27,6 +28,7 @@ export const DateFnsLocales: Record<BaseLocale, Locale> = {
   it,
   fr,
   el,
+  ro,
 };
 
 /**

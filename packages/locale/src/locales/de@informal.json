@@ -206,14 +206,14 @@
       "appSettingsUpdated": "App-Einstellungen aktualisiert",
       "appWebhookUpdated": "Webhook aktualisiert",
       "calloutAnswered": "CrowdNewsroom beantwortet",
-      "calloutCreated": "Neuer CrowdNewsroom erstellt",
+      "calloutCreated": "Neue CrowdNewsroom erstellt",
       "calloutDeleted": "CrowdNewsroom gelöscht",
       "calloutEdited": "CrowdNewsroom bearbeitet",
       "calloutPublished": "CrowdNewsroom veröffentlicht",
       "calloutSegmentsAdded": "CrowdNewsroom-Segment erstellt",
       "calloutSegmentsDeleted": "CrowdNewsroom-Segment gelöscht",
       "calloutSegmentsUpdated": "CrowdNewsroom-Segment aktualisiert",
-      "calloutUnpublished": "Veröffentlichung des CrowdNewsrooms aufgehoben",
+      "calloutUnpublished": "Veröffentlichung der CrowdNewsroom aufgehoben",
       "contactContributionCancelled": "Kontakt hat Beitrag gekündigt",
       "contactContributionStarted": "Kontakt hat Beitrag gestartet",
       "contactContributionUpdated": "Kontakt hat Beitrag geändert",
@@ -270,7 +270,7 @@
     "hint3": "<p>Unsere Community-Meetups finden jeden dritten Donnerstag im Monat statt. Du willst dein Best-Practice-Beispiel mit anderen teilen? Schreib eine E-Mail an <a href=\"mailto:tobias.hauswurz{'@'}correctiv.org\">tobias.hauswurz{'@'}correctiv.org</a></p>\n",
     "joinSlack": "Tritt der beabee-Community auf Slack bei!",
     "latestCallout": {
-      "createNew": "Neuen CrowdNewsroom erstellen?",
+      "createNew": "Neue CrowdNewsroom erstellen?",
       "empty": "Es gibt aktuell keine aktiven CrowdNewsrooms.",
       "title": "CrowdNewsroom"
     },
@@ -656,8 +656,8 @@
               "description": "Enddatum festlegen",
               "label": "Enddatum festlegen",
               "opts": {
-                "never": "Der CrowdNewsroom läuft, bis du ihn manuell schließt.",
-                "schedule": "Der CrowdNewsroom wird automatisch zu einem bestimmten Datum geschlossen."
+                "never": "Die CrowdNewsroom läuft, bis du sie manuell schließt.",
+                "schedule": "Die CrowdNewsroom wird automatisch zu einem bestimmten Datum geschlossen."
               }
             },
             "mapAndGallery": {
@@ -732,12 +732,12 @@
               "help": "<p>Aufrufe können <strong>Allen</strong> präsentiert oder auf die Teilnahme von <strong>nur Mitgliedern</strong> beschränkt werden</p>",
               "label": "Für alle zugänglich",
               "opts": {
-                "disabled": "Nur Mitglieder werden auf diesen CrowdNewsroom zugreifen und daran teilnehmen können.",
-                "enabled": "Jede Person kann auf diesen CrowdNewsroom zugreifen und daran teilnehmen."
+                "disabled": "Nur Mitglieder werden auf diese CrowdNewsroom zugreifen und daran teilnehmen können.",
+                "enabled": "Jede Person kann auf diese CrowdNewsroom zugreifen und daran teilnehmen."
               }
             },
             "requireCaptcha": {
-              "help": "<p>Wenn du den <strong>Bot-Spam-Schutz</strong> aktivierst, müssen Nutzer ein Captcha ausfüllen, um zu bestätigen, dass sie Menschen sind. Das ist nützlich, um zu verhindern, dass dein CrowdNewsroom von Bots mit Spam überflutet wird.</p>",
+              "help": "<p>Wenn du den <strong>Bot-Spam-Schutz</strong> aktivierst, müssen Nutzer ein Captcha ausfüllen, um zu bestätigen, dass sie Menschen sind. Das ist nützlich, um zu verhindern, dass deine CrowdNewsroom von Bots mit Spam überflutet wird.</p>",
               "label": "Bot-Spam-Schutz aktivieren",
               "members": {
                 "label": "Auch für Mitglieder aktivieren",
@@ -779,7 +779,7 @@
               "label": "Antwortverhalten",
               "opts": {
                 "multiple": "Mehrere Antworten, nicht bearbeitbar",
-                "singleEditable": "Einzelne Antwort, aber bearbeitbar, solange der CrowdNewsroom geöffnet ist.",
+                "singleEditable": "Einzelne Antwort, aber bearbeitbar, solange die CrowdNewsroom geöffnet ist.",
                 "singleNonEditable": "Einzelne Antwort, nicht bearbeitbar"
               },
               "title": "Antworteinstellungen"
@@ -798,16 +798,16 @@
             "starts": {
               "label": "Startdatum festlegen",
               "opts": {
-                "now": "Der CrowdNewsroom wird sofort verfügbar gemacht.",
-                "schedule": "Der CrowdNewsroom wird zu einem bestimmten Datum verfügbar gemacht."
+                "now": "Die CrowdNewsroom wird sofort verfügbar gemacht.",
+                "schedule": "Die CrowdNewsroom wird zu einem bestimmten Datum verfügbar gemacht."
               }
             },
             "visible": {
-              "help": "Der CrowdNewsroom wird nur sichtbar sein für Personen, die den Link erhalten.",
+              "help": "Die CrowdNewsroom wird nur sichtbar sein für Personen, die den Link erhalten.",
               "label": "CrowdNewsroom im Mitglieder-Dashboard anzeigen",
               "opts": {
-                "disabled": "Der CrowdNewsroom wird nicht im Mitglieder-Dashboard erscheinen.",
-                "enabled": "Der CrowdNewsroom wird im Mitglieder-Dashboard erscheinen."
+                "disabled": "Die CrowdNewsroom wird nicht im Mitglieder-Dashboard erscheinen.",
+                "enabled": "Die CrowdNewsroom wird im Mitglieder-Dashboard erscheinen."
               }
             },
             "whichResponseBuckets": {
@@ -847,26 +847,26 @@
             "shareTitle": {
               "help": "<p>Das Feld <strong>Teilungstitel</strong> legt den Titel fest, wie er auf Social-Media-Karten erscheinen soll.</p>",
               "label": "Teilungstitel",
-              "placeholder": "Der Name deines CrowdNewsrooms"
+              "placeholder": "Der Name deiner CrowdNewsroom"
             },
             "sharing": {
               "title": "Teilen-Optionen"
             },
             "slug": {
               "boxTitle": "Permalink",
-              "help": "Diesen CrowdNewsroom per Link teilen:",
+              "help": "Diese CrowdNewsroom per Link teilen:",
               "label": "Slug automatisch aus dem Titel generieren",
               "locked": {
-                "title": "Der Permalink ist gesperrt, weil der CrowdNewsroom schon veröffentlicht wurde."
+                "title": "Der Permalink ist gesperrt, weil die CrowdNewsroom schon veröffentlicht wurde."
               },
               "opts": {
-                "auto": "Der Permalink wird aus dem Titel des CrowdNewsrooms generiert. Der Link wird automatisch aktualisiert, wenn du den Titel änderst.",
+                "auto": "Der Permalink wird aus dem Titel der CrowdNewsroom generiert. Der Link wird automatisch aktualisiert, wenn du den Titel änderst.",
                 "manual": "Der Permalink wird manuell festgelegt"
               }
             },
             "title": {
               "label": "Titel",
-              "placeholder": "Der Name deines CrowdNewsrooms."
+              "placeholder": "Der Name deiner CrowdNewsroom."
             }
           },
           "title": "Titel und Bild",
@@ -898,14 +898,14 @@
         "option": "Option {n}",
         "placeholder": "Platzhalter"
       },
-      "untitledCallout": "Unbennater CrowdNewsroom"
+      "untitledCallout": "Unbenannte CrowdNewsroom"
     },
-    "closedNoEdit": "Dieser CrowdNewsroom ist beendet, es können keine Antworten mehr hinzugefügt oder bearbeitet werden.",
+    "closedNoEdit": "Diese CrowdNewsroom ist beendet, es können keine Antworten mehr hinzugefügt oder bearbeitet werden.",
     "closedOn": "Beendet am {date}",
     "confirmHuman": "Bitte bestätige, dass du ein Mensch bist",
     "contactDetails": "Kontaktdaten",
     "editResponse": "Antwort bearbeiten",
-    "ended": "Dieser CrowdNewsroom ist seit dem {date} beendet.",
+    "ended": "Diese CrowdNewsroom ist seit dem {date} beendet.",
     "entryOf": "Eintrag {no} von {total}",
     "form": {
       "email": "Deine E-Mail-Adresse",
@@ -922,8 +922,8 @@
     "logInOrSignUp": "Melde dich an oder werde Mitglied, um teilzunehmen.",
     "loginToYourAccount": "Einloggen",
     "loginToYourAccount-nuxt": "Einloggen",
-    "membersOnly": "An diesem CrowdNewsroom können nur Mitglieder teilnehmen. Um teilzunehmen …",
-    "membersOnly-nuxt": "An diesem CrowdNewsroom können nur Mitglieder teilnehmen.",
+    "membersOnly": "An dieser CrowdNewsroom können nur Mitglieder teilnehmen. Um teilzunehmen …",
+    "membersOnly-nuxt": "An dieser CrowdNewsroom können nur Mitglieder teilnehmen.",
     "nextResponse": "Nächste Antwort",
     "notAnswered": "Nicht beantwortet",
     "previousResponse": "Vorherige Antwort",
@@ -931,7 +931,7 @@
     "responseNumber": "Antwort {number} von {total}",
     "responseSubmitted": "Antwort eingereicht",
     "share": {
-      "address": "Diesen CrowdNewsroom per Link teilen:",
+      "address": "Diese CrowdNewsroom per Link teilen:",
       "aria": {
         "email": "Per E-Mail teilen",
         "facebook": "Auf Facebook teilen",
@@ -940,7 +940,7 @@
         "twitter": "Auf Twitter teilen",
         "whatsapp": "Auf WhatsApp teilen"
       },
-      "services": "Diesen CrowdNewsroom auf einer der folgenden Plattformen teilen:"
+      "services": "Diese CrowdNewsroom auf einer der folgenden Plattformen teilen:"
     },
     "showingPreview": "Im Vorschaumodus sind Antworten deaktiviert.",
     "showingPreview-nuxt": "Vorschaumodus – so sehen es Teilnehmende. Antworten können hier nicht eingereicht werden.",
@@ -960,19 +960,19 @@
   },
   "calloutAdmin": {
     "deleted": "CrowdNewsroom gelöscht",
-    "ended": "Dieser CrowdNewsroom ist beendet. Du kannst ihn wieder öffnen, indem du ihn bearbeitest.",
+    "ended": "Diese CrowdNewsroom ist beendet. Du kannst sie wieder öffnen, indem du sie bearbeitest.",
     "overview": "Überblick",
-    "reopened": "Dieser CrowdNewsroom ist wieder geöffnet. Geh auf „Bearbeiten“, um ein neues Enddatum einzustellen.",
+    "reopened": "Diese CrowdNewsroom ist wieder geöffnet. Geh auf „Bearbeiten“, um ein neues Enddatum einzustellen.",
     "responses": "Antworten"
   },
   "calloutAdminOverview": {
     "actions": {
       "confirmDelete": {
-        "text": "Bist du sicher, dass du diesen CrowdNewsroom löschen willst?",
+        "text": "Bist du sicher, dass du diese CrowdNewsroom löschen willst?",
         "title": "CrowdNewsroom löschen?"
       }
     },
-    "created": "Super, dein CrowdNewsroom wurde erstellt!",
+    "created": "Super, deine CrowdNewsroom wurde erstellt!",
     "dates": {
       "ends": "Enddatum",
       "label": "Termine",
@@ -1075,7 +1075,7 @@
     "add": "Auswerter hinzufügen",
     "canEdit": "Der Auswerter kann auch die CrowdNewsroom bearbeiten",
     "confirmDelete": {
-      "text": "Bist du sicher, dass du {reviewerName} entfernen willst? Er/Sie kann diesen CrowdNewsroom dann nicht mehr auswerten.",
+      "text": "Bist du sicher, dass du {reviewerName} entfernen willst? Er/Sie kann diese CrowdNewsroom dann nicht mehr auswerten.",
       "title": "Auswerter entfernen"
     },
     "contact": "Kontakt ID",
@@ -1093,7 +1093,7 @@
   "calloutThanksPage": {
     "backTo": "Zurück zu {title}",
     "oneResponseWarning": "Bitte beachte, dass nur eine Antwort pro Person möglich ist. Wenn du schon teilgenommen hast, werden weitere Antworten nicht berücksichtigt.",
-    "sharePrompt": "Hilf uns, mehr Menschen zu erreichen, indem du diesen CrowdNewsroom teilst."
+    "sharePrompt": "Hilf uns, mehr Menschen zu erreichen, indem du diese CrowdNewsroom teilst."
   },
   "callouts": {
     "access": {
@@ -1424,9 +1424,9 @@
     "willRenewWithNewAmount": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch. Dein Beitrag ist dann {nextAmount}."
   },
   "editCallout": {
-    "replicated": "Dein CrowdNewsroom wurde kopiert! Du bearbeitest jetzt die Kopie. Denk bitte unbedingt daran, den Titel zu bearbeiten.",
+    "replicated": "Deine CrowdNewsroom wurde kopiert! Du bearbeitest jetzt die Kopie. Denk bitte unbedingt daran, den Titel zu bearbeiten.",
     "title": "Bearbeiten: {title}",
-    "warning": "Vorsicht! Du bearbeitest einen veröffentlichten CrowdNewsroom. Wenn du Elemente bearbeitest, riskierst du, Antworten unbrauchbar zu machen."
+    "warning": "Vorsicht! Du bearbeitest eine veröffentlichte CrowdNewsroom. Wenn du Elemente bearbeitest, riskierst du, Antworten unbrauchbar zu machen."
   },
   "editNotice": {
     "title": "Bearbeiten: {title}"
@@ -1791,7 +1791,7 @@
     "manageSubscriptions": "Abonnements verwalten",
     "newCallout": "Was Neues!",
     "noOpenCallouts": "Gerade ist nichts offen.",
-    "noResponses": "Du hast noch auf keinen CrowdNewsroom geantwortet.",
+    "noResponses": "Du hast noch auf keine CrowdNewsroom geantwortet.",
     "oneTimeContributionSuccessMessage": "Vielen Dank für deinen Beitrag!",
     "openCallouts": "CrowdNewsroom",
     "openCount": "{n} offen",
@@ -1916,7 +1916,7 @@
         "joinSurvey": {
           "required": "Die Mitglieder müssen den Fragebogen ausfüllen, ehe sie fortfahren können.",
           "slug": "CrowdNewsroom",
-          "slugHelp": "Du kannst jeden CrowdNewsroom verwenden, der ein Enddatum hat.",
+          "slugHelp": "Du kannst jede CrowdNewsroom verwenden, die ein Enddatum hat.",
           "text": "Als Teil des Anmeldeprozesses kannst du deine neuen Mitglieder einen kurzen Fragebogen ausfüllen lassen. Du kannst zum Beispiel zusätzliche Infos abfragen oder herausfinden, warum sie Mitglied geworden sind.",
           "textIntro": "Erkläre deinen Mitgliedern kurz, warum du weitere Informationen von ihnen haben möchtest.",
           "title": "Anmelde-Fragebogen"
