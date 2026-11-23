@@ -2,7 +2,8 @@
   # RouteProgress
   A thin bar across the top of the window while a page is loading, including
   the first one. It only appears if the navigation takes longer than a moment,
-  so quick ones don't flicker. It creeps towards the end while the page loads,
+  so quick ones don't flicker, and once the site's theme has loaded, so it's
+  never in the wrong colour. It creeps towards the end while the page loads,
   then fills and fades out once it's there.
 -->
 <template>
@@ -11,7 +12,7 @@
     leave-to-class="opacity-0"
   >
     <UProgress
-      v-if="visible"
+      v-if="visible && generalContentLoaded"
       :model-value="value"
       size="xs"
       :get-value-label="() => t('common.loading')"
@@ -28,6 +29,8 @@
 import { onBeforeUnmount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+
+import { generalContentLoaded } from '#store/generalContent';
 
 /** How long a navigation can take before the bar appears, in milliseconds */
 const DELAY = 150;
