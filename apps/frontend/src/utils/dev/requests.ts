@@ -19,8 +19,8 @@ export const devRequests = reactive({
   seen: [] as string[],
   /** Requests set to anything other than normal */
   modes: (stored.modes ?? {}) as Record<string, DevRequestMode>,
-  /** How long every request is held back, in milliseconds */
-  delay: (stored.delay ?? 0) as number,
+  /** The least time every request takes, in milliseconds */
+  minDuration: (stored.minDuration ?? 0) as number,
   /** Requests seen to return a list, which can be forced empty */
   listKeys: (stored.listKeys ?? []) as string[],
   /** Requests made before the first page loaded, left out of "all" */
@@ -34,7 +34,7 @@ export const devRequests = reactive({
 watch(
   () => ({
     modes: devRequests.modes,
-    delay: devRequests.delay,
+    minDuration: devRequests.minDuration,
     listKeys: devRequests.listKeys,
   }),
   (value) => sessionStorage.setItem(STORAGE_KEY, JSON.stringify(value)),
@@ -151,6 +151,12 @@ export function installDevRequests() {
     // would track this state and refetch whenever another request is made
     await Promise.resolve();
 
+    // Counts from here, so the request's own time is part of it
+    const minimum =
+      devRequests.minDuration > 0
+        ? new Promise((resume) => setTimeout(resume, devRequests.minDuration))
+        : undefined;
+
     if (!devRequests.seen.includes(key)) devRequests.seen.push(key);
     if (source) devRequests.sources[key] = source;
     if (booting && !devRequests.appKeys.includes(key)) {
@@ -169,11 +175,8 @@ export function installDevRequests() {
       mode = devRequests.modes[key];
     }
 
-    if (devRequests.delay) {
-      await new Promise((resume) => setTimeout(resume, devRequests.delay));
-    }
-
     if (mode === 'fail') {
+      await minimum;
       return Response.json(
         {
           httpCode: 500,
@@ -184,7 +187,7 @@ export function installDevRequests() {
       );
     }
 
-    const response = await realFetch(input, init);
+    const [response] = await Promise.all([realFetch(input, init), minimum]);
     if (method !== 'GET' || !response.ok) return response;
 
     const empty = emptyBody(
