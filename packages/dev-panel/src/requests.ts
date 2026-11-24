@@ -208,6 +208,11 @@ export async function startWorker(apiPath: string) {
       const forward = new Request(request);
       forward.headers.delete(QUERY_HEADER);
       const [response] = await Promise.all([fetch(bypass(forward)), minimum]);
+      // Passed back without a body, as a response with one, even empty, is
+      // rejected for these statuses
+      if ([204, 205, 304].includes(response.status)) {
+        return new Response(null, response);
+      }
       if (request.method !== 'GET' || !response.ok) return response;
 
       const empty = emptyBody(
