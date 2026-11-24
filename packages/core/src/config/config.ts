@@ -138,6 +138,7 @@ export interface ZitadelIdpConfig {
   settings: {
     url: string; // BEABEE_IDP_SETTINGS_URL - Zitadel instance URL
     pat: string; // BEABEE_IDP_SETTINGS_PAT - Service user personal access token
+    apiUrl?: string; // BEABEE_IDP_SETTINGS_APIURL - Optional internal URL for API calls
   };
 }
 
@@ -426,6 +427,7 @@ export const config = {
         ? {
             url: env.s('BEABEE_IDP_SETTINGS_URL'), // Zitadel instance URL
             pat: env.s('BEABEE_IDP_SETTINGS_PAT'), // Service user personal access token
+            apiUrl: env.s('BEABEE_IDP_SETTINGS_APIURL', ''), // Optional internal URL for API calls
           }
         : idpProvider === 'keycloak'
           ? {
@@ -506,6 +508,7 @@ export const config = {
   // Logging configuration
   logging: env.ss('BEABEE_LOGGING', []), // Enable logging (default: false)
   logFormat: env.e('BEABEE_LOGFORMAT', ['json', 'simple'] as const, 'json'), // Log format (default: json)
+  logFields: env.json('BEABEE_LOGFIELDS', {}) as Record<string, unknown>, // JSON of fields added to every log line
 
   // Rate limiting configuration
   disableRateLimit: env.b('BEABEE_DISABLERATELIMIT', false), // Disable rate limiting in test mode (default: false)

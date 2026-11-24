@@ -210,7 +210,7 @@ export class ContactController {
     @TargetUser() target: Contact,
     @QueryParams() query: ListActivityEventsDto
   ): Promise<PaginatedDto<GetActivityEventDto> | undefined> {
-    return await ActivityEventTransformer.fetchByTargetId(
+    return await ActivityEventTransformer.fetchByContactId(
       auth,
       target.id,
       query

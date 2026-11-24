@@ -1,6 +1,9 @@
 import type { CommandModule } from 'yargs';
 
-import { SYNC_NEWSLETTER_RECONCILE_TESTS } from '../constants/sync.js';
+import {
+  SYNC_NEWSLETTER_RECONCILE_TESTS,
+  SYNC_STRIPE_RECONCILE_TESTS,
+} from '../constants/sync.js';
 import { coerceToDate } from '../utils/coerce.js';
 
 export const syncCommand: CommandModule = {
@@ -179,34 +182,54 @@ export const syncCommand: CommandModule = {
       })
       .command({
         command: 'stripe',
-        describe: 'Sync Stripe subscriptions and payments',
+        describe: 'Sync data with Stripe',
         builder: (yargs) =>
-          yargs
-            .option('dryRun', {
-              type: 'boolean',
-              description: 'Run without making changes',
-              default: false,
-            })
-            .option('contactIds', {
-              type: 'array',
-              string: true,
-              description: 'Sync data for specific contact IDs',
-            })
-            .option('fix', {
-              type: 'array',
-              description: 'The data to fix',
-              choices: [
-                'subscriptions',
-                'payments',
-                'mandates',
-                'customers',
-              ] as const,
-              demandOption: true,
-            }),
-        handler: async (argv) => {
-          const { syncStripe } = await import('../actions/sync/stripe.js');
-          return syncStripe(argv);
-        },
+          yargs.command({
+            command: 'reconcile',
+            describe: 'Reconcile subscriptions and payments with Stripe',
+            builder: (yargs) =>
+              yargs
+                .option('dryRun', {
+                  type: 'boolean',
+                  description: 'Run without making changes',
+                  default: false,
+                })
+                .option('report', {
+                  type: 'boolean',
+                  description:
+                    'Generate a report of the payment differences found',
+                  default: false,
+                })
+                .option('contactIds', {
+                  type: 'array',
+                  string: true,
+                  description: 'Reconcile data for specific contact IDs',
+                })
+                .option('fix', {
+                  type: 'array',
+                  description: 'The data to check and fix',
+                  choices: SYNC_STRIPE_RECONCILE_TESTS,
+                  demandOption: true,
+                })
+                .option('since', {
+                  type: 'string',
+                  description:
+                    'Check invoices created since date or duration (ISO format)',
+                  coerce: coerceToDate,
+                })
+                .option('until', {
+                  type: 'string',
+                  description:
+                    'Check invoices created until date or duration (ISO format)',
+                  coerce: coerceToDate,
+                }),
+            handler: async (argv) => {
+              const { reconcile } =
+                await import('../actions/sync/stripe/reconcile.js');
+              return reconcile(argv);
+            },
+          }),
+        handler: () => {},
       }),
   handler: () => {},
 };

@@ -163,6 +163,7 @@
     "search": "",
     "sendEmails": "",
     "sendOneOffEmail": "Αποστολή email",
+    "sendOneOffEmail-nuxt": "",
     "sendOngoingEmails": "Επαναλαμβανόμενα email",
     "share": "Μοιραστείτε",
     "showPassword": "Εμφάνιση κωδικού πρόσβασης",
@@ -176,6 +177,74 @@
     "yesDisable": "",
     "yesRemove": "",
     "yesReset": ""
+  },
+  "activity": {
+    "actorType": {
+      "guest": "",
+      "system": "",
+      "unknown": "",
+      "user": ""
+    },
+    "data": {
+      "actor": "",
+      "actorType": "",
+      "eventType": "",
+      "target": "",
+      "time": ""
+    },
+    "deleted": "",
+    "eventDescription": {
+      "contactContributionStarted": "",
+      "contactContributionUpdated": "",
+      "contactCreated": "",
+      "contactEmailSent": "",
+      "contactRoleAdded": "",
+      "emailSent": "",
+      "emailTemplateAdded": ""
+    },
+    "eventType": {
+      "appPaymentOptionsUpdated": "",
+      "appSettingsUpdated": "",
+      "appWebhookUpdated": "",
+      "calloutAnswered": "",
+      "calloutCreated": "",
+      "calloutDeleted": "",
+      "calloutEdited": "",
+      "calloutPublished": "",
+      "calloutSegmentsAdded": "",
+      "calloutSegmentsDeleted": "",
+      "calloutSegmentsUpdated": "",
+      "calloutUnpublished": "",
+      "contactContributionCancelled": "",
+      "contactContributionStarted": "",
+      "contactContributionUpdated": "",
+      "contactCreated": "",
+      "contactDeleted": "",
+      "contactEmailSent": "",
+      "contactNewsletterGroupsUpdated": "",
+      "contactPaymentCancelled": "",
+      "contactPaymentFailed": "",
+      "contactPaymentInitiated": "",
+      "contactPaymentRefunded": "",
+      "contactPaymentSuccessful": "",
+      "contactProfileUpdated": "",
+      "contactRoleAdded": "",
+      "contactRoleRevoked": "",
+      "contactSegmentsAdded": "",
+      "contactSegmentsDeleted": "",
+      "contactSegmentsUpdated": "",
+      "contactUpdated": "",
+      "emailSendFailed": "",
+      "emailSent": "",
+      "emailTemplateAdded": "",
+      "emailTemplateDeleted": "",
+      "emailTemplateEdited": "",
+      "newsletterGroupsUpdated": ""
+    },
+    "filters": {
+      "all": "",
+      "other": ""
+    }
   },
   "addContact": {
     "contactSaved": "",
@@ -398,14 +467,17 @@
       "text": ""
     },
     "invalidRuleError": "",
+    "matchCondition-nuxt": "",
     "matchCount-nuxt": "",
     "matchWord": {
       "AND": "",
       "OR": ""
     },
     "nestedRules": "",
+    "nestedRules-nuxt": "",
     "noFieldsMatch-nuxt": "",
     "noNestedRules": "",
+    "noOptions-nuxt": "",
     "operatorGroup-nuxt": {
       "blank": "",
       "not": ""
@@ -462,6 +534,8 @@
       }
     },
     "relativeDate-nuxt": "",
+    "relativeDateExample-nuxt": "",
+    "relativeDateInvalid-nuxt": "",
     "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
@@ -470,6 +544,7 @@
         "update": ""
       },
       "createSegment": "",
+      "failed-nuxt": "",
       "segmentName": "",
       "text": "",
       "text-nuxt": "",
@@ -1145,6 +1220,7 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "",
+    "range-nuxt": "",
     "role": {
       "admin": "",
       "member": "",
@@ -1327,6 +1403,7 @@
     "noResults": "",
     "numResults": "",
     "search": "",
+    "segments-nuxt": "",
     "selectAllBanner-nuxt": {
       "allSelected": "",
       "clearSelection": "",
@@ -1343,6 +1420,8 @@
       "templateNameRequired": "Εισάγετε όνομα για το νέο πρότυπο.",
       "title": "Αποστολή email στο τμήμα"
     },
+    "sendEmailNoSegment-nuxt": "",
+    "sendEmailSelection-nuxt": "",
     "sendEmailToSelected-nuxt": "",
     "showingOf": "",
     "showingOf-nuxt": ""
@@ -1938,6 +2017,7 @@
   },
   "menu": {
     "account": "",
+    "activity": "",
     "admin": "",
     "adminSettings": "",
     "callouts": "CrowdNewsroom",
@@ -2197,10 +2277,14 @@
     "noTags": "",
     "notifications": {
       "addedTag": "",
+      "createFailed-nuxt": "",
       "createdTag-nuxt": "",
+      "deleteFailed-nuxt": "",
       "deletedTag-nuxt": "",
       "removedTag": "",
-      "renamedTag-nuxt": ""
+      "renameFailed-nuxt": "",
+      "renamedTag-nuxt": "",
+      "updateFailed-nuxt": ""
     },
     "searchTag": "",
     "selectToTag-nuxt": "",

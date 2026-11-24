@@ -554,6 +554,8 @@ export const signupFlowAnonymiser = createModelAnonymiser(SignupFlow, {
   loginUrl: () => 'https://fake.beabee.io/login',
   setPasswordUrl: () => 'https://fake.beabee.io/set-password',
   confirmUrl: () => 'https://fake.beabee.io/confirm',
+  firstname: () => chance.first(),
+  lastname: () => chance.last(),
   paymentFlowId: () => uuidv4(),
   contactId: () => uuidv4(),
 });

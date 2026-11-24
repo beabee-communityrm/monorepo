@@ -35,6 +35,8 @@ interface SignupData {
   origin: ContactOriginData | null;
   newsletterStatus: NewsletterStatus | null;
   newsletterGroups: string[] | null;
+  firstname: string | null;
+  lastname: string | null;
 }
 
 /**
@@ -170,8 +172,8 @@ class SignupService {
         );
       }
     } else {
-      let firstName = '',
-        lastName = '';
+      let firstName = signupFlow.firstname || '',
+        lastName = signupFlow.lastname || '';
 
       // TODO: remove once payment flow logic is reworked
       if (
@@ -179,8 +181,8 @@ class SignupService {
         signupFlow.paymentFlow.params.paymentMethod !==
           PaymentMethod.GoCardlessDirectDebit
       ) {
-        firstName = signupFlow.paymentFlow.params.firstname || '';
-        lastName = signupFlow.paymentFlow.params.lastname || '';
+        firstName ||= signupFlow.paymentFlow.params.firstname || '';
+        lastName ||= signupFlow.paymentFlow.params.lastname || '';
       }
 
       // User doesn't exist, their membership is inactive or they are not
@@ -203,13 +205,15 @@ class SignupService {
   /**
    * Finalizes a signup flow after email confirmation, creating the contact
    * @param signupFlowId - The ID of the signup flow to finalize
-   * @returns The created contact and where to send them next
+   * @returns The created contact, where to send them next and when the flow
+   * was finalized
    */
   async finalizeSignup(signupFlowId: string): Promise<
     | {
         contact: Contact;
         clientSecret?: string;
         postConfirmUrl: string | null;
+        confirmedAt: Date | null;
       }
     | undefined
   > {
@@ -227,6 +231,7 @@ class SignupService {
       return {
         contact: signupFlow.contact,
         postConfirmUrl: signupFlow.postConfirmUrl,
+        confirmedAt: signupFlow.confirmedAt,
       };
     }
 
@@ -236,8 +241,25 @@ class SignupService {
       { id: signupFlow.id, processing: false },
       { processing: true }
     );
+    // Another request is finalizing this flow: answer as it does once it is
+    // done. The lock is never released, so a flow that failed looks the same
+    // as one in progress and the wait has to give up.
     if (res.affected === 0) {
-      return;
+      for (let attempt = 0; attempt < 20; attempt++) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        const finalized = await getRepository(SignupFlow).findOne({
+          where: { id: signupFlow.id },
+          relations: { contact: true },
+        });
+        if (finalized?.contact) {
+          return {
+            contact: finalized.contact,
+            postConfirmUrl: finalized.postConfirmUrl,
+            confirmedAt: finalized.confirmedAt,
+          };
+        }
+      }
+      throw new Error(`Signup flow ${signupFlow.id} was not finalized in time`);
     }
 
     let contact = await ContactsService.findOne({
@@ -257,6 +279,8 @@ class SignupService {
     const partialContact: Partial<Contact> & { email: string } = {
       email: signupFlow.email,
       password: signupFlow.password,
+      ...(signupFlow.firstname && { firstname: signupFlow.firstname }),
+      ...(signupFlow.lastname && { lastname: signupFlow.lastname }),
     };
 
     // Groups may have been removed since the flow started, drop unknown IDs
@@ -275,10 +299,10 @@ class SignupService {
         return;
       }
 
-      if (completedFlow.data.firstname) {
+      if (!partialContact.firstname && completedFlow.data.firstname) {
         partialContact.firstname = completedFlow.data.firstname;
       }
-      if (completedFlow.data.lastname) {
+      if (!partialContact.lastname && completedFlow.data.lastname) {
         partialContact.lastname = completedFlow.data.lastname;
       }
     }
@@ -330,13 +354,16 @@ class SignupService {
       await EmailService.sendTemplateToContact('welcome', contact);
     }
 
+    const confirmedAt = new Date();
     await getRepository(SignupFlow).update(signupFlow.id, {
       contactId: contact.id,
+      confirmedAt,
     });
 
     return {
       contact,
       postConfirmUrl: signupFlow.postConfirmUrl,
+      confirmedAt,
       ...(clientSecret && { clientSecret }),
     };
   }

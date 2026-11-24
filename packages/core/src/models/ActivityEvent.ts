@@ -1,6 +1,7 @@
 import {
   ActivityActorType,
   ActivityEventMetadata,
+  ActivityEventReference,
   ActivityEventType,
 } from '@beabee/beabee-common';
 
@@ -35,4 +36,7 @@ export class ActivityEvent<T extends ActivityEventType = ActivityEventType> {
 
   @Column({ type: 'jsonb', nullable: true })
   metadata!: ActivityEventMetadata<T> | null;
+
+  actor?: ActivityEventReference | null;
+  target?: ActivityEventReference | null;
 }

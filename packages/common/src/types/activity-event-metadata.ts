@@ -20,13 +20,14 @@ export interface ActivityEventMetadataMap {
   [ActivityEventType.ContactContributionStarted]:
     | ContributionUpdateData
     | Pick<ContributionUpdateData, 'subscriptionId'>;
-  [ActivityEventType.ContactContributionUpdated]: ContributionUpdateData;
+  [ActivityEventType.ContactContributionUpdated]: ContributionUpdateData | null;
   [ActivityEventType.ContactContributionCancelled]: {
     subscriptionId: string | null;
   };
   [ActivityEventType.ContactPaymentFailed]: { paymentId: string };
   [ActivityEventType.ContactPaymentSuccessful]: { paymentId: string };
   [ActivityEventType.ContactRoleAdded]: { roleType: RoleType };
+  [ActivityEventType.ContactEmailSent]: { email: string };
   [ActivityEventType.EmailSent]: { email: string; recipient: string };
   [ActivityEventType.EmailTemplateAdded]: { templateId: string | null };
 }

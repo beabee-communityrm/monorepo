@@ -30,9 +30,12 @@ export const createBackfill = ({
     const { eventType } = rule;
     const queryParams = [eventType, ...params];
 
+    // Cast event type to varchar and compare with source to ensure type consistency
+    const select = `SELECT $1::varchar, ${fields} ${source}`;
+
     if (dryRun) {
       const [{ count }] = await dataSource.query(
-        `SELECT COUNT(*)::int AS count ${source}`,
+        `SELECT COUNT(*)::int AS count FROM (${select}) s`,
         queryParams
       );
       console.log(
@@ -42,8 +45,8 @@ export const createBackfill = ({
     }
 
     const inserted: { id: string }[] = await dataSource.query(
-      `INSERT INTO activity_event ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata")
-       SELECT ${fields} ${source}
+      `INSERT INTO activity_event ("eventType", "targetId", "actorType", "actorId", "createdAt", "metadata")
+       ${select}
        RETURNING id`,
       queryParams
     );

@@ -163,19 +163,88 @@
     "search": "Zoeken",
     "sendEmails": "E-mails verzenden",
     "sendOneOffEmail": "E-mail verzenden",
+    "sendOneOffEmail-nuxt": "",
     "sendOngoingEmails": "Doorlopende e-mails",
     "share": "Delen",
     "showPassword": "Wachtwoord tonen",
     "skip": "Sla over",
     "submit": "Verzenden",
     "tryAgain": "",
-    "unpublish": "Publiceren",
+    "unpublish": "Publicatie intrekken",
     "update": "bijwerken",
     "view": "Bekijk",
     "yesDelete": "“Ja, verwijder het”",
     "yesDisable": "“Ja, schakel het uit”",
     "yesRemove": "“Ja, verwijder het”",
     "yesReset": "Ja, resetten"
+  },
+  "activity": {
+    "actorType": {
+      "guest": "Gastgebruiker",
+      "system": "Systeem",
+      "unknown": "Onbekend",
+      "user": "Gebruiker"
+    },
+    "data": {
+      "actor": "Gestart door",
+      "actorType": "Gebruiker of systeem",
+      "eventType": "Gebeurtenis",
+      "target": "Betreft",
+      "time": "Datum"
+    },
+    "deleted": "Verwijderd",
+    "eventDescription": {
+      "contactContributionStarted": "Contact is een bijdrage gestart: {amount}",
+      "contactContributionUpdated": "Contact heeft bijdrage gewijzigd: {amount}",
+      "contactCreated": "Nieuw contact aangemaakt ({source})",
+      "contactEmailSent": "E-mail naar contact verzonden: {email}",
+      "contactRoleAdded": "Rol toegewezen aan contact: {role}",
+      "emailSent": "E-mail verzonden naar {recipient}: {email}",
+      "emailTemplateAdded": "E-mailsjabloon aangemaakt: {template}"
+    },
+    "eventType": {
+      "appPaymentOptionsUpdated": "Beschikbare betaalopties bijgewerkt",
+      "appSettingsUpdated": "App-instellingen bijgewerkt",
+      "appWebhookUpdated": "Webhook bijgewerkt",
+      "calloutAnswered": "CrowdNewsroom beantwoord",
+      "calloutCreated": "Nieuwe CrowdNewsroom aangemaakt",
+      "calloutDeleted": "CrowdNewsroom verwijderd",
+      "calloutEdited": "CrowdNewsroom bewerkt",
+      "calloutPublished": "CrowdNewsroom gepubliceerd",
+      "calloutSegmentsAdded": "CrowdNewsroom-segment aangemaakt",
+      "calloutSegmentsDeleted": "CrowdNewsroom-segment verwijderd",
+      "calloutSegmentsUpdated": "CrowdNewsroom-segment bijgewerkt",
+      "calloutUnpublished": "Publicatie van CrowdNewsroom ingetrokken",
+      "contactContributionCancelled": "Contact heeft bijdrage stopgezet",
+      "contactContributionStarted": "Contact is een bijdrage gestart",
+      "contactContributionUpdated": "Contact heeft bijdrage gewijzigd",
+      "contactCreated": "Nieuw contact aangemaakt",
+      "contactDeleted": "Contact verwijderd",
+      "contactEmailSent": "E-mail naar contact verzonden",
+      "contactNewsletterGroupsUpdated": "Nieuwsbriefgroepen van contact bijgewerkt",
+      "contactPaymentCancelled": "Betaling geannuleerd",
+      "contactPaymentFailed": "Betaling mislukt",
+      "contactPaymentInitiated": "Betaling gestart",
+      "contactPaymentRefunded": "Betaling terugbetaald",
+      "contactPaymentSuccessful": "Betaling geslaagd",
+      "contactProfileUpdated": "Contactprofiel bijgewerkt",
+      "contactRoleAdded": "Rol toegewezen aan contact",
+      "contactRoleRevoked": "Rol ingetrokken bij contact",
+      "contactSegmentsAdded": "Contactsegment aangemaakt",
+      "contactSegmentsDeleted": "Contactsegment verwijderd",
+      "contactSegmentsUpdated": "Contactsegment bijgewerkt",
+      "contactUpdated": "Contact bijgewerkt",
+      "emailSendFailed": "Verzenden van e-mail mislukt",
+      "emailSent": "E-mail verzonden",
+      "emailTemplateAdded": "E-mailsjabloon aangemaakt",
+      "emailTemplateDeleted": "E-mailsjabloon verwijderd",
+      "emailTemplateEdited": "E-mailsjabloon bijgewerkt",
+      "newsletterGroupsUpdated": "Nieuwsbriefgroepen bijgewerkt"
+    },
+    "filters": {
+      "all": "Alle",
+      "other": "Overig"
+    }
   },
   "addContact": {
     "contactSaved": "Contact opgeslagen",
@@ -398,14 +467,17 @@
       "text": ""
     },
     "invalidRuleError": "Er klopt iets niet in deze regel: \"{ rule }\". Werk bij!",
+    "matchCondition-nuxt": "",
     "matchCount-nuxt": "",
     "matchWord": {
       "AND": "en",
       "OR": "of"
     },
     "nestedRules": "Geneste regels",
+    "nestedRules-nuxt": "",
     "noFieldsMatch-nuxt": "",
     "noNestedRules": "Dit filter bevat geneste regels die niet kunnen worden bewerkt met de geavanceerde zoekeditor.",
+    "noOptions-nuxt": "",
     "operatorGroup-nuxt": {
       "blank": "",
       "not": ""
@@ -462,6 +534,8 @@
       }
     },
     "relativeDate-nuxt": "",
+    "relativeDateExample-nuxt": "",
+    "relativeDateInvalid-nuxt": "",
     "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
@@ -470,6 +544,7 @@
         "update": "Segment “{segment}” bijwerken"
       },
       "createSegment": "Segment maken",
+      "failed-nuxt": "",
       "segmentName": "Naam segment",
       "text": "Een segment is een groep contactpersonen die voldoet aan een set filters, zoals de filters die je zojuist hebt gemaakt. Nieuwe contactpersonen die aan deze filters voldoen, worden automatisch aan het segment toegevoegd.",
       "text-nuxt": "",
@@ -1145,6 +1220,7 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "/ jaar",
+    "range-nuxt": "",
     "role": {
       "admin": "Beheerder",
       "member": "Lid",
@@ -1327,6 +1403,7 @@
     "noResults": "Geen contacten gevonden",
     "numResults": "{n} contact gevonden | {n} contacten gevonden",
     "search": "Contacten zoeken...",
+    "segments-nuxt": "",
     "selectAllBanner-nuxt": {
       "allSelected": "",
       "clearSelection": "",
@@ -1343,6 +1420,8 @@
       "templateNameRequired": "Voer een naam in voor het nieuwe sjabloon.",
       "title": "E-mail verzenden naar segment"
     },
+    "sendEmailNoSegment-nuxt": "",
+    "sendEmailSelection-nuxt": "",
     "sendEmailToSelected-nuxt": "",
     "showingOf": "Toont {start} tot {end} contacten uit {total}",
     "showingOf-nuxt": ""
@@ -1938,6 +2017,7 @@
   },
   "menu": {
     "account": "Account",
+    "activity": "Activiteit",
     "admin": "Beheer",
     "adminSettings": "Instellingen",
     "callouts": "CrowdNewsroom",
@@ -2197,10 +2277,14 @@
     "noTags": "Geen tags",
     "notifications": {
       "addedTag": "Tag “{tag}” toegevoegd",
+      "createFailed-nuxt": "",
       "createdTag-nuxt": "",
+      "deleteFailed-nuxt": "",
       "deletedTag-nuxt": "",
       "removedTag": "Tag “{tag}” verwijderd",
-      "renamedTag-nuxt": ""
+      "renameFailed-nuxt": "",
+      "renamedTag-nuxt": "",
+      "updateFailed-nuxt": ""
     },
     "searchTag": "Tagged met...",
     "selectToTag-nuxt": "",

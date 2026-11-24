@@ -163,6 +163,7 @@
     "search": "Pesquisar",
     "sendEmails": "Fechar",
     "sendOneOffEmail": "Enviar e-mail",
+    "sendOneOffEmail-nuxt": "",
     "sendOngoingEmails": "E-mails contínuos",
     "share": "Partilhar",
     "showPassword": "Mostrar palavra-passe",
@@ -176,6 +177,74 @@
     "yesDisable": "Sim, desactivar",
     "yesRemove": "Sim, remover",
     "yesReset": "Sim, redefinir"
+  },
+  "activity": {
+    "actorType": {
+      "guest": "Utilizador convidado",
+      "system": "Sistema",
+      "unknown": "Desconhecido",
+      "user": "Utilizador"
+    },
+    "data": {
+      "actor": "Iniciado por",
+      "actorType": "Utilizador ou sistema",
+      "eventType": "Evento",
+      "target": "Refere-se a",
+      "time": "Data"
+    },
+    "deleted": "Eliminado",
+    "eventDescription": {
+      "contactContributionStarted": "O contacto iniciou uma contribuição: {amount}",
+      "contactContributionUpdated": "O contacto atualizou a contribuição: {amount}",
+      "contactCreated": "Novo contacto criado ({source})",
+      "contactEmailSent": "Email enviado ao contacto: {email}",
+      "contactRoleAdded": "Função atribuída ao contacto: {role}",
+      "emailSent": "Email enviado para {recipient}: {email}",
+      "emailTemplateAdded": "Modelo de email criado: {template}"
+    },
+    "eventType": {
+      "appPaymentOptionsUpdated": "Opções de pagamento disponíveis atualizadas",
+      "appSettingsUpdated": "Definições da aplicação atualizadas",
+      "appWebhookUpdated": "Webhook atualizado",
+      "calloutAnswered": "CrowdNewsroom respondida",
+      "calloutCreated": "Nova CrowdNewsroom criada",
+      "calloutDeleted": "CrowdNewsroom eliminada",
+      "calloutEdited": "CrowdNewsroom editada",
+      "calloutPublished": "CrowdNewsroom publicada",
+      "calloutSegmentsAdded": "Segmento da CrowdNewsroom criado",
+      "calloutSegmentsDeleted": "Segmento da CrowdNewsroom eliminado",
+      "calloutSegmentsUpdated": "Segmento da CrowdNewsroom atualizado",
+      "calloutUnpublished": "CrowdNewsroom despublicada",
+      "contactContributionCancelled": "O contacto cancelou a contribuição",
+      "contactContributionStarted": "O contacto iniciou uma contribuição",
+      "contactContributionUpdated": "O contacto atualizou a contribuição",
+      "contactCreated": "Novo contacto criado",
+      "contactDeleted": "Contacto eliminado",
+      "contactEmailSent": "Email enviado ao contacto",
+      "contactNewsletterGroupsUpdated": "Grupos de newsletter do contacto atualizados",
+      "contactPaymentCancelled": "Pagamento cancelado",
+      "contactPaymentFailed": "Pagamento falhado",
+      "contactPaymentInitiated": "Pagamento iniciado",
+      "contactPaymentRefunded": "Pagamento reembolsado",
+      "contactPaymentSuccessful": "Pagamento bem-sucedido",
+      "contactProfileUpdated": "Perfil do contacto atualizado",
+      "contactRoleAdded": "Função atribuída ao contacto",
+      "contactRoleRevoked": "Função revogada ao contacto",
+      "contactSegmentsAdded": "Segmento de contactos criado",
+      "contactSegmentsDeleted": "Segmento de contactos eliminado",
+      "contactSegmentsUpdated": "Segmento de contactos atualizado",
+      "contactUpdated": "Contacto atualizado",
+      "emailSendFailed": "Falha no envio do email",
+      "emailSent": "Email enviado",
+      "emailTemplateAdded": "Modelo de email criado",
+      "emailTemplateDeleted": "Modelo de email eliminado",
+      "emailTemplateEdited": "Modelo de email atualizado",
+      "newsletterGroupsUpdated": "Grupos de newsletter atualizados"
+    },
+    "filters": {
+      "all": "Todos",
+      "other": "Outros"
+    }
   },
   "addContact": {
     "contactSaved": "Contacto gravado",
@@ -398,14 +467,17 @@
       "text": ""
     },
     "invalidRuleError": "",
+    "matchCondition-nuxt": "",
     "matchCount-nuxt": "",
     "matchWord": {
       "AND": "",
       "OR": ""
     },
     "nestedRules": "",
+    "nestedRules-nuxt": "",
     "noFieldsMatch-nuxt": "",
     "noNestedRules": "",
+    "noOptions-nuxt": "",
     "operatorGroup-nuxt": {
       "blank": "",
       "not": ""
@@ -462,6 +534,8 @@
       }
     },
     "relativeDate-nuxt": "",
+    "relativeDateExample-nuxt": "",
+    "relativeDateInvalid-nuxt": "",
     "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
@@ -470,6 +544,7 @@
         "update": ""
       },
       "createSegment": "",
+      "failed-nuxt": "",
       "segmentName": "",
       "text": "",
       "text-nuxt": "",
@@ -1145,6 +1220,7 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "/ ano",
+    "range-nuxt": "",
     "role": {
       "admin": "Administrador",
       "member": "Membro",
@@ -1327,6 +1403,7 @@
     "noResults": "Nenhum contacto encontrado",
     "numResults": "{n} contacto encontrado | {n} contactos encontrados",
     "search": "Pesquisar contactos...",
+    "segments-nuxt": "",
     "selectAllBanner-nuxt": {
       "allSelected": "",
       "clearSelection": "",
@@ -1343,6 +1420,8 @@
       "templateNameRequired": "Introduza um nome para o novo modelo.",
       "title": "Enviar e-mail ao segmento"
     },
+    "sendEmailNoSegment-nuxt": "",
+    "sendEmailSelection-nuxt": "",
     "sendEmailToSelected-nuxt": "",
     "showingOf": "Contactos {start} a {end} de um total de {total}",
     "showingOf-nuxt": ""
@@ -1938,6 +2017,7 @@
   },
   "menu": {
     "account": "Conta",
+    "activity": "Atividade",
     "admin": "Administração",
     "adminSettings": "Definições",
     "callouts": "CrowdNewsrooms",
@@ -2197,10 +2277,14 @@
     "noTags": "",
     "notifications": {
       "addedTag": "",
+      "createFailed-nuxt": "",
       "createdTag-nuxt": "",
+      "deleteFailed-nuxt": "",
       "deletedTag-nuxt": "",
       "removedTag": "",
-      "renamedTag-nuxt": ""
+      "renameFailed-nuxt": "",
+      "renamedTag-nuxt": "",
+      "updateFailed-nuxt": ""
     },
     "searchTag": "",
     "selectToTag-nuxt": "",

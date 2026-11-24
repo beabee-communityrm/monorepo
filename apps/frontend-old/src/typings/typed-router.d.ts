@@ -59,6 +59,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    'adminActivity': RouteRecordInfo<
+      'adminActivity',
+      '/admin/activity',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     'adminContacts': RouteRecordInfo<
       'adminContacts',
       '/admin/contacts',
@@ -72,6 +79,7 @@ declare module 'vue-router/auto-routes' {
       { id: ParamValue<true> },
       { id: ParamValue<false> },
       | 'adminContactsViewAccount'
+      | 'adminContactsViewActivity'
       | 'adminContactsViewCallouts'
       | 'adminContactsViewContribution'
       | 'adminContactsViewOverview'
@@ -86,6 +94,13 @@ declare module 'vue-router/auto-routes' {
     'adminContactsViewAccount': RouteRecordInfo<
       'adminContactsViewAccount',
       '/admin/contacts/:id/account',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
+    'adminContactsViewActivity': RouteRecordInfo<
+      'adminContactsViewActivity',
+      '/admin/contacts/:id/activity',
       { id: ParamValue<true> },
       { id: ParamValue<false> },
       | never
@@ -561,6 +576,12 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
+    'src/pages/admin/activity/index.vue': {
+      routes:
+        | 'adminActivity'
+      views:
+        | never
+    }
     'src/pages/admin/contacts/index.vue': {
       routes:
         | 'adminContacts'
@@ -571,6 +592,7 @@ declare module 'vue-router/auto-routes' {
       routes:
         | 'adminContactsView'
         | 'adminContactsViewAccount'
+        | 'adminContactsViewActivity'
         | 'adminContactsViewCallouts'
         | 'adminContactsViewContribution'
         | 'adminContactsViewOverview'
@@ -586,6 +608,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/admin/contacts/[id]/account.vue': {
       routes:
         | 'adminContactsViewAccount'
+      views:
+        | never
+    }
+    'src/pages/admin/contacts/[id]/activity.vue': {
+      routes:
+        | 'adminContactsViewActivity'
       views:
         | never
     }

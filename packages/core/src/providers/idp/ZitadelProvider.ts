@@ -89,19 +89,41 @@ const LOGIN_V2_PAGES: Record<
 export class ZitadelProvider implements IdpProvider {
   constructor(protected readonly settings: ZitadelIdpConfig['settings']) {}
 
+  // With apiUrl, calls bypass the public ingress and its per-client rate
+  // limit; Zitadel then picks the virtual instance from X-Forwarded-Host
+  private apiFetch(
+    method: string,
+    path: string,
+    body?: string | FormData,
+    headers?: Record<string, string>
+  ): Promise<Response> {
+    const { url, apiUrl, pat } = this.settings;
+    const publicUrl = new URL(url);
+    return fetch((apiUrl || url) + path, {
+      method,
+      headers: {
+        ...headers,
+        Authorization: `Bearer ${pat}`,
+        ...(apiUrl && {
+          'X-Forwarded-Host': publicUrl.host,
+          'X-Forwarded-Proto': publicUrl.protocol.slice(0, -1),
+        }),
+      },
+      ...(body && { body }),
+    });
+  }
+
   private async request<T>(
     method: string,
     path: string,
     body?: object
   ): Promise<T | undefined> {
-    const resp = await fetch(this.settings.url + path, {
+    const resp = await this.apiFetch(
       method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.settings.pat}`,
-      },
-      ...(body && { body: JSON.stringify(body) }),
-    });
+      path,
+      body && JSON.stringify(body),
+      { 'Content-Type': 'application/json' }
+    );
     const text = await resp.text();
     if (!resp.ok) {
       throw new ZitadelApiError(method, path, resp.status, text);
@@ -199,11 +221,7 @@ export class ZitadelProvider implements IdpProvider {
   private async uploadAsset(path: string, file: Blob): Promise<void> {
     const body = new FormData();
     body.append('file', file);
-    const resp = await fetch(this.settings.url + path, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${this.settings.pat}` },
-      body,
-    });
+    const resp = await this.apiFetch('POST', path, body);
     if (!resp.ok) {
       throw new Error(
         `Zitadel API error: POST ${path} returned ${resp.status}: ${await resp.text()}`
@@ -465,30 +483,50 @@ export class ZitadelProvider implements IdpProvider {
    */
   async resolveLoginUrl(
     authorizeUrl: string,
-    action: IdpLoginAction
+    { type, subject }: IdpLoginAction
   ): Promise<string> {
     const authRequestId = await this.startAuthRequest(authorizeUrl);
-    if (action.type === 'directLogin') {
-      return await this.finishWithSession(authRequestId, action.subject);
-    }
     const requestId = `oidc_${authRequestId}`;
 
-    // The invite verify page lets the member choose a password or passkey
-    if (action.type === 'setupCredential') {
-      const params = new URLSearchParams({
-        requestId,
-        userId: action.subject,
-        code: await this.createInviteCode(action.subject),
-        invite: 'true',
-      });
-      return `${this.settings.url}/ui/v2/login/verify?${params}`;
-    }
+    switch (type) {
+      case 'directLogin':
+        return await this.finishWithSession(authRequestId, subject);
 
-    const params = new URLSearchParams({
-      requestId,
-      loginName: await this.getLoginName(action.subject),
-    });
-    return `${this.settings.url}/ui/v2/login/${LOGIN_V2_PAGES[action.type]}?${params}`;
+      case 'setupCredential': {
+        const methods = await this.request<{ authMethodTypes?: string[] }>(
+          'GET',
+          `/v2/users/${subject}/authentication_methods`
+        );
+        // Zitadel only invites accounts without a credential. The invite
+        // verify page lets the member choose a password or passkey; an
+        // account with a credential sets a new password with a reset code.
+        return methods?.authMethodTypes?.length
+          ? this.loginV2Url('password/set', {
+              requestId,
+              userId: subject,
+              loginName: await this.getLoginName(subject),
+              code: await this.createPasswordResetCode(subject),
+            })
+          : this.loginV2Url('verify', {
+              requestId,
+              userId: subject,
+              code: await this.createInviteCode(subject),
+              invite: 'true',
+            });
+      }
+
+      case 'changePassword':
+      case 'addPasskey':
+      case 'setupMfa':
+        return this.loginV2Url(LOGIN_V2_PAGES[type], {
+          requestId,
+          loginName: await this.getLoginName(subject),
+        });
+    }
+  }
+
+  private loginV2Url(page: string, params: Record<string, string>): string {
+    return `${this.settings.url}/ui/v2/login/${page}?${new URLSearchParams(params)}`;
   }
 
   /**
@@ -560,6 +598,19 @@ export class ZitadelProvider implements IdpProvider {
       throw new Error('Zitadel did not return the invite code');
     }
     return resp.inviteCode;
+  }
+
+  private async createPasswordResetCode(subject: string): Promise<string> {
+    log.info(`Create password reset code for user ${subject}`);
+    const resp = await this.request<{ verificationCode: string }>(
+      'POST',
+      `/v2/users/${subject}/password_reset`,
+      { returnCode: {} }
+    );
+    if (!resp?.verificationCode) {
+      throw new Error('Zitadel did not return the password reset code');
+    }
+    return resp.verificationCode;
   }
 
   /**

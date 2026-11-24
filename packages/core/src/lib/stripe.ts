@@ -306,8 +306,12 @@ export async function updateSubscription(
             proration_date: prorationTime,
             // Only apply the new price once the proration invoice is paid,
             // otherwise a payment that needs authentication leaves the
-            // subscription on the new price with an invoice nobody can pay
-            payment_behavior: 'pending_if_incomplete',
+            // subscription on the new price with an invoice nobody can pay.
+            // Stripe rejects it for debit methods such as SEPA
+            ...((paymentMethod === PaymentMethod.StripeCard ||
+              paymentMethod === PaymentMethod.StripePayPal) && {
+              payment_behavior: 'pending_if_incomplete',
+            }),
           }
         : {
             proration_behavior: 'none',

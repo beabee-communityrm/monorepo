@@ -163,6 +163,7 @@
     "search": "Rechercher",
     "sendEmails": "Envoyer des e-mails",
     "sendOneOffEmail": "Envoyer un e-mail",
+    "sendOneOffEmail-nuxt": "",
     "sendOngoingEmails": "E-mails récurrents",
     "share": "Partager",
     "showPassword": "Afficher le mot de passe",
@@ -176,6 +177,74 @@
     "yesDisable": "Oui, désactiver",
     "yesRemove": "Oui, retirer",
     "yesReset": "Oui, réinitialiser"
+  },
+  "activity": {
+    "actorType": {
+      "guest": "Utilisateur invité",
+      "system": "Système",
+      "unknown": "Inconnu",
+      "user": "Utilisateur"
+    },
+    "data": {
+      "actor": "Initié par",
+      "actorType": "Utilisateur ou système",
+      "eventType": "Événement",
+      "target": "Concerne",
+      "time": "Date"
+    },
+    "deleted": "Supprimé",
+    "eventDescription": {
+      "contactContributionStarted": "Le contact a commencé une cotisation : {amount}",
+      "contactContributionUpdated": "Le contact a modifié sa cotisation : {amount}",
+      "contactCreated": "Nouveau contact créé ({source})",
+      "contactEmailSent": "E-mail envoyé au contact : {email}",
+      "contactRoleAdded": "Rôle attribué au contact : {role}",
+      "emailSent": "E-mail envoyé à {recipient} : {email}",
+      "emailTemplateAdded": "Modèle d'e-mail créé : {template}"
+    },
+    "eventType": {
+      "appPaymentOptionsUpdated": "Options de paiement disponibles mises à jour",
+      "appSettingsUpdated": "Paramètres de l'application mis à jour",
+      "appWebhookUpdated": "Webhook mis à jour",
+      "calloutAnswered": "Réponse à un CrowdNewsroom",
+      "calloutCreated": "Nouveau CrowdNewsroom créé",
+      "calloutDeleted": "CrowdNewsroom supprimé",
+      "calloutEdited": "CrowdNewsroom modifié",
+      "calloutPublished": "CrowdNewsroom publié",
+      "calloutSegmentsAdded": "Segment de CrowdNewsroom créé",
+      "calloutSegmentsDeleted": "Segment de CrowdNewsroom supprimé",
+      "calloutSegmentsUpdated": "Segment de CrowdNewsroom mis à jour",
+      "calloutUnpublished": "CrowdNewsroom dépublié",
+      "contactContributionCancelled": "Le contact a annulé sa cotisation",
+      "contactContributionStarted": "Le contact a commencé une cotisation",
+      "contactContributionUpdated": "Le contact a modifié sa cotisation",
+      "contactCreated": "Nouveau contact créé",
+      "contactDeleted": "Contact supprimé",
+      "contactEmailSent": "E-mail envoyé au contact",
+      "contactNewsletterGroupsUpdated": "Groupes de lettre d'information du contact mis à jour",
+      "contactPaymentCancelled": "Paiement annulé",
+      "contactPaymentFailed": "Échec du paiement",
+      "contactPaymentInitiated": "Paiement initié",
+      "contactPaymentRefunded": "Paiement remboursé",
+      "contactPaymentSuccessful": "Paiement réussi",
+      "contactProfileUpdated": "Profil du contact mis à jour",
+      "contactRoleAdded": "Rôle attribué au contact",
+      "contactRoleRevoked": "Rôle retiré au contact",
+      "contactSegmentsAdded": "Segment de contacts créé",
+      "contactSegmentsDeleted": "Segment de contacts supprimé",
+      "contactSegmentsUpdated": "Segment de contacts mis à jour",
+      "contactUpdated": "Contact mis à jour",
+      "emailSendFailed": "Échec de l'envoi de l'e-mail",
+      "emailSent": "E-mail envoyé",
+      "emailTemplateAdded": "Modèle d'e-mail créé",
+      "emailTemplateDeleted": "Modèle d'e-mail supprimé",
+      "emailTemplateEdited": "Modèle d'e-mail mis à jour",
+      "newsletterGroupsUpdated": "Groupes de lettre d'information mis à jour"
+    },
+    "filters": {
+      "all": "Tout",
+      "other": "Autres"
+    }
   },
   "addContact": {
     "contactSaved": "Contact enregistré",
@@ -398,14 +467,17 @@
       "text": ""
     },
     "invalidRuleError": "Quelque chose ne va pas dans cette règle : \"{ rule }\". Veuillez mettre à jour !",
+    "matchCondition-nuxt": "",
     "matchCount-nuxt": "",
     "matchWord": {
       "AND": "et",
       "OR": "ou"
     },
     "nestedRules": "Règles imbriquées",
+    "nestedRules-nuxt": "",
     "noFieldsMatch-nuxt": "",
     "noNestedRules": "Ce filtre comporte des règles imbriquées ne pouvant pas être modifiées via l'éditeur de recherche avancée.",
+    "noOptions-nuxt": "",
     "operatorGroup-nuxt": {
       "blank": "",
       "not": ""
@@ -462,6 +534,8 @@
       }
     },
     "relativeDate-nuxt": "",
+    "relativeDateExample-nuxt": "",
+    "relativeDateInvalid-nuxt": "",
     "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
@@ -470,6 +544,7 @@
         "update": "Mettre à jour le segment « {segment} »"
       },
       "createSegment": "Créer un segment",
+      "failed-nuxt": "",
       "segmentName": "Nom du segment",
       "text": "Un segment est un groupe de contacts correspondant un à un ensemble de filtres comme ceux que vous venez de créer. Les nouveaux contacts correspondant à ces filtres seront automatiquement ajoutés à ce segment.",
       "text-nuxt": "",
@@ -1149,6 +1224,7 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "/ an",
+    "range-nuxt": "",
     "role": {
       "admin": "Administrateur",
       "member": "Membre",
@@ -1331,6 +1407,7 @@
     "noResults": "Aucun contact trouvé",
     "numResults": "{n} contact trouvé | {n} contacts trouvés",
     "search": "Rechercher un contact…",
+    "segments-nuxt": "",
     "selectAllBanner-nuxt": {
       "allSelected": "",
       "clearSelection": "",
@@ -1347,6 +1424,8 @@
       "templateNameRequired": "Veuillez saisir un nom pour le nouveau modèle.",
       "title": "Envoyer un e-mail au segment"
     },
+    "sendEmailNoSegment-nuxt": "",
+    "sendEmailSelection-nuxt": "",
     "sendEmailToSelected-nuxt": "",
     "showingOf": "Affichage des contacts {start} à {end} sur {total}",
     "showingOf-nuxt": ""
@@ -1942,6 +2021,7 @@
   },
   "menu": {
     "account": "Compte",
+    "activity": "Activité",
     "admin": "Administration",
     "adminSettings": "Paramètres",
     "callouts": "CrowdNewsrooms",
@@ -2201,10 +2281,14 @@
     "noTags": "Aucun libellé",
     "notifications": {
       "addedTag": "Libellé « {tag} » ajouté",
+      "createFailed-nuxt": "",
       "createdTag-nuxt": "",
+      "deleteFailed-nuxt": "",
       "deletedTag-nuxt": "",
       "removedTag": "Libellé « {tag} » supprimé ",
-      "renamedTag-nuxt": ""
+      "renameFailed-nuxt": "",
+      "renamedTag-nuxt": "",
+      "updateFailed-nuxt": ""
     },
     "searchTag": "Libellé par…",
     "selectToTag-nuxt": "",

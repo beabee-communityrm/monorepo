@@ -25,6 +25,7 @@ const logger = winston.createLogger({
     logFormats[config.logFormat]
   ),
   levels: winston.config.syslog.levels,
+  defaultMeta: config.logFields,
   transports: [
     new winston.transports.Console({
       stderrLevels: ['error', 'warning', 'info', 'debug'],
@@ -34,18 +35,21 @@ const logger = winston.createLogger({
 
 export const log = logger;
 
-export const requestLogger = expressWinston.logger({
-  winstonInstance: logger.child({ app: 'request' }),
-  msg: '{{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
-  requestFilter: (req, propName) => {
-    if (propName === 'headers') {
-      const { cookie, ...rest } = req.headers;
-      return rest;
-    } else {
-      return req[propName];
-    }
-  },
-});
+export const createRequestLogger = (app: string) =>
+  expressWinston.logger({
+    winstonInstance: logger.child({ app }),
+    msg: '{{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
+    requestFilter: (req, propName) => {
+      if (propName === 'headers') {
+        const { cookie, ...rest } = req.headers;
+        return rest;
+      } else {
+        return req[propName];
+      }
+    },
+  });
+
+export const requestLogger = createRequestLogger('request');
 
 export const requestErrorLogger: ErrorRequestHandler =
   expressWinston.errorLogger({

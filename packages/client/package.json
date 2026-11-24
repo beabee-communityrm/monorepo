@@ -5,7 +5,7 @@
   "license": "AGPL-3.0",
   "type": "module",
   "engines": {
-    "node": ">=24"
+    "node": ">=26"
   },
   "homepage": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/client",
   "repository": {

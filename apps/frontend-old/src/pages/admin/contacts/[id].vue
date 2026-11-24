@@ -61,6 +61,12 @@ const tabs = computed(() =>
         id: 'adminContactsViewCallouts',
         label: t('contactOverview.callouts'),
       },
+      {
+        id: 'adminContactsViewActivity',
+        label: t('menu.activity'),
+        // Not shown as a tab, the page is only reachable by its URL
+        hidden: true,
+      },
     ],
     {
       params: { id: contact.value?.id || '-' },

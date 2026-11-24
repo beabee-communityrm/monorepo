@@ -163,6 +163,7 @@
     "search": "Пошук",
     "sendEmails": "Надіслати листи",
     "sendOneOffEmail": "Надіслати лист",
+    "sendOneOffEmail-nuxt": "",
     "sendOngoingEmails": "Регулярні листи",
     "share": "Поділитися",
     "showPassword": "Показати пароль",
@@ -176,6 +177,74 @@
     "yesDisable": "Так, вимкнути",
     "yesRemove": "Так, вилучити це",
     "yesReset": "Так, скинути"
+  },
+  "activity": {
+    "actorType": {
+      "guest": "Гостьовий користувач",
+      "system": "Система",
+      "unknown": "Невідомо",
+      "user": "Користувач"
+    },
+    "data": {
+      "actor": "Ініціатор",
+      "actorType": "Користувач або система",
+      "eventType": "Подія",
+      "target": "Об'єкт",
+      "time": "Дата"
+    },
+    "deleted": "Видалено",
+    "eventDescription": {
+      "contactContributionStarted": "Контакт оформив внесок: {amount}",
+      "contactContributionUpdated": "Контакт змінив внесок: {amount}",
+      "contactCreated": "Створено новий контакт ({source})",
+      "contactEmailSent": "Лист надіслано контакту: {email}",
+      "contactRoleAdded": "Контакту призначено роль: {role}",
+      "emailSent": "Лист надіслано на {recipient}: {email}",
+      "emailTemplateAdded": "Створено шаблон листа: {template}"
+    },
+    "eventType": {
+      "appPaymentOptionsUpdated": "Доступні способи оплати оновлено",
+      "appSettingsUpdated": "Налаштування застосунку оновлено",
+      "appWebhookUpdated": "Вебхук оновлено",
+      "calloutAnswered": "Отримано відповідь на CrowdNewsroom",
+      "calloutCreated": "Створено нову CrowdNewsroom",
+      "calloutDeleted": "CrowdNewsroom видалено",
+      "calloutEdited": "CrowdNewsroom змінено",
+      "calloutPublished": "CrowdNewsroom опубліковано",
+      "calloutSegmentsAdded": "Створено сегмент CrowdNewsroom",
+      "calloutSegmentsDeleted": "Сегмент CrowdNewsroom видалено",
+      "calloutSegmentsUpdated": "Сегмент CrowdNewsroom оновлено",
+      "calloutUnpublished": "Публікацію CrowdNewsroom скасовано",
+      "contactContributionCancelled": "Контакт скасував внесок",
+      "contactContributionStarted": "Контакт оформив внесок",
+      "contactContributionUpdated": "Контакт змінив внесок",
+      "contactCreated": "Створено новий контакт",
+      "contactDeleted": "Контакт видалено",
+      "contactEmailSent": "Лист надіслано контакту",
+      "contactNewsletterGroupsUpdated": "Групи інформаційного бюлетеня контакту оновлено",
+      "contactPaymentCancelled": "Платіж скасовано",
+      "contactPaymentFailed": "Платіж не вдався",
+      "contactPaymentInitiated": "Платіж ініційовано",
+      "contactPaymentRefunded": "Платіж повернуто",
+      "contactPaymentSuccessful": "Платіж успішний",
+      "contactProfileUpdated": "Профіль контакту оновлено",
+      "contactRoleAdded": "Контакту призначено роль",
+      "contactRoleRevoked": "У контакту відкликано роль",
+      "contactSegmentsAdded": "Створено сегмент контактів",
+      "contactSegmentsDeleted": "Сегмент контактів видалено",
+      "contactSegmentsUpdated": "Сегмент контактів оновлено",
+      "contactUpdated": "Контакт оновлено",
+      "emailSendFailed": "Не вдалося надіслати лист",
+      "emailSent": "Лист надіслано",
+      "emailTemplateAdded": "Створено шаблон листа",
+      "emailTemplateDeleted": "Шаблон листа видалено",
+      "emailTemplateEdited": "Шаблон листа оновлено",
+      "newsletterGroupsUpdated": "Групи інформаційного бюлетеня оновлено"
+    },
+    "filters": {
+      "all": "Усі",
+      "other": "Інше"
+    }
   },
   "addContact": {
     "contactSaved": "Контакт збережено",
@@ -398,14 +467,17 @@
       "text": ""
     },
     "invalidRuleError": "У цьому правилі щось не так: \"{ rule }\". Будь ласка, оновіть!",
+    "matchCondition-nuxt": "",
     "matchCount-nuxt": "",
     "matchWord": {
       "AND": "і",
       "OR": "або"
     },
     "nestedRules": "Вкладені правила",
+    "nestedRules-nuxt": "",
     "noFieldsMatch-nuxt": "",
     "noNestedRules": "Цей фільтр містить вкладені правила, які не можна редагувати за допомогою редактора розширеного пошуку.",
+    "noOptions-nuxt": "",
     "operatorGroup-nuxt": {
       "blank": "",
       "not": ""
@@ -462,6 +534,8 @@
       }
     },
     "relativeDate-nuxt": "",
+    "relativeDateExample-nuxt": "",
+    "relativeDateInvalid-nuxt": "",
     "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
@@ -470,6 +544,7 @@
         "update": "Оновити сегмент \"{segment}\""
       },
       "createSegment": "Створити сегмент",
+      "failed-nuxt": "",
       "segmentName": "Назва сегмента",
       "text": "Сегмент – це група контактів, яка відповідає набору фільтрів, подібних до тих, які ви щойно створили. Нові контакти, що відповідають цим фільтрам, автоматично додаються до сегмента.",
       "text-nuxt": "",
@@ -1147,6 +1222,7 @@
     "perOneTimeText": "одноразовий",
     "perYear": "/ рік",
     "perYearText": "рік",
+    "range-nuxt": "",
     "role": {
       "admin": "Адміністратор",
       "member": "Учасник",
@@ -1329,6 +1405,7 @@
     "noResults": "Контактів не знайдено",
     "numResults": "Знайдено {n} контактів | Знайдено {n} контакт | Знайдено {n} контакти | Знайдено {n} контактів",
     "search": "Пошук контактів...",
+    "segments-nuxt": "",
     "selectAllBanner-nuxt": {
       "allSelected": "",
       "clearSelection": "",
@@ -1345,6 +1422,8 @@
       "templateNameRequired": "Введіть назву нового шаблону.",
       "title": "Надіслати лист сегменту"
     },
+    "sendEmailNoSegment-nuxt": "",
+    "sendEmailSelection-nuxt": "",
     "sendEmailToSelected-nuxt": "",
     "showingOf": "Показано контакти з {start} до {end} з {total}",
     "showingOf-nuxt": ""
@@ -1942,6 +2021,7 @@
   },
   "menu": {
     "account": "Обліковий запис",
+    "activity": "Активність",
     "admin": "Адміністрація",
     "adminSettings": "Налаштування",
     "callouts": "CrowdNewsroom",
@@ -2206,10 +2286,14 @@
     "noTags": "Без тегів",
     "notifications": {
       "addedTag": "Додано тег \"{tag}\"",
+      "createFailed-nuxt": "",
       "createdTag-nuxt": "",
+      "deleteFailed-nuxt": "",
       "deletedTag-nuxt": "",
       "removedTag": "Вилучено тег \"{tag}\" ",
-      "renamedTag-nuxt": ""
+      "renameFailed-nuxt": "",
+      "renamedTag-nuxt": "",
+      "updateFailed-nuxt": ""
     },
     "searchTag": "Позначено тегом...",
     "selectToTag-nuxt": "",

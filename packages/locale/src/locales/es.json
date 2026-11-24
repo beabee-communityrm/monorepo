@@ -163,6 +163,7 @@
     "search": "Buscar",
     "sendEmails": "Enviar correos",
     "sendOneOffEmail": "Enviar correo",
+    "sendOneOffEmail-nuxt": "",
     "sendOngoingEmails": "Correos continuos",
     "share": "Compartir",
     "showPassword": "Mostrar contraseña",
@@ -176,6 +177,74 @@
     "yesDisable": "Sí, desactivar",
     "yesRemove": "Sí, quitar",
     "yesReset": "Sí, restablecer"
+  },
+  "activity": {
+    "actorType": {
+      "guest": "Usuario invitado",
+      "system": "Sistema",
+      "unknown": "Desconocido",
+      "user": "Usuario"
+    },
+    "data": {
+      "actor": "Iniciado por",
+      "actorType": "Usuario o sistema",
+      "eventType": "Evento",
+      "target": "Afecta a",
+      "time": "Fecha"
+    },
+    "deleted": "Eliminado",
+    "eventDescription": {
+      "contactContributionStarted": "El contacto inició una contribución: {amount}",
+      "contactContributionUpdated": "El contacto actualizó su contribución: {amount}",
+      "contactCreated": "Nuevo contacto creado ({source})",
+      "contactEmailSent": "Correo enviado al contacto: {email}",
+      "contactRoleAdded": "Rol asignado al contacto: {role}",
+      "emailSent": "Correo enviado a {recipient}: {email}",
+      "emailTemplateAdded": "Plantilla de correo creada: {template}"
+    },
+    "eventType": {
+      "appPaymentOptionsUpdated": "Opciones de pago disponibles actualizadas",
+      "appSettingsUpdated": "Ajustes de la aplicación actualizados",
+      "appWebhookUpdated": "Webhook actualizado",
+      "calloutAnswered": "CrowdNewsroom respondido",
+      "calloutCreated": "Nuevo CrowdNewsroom creado",
+      "calloutDeleted": "CrowdNewsroom eliminado",
+      "calloutEdited": "CrowdNewsroom editado",
+      "calloutPublished": "CrowdNewsroom publicado",
+      "calloutSegmentsAdded": "Segmento de CrowdNewsroom creado",
+      "calloutSegmentsDeleted": "Segmento de CrowdNewsroom eliminado",
+      "calloutSegmentsUpdated": "Segmento de CrowdNewsroom actualizado",
+      "calloutUnpublished": "CrowdNewsroom despublicado",
+      "contactContributionCancelled": "El contacto canceló su contribución",
+      "contactContributionStarted": "El contacto inició una contribución",
+      "contactContributionUpdated": "El contacto actualizó su contribución",
+      "contactCreated": "Nuevo contacto creado",
+      "contactDeleted": "Contacto eliminado",
+      "contactEmailSent": "Correo enviado al contacto",
+      "contactNewsletterGroupsUpdated": "Grupos de boletín del contacto actualizados",
+      "contactPaymentCancelled": "Pago cancelado",
+      "contactPaymentFailed": "Pago fallido",
+      "contactPaymentInitiated": "Pago iniciado",
+      "contactPaymentRefunded": "Pago reembolsado",
+      "contactPaymentSuccessful": "Pago realizado con éxito",
+      "contactProfileUpdated": "Perfil del contacto actualizado",
+      "contactRoleAdded": "Rol asignado al contacto",
+      "contactRoleRevoked": "Rol revocado al contacto",
+      "contactSegmentsAdded": "Segmento de contactos creado",
+      "contactSegmentsDeleted": "Segmento de contactos eliminado",
+      "contactSegmentsUpdated": "Segmento de contactos actualizado",
+      "contactUpdated": "Contacto actualizado",
+      "emailSendFailed": "Error al enviar el correo",
+      "emailSent": "Correo enviado",
+      "emailTemplateAdded": "Plantilla de correo creada",
+      "emailTemplateDeleted": "Plantilla de correo eliminada",
+      "emailTemplateEdited": "Plantilla de correo actualizada",
+      "newsletterGroupsUpdated": "Grupos de boletín actualizados"
+    },
+    "filters": {
+      "all": "Todos",
+      "other": "Otros"
+    }
   },
   "addContact": {
     "contactSaved": "Contacto guardado",
@@ -398,14 +467,17 @@
       "text": ""
     },
     "invalidRuleError": "Algo está mal en esta regla: \"{ rule }\". ¡Actualízala!",
+    "matchCondition-nuxt": "",
     "matchCount-nuxt": "",
     "matchWord": {
       "AND": "y",
       "OR": "o"
     },
     "nestedRules": "Reglas anidadas",
+    "nestedRules-nuxt": "",
     "noFieldsMatch-nuxt": "",
     "noNestedRules": "Este filtro contiene reglas anidadas que no se pueden editar con el editor de búsqueda avanzada.",
+    "noOptions-nuxt": "",
     "operatorGroup-nuxt": {
       "blank": "",
       "not": ""
@@ -462,6 +534,8 @@
       }
     },
     "relativeDate-nuxt": "",
+    "relativeDateExample-nuxt": "",
+    "relativeDateInvalid-nuxt": "",
     "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
@@ -470,6 +544,7 @@
         "update": "Actualizar segmento \"{segment}\""
       },
       "createSegment": "Crear segmento",
+      "failed-nuxt": "",
       "segmentName": "Nombre del segmento",
       "text": "Un segmento es un grupo de contactos que coincide con un conjunto de filtros, como los que acabas de crear. Los nuevos contactos que coincidan con estos filtros se añaden automáticamente al segmento.",
       "text-nuxt": "",
@@ -1145,6 +1220,7 @@
     "perOneTime": " único",
     "perOneTimeText": "único",
     "perYear": "/ año",
+    "range-nuxt": "",
     "role": {
       "admin": "Administrador",
       "member": "Miembro",
@@ -1327,6 +1403,7 @@
     "noResults": "No se encontraron contactos",
     "numResults": "{n} contacto encontrado | {n} contactos encontrados",
     "search": "Buscar contactos...",
+    "segments-nuxt": "",
     "selectAllBanner-nuxt": {
       "allSelected": "",
       "clearSelection": "",
@@ -1343,6 +1420,8 @@
       "templateNameRequired": "Introduce un nombre para la nueva plantilla.",
       "title": "Enviar correo al segmento"
     },
+    "sendEmailNoSegment-nuxt": "",
+    "sendEmailSelection-nuxt": "",
     "sendEmailToSelected-nuxt": "",
     "showingOf": "Mostrando de {start} a {end} contactos de {total}",
     "showingOf-nuxt": ""
@@ -1936,6 +2015,7 @@
   },
   "menu": {
     "account": "Cuenta",
+    "activity": "Actividad",
     "admin": "Administración",
     "adminSettings": "Configuración",
     "callouts": "CrowdNewsroom",
@@ -2195,10 +2275,14 @@
     "noTags": "Sin etiquetas",
     "notifications": {
       "addedTag": "Etiqueta \"{tag}\" añadida",
+      "createFailed-nuxt": "",
       "createdTag-nuxt": "",
+      "deleteFailed-nuxt": "",
       "deletedTag-nuxt": "",
       "removedTag": "Etiqueta \"{tag}\" eliminada ",
-      "renamedTag-nuxt": ""
+      "renameFailed-nuxt": "",
+      "renamedTag-nuxt": "",
+      "updateFailed-nuxt": ""
     },
     "searchTag": "Etiquetado con...",
     "selectToTag-nuxt": "",

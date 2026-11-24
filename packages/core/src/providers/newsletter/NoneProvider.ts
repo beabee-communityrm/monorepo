@@ -4,6 +4,7 @@ import {
   NoneNewsletterIntegrationData,
 } from '@beabee/beabee-common';
 
+import type { Contact } from '#models/index';
 import {
   NewsletterContact,
   NewsletterProvider,
@@ -11,12 +12,16 @@ import {
 } from '#type/index';
 
 export class NoneProvider implements NewsletterProvider {
+  getContactKey(contact: Pick<Contact, 'id' | 'email'>): string {
+    return contact.email;
+  }
   async getContact(email: string): Promise<NewsletterContact | undefined> {
     return;
   }
   async upsertContact(
     contact: UpdateNewsletterContact,
-    oldEmail?: string
+    key: string,
+    oldKey?: string
   ): Promise<NewsletterContact> {
     return {
       ...contact,

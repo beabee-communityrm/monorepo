@@ -51,6 +51,10 @@ export class SignupFlow {
   @ManyToOne('Contact', { nullable: true })
   contact!: Contact | null;
 
+  /** When the flow was finalized; null on a finalized flow means long ago */
+  @Column({ type: Date, nullable: true })
+  confirmedAt!: Date | null;
+
   @Column({ default: false })
   processing!: boolean;
 
@@ -62,4 +66,10 @@ export class SignupFlow {
 
   @Column({ type: 'jsonb', nullable: true })
   newsletterGroups!: string[] | null;
+
+  @Column({ type: String, nullable: true })
+  firstname!: string | null;
+
+  @Column({ type: String, nullable: true })
+  lastname!: string | null;
 }

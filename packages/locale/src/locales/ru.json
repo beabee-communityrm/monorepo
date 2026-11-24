@@ -163,6 +163,7 @@
     "search": "Искать",
     "sendEmails": "Отправить e-mails",
     "sendOneOffEmail": "Отправить письмо",
+    "sendOneOffEmail-nuxt": "",
     "sendOngoingEmails": "Регулярные рассылки",
     "share": "Поделиться",
     "showPassword": "Показать пароль",
@@ -176,6 +177,74 @@
     "yesDisable": "Да, отключить",
     "yesRemove": "Да, удалить",
     "yesReset": "Да, сбросить"
+  },
+  "activity": {
+    "actorType": {
+      "guest": "Гостевой пользователь",
+      "system": "Система",
+      "unknown": "Неизвестно",
+      "user": "Пользователь"
+    },
+    "data": {
+      "actor": "Инициатор",
+      "actorType": "Пользователь или система",
+      "eventType": "Событие",
+      "target": "Объект",
+      "time": "Дата"
+    },
+    "deleted": "Удалено",
+    "eventDescription": {
+      "contactContributionStarted": "Контакт оформил взнос: {amount}",
+      "contactContributionUpdated": "Контакт изменил взнос: {amount}",
+      "contactCreated": "Создан новый контакт ({source})",
+      "contactEmailSent": "Письмо отправлено контакту: {email}",
+      "contactRoleAdded": "Контакту назначена роль: {role}",
+      "emailSent": "Письмо отправлено на {recipient}: {email}",
+      "emailTemplateAdded": "Создан шаблон письма: {template}"
+    },
+    "eventType": {
+      "appPaymentOptionsUpdated": "Доступные способы оплаты обновлены",
+      "appSettingsUpdated": "Настройки приложения обновлены",
+      "appWebhookUpdated": "Вебхук обновлён",
+      "calloutAnswered": "Получен ответ на CrowdNewsroom",
+      "calloutCreated": "Создана новая CrowdNewsroom",
+      "calloutDeleted": "CrowdNewsroom удалена",
+      "calloutEdited": "CrowdNewsroom изменена",
+      "calloutPublished": "CrowdNewsroom опубликована",
+      "calloutSegmentsAdded": "Создан сегмент CrowdNewsroom",
+      "calloutSegmentsDeleted": "Сегмент CrowdNewsroom удалён",
+      "calloutSegmentsUpdated": "Сегмент CrowdNewsroom обновлён",
+      "calloutUnpublished": "CrowdNewsroom снята с публикации",
+      "contactContributionCancelled": "Контакт отменил взнос",
+      "contactContributionStarted": "Контакт оформил взнос",
+      "contactContributionUpdated": "Контакт изменил взнос",
+      "contactCreated": "Создан новый контакт",
+      "contactDeleted": "Контакт удалён",
+      "contactEmailSent": "Письмо отправлено контакту",
+      "contactNewsletterGroupsUpdated": "Группы рассылки контакта обновлены",
+      "contactPaymentCancelled": "Платёж отменён",
+      "contactPaymentFailed": "Платёж не прошёл",
+      "contactPaymentInitiated": "Платёж инициирован",
+      "contactPaymentRefunded": "Платёж возвращён",
+      "contactPaymentSuccessful": "Платёж выполнен успешно",
+      "contactProfileUpdated": "Профиль контакта обновлён",
+      "contactRoleAdded": "Контакту назначена роль",
+      "contactRoleRevoked": "У контакта отозвана роль",
+      "contactSegmentsAdded": "Создан сегмент контактов",
+      "contactSegmentsDeleted": "Сегмент контактов удалён",
+      "contactSegmentsUpdated": "Сегмент контактов обновлён",
+      "contactUpdated": "Контакт обновлён",
+      "emailSendFailed": "Не удалось отправить письмо",
+      "emailSent": "Письмо отправлено",
+      "emailTemplateAdded": "Создан шаблон письма",
+      "emailTemplateDeleted": "Шаблон письма удалён",
+      "emailTemplateEdited": "Шаблон письма обновлён",
+      "newsletterGroupsUpdated": "Группы рассылки обновлены"
+    },
+    "filters": {
+      "all": "Все",
+      "other": "Другое"
+    }
   },
   "addContact": {
     "contactSaved": "",
@@ -399,14 +468,17 @@
       "text": ""
     },
     "invalidRuleError": "",
+    "matchCondition-nuxt": "",
     "matchCount-nuxt": "",
     "matchWord": {
       "AND": "",
       "OR": ""
     },
     "nestedRules": "",
+    "nestedRules-nuxt": "",
     "noFieldsMatch-nuxt": "",
     "noNestedRules": "",
+    "noOptions-nuxt": "",
     "operatorGroup-nuxt": {
       "blank": "",
       "not": ""
@@ -463,6 +535,8 @@
       }
     },
     "relativeDate-nuxt": "",
+    "relativeDateExample-nuxt": "",
+    "relativeDateInvalid-nuxt": "",
     "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
@@ -471,6 +545,7 @@
         "update": ""
       },
       "createSegment": "",
+      "failed-nuxt": "",
       "segmentName": "",
       "text": "",
       "text-nuxt": "",
@@ -1146,6 +1221,7 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "/ год",
+    "range-nuxt": "",
     "role": {
       "admin": "Администратор",
       "member": "Участник",
@@ -1328,6 +1404,7 @@
     "noResults": "",
     "numResults": "",
     "search": "",
+    "segments-nuxt": "",
     "selectAllBanner-nuxt": {
       "allSelected": "",
       "clearSelection": "",
@@ -1344,6 +1421,8 @@
       "templateNameRequired": "Введите название нового шаблона.",
       "title": "Отправить письмо сегменту"
     },
+    "sendEmailNoSegment-nuxt": "",
+    "sendEmailSelection-nuxt": "",
     "sendEmailToSelected-nuxt": "",
     "showingOf": "",
     "showingOf-nuxt": ""
@@ -1943,6 +2022,7 @@
   },
   "menu": {
     "account": "Аккаунт",
+    "activity": "Активность",
     "admin": "Администрирование",
     "adminSettings": "Настройки",
     "callouts": "CrowdNewsroom",
@@ -2202,10 +2282,14 @@
     "noTags": "",
     "notifications": {
       "addedTag": "",
+      "createFailed-nuxt": "",
       "createdTag-nuxt": "",
+      "deleteFailed-nuxt": "",
       "deletedTag-nuxt": "",
       "removedTag": "",
-      "renamedTag-nuxt": ""
+      "renameFailed-nuxt": "",
+      "renamedTag-nuxt": "",
+      "updateFailed-nuxt": ""
     },
     "searchTag": "",
     "selectToTag-nuxt": "",

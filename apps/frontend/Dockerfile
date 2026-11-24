@@ -1,12 +1,12 @@
 ARG DENO_VERSION=2.1.2
-ARG NODE_VERSION=24
+ARG NODE_VERSION=26.13.0
 
 FROM node:${NODE_VERSION}-bookworm-slim AS builder
 
 # Check versions
 RUN node --version
 RUN npm --version
-RUN yarn --version
+RUN npm install -g yarn@1.22.22 && yarn --version
 
 WORKDIR /opt
 

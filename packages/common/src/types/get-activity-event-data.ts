@@ -8,7 +8,7 @@ export interface GetActivityEventData<
   targetId: string | null;
   createdAt: Date;
   eventType: T;
-  actorType: ActivityActorType;
+  actorType: ActivityActorType | null;
   actorId: string | null;
   metadata: ActivityEventMetadata<T> | null;
 }
