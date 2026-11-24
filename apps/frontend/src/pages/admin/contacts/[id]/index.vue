@@ -217,14 +217,12 @@ meta:
         <AppInfoList>
           <AppInfoListItem
             :name="t('contactOverview.newsletter.status')"
-            :value="
-              t('common.newsletterStatus.' + contact.profile.newsletterStatus)
-            "
+            :value="t('common.newsletterStatus.' + contact.newsletter.status)"
           />
           <AppInfoListItem
             :name="t('contactOverview.newsletter.groups')"
             :value="
-              contact.profile.newsletterGroups
+              contact.newsletter.groups
                 .map(
                   (id) =>
                     setupContent?.newsletterGroups.find(
@@ -367,6 +365,7 @@ const props = defineProps<{
 // eslint-disable-next-line vue/no-dupe-keys
 const contact = ref<GetContactDataWith<
   | GetContactWith.Profile
+  | GetContactWith.Newsletter
   | GetContactWith.Contribution
   | GetContactWith.Roles
   | GetContactWith.Tags
@@ -448,6 +447,7 @@ async function handleChangedRoles(cb: () => Promise<unknown>) {
   await cb();
   contact.value = await client.contact.get(props.contact.id, [
     GetContactWith.Profile,
+    GetContactWith.Newsletter,
     GetContactWith.Contribution,
     GetContactWith.Roles,
     GetContactWith.Tags,
@@ -479,6 +479,7 @@ async function handleToggleTag(tagId: string, successText: string) {
     // Refresh contact data
     contact.value = await client.contact.get(props.contact.id, [
       GetContactWith.Profile,
+      GetContactWith.Newsletter,
       GetContactWith.Contribution,
       GetContactWith.Roles,
       GetContactWith.Tags,
@@ -493,6 +494,7 @@ async function handleToggleTag(tagId: string, successText: string) {
 onBeforeMount(async () => {
   contact.value = await client.contact.get(props.contact.id, [
     GetContactWith.Profile,
+    GetContactWith.Newsletter,
     GetContactWith.Contribution,
     GetContactWith.Roles,
     GetContactWith.Tags,

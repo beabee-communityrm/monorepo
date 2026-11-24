@@ -34,6 +34,7 @@ export async function findUsers(args: ListUserArgs = {}): Promise<Contact[]> {
   const qb = createQueryBuilder(Contact, 'contact')
     .leftJoinAndSelect('contact.roles', 'roles')
     .leftJoinAndSelect('contact.profile', 'profile')
+    .leftJoinAndSelect('contact.newsletter', 'newsletter')
     .leftJoinAndSelect('contact.contribution', 'contribution')
     .orderBy('contact.joined', 'DESC');
 
@@ -95,8 +96,8 @@ function printContact(contact: Contact): void {
     if (contact.profile.description) {
       console.log(`Description: ${contact.profile.description}`);
     }
-    if (contact.profile.newsletterStatus) {
-      console.log(`Newsletter Status: ${contact.profile.newsletterStatus}`);
+    if (contact.newsletter.status) {
+      console.log(`Newsletter Status: ${contact.newsletter.status}`);
     }
   }
 }

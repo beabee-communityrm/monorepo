@@ -22,6 +22,7 @@ import {
   CalloutVariant,
   Contact,
   ContactContribution,
+  ContactNewsletter,
   ContactProfile,
   ContactRole,
   ContactTag,
@@ -393,6 +394,13 @@ export const contactProfileAnonymiser = createModelAnonymiser(ContactProfile, {
     postcode: () => 'BS1 1AA',
   },
 });
+
+export const contactNewsletterAnonymiser = createModelAnonymiser(
+  ContactNewsletter,
+  {
+    contactId: () => uuidv4(),
+  }
+);
 
 export const contactRoleAnonymiser = createModelAnonymiser(ContactRole, {
   contactId: () => uuidv4(),

@@ -5,9 +5,11 @@ export interface SetupContactData {
   organisationName: string;
   password: string;
   profile: {
-    newsletterOptIn: boolean;
-    newsletterGroups: string[];
     deliveryOptIn: boolean;
+  };
+  newsletter: {
+    optIn: boolean;
+    groups: string[];
   };
   addressLine1: string;
   addressLine2: string;

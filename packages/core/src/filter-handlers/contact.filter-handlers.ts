@@ -10,6 +10,7 @@ import {
   ActivityEvent,
   CalloutResponse,
   ContactContribution,
+  ContactNewsletter,
   ContactProfile,
   ContactRole,
   Payment,
@@ -57,6 +58,23 @@ function profileField(field: keyof ContactProfile): FilterHandler {
       .select(`profile.contactId`)
       .from(ContactProfile, 'profile')
       .where(convertToWhereClause(`profile.${field}`));
+
+    qb.where(`${fieldPrefix}id IN ${subQb.getQuery()}`);
+  };
+}
+
+/**
+ * Creates a filter handler for a contact newsletter field using a subquery
+ * @param field - The field from ContactNewsletter to filter on
+ * @returns A filter handler function for the specified newsletter field
+ */
+function newsletterField(field: keyof ContactNewsletter): FilterHandler {
+  return (qb, { fieldPrefix, convertToWhereClause }) => {
+    const subQb = createQueryBuilder()
+      .subQuery()
+      .select(`newsletter.contactId`)
+      .from(ContactNewsletter, 'newsletter')
+      .where(convertToWhereClause(`newsletter.${field}`));
 
     qb.where(`${fieldPrefix}id IN ${subQb.getQuery()}`);
   };
@@ -328,8 +346,8 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
  */
 export const contactFilterHandlers: FilterHandlers<string> = {
   deliveryOptIn: profileField('deliveryOptIn'),
-  newsletterStatus: profileField('newsletterStatus'),
-  newsletterGroups: profileField('newsletterGroups'),
+  newsletterStatus: newsletterField('status'),
+  newsletterGroups: newsletterField('groups'),
   organisation: profileField('organisation'),
   deliveryAddressCountry: deliveryAddressField('country'),
   activePermission,

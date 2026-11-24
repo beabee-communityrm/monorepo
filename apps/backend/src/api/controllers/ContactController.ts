@@ -120,7 +120,8 @@ export class ContactController {
           password: await generatePassword(data.password),
         }),
       },
-      data.profile
+      data.profile,
+      data.newsletter
     );
 
     if (data.roles) {
@@ -139,6 +140,7 @@ export class ContactController {
     return ContactTransformer.convert(contact, auth, {
       with: [
         ...(data.profile ? [GetContactWith.Profile] : []),
+        ...(data.newsletter ? [GetContactWith.Newsletter] : []),
         ...(data.roles ? [GetContactWith.Roles] : []),
       ],
     });

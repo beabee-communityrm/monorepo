@@ -303,11 +303,11 @@ class CalloutsService {
 
     if (newsletter?.optIn) {
       log.info(`Opting contact ${contact.id} into newsletter`, { newsletter });
-      await ContactsService.updateContactProfile(
+      await NewsletterService.upsertContact(
         contact,
         {
-          newsletterStatus: NewsletterStatus.Pending,
-          newsletterGroups: newsletter.groups,
+          status: NewsletterStatus.Pending,
+          groups: newsletter.groups,
         },
         { newsletterGroupChange: 'add' }
       );
@@ -374,6 +374,7 @@ class CalloutsService {
         // campaign and referrer needed?
         contact = await ContactsService.createContact(
           guest,
+          {},
           {},
           {
             source: 'CrowdNewsroom',
