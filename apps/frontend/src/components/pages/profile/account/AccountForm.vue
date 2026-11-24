@@ -15,8 +15,7 @@
       icon="i-lucide-user-round"
       :title="t('accountPage.personalDetails')"
     >
-      <LoadError v-if="failed" :retry="retry" />
-      <template v-else-if="loaded">
+      <template v-if="loaded">
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <UFormField :label="t('form.firstName')" required name="firstName">
             <UInput v-model="data.firstName" class="w-full" />
@@ -55,6 +54,8 @@
           <UInput v-model="data.vatNumber" class="w-full" disabled />
         </UFormField>
       </template>
+      <LoadError v-else-if="failed" :retry="retry" />
+      <AppFormSkeleton v-else :rows="3" />
     </AppSectionCard>
 
     <AppSectionCard
@@ -121,6 +122,7 @@
           />
         </UFormField>
       </template>
+      <AppFormSkeleton v-else :rows="3" />
     </AppSectionCard>
 
     <AppStickySaveBar v-if="dirty" form="account-form" @cancel="handleCancel" />
@@ -129,7 +131,12 @@
 
 <script lang="ts" setup>
 import { toPhoneNumber } from '@beabee/beabee-common';
-import { AppSectionCard, AppStickySaveBar, getCountryItems } from '@beabee/vue';
+import {
+  AppFormSkeleton,
+  AppSectionCard,
+  AppStickySaveBar,
+  getCountryItems,
+} from '@beabee/vue';
 
 import { computed, reactive, useTemplateRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';

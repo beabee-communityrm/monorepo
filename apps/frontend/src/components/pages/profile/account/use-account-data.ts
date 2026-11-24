@@ -10,8 +10,9 @@ import { client } from '#utils/api';
 
 export { newsletterGroupsQuery };
 
-// The account page's queries. Each tab's data decides what its form offers,
-// so the page waits for the open tab's queries before it shows.
+// The account page's queries. The page exports them as `routeQueries`, for
+// the open tab only. They're lazy, so each card shows as soon as its own data
+// arrives, and a card that fails doesn't stop the rest of the tab showing.
 
 /** The join setup content, for the delivery address opt-in */
 export const joinSetupContentQuery = queryOptions({
@@ -58,18 +59,18 @@ export const accountQueries: RouteQueries = (to) => {
   switch (to.query.tab?.toString()) {
     case 'security':
       return generalContent.value.oidcEnabled
-        ? [routeQuery(authMethodsQuery, { wait: true })]
+        ? [routeQuery(authMethodsQuery)]
         : [
-            routeQuery(contactProfileQuery('me'), { wait: true }),
-            routeQuery(contactMfaQuery('me'), { wait: true }),
+            routeQuery(contactProfileQuery('me')),
+            routeQuery(contactMfaQuery('me')),
           ];
     case 'subscriptions':
-      return [routeQuery(newsletterGroupsQuery, { wait: true })];
+      return [routeQuery(newsletterGroupsQuery)];
     default:
       return [
-        routeQuery(joinSetupContentQuery, { wait: true }),
-        routeQuery(joinContentQuery, { wait: true }),
-        routeQuery(contactProfileQuery('me'), { wait: true }),
+        routeQuery(joinSetupContentQuery),
+        routeQuery(joinContentQuery),
+        routeQuery(contactProfileQuery('me')),
       ];
   }
 };
