@@ -8,7 +8,10 @@ import {
 import axios from 'axios';
 
 import { SalesforceNewsletterConfig, config } from '#config/config';
-import { CantUpdateNewsletterContactError } from '#errors/index';
+import {
+  CantUpdateNewsletterContactError,
+  CantUpdateNewsletterGroupsError,
+} from '#errors/index';
 import {
   PROFILE_OBJECT,
   createInstance,
@@ -26,11 +29,16 @@ import {
 
 const log = mainLogger.child({ app: 'salesforce-newsletter-provider' });
 
+/** The newsletter groups, each backed by a checkbox on the profile */
+const GROUPS = [
+  { id: 'spotlight', label: 'Spotlight', field: 'Spotlight_bee__c' },
+  { id: 'updates', label: 'Updates', field: 'Receive_Updates__c' },
+];
+
 /**
  * Writes newsletter state to the contact's beabee_Profile__c record, addressed
- * by the beabee contact ID. The profile holds no newsletter fields yet, so only
- * the identity fields are written. When the contact sync provider is also
- * Salesforce it owns the record's deletion.
+ * by the beabee contact ID. Groups are checkboxes on the profile. When the
+ * contact sync provider is also Salesforce it owns the record's deletion.
  */
 export class SalesforceProvider implements NewsletterProvider {
   private readonly api;
@@ -52,7 +60,7 @@ export class SalesforceProvider implements NewsletterProvider {
         firstname: resp.data.FirstName_bee__c ?? '',
         lastname: resp.data.LastName_bee__c ?? '',
         status: NewsletterStatus.None,
-        groups: [],
+        groups: GROUPS.filter((g) => resp.data[g.field]).map((g) => g.id),
         joined: new Date(resp.data.CreatedDate),
         tags: [],
         fields: {},
@@ -74,7 +82,12 @@ export class SalesforceProvider implements NewsletterProvider {
   ): Promise<NewsletterContact> {
     log.info('Upsert contact ' + key);
     try {
-      await this.api.patch(profileUrl(key), identityFields(contact));
+      await this.api.patch(profileUrl(key), {
+        ...identityFields(contact),
+        ...groupFields(contact),
+        // The flow linking profiles to contacts only runs on this status
+        Sync_Status__c: 'Updated',
+      });
     } catch (err) {
       if (!axios.isAxiosError(err)) throw err;
       throw new CantUpdateNewsletterContactError(
@@ -83,10 +96,12 @@ export class SalesforceProvider implements NewsletterProvider {
         err.response?.data
       );
     }
+    // The upsert response carries no fields, so read the resulting groups back
+    const resp = await this.api.get(profileUrl(key));
     return {
       ...contact,
-      groups: contact.groups ?? [],
-      joined: new Date(),
+      groups: GROUPS.filter((g) => resp.data[g.field]).map((g) => g.id),
+      joined: new Date(resp.data.CreatedDate),
       tags: [],
     };
   }
@@ -128,7 +143,7 @@ export class SalesforceProvider implements NewsletterProvider {
   }
 
   async getGroups(): Promise<BaseNewsletterGroupData[]> {
-    return [];
+    return GROUPS.map(({ id, label }) => ({ id, label }));
   }
 
   private async getHealthStatus(): Promise<ApiHealthStatus> {
@@ -140,4 +155,29 @@ export class SalesforceProvider implements NewsletterProvider {
       return ApiHealthStatus.UNHEALTHY;
     }
   }
+}
+
+/**
+ * The group checkboxes an update sets. A partial change only touches the
+ * groups it names; a replace sets every group.
+ */
+function groupFields(
+  contact: UpdateNewsletterContact
+): Record<string, boolean> {
+  const groups = contact.groups;
+  if (!groups) return {};
+
+  const unknown = groups.filter((id) => !GROUPS.some((g) => g.id === id));
+  if (unknown.length > 0) {
+    throw new CantUpdateNewsletterGroupsError(
+      `Unknown newsletter groups: ${unknown.join(', ')}`
+    );
+  }
+
+  const change = contact.newsletterGroupChange ?? 'replace';
+  const touched =
+    change === 'replace' ? GROUPS : GROUPS.filter((g) => groups.includes(g.id));
+  return Object.fromEntries(
+    touched.map((g) => [g.field, change !== 'remove' && groups.includes(g.id)])
+  );
 }
