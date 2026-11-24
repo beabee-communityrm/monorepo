@@ -1,16 +1,13 @@
 import { type Ref, onBeforeUnmount, ref, watch } from 'vue';
 
+import { LOADING } from '#lib/loading';
 import { getLoadStart } from '#lib/router';
-
-/** How long a load can take before its skeleton appears, in milliseconds */
-const DELAY = 300;
-/** How long a skeleton stays once it's appeared, in milliseconds */
-const MINIMUM = 400;
 
 /**
  * Whether to show a skeleton for something that's loading. It only appears
- * once the load has taken 300 ms, so quick loads go straight to the content,
- * and then stays for at least 400 ms so it doesn't flash. A load already
+ * once the load has taken `LOADING.hold`, so quick loads go straight to the
+ * content, and then stays for at least `LOADING.skeletonMinimum` so it
+ * doesn't flash. A load already
  * under way when the component appears counts from when the loads of the
  * navigation that showed the page started.
  *
@@ -35,14 +32,14 @@ export function useDelayedSkeleton(loading: Ref<boolean>) {
         if (visible.value) return;
         const start =
           wasLoading === undefined ? getLoadStart() : performance.now();
-        const delay = DELAY - (performance.now() - start);
+        const delay = LOADING.hold - (performance.now() - start);
         // Already past it, as when the page arrived after its hold
         if (delay <= 0) show();
         else timer = setTimeout(show, delay);
       } else if (visible.value) {
         timer = setTimeout(
           () => (visible.value = false),
-          Math.max(0, MINIMUM - (performance.now() - shownAt))
+          Math.max(0, LOADING.skeletonMinimum - (performance.now() - shownAt))
         );
       }
     },

@@ -34,12 +34,8 @@ import {
   useRouter,
 } from 'vue-router';
 
+import { LOADING } from '#lib/loading';
 import { generalContentLoaded } from '#store/generalContent';
-
-/** How long a navigation can take before the bar appears, in milliseconds */
-const DELAY = 150;
-/** How long the full bar stays before fading, in milliseconds */
-const FILLED = 200;
 
 const { t } = useI18n();
 const router = useRouter();
@@ -66,9 +62,9 @@ function start() {
     // Each step covers about a tenth of what's left, so it slows towards 90%
     trickle = setInterval(
       () => (value.value += Math.ceil((90 - value.value) / 10)),
-      200
+      LOADING.barStep
     );
-  }, DELAY);
+  }, LOADING.barDelay);
 }
 
 function done() {
@@ -76,7 +72,7 @@ function done() {
   running = false;
   if (!visible.value) return;
   value.value = 100;
-  timer = setTimeout(() => (visible.value = false), FILLED);
+  timer = setTimeout(() => (visible.value = false), LOADING.barFilled);
 }
 
 // The first navigation starts before the app mounts

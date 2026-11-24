@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { handleHotUpdate, routes } from 'vue-router/auto-routes';
 
+import { LOADING } from '#lib/loading';
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
@@ -29,14 +31,11 @@ router.afterEach((to, from, failure) => {
  */
 export const getLoadStart = () => shownLoadStart;
 
-/** How long a navigation waits for held loads, in milliseconds */
-const HOLD = 300;
-
 const holds = new Set<Promise<unknown>>();
 
 /**
- * Keeps the current page up while a request runs, for up to 300 ms, so a
- * quick one arrives with the page rather than after it.
+ * Keeps the current page up while a request runs, for up to `LOADING.hold`,
+ * so a quick one arrives with the page rather than after it.
  * Returns the request.
  */
 export function holdNavigation<T>(load: Promise<T>) {
@@ -45,10 +44,10 @@ export function holdNavigation<T>(load: Promise<T>) {
   return load;
 }
 
-/** Waits for held loads, until 300 ms after they started. Runs after the
- * route queries have started. */
+/** Waits for held loads, until `LOADING.hold` after they started. Runs after
+ * the route queries have started. */
 export async function waitForHolds() {
-  const remaining = HOLD - (performance.now() - loadStart);
+  const remaining = LOADING.hold - (performance.now() - loadStart);
   if (!holds.size || remaining <= 0) return;
   await Promise.race([
     Promise.allSettled(holds),

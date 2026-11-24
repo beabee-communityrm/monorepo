@@ -24,7 +24,8 @@ export const queryClient = new QueryClient({
 /** A query a page starts on each visit, before the page shows */
 export interface RouteQuery {
   queryKey: QueryKey;
-  /** Whether the navigation waits for it, rather than for up to 300 ms */
+  /** Whether the navigation waits for it, rather than for up to
+   * `LOADING.hold` */
   wait: boolean;
   /** Fetches it unless it's fresh. Never rejects; a failure is kept in the
    * query. */
@@ -39,7 +40,8 @@ export type RouteQueries = (to: RouteLocationNormalized) => RouteQuery[];
  *
  * @param options The query, from `queryOptions()`
  * @param wait Whether the navigation waits for it. For data that decides what
- *   the page offers. Otherwise it waits for up to 300 ms, the first time.
+ *   the page offers. Otherwise it waits for up to `LOADING.hold`, the first
+ *   time.
  */
 export function routeQuery<TQueryFnData, TQueryKey extends QueryKey>(
   options: FetchQueryOptions<TQueryFnData, Error, TQueryFnData, TQueryKey>,
@@ -57,8 +59,9 @@ const hasRouteQueries = (mod: unknown): mod is { routeQueries: RouteQueries } =>
 
 /**
  * Starts the queries the matched pages export as `routeQueries`. Waits for
- * those marked to wait. Holds the navigation, for up to 300 ms, for the others
- * that have no data yet. Those with data show it while they refresh.
+ * those marked to wait. Holds the navigation, for up to `LOADING.hold`, for
+ * the others that have no data yet. Those with data show it while they
+ * refresh.
  */
 export async function prefetchRouteQueries(to: RouteLocationNormalized) {
   const waits: Promise<void>[] = [];
