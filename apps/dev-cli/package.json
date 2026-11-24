@@ -16,7 +16,7 @@
     "generate:index": "yarn start generate-index -p ./src/types ./src/actions ./src/commands --extension ts"
   },
   "dependencies": {
-    "typescript": "~6.0.3",
+    "typescript": "~7.0.2",
     "yargs": "^18.2.0"
   },
   "devDependencies": {
