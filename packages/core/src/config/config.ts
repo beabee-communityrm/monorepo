@@ -205,7 +205,6 @@ export interface SalesforceContactSyncConfig {
     authUrl: string; // BEABEE_CONTACTSYNC_SETTINGS_AUTHURL - OAuth2 token endpoint (My Domain URL + /services/oauth2/token)
     clientId: string; // BEABEE_CONTACTSYNC_SETTINGS_CLIENTID - Connected app client ID
     clientSecret: string; // BEABEE_CONTACTSYNC_SETTINGS_CLIENTSECRET - Connected app client secret
-    apiVersion: string; // BEABEE_CONTACTSYNC_SETTINGS_APIVERSION - REST API version (e.g. v60.0)
   };
 }
 
@@ -476,10 +475,6 @@ export const config = {
             authUrl: env.s('BEABEE_CONTACTSYNC_SETTINGS_AUTHURL'), // OAuth2 token endpoint
             clientId: env.s('BEABEE_CONTACTSYNC_SETTINGS_CLIENTID'), // Connected app client ID
             clientSecret: env.s('BEABEE_CONTACTSYNC_SETTINGS_CLIENTSECRET'), // Connected app client secret
-            apiVersion: env.s(
-              'BEABEE_CONTACTSYNC_SETTINGS_APIVERSION',
-              'v60.0'
-            ), // REST API version
           }
         : {},
   } as ContactSyncConfig,

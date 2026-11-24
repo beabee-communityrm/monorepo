@@ -38,7 +38,6 @@ describe('createInstance', () => {
       authUrl: `${baseUrl}/token`,
       clientId: 'client',
       clientSecret: SECRET,
-      apiVersion: 'v60.0',
     });
 
     const error = await instance.get('sobjects').catch((err) => err);
@@ -68,7 +67,6 @@ describe('createInstance', () => {
       authUrl: `${baseUrl}/token`,
       clientId: 'client',
       clientSecret: SECRET,
-      apiVersion: 'v60.0',
     });
 
     const resp = await instance.get('sobjects');
