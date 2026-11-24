@@ -94,7 +94,7 @@ import { type SetupContactData } from './join.interface';
 
 const props = defineProps<{
   setupContent: ContentJoinSetupData;
-  onSubmit?: (data: SetupContactData) => Promise<unknown> | unknown;
+  onSubmit?: (data: SetupContactData) => Promise<void> | void;
   preview?: boolean;
 }>();
 
