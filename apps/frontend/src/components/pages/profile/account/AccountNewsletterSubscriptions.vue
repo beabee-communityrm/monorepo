@@ -10,8 +10,7 @@
     :title="t('accountPage.newsletter.title')"
     :description="t('accountPage.newsletter.description')"
   >
-    <LoadError v-if="failed" :retry="retry" />
-    <template v-else-if="groups">
+    <template v-if="groups">
       <p v-if="!groups.length" class="text-muted">
         {{ t('accountPage.newsletter.noGroups') }}
       </p>
@@ -39,12 +38,14 @@
         </UButton>
       </div>
     </template>
+    <LoadError v-else-if="failed" :retry="retry" />
+    <AppFormSkeleton v-else :rows="2" />
   </AppSectionCard>
 </template>
 
 <script lang="ts" setup>
 import type { BaseNewsletterGroupData } from '@beabee/beabee-common';
-import { AppSectionCard } from '@beabee/vue';
+import { AppFormSkeleton, AppSectionCard } from '@beabee/vue';
 
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';

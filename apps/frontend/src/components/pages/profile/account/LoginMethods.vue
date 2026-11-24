@@ -98,6 +98,7 @@
       </template>
     </ul>
     <LoadError v-else-if="failed" :retry="retry" />
+    <AppFormSkeleton v-else :rows="3" />
   </AppSectionCard>
 
   <UModal
@@ -137,7 +138,12 @@ import {
   type LoginAction,
 } from '@beabee/beabee-common';
 import { UnauthorizedError } from '@beabee/client';
-import { AppModalActions, AppSectionCard, addNotification } from '@beabee/vue';
+import {
+  AppFormSkeleton,
+  AppModalActions,
+  AppSectionCard,
+  addNotification,
+} from '@beabee/vue';
 
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

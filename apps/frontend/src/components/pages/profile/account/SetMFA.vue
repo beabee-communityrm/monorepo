@@ -18,8 +18,7 @@
     :title="t('accountPage.mfa.title-nuxt')"
     :description="t('accountPage.mfa.description')"
   >
-    <LoadError v-if="failed" :retry="retry" />
-    <div v-else-if="loaded" class="flex items-start justify-between gap-4">
+    <div v-if="loaded" class="flex items-start justify-between gap-4">
       <div class="space-y-1">
         <p class="font-medium">
           {{
@@ -42,6 +41,8 @@
         @update:model-value="onSwitchToggle"
       />
     </div>
+    <LoadError v-else-if="failed" :retry="retry" />
+    <AppFormSkeleton v-else :rows="1" />
   </AppSectionCard>
 
   <UModal
@@ -211,6 +212,7 @@ import { UnauthorizedError } from '@beabee/client';
 import {
   AppCodeInput,
   AppCopyIconButton,
+  AppFormSkeleton,
   AppModalActions,
   AppQRCode,
   AppSectionCard,
