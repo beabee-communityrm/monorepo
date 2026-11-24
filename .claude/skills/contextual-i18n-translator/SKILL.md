@@ -72,6 +72,7 @@ The app already has translations. New strings must match them so the UI feels co
 6. Also copy the existing style per locale:
    - Formal or informal "you" (German Sie/du, French vous/tu, Spanish usted/tú, Dutch u/je, etc.). Check several strings to be sure.
    - Capitalization (sentence case vs. title case), punctuation (ellipsis "…" vs "...", quote marks like « » or „ "), and whether buttons end with periods.
+   - Number of plural forms: ru and uk carry 4 (0 | 1 | 2-4 | 5+).
 
 If a term is translated two different ways in the same locale, don't pick silently. Use the more common one and mention the inconsistency to the user.
 
