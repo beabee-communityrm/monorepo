@@ -3,7 +3,7 @@
 The test database is seeded in two passes (see `.github/actions/test-setup/action.yml`):
 
 1. **`test-db-default.sql`** — static data (contacts, payments, callouts, …)
-2. **`test-db-custom.sql`** — environment-specific data (options, emails, content); placeholder values `__stripeWebhookSecret__` and `__stripeProductId__` are substituted at import time
+2. **`test-db-custom.sql`** — environment-specific data (options, emails, content); placeholder values are substituted at import time: `__stripeWebhookSecret__` with the signing secret of the `stripe_cli` listener, `__stripeProductId__` from a CI secret
 
 Both files are consumed by `apps/browser-tests` (Playwright) and `apps/e2e-api-tests` (Vitest API tests).
 
@@ -91,7 +91,7 @@ Two callouts are seeded
 | `show-one-time-donation`           | `"true"`                                          |
 | `switch-feature-one-time-donation` | `"true"`                                          |
 | `stripe-membership-product-id`     | `__stripeProductId__` injected from CI secret     |
-| `stripe-webhook-secret`            | `__stripeWebhookSecret__` injected from CI secret |
+| `stripe-webhook-secret`            | `__stripeWebhookSecret__` printed by `stripe_cli` |
 | `support-email`                    | `"support@beabee.io"`                             |
 
 ### Requirements — Options

@@ -2,9 +2,6 @@ name: "Test setup"
 description: "Set test environment up"
 
 inputs:
-  stripe_webhook_secret:
-    description: "Stripe webhook secret"
-    required: true
   stripe_membership_product_id:
     description: "Stripe membership product ID"
     required: true
@@ -29,12 +26,15 @@ runs:
     - name: Import test data
       shell: bash
       run: |
+        stripe_webhook_secret=$(docker compose -f docker-compose.test.yml run --rm --no-deps stripe_cli listen --api-key "$BEABEE_STRIPE_SECRETKEY" --print-secret)
+        echo "::add-mask::$stripe_webhook_secret"
+
         cat ./packages/test-utils/fixtures/test-db-default.sql \
           | docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database import
 
         cat ./packages/test-utils/fixtures/test-db-custom.sql \
           | sed \
-              -e "s|__stripeWebhookSecret__|${{ inputs.stripe_webhook_secret }}|" \
+              -e "s|__stripeWebhookSecret__|$stripe_webhook_secret|" \
               -e "s|__stripeProductId__|${{ inputs.stripe_membership_product_id }}|" \
           | docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database import
 
