@@ -123,27 +123,6 @@ For all TypeScript, JavaScript, and Vue files:
 
 **CNR mode:** CNR instances always get `hideContribution: true` at setup (policy, not code) → `!hideContribution` alone hides contribution UI
 
-### New Vue Component
-
-Templates: `packages/vue/src/components/template/` (AppTemplate.vue, index.ts)
-
-**req:** App-independent (no API deps) | Create `.story.vue` + `.story.md` | Follow patterns in `packages/vue/src/components` | Assign to semantically appropriate dir (create if needed) | Reference existing docs, don't duplicate | Additional types in `packages/vue/src/types`
-
-### Story Documentation (`.story.md`)
-
-Template: `packages/vue/src/components/template/AppTemplate.story.md`
-
-**Rules:** Minimal docs only (beyond source code) | No duplication of props/events/examples (already in interfaces/defineEmits/.story.vue) | Focus on purpose, use cases, non-obvious implementation notes
-
-### Story Vue Files
-
-Ref: `packages/vue/src/components/template/AppTemplate.story.vue`
-
-- Analyze component + current usage in `apps/frontend` for context
-- Create `.story.vue` + `.story.md`
-- Tailwind config: `packages/vue/tailwind.config.js`
-- If component can't be used standalone, don't create story
-
 ## Git Commit Practices
 
 **Format:** `<type>[scope]: <description>` — feat|fix|docs|refactor|test|chore
@@ -163,31 +142,6 @@ yarn format && yarn check  # Both MUST exit 0
 
 **Checklist:** Format passes | Type check passes | Lint passes | Conventional format | Atomic + focused | No debug code/console.logs
 
-## Task: Migrate Component to Vue Package
-
-Migrate from `apps/frontend` → `packages/vue/src/components`.
-
-**Prereq:** Identify target | Analyze current usage (context, props, interactions)
-
-**Block:** Components using `@utils/api`, `client.ts`, API imports
-
-**Keep:** `useI18n()` / `t()` translations | **Remove:** Direct store access (pass as props)
-
-**Steps:** Follow new-vue-component rules + git commit practices | Clean refactor with TSDoc | Semantic HTML + ARIA | Keyboard nav | Migrate related components/utils/interfaces/types | For multiple components, apply migration iteratively
-
-**Completion:** Update `apps/frontend` imports to `@beabee/vue` | Create wrappers for repeated prop combos | Reuse existing import declarations | Remove translation prop drilling | Run `yarn generate:index && yarn format && yarn build && yarn check` | Verify stories exist | Suggest pages/routes to test | Provide commit msg + PR description
-
 ## Task: Scaffold Vanilla Package
 
 Use `packages/template-vanilla` conventions. Read its `README.md` and follow instructions. The template ships source TS with no build; not suitable for packages that need a published JS artifact.
-
-## Prompt Compression
-
-When writing/editing AGENTS.md or agent context files:
-- Pipe-delimited format for indexes/structured refs
-- Single-line directives, not multi-paragraph explanations
-- Strip explanatory prose — keep only actionable content
-- Abbreviated keys: req|opt|str|int|bool|len|min|max|def
-- Flatten nested hierarchies with brace expansion + path prefixes
-- Target 70-80% token reduction preserving all actionable info
-- Keep non-obvious code examples | Never compress error messages or edge case docs
