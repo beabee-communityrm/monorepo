@@ -1,3 +1,4 @@
+import { runTransaction } from '@beabee/core/database';
 import { runApp } from '@beabee/core/server';
 
 import { EVENT_BACKFILL_CATEGORIES } from '../../constants/event.js';
@@ -5,6 +6,7 @@ import type {
   BackfillEventsArgs,
   EventBackfillCategory,
   EventBackfiller,
+  EventDuplicateRule,
 } from '../../types/index.js';
 import { calloutBackfills } from './backfill-callouts.js';
 import { contactBackfills } from './backfill-contacts.js';
@@ -30,9 +32,14 @@ export const backfillEvents = async ({
     category === 'all' ? EVENT_BACKFILL_CATEGORIES : [category];
 
   await runApp(async () => {
-    const backfilled = [];
-    for (const rule of categories.flatMap((c) => backfillers[c])) {
-      backfilled.push({ rule, ids: await rule.backfill(dryRun) });
+    const backfilled: { rule: EventDuplicateRule; ids: string[] }[] = [];
+    // Use a common transaction per event-category
+    for (const c of categories) {
+      await runTransaction(async (em) => {
+        for (const rule of backfillers[c]) {
+          backfilled.push({ rule, ids: await rule.backfill(dryRun, em) });
+        }
+      });
     }
     // Nothing is inserted on a dry run, so there is nothing to clean up
     if (!dryRun) {

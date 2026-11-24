@@ -1,5 +1,4 @@
 import { ActivityEventType, PaymentStatus } from '@beabee/beabee-common';
-import { dataSource } from '@beabee/core/database';
 import { stripe } from '@beabee/core/lib/stripe';
 
 import chalk from 'chalk';
@@ -41,12 +40,12 @@ const insertPaymentSuccessful = createBackfill({
   sameEvent: `${sameTarget} AND y.metadata->>'paymentId' = x.metadata->>'paymentId'`,
 });
 
-// Remove all successful payment events, then backfill
+// Remove all successful payment events, then backfill (both in the same transaction)
 const refillPaymentSuccessful: EventBackfiller = {
   ...insertPaymentSuccessful,
-  backfill: async (dryRun) => {
+  backfill: async (dryRun, em) => {
     if (!dryRun) {
-      const [, deleted] = await dataSource.query(
+      const [, deleted] = await em.query(
         `DELETE FROM activity_event WHERE "eventType" = $1`,
         [insertPaymentSuccessful.eventType]
       );
@@ -54,7 +53,7 @@ const refillPaymentSuccessful: EventBackfiller = {
         `${chalk.green('✓')} Deleted ${deleted} ${insertPaymentSuccessful.eventType} event(s)`
       );
     }
-    return insertPaymentSuccessful.backfill(dryRun);
+    return insertPaymentSuccessful.backfill(dryRun, em);
   },
 };
 
@@ -80,7 +79,7 @@ const backfillPaymentFailed: EventBackfiller = {
   eventType: ActivityEventType.ContactPaymentFailed,
   isBackfilled: noActor,
   sameEvent: `${sameTarget} AND y.metadata->>'paymentId' = x.metadata->>'paymentId'`,
-  backfill: async (dryRun) => {
+  backfill: async (dryRun, em) => {
     const eventType = ActivityEventType.ContactPaymentFailed;
 
     const invoices = await stripe.invoices
@@ -100,7 +99,7 @@ const backfillPaymentFailed: EventBackfiller = {
     ];
 
     if (dryRun) {
-      const [{ count }] = await dataSource.query(
+      const [{ count }] = await em.query(
         `SELECT COUNT(*)::int AS count ${noFailedEvent}`,
         params
       );
@@ -110,7 +109,7 @@ const backfillPaymentFailed: EventBackfiller = {
       return [];
     }
 
-    const inserted: { id: string }[] = await dataSource.query(
+    const inserted: { id: string }[] = await em.query(
       `INSERT INTO activity_event ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata")
        SELECT p."contactId", NULL, NULL, i."uncollectibleAt", $1::varchar,
               jsonb_build_object('paymentId', p.id)
