@@ -9,6 +9,7 @@ import { waitForBackend } from '#utils/api/client';
 
 import App from '../App.vue';
 import { init as initErrorHandler } from './appsignal';
+import { connectDevPanel } from './dev-panel';
 import { i18n } from './i18n';
 import { prefetchRouteQueries, queryClient } from './query';
 import { installRouteGuard } from './route-guard';
@@ -37,6 +38,7 @@ export async function startMainApp() {
   initErrorHandler(app);
 
   installRouteGuard(router);
+  connectDevPanel({ app, router, queryClient });
   router.beforeResolve(prefetchRouteQueries);
   // After the route queries have started
   router.beforeResolve(waitForHolds);

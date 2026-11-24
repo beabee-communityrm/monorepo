@@ -8,6 +8,7 @@ import {
 import { watch } from 'vue';
 import type { RouteLocationNormalized } from 'vue-router';
 
+import { markStartingQuery } from '#lib/dev-panel';
 import { LOADING } from '#lib/loading';
 import { holdNavigation } from '#lib/router';
 import { currentUser } from '#store/currentUser';
@@ -92,7 +93,9 @@ export async function prefetchRouteQueries(to: RouteLocationNormalized) {
 
     for (const query of mod.routeQueries(to)) {
       const cached = queryClient.getQueryData(query.queryKey) !== undefined;
+      markStartingQuery(query.queryKey);
       const load = query.prefetch();
+      markStartingQuery();
       if (query.wait) waits.push(load);
       else if (!cached) holdNavigation(load);
     }

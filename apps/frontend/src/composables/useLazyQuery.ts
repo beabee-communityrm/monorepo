@@ -6,6 +6,7 @@ import {
 import { computed, ref, watch } from 'vue';
 
 import { useDelayedSkeleton } from '#composables/useDelayedSkeleton';
+import { trackQueryReader } from '#lib/dev-panel';
 
 /**
  * A block's view of a route query, for a block that loads on its own. What
@@ -22,9 +23,10 @@ export function useLazyQuery<TQueryFnData, TQueryKey extends QueryKey>(
     TQueryFnData,
     TQueryFnData,
     TQueryKey
-  >
+  > & { queryKey: TQueryKey }
 ) {
   const query = useQuery(options);
+  trackQueryReader(options.queryKey);
 
   /** Whether the last finished load failed. A query with no data goes back to
    * pending when it loads again, so this keeps the error up until it's done. */

@@ -53,6 +53,7 @@
   "devDependencies": {
     "@babel/types": "^7.29.0",
     "@beabee/dev-cli": "workspace:^",
+    "@beabee/dev-panel": "workspace:^",
     "@beabee/prettier-config": "workspace:^",
     "@beabee/tsconfig": "workspace:^",
     "@eslint/js": "^9.39.4",

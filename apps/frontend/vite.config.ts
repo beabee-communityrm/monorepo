@@ -1,3 +1,4 @@
+import { devPanel } from '@beabee/dev-panel/vite';
 import { nuxtUiConfig } from '@beabee/vue/lib/nuxt-ui.config';
 
 import vueI18n from '@intlify/unplugin-vue-i18n/vite';
@@ -19,6 +20,12 @@ export default ({ command, mode }) => {
   const env = loadEnv(mode, resolve(process.cwd(), '../../'), '');
 
   const plugins = [
+    // Before Nuxt UI's Tailwind, so it also generates the panel's classes
+    devPanel({
+      enabled: env.BEABEE_DEV_PANEL === 'true',
+      apiPath: '/api/1.0/',
+      stylesheet: resolve(__dirname, 'src/index.css'),
+    }),
     ui(nuxtUiConfig),
     // VueRouter must be placed before Vue plugin
     VueRouter({

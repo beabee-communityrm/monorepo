@@ -22,6 +22,25 @@ export default typescriptEslint.config(
     rules: {
       'vue/no-v-html': 'off',
       'no-console': 'warn',
+      // The dev panel only reaches the app through its hooks
+      '@typescript-eslint/no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@beabee/dev-panel',
+              allowTypeImports: true,
+              message: 'Only types can be imported from the dev panel.',
+            },
+          ],
+          patterns: [
+            {
+              group: ['@beabee/dev-panel/*'],
+              message: 'The dev panel is added by its Vite plugin.',
+            },
+          ],
+        },
+      ],
     },
   },
   {
