@@ -62,7 +62,9 @@ export class SalesforceProvider implements NewsletterProvider {
         email: resp.data.EMail_bee__c,
         firstname: resp.data.FirstName_bee__c ?? '',
         lastname: resp.data.LastName_bee__c ?? '',
-        status: NewsletterStatus.None,
+        status: resp.data.DOIDate_bee__c
+          ? NewsletterStatus.Subscribed
+          : NewsletterStatus.None,
         groups: GROUPS.filter((g) => resp.data[g.field]).map((g) => g.id),
         joined: new Date(resp.data.CreatedDate),
         tags: [],
