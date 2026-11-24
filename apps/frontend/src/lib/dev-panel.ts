@@ -2,7 +2,7 @@
  * The frontend's side of the dev panel's interface. Everything here does
  * nothing unless the panel is on, and production builds compile it away.
  */
-import type { DevPanelHooks } from '@beabee/dev-panel';
+import type { DevPanelHooks, DevQueryHeader } from '@beabee/dev-panel';
 
 import { type QueryKey, hashKey } from '@tanstack/vue-query';
 import { getCurrentInstance, ref } from 'vue';
@@ -25,8 +25,22 @@ export function trackQueryReader(queryKey: QueryKey) {
   if (devPanel && file) devPanel.readQuery(hashKey(queryKey), file);
 }
 
-/** Tells the dev panel the requests made from now are a query's, until it's
- * called again without one */
+/** Waits for the dev panel to see requests, if it's on */
+export const devPanelReady = () => panel()?.ready;
+
+let clientHeaders: Record<string, string> | undefined;
+
+/** Lets the dev panel tag the API client's requests, if it's on. The client
+ * reads its headers object on each request. */
+export function tagClientRequests(headers: Record<string, string>) {
+  if (panel()) clientHeaders = headers;
+}
+
+/** Tags the requests made from now with a query, for the dev panel, until
+ * it's called again without one */
 export function markStartingQuery(queryKey?: QueryKey) {
-  panel()?.startingQuery(queryKey && hashKey(queryKey));
+  if (!clientHeaders) return;
+  const header: DevQueryHeader = 'X-Beabee-Dev-Query';
+  if (queryKey) clientHeaders[header] = hashKey(queryKey);
+  else delete clientHeaders[header];
 }
