@@ -158,7 +158,14 @@ export async function startWorker(apiPath: string) {
     http.all(`${apiPath}*`, async ({ request }) => {
       const url = new URL(request.url);
       const path = url.pathname.slice(apiPath.length).replace(/\/+$/, '');
-      if (path === 'health') return passthrough();
+      // Only the API client's requests, which it marks, not images and other
+      // files the page loads from the API
+      if (
+        path === 'health' ||
+        request.headers.get('X-Requested-With') !== 'XMLHttpRequest'
+      ) {
+        return passthrough();
+      }
 
       const key = `${request.method} /${path}${url.search}`;
       const query = request.headers.get(QUERY_HEADER);
