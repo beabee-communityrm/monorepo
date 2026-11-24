@@ -550,7 +550,7 @@ watch(
 );
 
 /** Watch TOTP identity changes */
-watch(totpIdentity, onTotpIdentityChanged, { deep: true });
+watch(totpIdentity, onTotpIdentityChanged, { deep: true, immediate: true });
 
 /** Hide the invalid-code error as soon as the user edits the token again */
 watch(disableToken, () => {
