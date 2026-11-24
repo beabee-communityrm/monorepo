@@ -1,6 +1,8 @@
 import { runTransaction } from '@beabee/core/database';
 import { runApp } from '@beabee/core/server';
 
+import chalk from 'chalk';
+
 import { EVENT_BACKFILL_CATEGORIES } from '../../constants/event.js';
 import type {
   BackfillEventsArgs,
@@ -33,13 +35,26 @@ export const backfillEvents = async ({
 
   await runApp(async () => {
     const backfilled: { rule: EventDuplicateRule; ids: string[] }[] = [];
-    // Use a common transaction per event-category
+    // Use a common transaction per event-category. A failed category is rolled
+    // back and skipped, the others still run
     for (const c of categories) {
-      await runTransaction(async (em) => {
-        for (const rule of backfillers[c]) {
-          backfilled.push({ rule, ids: await rule.backfill(dryRun, em) });
-        }
-      });
+      try {
+        const results = await runTransaction(async (em) => {
+          const categoryResults = [];
+          for (const rule of backfillers[c]) {
+            categoryResults.push({
+              rule,
+              ids: await rule.backfill(dryRun, em),
+            });
+          }
+          return categoryResults;
+        });
+        backfilled.push(...results);
+      } catch (err) {
+        console.log(
+          `${chalk.red('✗')} Failed ${c} backfill, no ${c} events were added: ${err}`
+        );
+      }
     }
     // Nothing is inserted on a dry run, so there is nothing to clean up
     if (!dryRun) {
