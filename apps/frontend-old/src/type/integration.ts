@@ -1,5 +1,6 @@
 import type {
   MailchimpNewsletterIntegrationDataWith,
+  SalesforceNewsletterIntegrationDataWith,
   TestNewsletterIntegrationDataWith,
 } from '@beabee/beabee-common';
 import { ApiHealthStatus } from '@beabee/beabee-common';
@@ -27,6 +28,12 @@ export interface MailchimpIntegration
     IntegrationDisplayProps,
     MailchimpNewsletterIntegrationDataWith<'health'> {}
 
+/** Salesforce provider, active with full audience/group data */
+export interface SalesforceIntegration
+  extends
+    IntegrationDisplayProps,
+    SalesforceNewsletterIntegrationDataWith<'health'> {}
+
 /** Test provider, always healthy and has audience/group data */
 export interface TestProviderIntegration
   extends
@@ -36,4 +43,5 @@ export interface TestProviderIntegration
 export type Integration =
   | DisabledIntegration
   | MailchimpIntegration
+  | SalesforceIntegration
   | TestProviderIntegration;

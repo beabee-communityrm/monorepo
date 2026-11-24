@@ -93,6 +93,22 @@ export interface MailchimpNewsletterConfig {
 }
 
 /**
+ * Salesforce newsletter provider configuration
+ * Used when BEABEE_NEWSLETTER_PROVIDER=salesforce: newsletter state is written
+ * to the contact's beabee_Profile__c record, the same record the Salesforce
+ * contact sync provider mirrors contacts to
+ */
+export interface SalesforceNewsletterConfig {
+  provider: 'salesforce';
+  settings: {
+    authUrl: string; // BEABEE_NEWSLETTER_SETTINGS_AUTHURL - OAuth2 token endpoint (My Domain URL + /services/oauth2/token)
+    clientId: string; // BEABEE_NEWSLETTER_SETTINGS_CLIENTID - Connected app client ID
+    clientSecret: string; // BEABEE_NEWSLETTER_SETTINGS_CLIENTSECRET - Connected app client secret
+    webhookSecret: string; // BEABEE_NEWSLETTER_SETTINGS_WEBHOOKSECRET - Still available but unused
+  };
+}
+
+/**
  * Empty newsletter provider (when newsletter functionality is disabled)
  * Used when BEABEE_NEWSLETTER_PROVIDER=none (default)
  */
@@ -117,6 +133,7 @@ interface TestNewsletterConfig {
 // Union type for newsletter configuration
 type NewsletterConfig =
   | MailchimpNewsletterConfig
+  | SalesforceNewsletterConfig
   | NoneNewsletterConfig
   | TestNewsletterConfig;
 
@@ -124,7 +141,7 @@ type NewsletterConfig =
 // Defaults to "none" if not specified
 const newsletterProvider = env.e(
   'BEABEE_NEWSLETTER_PROVIDER',
-  ['mailchimp', 'none', 'test'] as const,
+  ['mailchimp', 'salesforce', 'none', 'test'] as const,
   'none'
 );
 
@@ -187,7 +204,6 @@ export interface SalesforceContactSyncConfig {
     authUrl: string; // BEABEE_CONTACTSYNC_SETTINGS_AUTHURL - OAuth2 token endpoint (My Domain URL + /services/oauth2/token)
     clientId: string; // BEABEE_CONTACTSYNC_SETTINGS_CLIENTID - Connected app client ID
     clientSecret: string; // BEABEE_CONTACTSYNC_SETTINGS_CLIENTSECRET - Connected app client secret
-    apiVersion: string; // BEABEE_CONTACTSYNC_SETTINGS_APIVERSION - REST API version (e.g. v60.0)
   };
 }
 
@@ -415,7 +431,13 @@ export const config = {
             datacenter: env.s('BEABEE_NEWSLETTER_SETTINGS_DATACENTER'), // Mailchimp datacenter
             listId: env.s('BEABEE_NEWSLETTER_SETTINGS_LISTID'), // Mailchimp list/audience ID
           }
-        : null),
+        : newsletterProvider === 'salesforce'
+          ? {
+              authUrl: env.s('BEABEE_NEWSLETTER_SETTINGS_AUTHURL'), // OAuth2 token endpoint
+              clientId: env.s('BEABEE_NEWSLETTER_SETTINGS_CLIENTID'), // Connected app client ID
+              clientSecret: env.s('BEABEE_NEWSLETTER_SETTINGS_CLIENTSECRET'), // Connected app client secret
+            }
+          : null),
     },
   } as NewsletterConfig,
 
@@ -448,10 +470,6 @@ export const config = {
             authUrl: env.s('BEABEE_CONTACTSYNC_SETTINGS_AUTHURL'), // OAuth2 token endpoint
             clientId: env.s('BEABEE_CONTACTSYNC_SETTINGS_CLIENTID'), // Connected app client ID
             clientSecret: env.s('BEABEE_CONTACTSYNC_SETTINGS_CLIENTSECRET'), // Connected app client secret
-            apiVersion: env.s(
-              'BEABEE_CONTACTSYNC_SETTINGS_APIVERSION',
-              'v60.0'
-            ), // REST API version
           }
         : {},
   } as ContactSyncConfig,

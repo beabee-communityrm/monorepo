@@ -7,7 +7,7 @@ vi.mock('#config/config', () => {
   return { default: config, config };
 });
 
-const { createInstance } = await import('./salesforce');
+const { createInstance, identityFields } = await import('./salesforce');
 
 const SECRET = 'very-secret-client-secret';
 
@@ -38,7 +38,6 @@ describe('createInstance', () => {
       authUrl: `${baseUrl}/token`,
       clientId: 'client',
       clientSecret: SECRET,
-      apiVersion: 'v60.0',
     });
 
     const error = await instance.get('sobjects').catch((err) => err);
@@ -68,7 +67,6 @@ describe('createInstance', () => {
       authUrl: `${baseUrl}/token`,
       clientId: 'client',
       clientSecret: SECRET,
-      apiVersion: 'v60.0',
     });
 
     const resp = await instance.get('sobjects');
@@ -80,5 +78,28 @@ describe('createInstance', () => {
       '/token',
       '/services/data/v60.0/sobjects',
     ]);
+  });
+});
+
+describe('identityFields', () => {
+  const contact = {
+    email: 'ada@example.com',
+    firstname: 'Ada',
+    lastname: 'L'.repeat(60),
+  };
+
+  it('cuts values to the field lengths', () => {
+    expect(identityFields(contact)).toEqual({
+      Name: ('Ada ' + 'L'.repeat(60)).slice(0, 80),
+      EMail_bee__c: 'ada@example.com',
+      FirstName_bee__c: 'Ada',
+      LastName_bee__c: 'L'.repeat(50),
+    });
+  });
+
+  it('falls back to the email as name', () => {
+    expect(
+      identityFields({ ...contact, firstname: '', lastname: '' }).Name
+    ).toBe('ada@example.com');
   });
 });

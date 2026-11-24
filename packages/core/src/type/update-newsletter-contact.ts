@@ -18,6 +18,12 @@ export interface UpdateNewsletterContact {
    * set. See `NewsletterGroupChange` for what each option does.
    */
   newsletterGroupChange?: NewsletterGroupChange | undefined;
+  /**
+   * The contact's status and groups in beabee before this update. Only a
+   * provider that beabee alone writes to can rely on it; one whose state also
+   * changes on the provider's side must read that state back instead.
+   */
+  previous?: { status: NewsletterStatus; groups: string[] } | undefined;
   fields: Record<string, string>;
   isActiveMember: boolean;
   isActiveUser: boolean;
