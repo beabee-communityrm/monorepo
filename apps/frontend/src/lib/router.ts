@@ -12,20 +12,22 @@ const router = createRouter({
   },
 });
 
-let navigationStart = 0;
-let shownNavigationStart = 0;
-router.beforeEach(() => {
-  navigationStart = performance.now();
+// A navigation's loads start once its guards have run and its page's code has
+// loaded, so neither uses up the time the page waits for its data
+let loadStart = 0;
+let shownLoadStart = 0;
+router.beforeResolve(() => {
+  loadStart = performance.now();
 });
 router.afterEach((to, from, failure) => {
-  if (!failure) shownNavigationStart = navigationStart;
+  if (!failure) shownLoadStart = loadStart;
 });
 
 /**
- * When the navigation that showed the current page started, as a
+ * When the loads of the navigation that showed the current page started, as a
  * `performance.now()` time. A navigation still under way doesn't count.
  */
-export const getNavigationStart = () => shownNavigationStart;
+export const getLoadStart = () => shownLoadStart;
 
 /** How long a navigation waits for held loads, in milliseconds */
 const HOLD = 300;
@@ -33,8 +35,8 @@ const HOLD = 300;
 const holds = new Set<Promise<unknown>>();
 
 /**
- * Keeps the current page up while a request runs, for up to 300 ms of the
- * navigation, so a quick one arrives with the page rather than after it.
+ * Keeps the current page up while a request runs, for up to 300 ms, so a
+ * quick one arrives with the page rather than after it.
  * Returns the request.
  */
 export function holdNavigation<T>(load: Promise<T>) {
@@ -43,10 +45,10 @@ export function holdNavigation<T>(load: Promise<T>) {
   return load;
 }
 
-/** Waits for held loads, until 300 ms into the navigation. Runs after the
+/** Waits for held loads, until 300 ms after they started. Runs after the
  * route queries have started. */
 export async function waitForHolds() {
-  const remaining = HOLD - (performance.now() - navigationStart);
+  const remaining = HOLD - (performance.now() - loadStart);
   if (!holds.size || remaining <= 0) return;
   await Promise.race([
     Promise.allSettled(holds),
