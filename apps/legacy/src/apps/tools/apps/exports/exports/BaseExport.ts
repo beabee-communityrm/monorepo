@@ -5,8 +5,7 @@ import { ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 import { Param } from '#core/utils/params';
 
 export type ExportResult =
-  | Record<string, unknown>[]
-  | { fields: string[]; data: unknown[][] };
+  Record<string, unknown>[] | { fields: string[]; data: unknown[][] };
 
 export default abstract class BaseExport<T extends ObjectLiteral> {
   abstract readonly exportName: string;

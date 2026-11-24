@@ -19,5 +19,4 @@ export interface PaymentFlowParamsStripe {
 }
 
 export type PaymentFlowParams =
-  | PaymentFlowParamsGoCardless
-  | PaymentFlowParamsStripe;
+  PaymentFlowParamsGoCardless | PaymentFlowParamsStripe;

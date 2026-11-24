@@ -353,8 +353,7 @@ const newResponseAddress = computed(() => {
   if (addressProp && newResponseAnswers.value) {
     const [slideId, answerKey] = addressProp.split('.');
     return newResponseAnswers.value[slideId]?.[answerKey] as
-      | CalloutResponseAnswerAddress
-      | undefined;
+      CalloutResponseAnswerAddress | undefined;
   }
   return undefined;
 });

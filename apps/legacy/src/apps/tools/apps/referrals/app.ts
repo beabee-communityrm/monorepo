@@ -62,10 +62,7 @@ interface DeleteGiftSchema {
 }
 
 type UpdateSchema =
-  | UpdateGiftSchema
-  | UpdateOptionsSchema
-  | UpdateStockSchema
-  | DeleteGiftSchema;
+  UpdateGiftSchema | UpdateOptionsSchema | UpdateStockSchema | DeleteGiftSchema;
 
 app.post(
   '/gifts/:name',

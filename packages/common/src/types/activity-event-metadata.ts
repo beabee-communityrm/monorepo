@@ -18,8 +18,7 @@ export interface ActivityEventMetadataMap {
   [ActivityEventType.ContactCreated]: ContactOriginData;
   // Backfilled events only carry the subscription ID
   [ActivityEventType.ContactContributionStarted]:
-    | ContributionUpdateData
-    | Pick<ContributionUpdateData, 'subscriptionId'>;
+    ContributionUpdateData | Pick<ContributionUpdateData, 'subscriptionId'>;
   [ActivityEventType.ContactContributionUpdated]: ContributionUpdateData | null;
   [ActivityEventType.ContactContributionCancelled]: {
     subscriptionId: string | null;

@@ -24,6 +24,6 @@
     "@beabee/tsconfig": "workspace:^",
     "@types/node": "^26.6.6",
     "@types/yargs": "^17.0.35",
-    "prettier": "^3.8.3"
+    "prettier": "^3.9.10"
   }
 }

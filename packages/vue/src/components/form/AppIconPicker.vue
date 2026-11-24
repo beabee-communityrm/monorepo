@@ -40,11 +40,7 @@ import AppSearchInput from './AppSearchInput.vue';
 
 /** Font Awesome icon set style (prefix: fas, far, fal, fad, fab). */
 export type AppIconPickerIconStyle =
-  | 'solid'
-  | 'regular'
-  | 'light'
-  | 'duotone'
-  | 'brands';
+  'solid' | 'regular' | 'light' | 'duotone' | 'brands';
 
 export interface AppIconPickerProps {
   id: string;

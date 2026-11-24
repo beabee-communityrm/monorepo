@@ -27,7 +27,4 @@ interface AuthInfoInternal {
 }
 
 export type AuthInfo =
-  | AuthInfoNone
-  | AuthInfoContact
-  | AuthInfoApiKey
-  | AuthInfoInternal;
+  AuthInfoNone | AuthInfoContact | AuthInfoApiKey | AuthInfoInternal;

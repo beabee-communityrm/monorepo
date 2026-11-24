@@ -134,9 +134,7 @@ type ContentValueReadOnly = [type: 'readonly', getter: () => unknown];
 type ContentValueData = [type: 'data', def: unknown];
 
 type ContentValue =
-  | ContentValueOption
-  | ContentValueReadOnly
-  | ContentValueData;
+  ContentValueOption | ContentValueReadOnly | ContentValueData;
 
 // Just here for type checking
 function withValue<Id extends ContentId>(

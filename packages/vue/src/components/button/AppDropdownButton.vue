@@ -62,10 +62,7 @@ import AppButton from './AppButton.vue';
 
 // Define the allowed variants for the dropdown button
 export type DropdownButtonVariant =
-  | 'primaryOutlined'
-  | 'linkOutlined'
-  | 'dangerOutlined'
-  | 'greyOutlined';
+  'primaryOutlined' | 'linkOutlined' | 'dangerOutlined' | 'greyOutlined';
 
 /**
  * Props for the AppDropdownButton component

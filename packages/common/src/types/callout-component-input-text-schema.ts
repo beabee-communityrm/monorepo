@@ -5,5 +5,4 @@ import type {
 
 /** Any callout input text component schema */
 export type CalloutComponentInputTextSchema =
-  | CalloutComponentInputTextAreaSchema
-  | CalloutComponentInputTextFieldSchema;
+  CalloutComponentInputTextAreaSchema | CalloutComponentInputTextFieldSchema;

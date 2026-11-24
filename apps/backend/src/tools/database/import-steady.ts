@@ -296,8 +296,7 @@ async function loadRows(): Promise<SteadyRow[]> {
             plan_monthly_amount_cents: parseInt(row.plan_monthly_amount_cents),
             gifted: row.gifted === 'true',
             subscription_period: row.subscription_period as
-              | 'annual'
-              | 'monthly',
+              'annual' | 'monthly',
           });
         } else {
           console.error('Invalid row', row);

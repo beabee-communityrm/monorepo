@@ -152,13 +152,11 @@ export class StripeProvider extends PaymentProvider {
         : undefined;
     } catch (err) {
       // 404s can happen on dev as we don't use real mandate IDs
-      if (
-        !(
-          config.dev &&
-          err instanceof Stripe.errors.StripeInvalidRequestError &&
-          err.statusCode === 404
-        )
-      ) {
+      if (!(
+        config.dev &&
+        err instanceof Stripe.errors.StripeInvalidRequestError &&
+        err.statusCode === 404
+      )) {
         throw err;
       }
     }
