@@ -25,6 +25,25 @@ export default typescriptEslint.config(
     },
   },
   {
+    // Components read their queries through their page's file in
+    // src/route-queries, which starts every query it lists
+    files: ['src/components/**/*.vue'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['#queries/*'],
+              message:
+                "Import queries through your page's file in src/route-queries.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     files: ['src/pages/**/*.vue'],
     rules: {
       'vue/multi-word-component-names': 'off',
