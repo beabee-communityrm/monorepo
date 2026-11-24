@@ -95,8 +95,8 @@ export function calloutResponsesQuery(route: RouteLocationNormalizedLoaded) {
 /**
  * The route queries for the details, respond and thanks pages, which each
  * export them. The details and respond pages wait for the responses, as they
- * decide what those pages offer. The thanks page waits up to 300 ms, then
- * shows without them and fills in when they arrive.
+ * decide what those pages offer. The thanks page waits up to `LOADING.hold`,
+ * then shows without them and fills in when they arrive.
  */
 export const calloutResponsesRouteQueries: RouteQueries = (to) => [
   routeQuery(calloutResponsesQuery(to), {
