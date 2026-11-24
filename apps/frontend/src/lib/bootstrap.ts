@@ -2,6 +2,7 @@ import { AppStatusPage } from '@beabee/vue';
 import { icons } from '@beabee/vue/plugins/icons';
 
 import ui from '@nuxt/ui/vue-plugin';
+import { VueQueryPlugin } from '@tanstack/vue-query';
 import { type App as VueApp, createApp, h } from 'vue';
 import { DataLoaderPlugin } from 'vue-router/experimental';
 
@@ -10,6 +11,7 @@ import { waitForBackend } from '#utils/api/client';
 import App from '../App.vue';
 import { init as initErrorHandler } from './appsignal';
 import { i18n } from './i18n';
+import { prefetchRouteQueries, queryClient } from './query';
 import { installRouteGuard } from './route-guard';
 import router, { waitForHolds } from './router';
 
@@ -38,12 +40,14 @@ export async function startMainApp() {
   installRouteGuard(router);
   // Before the router, which starts the first navigation
   app.use(DataLoaderPlugin, { router });
-  // After the data loaders, whose guard starts the loads
+  router.beforeResolve(prefetchRouteQueries);
+  // After the data loaders and route queries, whose guards start the loads
   router.beforeResolve(waitForHolds);
   app.use({ ...router });
   app.use(i18n);
   app.use(icons);
   app.use(ui);
+  app.use(VueQueryPlugin, { queryClient });
 
   app.mount('#app');
 }

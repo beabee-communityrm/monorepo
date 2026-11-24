@@ -8,6 +8,7 @@ import { reactive, watch } from 'vue';
 import { getCurrentContext, toLazyValue } from 'vue-router/experimental';
 
 import env from '#env';
+import { getPrefetchingQuery } from '#lib/query';
 import router from '#lib/router';
 import type { DevRequestHold, DevRequestMode } from '#type';
 
@@ -72,13 +73,21 @@ type LoaderEntry = NonNullable<ReturnType<typeof getCurrentContext>[0]>;
 /** The route loader that made each request, if one did */
 const loaderOf = new Map<string, LoaderEntry>();
 
+/** The hashed key of the route query that made each request, if one did */
+const queryOf = new Map<string, string>();
+
 /**
  * The files of the components behind a request: those that read the route
- * loader that made it, or else the one in its call stack
+ * loader or query that made it, or else the one in its call stack
  */
 export function sourcesOf(key: string) {
   const entry = loaderOf.get(key);
-  const readers = entry ? loaderReaders(entry.data) : [];
+  const query = queryOf.get(key);
+  const readers = entry
+    ? loaderReaders(entry.data)
+    : query
+      ? loaderReaders(query)
+      : [];
   if (readers.length) return readers;
   const source = devRequests.sources[key];
   return source ? [source] : [];
@@ -186,6 +195,8 @@ export function installDevRequests() {
     )?.[1];
     // Only set while a route loader runs, up to the request
     const loader = getCurrentContext()[0];
+    // Only set while the route guard starts a query, up to the request
+    const query = getPrefetchingQuery();
 
     // Leaves the caller's reactive effect first, or a watchEffect that fetches
     // would track this state and refetch whenever another request is made
@@ -200,6 +211,7 @@ export function installDevRequests() {
     if (!devRequests.seen.includes(key)) devRequests.seen.push(key);
     if (source) devRequests.sources[key] = source;
     if (loader) loaderOf.set(key, loader);
+    if (query) queryOf.set(key, query);
     if (booting && !devRequests.appKeys.includes(key)) {
       devRequests.appKeys.push(key);
     }

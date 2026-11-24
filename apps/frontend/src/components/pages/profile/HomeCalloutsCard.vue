@@ -65,19 +65,14 @@ import { RouterLink } from 'vue-router';
 import CalloutMetaList from '#components/callout/CalloutMetaList.vue';
 import CalloutRespondLinks from '#components/callout/CalloutRespondLinks.vue';
 import HomeListCard from '#components/pages/profile/HomeListCard.vue';
-import { useHomeCalloutsData } from '#components/pages/profile/use-home-data';
-import { useLazyLoad } from '#composables/useLazyLoad';
+import { homeCalloutsQuery } from '#components/pages/profile/use-home-data';
+import { useLazyQuery } from '#composables/useLazyQuery';
 import { getCalloutImageUrl } from '#utils/callouts';
 import { routeIcons } from '#utils/route-nav';
 
 const { t } = useI18n();
 
-const {
-  data: page,
-  skeleton,
-  failed,
-  retry,
-} = useLazyLoad(useHomeCalloutsData());
+const { data: page, skeleton, failed, retry } = useLazyQuery(homeCalloutsQuery);
 
 const callouts = computed(() => page.value?.items);
 const total = computed(() => page.value?.total ?? 0);

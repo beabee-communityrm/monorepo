@@ -234,6 +234,7 @@ import {
 import { useRouter } from 'vue-router';
 
 import { componentBoxes } from '#utils/dev/components';
+import { queryClient } from '#lib/query';
 import { forgetLoads } from '#lib/router';
 import {
   devRequests,
@@ -383,8 +384,8 @@ function setMode(key: string, mode: DevRequestMode) {
 
 /**
  * Startup requests are only made again by a full reload. Otherwise the page
- * reruns as a first visit would: it navigates to itself, so route loaders run
- * again and hold the navigation, then remounts with whatever has arrived.
+ * reruns as a first visit would: it navigates to itself, so route loaders and
+ * queries run again and hold the navigation, then remounts with whatever has arrived.
  */
 async function rerun(reload: boolean) {
   if (reload) {
@@ -392,6 +393,7 @@ async function rerun(reload: boolean) {
     location.reload();
   } else {
     forgetLoads();
+    queryClient.clear();
     const { path, query, hash } = router.currentRoute.value;
     await router.replace({ path, query, hash, force: true });
     forgetLoadingLazyData();

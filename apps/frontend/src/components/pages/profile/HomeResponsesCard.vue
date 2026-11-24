@@ -72,9 +72,9 @@ import { RouterLink } from 'vue-router';
 import HomeListCard from '#components/pages/profile/HomeListCard.vue';
 import {
   fetchHomeResponses,
-  useHomeResponsesData,
+  homeResponsesQuery,
 } from '#components/pages/profile/use-home-data';
-import { useLazyLoad } from '#composables/useLazyLoad';
+import { useLazyQuery } from '#composables/useLazyQuery';
 import { getRespondAgainKey } from '#utils/callouts';
 
 const { t } = useI18n();
@@ -85,7 +85,7 @@ const {
   skeleton,
   failed,
   retry,
-} = useLazyLoad(useHomeResponsesData());
+} = useLazyQuery(homeResponsesQuery);
 
 /** All the responses, once expanding has loaded the rest */
 const allPage =

@@ -104,15 +104,13 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import LoadError from '#components/LoadError.vue';
-import { useHomeContributionData } from '#components/pages/profile/use-home-data';
-import { useLazyLoad } from '#composables/useLazyLoad';
+import { homeContributionQuery } from '#components/pages/profile/use-home-data';
+import { useLazyQuery } from '#composables/useLazyQuery';
 import { routeIcons } from '#utils/route-nav';
 
 const { t, n } = useI18n();
 
-const { data, skeleton, failed, retry } = useLazyLoad(
-  useHomeContributionData()
-);
+const { data, skeleton, failed, retry } = useLazyQuery(homeContributionQuery);
 
 const contribution = computed(() => data.value?.info);
 const lastPayment = computed(() => data.value?.lastPayment);

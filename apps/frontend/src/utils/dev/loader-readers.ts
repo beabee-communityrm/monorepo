@@ -6,14 +6,14 @@
  */
 import { getCurrentInstance } from 'vue';
 
-const readers = new WeakMap<object, Set<string>>();
+const readers = new Map<unknown, Set<string>>();
 
 /**
  * Records the current component as one that reads a loader's data
  *
  * @param data The loader's data ref, which identifies the loader
  */
-export function trackLoaderReader(data: object) {
+export function trackLoaderReader(data: unknown) {
   if (!import.meta.env.DEV) return;
   const file = getCurrentInstance()?.type.__file;
   if (!file) return;
@@ -22,5 +22,13 @@ export function trackLoaderReader(data: object) {
   readers.set(data, files);
 }
 
-/** The files of the components that read a loader's data */
-export const loaderReaders = (data: object) => [...(readers.get(data) ?? [])];
+/**
+ * Records the current component as one that reads a route query
+ *
+ * @param hash The query's hashed key
+ */
+export const trackQueryReader = (hash: string) => trackLoaderReader(hash);
+
+/** The files of the components that read a loader's data or a route query,
+ * by its data ref or hashed key */
+export const loaderReaders = (data: unknown) => [...(readers.get(data) ?? [])];

@@ -31,10 +31,10 @@
 import { useI18n } from 'vue-i18n';
 
 import HomeListCard from '#components/pages/profile/HomeListCard.vue';
-import { useHomeNewslettersData } from '#components/pages/profile/use-home-data';
-import { useLazyLoad } from '#composables/useLazyLoad';
+import { homeNewslettersQuery } from '#components/pages/profile/use-home-data';
+import { useLazyQuery } from '#composables/useLazyQuery';
 
 const { t } = useI18n();
 
-const { data: groups, failed, retry } = useLazyLoad(useHomeNewslettersData());
+const { data: groups, failed, retry } = useLazyQuery(homeNewslettersQuery);
 </script>

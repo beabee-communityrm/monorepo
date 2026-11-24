@@ -35,7 +35,7 @@ meta:
 </template>
 
 <script lang="ts">
-export * from '#components/pages/profile/use-home-data';
+export { homeQueries as routeQueries } from '#components/pages/profile/use-home-data';
 </script>
 
 <script lang="ts" setup>
