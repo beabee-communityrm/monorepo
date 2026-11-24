@@ -32,7 +32,7 @@ For each new key, find where it is (or will be) used:
 - Search for the key in the code. If it's not used yet, find the feature area from the user's context and read the related components.
 - Read the code around the usage. Work out:
   - **What UI element it is**: button, page title, form label, placeholder, tooltip, error message, toast, email subject, empty state, etc. This changes the grammar. A button is usually a verb ("Save"), a title is usually a noun phrase ("Account settings").
-  - **What each placeholder holds**: a name, a number, a date, a link, another translated string. Numbers mean you need plural forms; ru and uk carry 4 (0 | 1 | 2-4 | 5+).
+  - **What each placeholder holds**: a name, a number, a date, a link, another translated string. Numbers mean you need plural forms.
   - **Who reads it and when**: a first-time user, an admin, someone who just hit an error.
 - Look at sibling keys in the same namespace or file. They show the tone and terms used nearby.
 
@@ -72,6 +72,7 @@ The app already has translations. New strings must match them so the UI feels co
 6. Also copy the existing style per locale:
    - Formal or informal "you" (German Sie/du, French vous/tu, Spanish usted/tú, Dutch u/je, etc.). Check several strings to be sure.
    - Capitalization (sentence case vs. title case), punctuation (ellipsis "…" vs "...", quote marks like « » or „ "), and whether buttons end with periods.
+   - Number of plural forms: ru and uk carry 4 (0 | 1 | 2-4 | 5+).
 
 If a term is translated two different ways in the same locale, don't pick silently. Use the more common one and mention the inconsistency to the user.
 
