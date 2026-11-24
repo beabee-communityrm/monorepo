@@ -26,6 +26,9 @@ export const generalContent = ref<ContentGeneralData>({
   oidcEnabled: false,
 });
 
+/** Whether the general content, and so the site's theme, has loaded */
+export const generalContentLoaded = computed(() => isInited.value);
+
 export const initGeneralContent = async () => {
   if (!isInited.value) {
     generalContent.value = await client.content.get('general');
