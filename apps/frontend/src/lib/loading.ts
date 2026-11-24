@@ -7,8 +7,11 @@
 export const LOADING = {
   /** A navigation shows the loading bar once it's taken this long */
   barDelay: 150,
-  /** How often the loading bar creeps forward */
-  barStep: 200,
+  /** How long the loading bar takes to glide towards 90%. It slows as it
+   * goes, so it's still moving on a long wait. */
+  barCreep: 8000,
+  /** How long the loading bar takes to fill once the page has arrived */
+  barFill: 200,
   /** The full loading bar stays this long before fading */
   barFilled: 200,
   /** The page waits this long for its data, counted from when its loads

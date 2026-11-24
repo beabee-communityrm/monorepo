@@ -3,8 +3,8 @@
   A thin bar across the top of the window while a page is loading, including
   the first one. It only appears if the navigation takes longer than a moment,
   so quick ones don't flicker, and once the site's theme has loaded, so it's
-  never in the wrong colour. It creeps towards the end while the page loads,
-  then fills and fades out once it's there.
+  never in the wrong colour. It glides towards 90% while the page loads,
+  slowing as it goes, then fills quickly and fades out once it's there.
 -->
 <template>
   <Transition
@@ -12,21 +12,27 @@
     leave-to-class="opacity-0"
   >
     <UProgress
-      v-if="visible && generalContentLoaded"
+      v-if="shown"
       :model-value="value"
       size="xs"
       :get-value-label="() => t('common.loading')"
       class="fixed inset-x-0 top-0 z-100"
+      :style="{
+        '--route-progress-duration': `${filling ? LOADING.barFill : LOADING.barCreep}ms`,
+      }"
       :ui="{
         base: 'rounded-none bg-transparent',
-        indicator: 'rounded-none motion-reduce:transition-none',
+        indicator: [
+          'rounded-none duration-(--route-progress-duration) motion-reduce:transition-none',
+          !filling && 'ease-[cubic-bezier(0.1,0.7,0.2,1)]',
+        ],
       }"
     />
   </Transition>
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, ref } from 'vue';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
   NavigationFailureType,
@@ -42,37 +48,44 @@ const router = useRouter();
 
 const visible = ref(false);
 const value = ref(0);
+/** Whether the bar is filling, as the page has arrived */
+const filling = ref(false);
 /** Whether a page is loading, from the bar's start until it's done */
 let running = false;
 let timer: ReturnType<typeof setTimeout> | undefined;
-let trickle: ReturnType<typeof setInterval> | undefined;
 
-function stop() {
-  clearTimeout(timer);
-  clearInterval(trickle);
-}
+const shown = computed(() => visible.value && generalContentLoaded.value);
+
+// Once drawn at 10%, one long transition takes it towards 90%. The frame in
+// between lets the browser draw the start before the transition begins.
+watch(shown, (isShown) => {
+  if (!isShown || filling.value) return;
+  value.value = 10;
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => {
+      if (shown.value && !filling.value) value.value = 90;
+    })
+  );
+});
 
 function start() {
-  stop();
+  clearTimeout(timer);
   running = true;
+  filling.value = false;
   visible.value = false;
-  timer = setTimeout(() => {
-    value.value = 10;
-    visible.value = true;
-    // Each step covers about a tenth of what's left, so it slows towards 90%
-    trickle = setInterval(
-      () => (value.value += Math.ceil((90 - value.value) / 10)),
-      LOADING.barStep
-    );
-  }, LOADING.barDelay);
+  timer = setTimeout(() => (visible.value = true), LOADING.barDelay);
 }
 
 function done() {
-  stop();
+  clearTimeout(timer);
   running = false;
   if (!visible.value) return;
+  filling.value = true;
   value.value = 100;
-  timer = setTimeout(() => (visible.value = false), LOADING.barFilled);
+  timer = setTimeout(
+    () => (visible.value = false),
+    LOADING.barFill + LOADING.barFilled
+  );
 }
 
 // The first navigation starts before the app mounts
@@ -93,7 +106,7 @@ const removers = [
 ];
 
 onBeforeUnmount(() => {
-  stop();
+  clearTimeout(timer);
   removers.forEach((remove) => remove());
 });
 </script>
