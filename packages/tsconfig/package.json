@@ -14,7 +14,7 @@
     "typescript": "~6.0.3"
   },
   "dependencies": {
-    "@tsconfig/node24": "^24.0.4",
+    "@tsconfig/node26": "^26.0.2",
     "@vue/tsconfig": "^0.9.1"
   }
 }
