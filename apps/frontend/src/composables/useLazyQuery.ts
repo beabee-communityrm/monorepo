@@ -3,7 +3,14 @@ import {
   type UseQueryOptions,
   useQuery,
 } from '@tanstack/vue-query';
-import { computed, readonly, ref, watch } from 'vue';
+import {
+  type MaybeRefOrGetter,
+  computed,
+  readonly,
+  ref,
+  toValue,
+  watch,
+} from 'vue';
 
 import { useDelayedSkeleton } from '#composables/useDelayedSkeleton';
 import { queryClient } from '#lib/query';
@@ -15,21 +22,29 @@ import { getPageLoadStart } from '#lib/route-queries';
  * Without either, a skeleton shows until the load finishes. A retry rejects
  * if it fails again.
  *
- * @param options The query, from `queryOptions()`
+ * @param options The query, from `queryOptions()`, or a getter for one whose
+ *   key changes
  */
 export function useLazyQuery<TQueryFnData, TQueryKey extends QueryKey>(
-  options: UseQueryOptions<
-    TQueryFnData,
-    Error,
-    TQueryFnData,
-    TQueryFnData,
-    TQueryKey
-  > & { queryKey: TQueryKey }
+  options: MaybeRefOrGetter<
+    UseQueryOptions<
+      TQueryFnData,
+      Error,
+      TQueryFnData,
+      TQueryFnData,
+      TQueryKey
+    > & {
+      queryKey: TQueryKey;
+    }
+  >
 ) {
   // A route query the page started counts from when the page's loads did.
   // One the block starts itself counts from now.
   const startedAt =
-    queryClient.isFetching({ queryKey: options.queryKey, exact: true }) > 0
+    queryClient.isFetching({
+      queryKey: toValue(options).queryKey,
+      exact: true,
+    }) > 0
       ? getPageLoadStart()
       : performance.now();
   const query = useQuery(options);
