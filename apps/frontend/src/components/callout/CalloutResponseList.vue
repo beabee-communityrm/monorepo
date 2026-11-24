@@ -7,12 +7,17 @@
   Several responses are shown one at a time, newest first, paged from the card
   header. A single response has no card header, so its date sits alongside the
   heading instead.
+
+  While the responses load, the heading stays and the card shows skeleton
+  rows, or the error if they failed. A successful retry moves focus to the
+  heading, as does `focusHeading`, for pages whose own retry brings the list
+  in.
 -->
 <template>
   <div class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-3">
       <div class="flex flex-wrap items-baseline gap-x-3">
-        <h3 class="text-lg">{{ heading }}</h3>
+        <h3 ref="headingEl" class="text-lg">{{ heading }}</h3>
         <p v-if="count === 1 && !hideDate" class="text-muted">
           {{ submittedOn }}
         </p>
@@ -77,7 +82,25 @@
         </div>
       </template>
 
-      <dl class="divide-y divide-muted/50">
+      <LoadError
+        v-if="!responses && error && retry"
+        :retry="retryAndFocus"
+        keypath="callout.loadResponseError"
+        class="p-4 sm:p-6"
+      />
+
+      <div v-else-if="loading" class="divide-y divide-muted/50">
+        <div
+          v-for="n in 3"
+          :key="n"
+          class="flex flex-col gap-1 px-4 py-4 sm:px-6"
+        >
+          <USkeleton class="h-5 w-1/3" />
+          <USkeleton class="h-5 w-1/2" />
+        </div>
+      </div>
+
+      <dl v-else-if="responses" class="divide-y divide-muted/50">
         <div
           v-for="row in rows"
           :key="row.key"
@@ -140,6 +163,7 @@ import { computed, nextTick, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { RouteLocationRaw } from 'vue-router';
 
+import LoadError from '#components/LoadError.vue';
 import CalloutResponseAudio from '#components/callout/CalloutResponseAudio.vue';
 import { getResponseAnswerRows } from '#utils/callout-responses';
 
@@ -147,8 +171,11 @@ import { getResponseAnswerRows } from '#utils/callout-responses';
 export interface CalloutResponseListProps {
   /** The form the responses were submitted to */
   formSchema: GetCalloutFormSchema;
-  /** The current user's responses, newest first. Expects at least one */
-  responses: Paginated<
+  /**
+   * The current user's responses, newest first. Expects at least one once
+   * loaded; undefined until then, or if they failed
+   */
+  responses?: Paginated<
     GetCalloutResponseDataWith<GetCalloutResponseWith.Answers>
   >;
   /** Where adding another response goes, if more are allowed */
@@ -157,6 +184,12 @@ export interface CalloutResponseListProps {
   editTo?: RouteLocationRaw;
   /** Leaves out the submission date */
   hideDate?: boolean;
+  /** Shows skeleton rows while the responses load */
+  loading?: boolean;
+  /** Whether the responses failed to load */
+  error?: boolean;
+  /** Loads the responses again; rejects if they still can't be loaded */
+  retry?: () => Promise<unknown>;
 }
 
 const props = defineProps<CalloutResponseListProps>();
@@ -166,24 +199,44 @@ const { t } = useI18n();
 /** Position in the loaded responses, so 0 is the newest */
 const index = ref(0);
 
-const count = computed(() => props.responses.items.length);
-const response = computed(() => props.responses.items[index.value]);
+const count = computed(() => props.responses?.items.length ?? 0);
+const response = computed(() => props.responses?.items[index.value]);
 
 const heading = computed(() =>
-  props.responses.total > 1
+  props.responses && props.responses.total > 1
     ? t('callout.yourResponses', { count: props.responses.total })
     : t('callout.yourResponse')
 );
 
-const submittedOn = computed(() =>
-  t('callout.submittedOn', {
-    date: formatLocale(response.value.createdAt, 'PPP'),
-  })
+const submittedOn = computed(
+  () =>
+    response.value &&
+    t('callout.submittedOn', {
+      date: formatLocale(response.value.createdAt, 'PPP'),
+    })
 );
 
 const rows = computed(() =>
-  getResponseAnswerRows(props.formSchema, response.value.answers)
+  response.value
+    ? getResponseAnswerRows(props.formSchema, response.value.answers)
+    : []
 );
+
+const headingEl = useTemplateRef('headingEl');
+
+async function focusHeading() {
+  await nextTick();
+  if (!headingEl.value) return;
+  headingEl.value.tabIndex = -1;
+  headingEl.value.focus();
+}
+
+async function retryAndFocus() {
+  await props.retry?.();
+  await focusHeading();
+}
+
+defineExpose({ focusHeading });
 
 const previousButton = useTemplateRef('previousButton');
 const nextButton = useTemplateRef('nextButton');
