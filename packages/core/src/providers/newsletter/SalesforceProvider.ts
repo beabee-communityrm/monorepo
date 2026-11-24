@@ -37,8 +37,11 @@ const GROUPS = [
 
 /**
  * Writes newsletter state to the contact's beabee_Profile__c record, addressed
- * by the beabee contact ID. Groups are checkboxes on the profile. When the
- * contact sync provider is also Salesforce it owns the record's deletion.
+ * by the beabee contact ID. Groups are checkboxes on the profile, and the
+ * double opt-in date is set when the contact becomes subscribed. beabee is the
+ * only writer of these fields, so the resulting state is computed from the
+ * update rather than read back. When the contact sync provider is also
+ * Salesforce it owns the record's deletion.
  */
 export class SalesforceProvider implements NewsletterProvider {
   private readonly api;
@@ -81,10 +84,19 @@ export class SalesforceProvider implements NewsletterProvider {
     oldKey = key
   ): Promise<NewsletterContact> {
     log.info('Upsert contact ' + key);
+    const groups = applyGroupChange(contact);
+    const newlySubscribed =
+      contact.status === NewsletterStatus.Subscribed &&
+      contact.previous?.status !== NewsletterStatus.Subscribed;
     try {
       await this.api.patch(profileUrl(key), {
         ...identityFields(contact),
-        ...groupFields(contact),
+        ...Object.fromEntries(
+          GROUPS.map((g) => [g.field, groups.includes(g.id)])
+        ),
+        ...(newlySubscribed && {
+          DOIDate_bee__c: new Date().toISOString().slice(0, 10),
+        }),
         // The flow linking profiles to contacts only runs on this status
         Sync_Status__c: 'Updated',
       });
@@ -96,14 +108,7 @@ export class SalesforceProvider implements NewsletterProvider {
         err.response?.data
       );
     }
-    // The upsert response carries no fields, so read the resulting groups back
-    const resp = await this.api.get(profileUrl(key));
-    return {
-      ...contact,
-      groups: GROUPS.filter((g) => resp.data[g.field]).map((g) => g.id),
-      joined: new Date(resp.data.CreatedDate),
-      tags: [],
-    };
+    return { ...contact, groups, joined: new Date(), tags: [] };
   }
 
   async updateContactTags(
@@ -157,15 +162,11 @@ export class SalesforceProvider implements NewsletterProvider {
   }
 }
 
-/**
- * The group checkboxes an update sets. A partial change only touches the
- * groups it names; a replace sets every group.
- */
-function groupFields(
-  contact: UpdateNewsletterContact
-): Record<string, boolean> {
+/** The contact's groups after the update is applied to their previous groups */
+function applyGroupChange(contact: UpdateNewsletterContact): string[] {
+  const current = contact.previous?.groups ?? [];
   const groups = contact.groups;
-  if (!groups) return {};
+  if (!groups) return current;
 
   const unknown = groups.filter((id) => !GROUPS.some((g) => g.id === id));
   if (unknown.length > 0) {
@@ -174,10 +175,12 @@ function groupFields(
     );
   }
 
-  const change = contact.newsletterGroupChange ?? 'replace';
-  const touched =
-    change === 'replace' ? GROUPS : GROUPS.filter((g) => groups.includes(g.id));
-  return Object.fromEntries(
-    touched.map((g) => [g.field, change !== 'remove' && groups.includes(g.id)])
-  );
+  switch (contact.newsletterGroupChange) {
+    case 'add':
+      return [...new Set([...current, ...groups])];
+    case 'remove':
+      return current.filter((id) => !groups.includes(id));
+    default:
+      return groups;
+  }
 }

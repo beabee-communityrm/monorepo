@@ -42,6 +42,10 @@ export function convertContactToNlUpdate(
     status: newStatus,
     groups: updates?.groups,
     newsletterGroupChange: opts?.newsletterGroupChange,
+    previous: {
+      status: contact.newsletter.status,
+      groups: contact.newsletter.groups,
+    },
     firstname: contact.firstname,
     lastname: contact.lastname,
     fields: {

@@ -110,6 +110,7 @@ describe('convertContactToNlUpdate', () => {
       expect(result).toEqual({
         email: 'test@example.com',
         status: NewsletterStatus.Subscribed,
+        previous: { status: NewsletterStatus.Subscribed, groups: ['group1'] },
         firstname: 'John',
         lastname: 'Doe',
         fields: {
@@ -135,6 +136,7 @@ describe('convertContactToNlUpdate', () => {
       expect(result).toEqual({
         email: 'test@example.com',
         status: NewsletterStatus.Pending,
+        previous: { status: NewsletterStatus.None, groups: [] },
         firstname: 'John',
         lastname: 'Doe',
         fields: {
@@ -389,6 +391,7 @@ describe('convertContactToNlUpdate', () => {
       expect(result).toEqual({
         email: 'min@test.com',
         status: NewsletterStatus.Subscribed,
+        previous: { status: NewsletterStatus.Subscribed, groups: [] },
         firstname: '',
         lastname: '',
         fields: {
