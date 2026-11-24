@@ -13,7 +13,7 @@
 <template>
   <UPopover
     :content="{ side: 'top', align: 'start' }"
-    :ui="{ content: 'dark [--ui-bg:black]' }"
+    :ui="{ content: 'dark z-50 [--ui-bg:black]' }"
     @update:open="(open) => open || highlight()"
   >
     <UButton
