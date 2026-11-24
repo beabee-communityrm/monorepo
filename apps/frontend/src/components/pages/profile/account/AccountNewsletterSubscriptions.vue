@@ -10,9 +10,9 @@
     :title="t('accountPage.newsletter.title')"
     :description="t('accountPage.newsletter.description')"
   >
-    <AppFormSkeleton v-if="loading" :rows="2" />
-    <template v-else>
-      <p v-if="groups.length === 0" class="text-muted">
+    <LoadError v-if="failed" :retry="retry" />
+    <template v-else-if="groups">
+      <p v-if="!groups.length" class="text-muted">
         {{ t('accountPage.newsletter.noGroups') }}
       </p>
       <UAlert
@@ -44,31 +44,31 @@
 
 <script lang="ts" setup>
 import type { BaseNewsletterGroupData } from '@beabee/beabee-common';
-import { AppFormSkeleton, AppSectionCard } from '@beabee/vue';
+import { AppSectionCard } from '@beabee/vue';
 
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import LoadError from '#components/LoadError.vue';
+import { newsletterGroupsQuery } from '#components/pages/profile/account/use-account-data';
 import { useApiSubmit } from '#composables/useApiSubmit';
+import { useLazyQuery } from '#composables/useLazyQuery';
+import { queryClient } from '#lib/query';
 import { client } from '#utils/api';
 
 const { t } = useI18n();
 
-const loading = ref(true);
 const removingId = ref<string | null>(null);
-const groups = ref<BaseNewsletterGroupData[]>([]);
-
-onMounted(async () => {
-  groups.value = await client.contact.newsletter.getGroups('me');
-  loading.value = false;
-});
+const { data: groups, failed, retry } = useLazyQuery(newsletterGroupsQuery);
 
 async function handleUnsubscribe(group: BaseNewsletterGroupData) {
   removingId.value = group.id;
   const { submit } = useApiSubmit(
     async () => {
       await client.contact.newsletter.unsubscribe('me', group.id);
-      groups.value = groups.value.filter((g) => g.id !== group.id);
+      queryClient.setQueryData(newsletterGroupsQuery.queryKey, (groups) =>
+        groups?.filter((g) => g.id !== group.id)
+      );
     },
     {
       successMessage: () =>
