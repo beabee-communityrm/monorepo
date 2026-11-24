@@ -104,7 +104,6 @@ export interface SalesforceNewsletterConfig {
     authUrl: string; // BEABEE_NEWSLETTER_SETTINGS_AUTHURL - OAuth2 token endpoint (My Domain URL + /services/oauth2/token)
     clientId: string; // BEABEE_NEWSLETTER_SETTINGS_CLIENTID - Connected app client ID
     clientSecret: string; // BEABEE_NEWSLETTER_SETTINGS_CLIENTSECRET - Connected app client secret
-    apiVersion: string; // BEABEE_NEWSLETTER_SETTINGS_APIVERSION - REST API version (e.g. v60.0)
     webhookSecret: string; // BEABEE_NEWSLETTER_SETTINGS_WEBHOOKSECRET - Still available but unused
   };
 }
@@ -437,10 +436,6 @@ export const config = {
               authUrl: env.s('BEABEE_NEWSLETTER_SETTINGS_AUTHURL'), // OAuth2 token endpoint
               clientId: env.s('BEABEE_NEWSLETTER_SETTINGS_CLIENTID'), // Connected app client ID
               clientSecret: env.s('BEABEE_NEWSLETTER_SETTINGS_CLIENTSECRET'), // Connected app client secret
-              apiVersion: env.s(
-                'BEABEE_NEWSLETTER_SETTINGS_APIVERSION',
-                'v60.0'
-              ), // REST API version
             }
           : null),
     },

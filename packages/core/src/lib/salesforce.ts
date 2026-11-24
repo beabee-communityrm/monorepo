@@ -10,7 +10,7 @@ const log = mainLogger.child({ app: 'salesforce' });
 
 type SFSettings = Pick<
   SalesforceContactSyncConfig['settings'],
-  'authUrl' | 'clientId' | 'clientSecret' | 'apiVersion'
+  'authUrl' | 'clientId' | 'clientSecret'
 >;
 
 /** The REST API version the requests and response handling are written for */
