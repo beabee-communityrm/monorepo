@@ -193,9 +193,13 @@ const archiveTotalPages = computed(() =>
     ? Math.ceil(archivedCallouts.value.total / archivePageSize)
     : 0
 );
-watch(archiveTotalPages, (value) => {
-  if (archivePage.value > value) {
-    archivePage.value = Math.max(0, value - 1);
-  }
-});
+watch(
+  archiveTotalPages,
+  (value) => {
+    if (archivedCallouts.value && archivePage.value > value) {
+      archivePage.value = Math.max(0, value - 1);
+    }
+  },
+  { immediate: true }
+);
 </script>
