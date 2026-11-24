@@ -53,46 +53,56 @@ meta:
 
     <h1 class="text-xl">{{ callout.title }}</h1>
 
-    <template v-if="responses /* Avoids layout thrashing */">
-      <CalloutThankYouBanner
-        v-if="responses.length"
-        :callout="callout"
-        :submitted-at="responses[0].createdAt"
-      />
+    <CalloutThankYouBanner
+      v-if="responses?.length"
+      :callout="callout"
+      :submitted-at="responses[0].createdAt"
+    />
 
-      <img class="w-full" :src="imageUrl" alt="" />
-      <div class="nuxt-prose text-base" v-html="callout.intro" />
+    <img class="w-full" :src="imageUrl" alt="" />
+    <div class="nuxt-prose text-base" v-html="callout.intro" />
 
-      <CalloutLoginGate v-if="showLoginPrompt && isOpen" />
+    <CalloutLoginGate v-if="showLoginPrompt && isOpen" />
 
-      <CalloutContributionGate
-        v-else-if="showMemberOnlyPrompt && isOpen && !isPreview"
-      />
+    <CalloutContributionGate
+      v-else-if="showMemberOnlyPrompt && isOpen && !isPreview"
+    />
 
-      <UButton
-        v-else-if="respondAction === 'start'"
-        size="xl"
-        class="w-full"
-        :to="respondTo"
-      >
-        {{ t('actions.getStarted') }}
-      </UButton>
+    <LoadError
+      v-else-if="responsesError"
+      :retry="retryResponses"
+      keypath="callout.loadResponsesError"
+      class="py-8 text-center"
+    />
 
-      <CalloutResponseList
-        v-if="responsesPaginated?.items.length"
-        :form-schema="callout.formSchema"
-        :responses="responsesPaginated"
-        :add-to="respondAction === 'add' ? respondTo : undefined"
-        :edit-to="respondAction === 'edit' ? respondTo : undefined"
-      />
-    </template>
+    <UButton
+      v-else-if="respondAction === 'start'"
+      size="xl"
+      class="w-full"
+      :to="respondTo"
+    >
+      {{ t('actions.getStarted') }}
+    </UButton>
+
+    <CalloutResponseList
+      v-if="responsesPaginated?.items.length"
+      ref="responseList"
+      :form-schema="callout.formSchema"
+      :responses="responsesPaginated"
+      :add-to="respondAction === 'add' ? respondTo : undefined"
+      :edit-to="respondAction === 'edit' ? respondTo : undefined"
+    />
   </div>
 </template>
+<script lang="ts">
+export { calloutResponsesRouteQueries as routeQueries } from '#components/pages/callouts/use-callout';
+</script>
+
 <script lang="ts" setup>
 import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
 import { formatLocale } from '@beabee/vue';
 
-import { computed, toRef } from 'vue';
+import { computed, nextTick, toRef, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import CalloutContributionGate from '#components/callout/CalloutContributionGate.vue';
@@ -102,6 +112,7 @@ import CalloutPreviewBar from '#components/callout/CalloutPreviewBar.vue';
 import CalloutResponseList from '#components/callout/CalloutResponseList.vue';
 import CalloutSharePopover from '#components/callout/CalloutSharePopover.vue';
 import CalloutThankYouBanner from '#components/callout/CalloutThankYouBanner.vue';
+import LoadError from '#components/LoadError.vue';
 import CalloutRespond from '#components/pages/callouts/CalloutRespond.vue';
 import {
   useCallout,
@@ -159,10 +170,21 @@ const imageUrl = computed(() => getCalloutImageUrl(props.callout));
 
 const daysLeft = computed(() => getDaysLeft(props.callout.expires));
 
-// Embeds render CalloutRespond directly instead, which fetches its own
-// response state, so skip fetching it twice here.
-const { responses, responsesPaginated, respondAction, respondTo } =
-  useCalloutResponse(calloutRef, {
-    fetchResponses: !isEmbed,
-  });
+const {
+  responses,
+  responsesPaginated,
+  responsesError,
+  loadResponses,
+  respondAction,
+  respondTo,
+} = useCalloutResponse(calloutRef);
+
+const responseList = useTemplateRef('responseList');
+
+/** Loads the responses again, moving focus to them if there are any */
+async function retryResponses() {
+  await loadResponses();
+  await nextTick();
+  await responseList.value?.focusHeading();
+}
 </script>

@@ -918,6 +918,9 @@
     "joinNow": "",
     "language": "",
     "leavePreview": "",
+    "loadError": "",
+    "loadResponseError": "",
+    "loadResponsesError": "",
     "logInOrSignUp": "",
     "loginToYourAccount": "",
     "loginToYourAccount-nuxt": "",
@@ -925,10 +928,12 @@
     "membersOnly-nuxt": "",
     "nextResponse": "",
     "notAnswered": "",
+    "notFound": "",
     "previousResponse": "",
     "replied": "",
     "responseNumber": "",
     "responseSubmitted": "",
+    "seeAll": "",
     "share": {
       "address": "",
       "aria": {

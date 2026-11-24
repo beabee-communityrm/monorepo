@@ -2,17 +2,25 @@ import {
   CalloutResponseMode,
   type GetCalloutData,
   type GetCalloutDataWith,
-  type GetCalloutResponseDataWith,
   GetCalloutResponseWith,
   ItemStatus,
-  type Paginated,
 } from '@beabee/beabee-common';
 import { isLocale, config as localeConfig } from '@beabee/locale';
 
-import { type Ref, computed, onBeforeMount, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { queryOptions } from '@tanstack/vue-query';
+import { type Ref, computed } from 'vue';
+import {
+  type RouteLocationNormalizedLoaded,
+  useRoute,
+  useRouter,
+} from 'vue-router';
 
+import { useLazyQuery } from '#composables/useLazyQuery';
+import { queryClient } from '#lib/query';
+import { routeQuery } from '#lib/route-queries';
+import { latestResponsesQuery } from '#queries/callouts';
 import { currentUser, generalContent } from '#store';
+import type { RouteQueries } from '#type';
 import { client } from '#utils/api';
 
 export const HASH_PREFIX = '#response-' as const;
@@ -49,24 +57,83 @@ export function useCallout(callout: Ref<GetCalloutData>) {
   };
 }
 
+/** The empty list of responses, for a preview or a signed-out visitor */
+const noResponses = { total: 0, count: 0, offset: 0, items: [] };
+
+/**
+ * The current user's responses to a CrowdNewsroom, newest first. None for a
+ * reviewer's preview or a signed-out visitor.
+ *
+ * @param route The CrowdNewsroom's page, whose URL gives its id and preview
+ */
+export function calloutResponsesQuery(route: RouteLocationNormalizedLoaded) {
+  const id = 'id' in route.params ? route.params.id : '';
+  const isPreview =
+    route.query.preview === null && !!currentUser.value?.isReviewer;
+  const contact = isPreview ? undefined : currentUser.value?.id;
+
+  return queryOptions({
+    queryKey: ['callout', id, 'responses', { contact }],
+    queryFn: () =>
+      contact
+        ? client.callout.listResponses(
+            id,
+            {
+              rules: {
+                condition: 'AND',
+                rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
+              },
+              sort: 'createdAt',
+              order: 'DESC',
+            },
+            [GetCalloutResponseWith.Answers]
+          )
+        : Promise.resolve(noResponses),
+  });
+}
+
+/**
+ * The route queries for the details, respond and thanks pages, which each
+ * export them. The details and respond pages wait for the responses, as they
+ * decide what those pages offer. The thanks page waits up to 300 ms, then
+ * shows without them and fills in when they arrive.
+ */
+export const calloutResponsesRouteQueries: RouteQueries = (to) => [
+  routeQuery(calloutResponsesQuery(to), {
+    wait: to.name !== 'calloutThanks',
+  }),
+];
+
+/**
+ * Drops the current user's cached responses to a CrowdNewsroom after they
+ * respond, so its pages load them again rather than showing the old ones,
+ * and refreshes the responses on the home page
+ *
+ * @param id The CrowdNewsroom's id, as in its URL
+ */
+export function forgetCalloutResponses(id: string) {
+  queryClient.removeQueries({ queryKey: ['callout', id, 'responses'] });
+  queryClient.invalidateQueries({ queryKey: latestResponsesQuery.queryKey });
+}
+
 /**
  * The current user's own responses, and what they can do about responding,
  * for the callout details, respond and thanks pages.
  */
-export function useCalloutResponse(
-  callout: Ref<GetCalloutData>,
-  { fetchResponses = true }: { fetchResponses?: boolean } = {}
-) {
+export function useCalloutResponse(callout: Ref<GetCalloutData>) {
   const route = useRoute();
   const { isOpen, isPreview, showLoginPrompt, showMemberOnlyPrompt } =
     useCallout(callout);
 
-  const responsesPaginated =
-    ref<
-      Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Answers>>
-    >();
+  const {
+    data: responsesPaginated,
+    skeleton: responsesSkeleton,
+    failed: responsesError,
+    retry: loadResponses,
+  } = useLazyQuery(() => calloutResponsesQuery(route));
 
-  /** The current user's responses, newest first; undefined until loaded */
+  /** The current user's responses, newest first; undefined until they've
+   * loaded, or if they failed */
   const responses = computed(() => responsesPaginated.value?.items);
 
   /** Which respond action is open to them, if any */
@@ -99,31 +166,12 @@ export function useCalloutResponse(
     query: route.query,
   }));
 
-  onBeforeMount(async () => {
-    if (!fetchResponses) return;
-
-    if (isPreview.value || !currentUser.value) {
-      responsesPaginated.value = { total: 0, count: 0, offset: 0, items: [] };
-      return;
-    }
-
-    responsesPaginated.value = await client.callout.listResponses(
-      callout.value.slug,
-      {
-        rules: {
-          condition: 'AND',
-          rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
-        },
-        sort: 'createdAt',
-        order: 'DESC',
-      },
-      [GetCalloutResponseWith.Answers]
-    );
-  });
-
   return {
     responses,
     responsesPaginated,
+    responsesError,
+    responsesSkeleton,
+    loadResponses,
     canRespond,
     respondAction,
     respondTo,
