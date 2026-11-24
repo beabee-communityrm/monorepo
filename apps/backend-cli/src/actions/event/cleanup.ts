@@ -1,4 +1,4 @@
-import { dataSource } from '@beabee/core/database';
+import { runTransaction } from '@beabee/core/database';
 
 import chalk from 'chalk';
 
@@ -28,9 +28,11 @@ export const cleanupDuplicates = async (
 ): Promise<void> => {
   for (const { rule, ids } of backfilled) {
     // DELETE queries resolve to [rows, affected row count]
-    const [, count] = await dataSource.query(
-      `DELETE FROM activity_event WHERE id IN (SELECT x.id ${duplicates(rule)})`,
-      [ids]
+    const [, count] = await runTransaction((em) =>
+      em.query(
+        `DELETE FROM activity_event WHERE id IN (SELECT x.id ${duplicates(rule)})`,
+        [ids]
+      )
     );
     console.log(
       `${chalk.green('✓')} Removed ${count} duplicate ${rule.eventType} event(s)`
