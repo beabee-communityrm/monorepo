@@ -28,7 +28,11 @@
 <script lang="ts" setup>
 import { onBeforeUnmount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
+import {
+  NavigationFailureType,
+  isNavigationFailure,
+  useRouter,
+} from 'vue-router';
 
 import { generalContentLoaded } from '#store/generalContent';
 
@@ -42,6 +46,8 @@ const router = useRouter();
 
 const visible = ref(false);
 const value = ref(0);
+/** Whether a page is loading, from the bar's start until it's done */
+let running = false;
 let timer: ReturnType<typeof setTimeout> | undefined;
 let trickle: ReturnType<typeof setInterval> | undefined;
 
@@ -52,6 +58,7 @@ function stop() {
 
 function start() {
   stop();
+  running = true;
   visible.value = false;
   timer = setTimeout(() => {
     value.value = 10;
@@ -66,6 +73,7 @@ function start() {
 
 function done() {
   stop();
+  running = false;
   if (!visible.value) return;
   value.value = 100;
   timer = setTimeout(() => (visible.value = false), FILLED);
@@ -76,8 +84,15 @@ start();
 router.isReady().then(done, done);
 
 const removers = [
-  router.beforeEach(() => start()),
-  router.afterEach(done),
+  // Carries on rather than starting again, for the first navigation, which
+  // reaches here after the bar has started, and for one that replaces another
+  router.beforeEach(() => {
+    if (!running) start();
+  }),
+  // A navigation replaced by a newer one isn't done, as that one is loading
+  router.afterEach((to, from, failure) => {
+    if (!isNavigationFailure(failure, NavigationFailureType.cancelled)) done();
+  }),
   router.onError(done),
 ];
 
