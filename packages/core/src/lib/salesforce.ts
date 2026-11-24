@@ -10,6 +10,9 @@ const log = mainLogger.child({ app: 'salesforce' });
 
 type SFSettings = SalesforceContactSyncConfig['settings'];
 
+/** The REST API version the requests and response handling are written for */
+const API_VERSION = 'v60.0';
+
 export const PROFILE_OBJECT = 'beabee_Profile__c';
 /** External ID on the profile object holding the beabee contact ID. */
 export const PROFILE_ID_FIELD = 'beabeeID_bee__c';
@@ -57,7 +60,7 @@ export function createInstance(settings: SFSettings): AxiosInstance {
 
   instance.interceptors.request.use(async (config) => {
     const t = await getToken();
-    config.baseURL = `${t.instance_url}/services/data/${settings.apiVersion}/`;
+    config.baseURL = `${t.instance_url}/services/data/${API_VERSION}/`;
     config.headers.set('Authorization', `Bearer ${t.access_token}`);
     log.info(`${config.method} ${config.url}`, { params: config.params });
     return config;
