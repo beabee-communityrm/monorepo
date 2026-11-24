@@ -279,7 +279,7 @@ export const getOrientedDimensions = (
  * @param filename Original filename
  * @returns Sanitized filename
  */
-export const sanitizeFilename = (filename: string): string => {
+export const sanitizeFilename = (filename: string | undefined): string => {
   if (!filename) return '';
 
   // First convert to string just in case
