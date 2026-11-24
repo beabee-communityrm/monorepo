@@ -1,13 +1,18 @@
 /**
- * The panel's overrides for API requests. Wraps `globalThis.fetch`, which
- * every `@beabee/client` request goes through.
+ * The panel's overrides for API requests. MSW answers them from a service
+ * worker, so the frontend calls the real `fetch` and only the answer changes.
  */
 import { ApiErrorCode } from '@beabee/beabee-common';
 
+import { HttpResponse, bypass, http, passthrough } from 'msw';
+import { setupWorker } from 'msw/browser';
 import { reactive, watch } from 'vue';
 import type { Router } from 'vue-router';
 
+import type { DevQueryHeader } from './index';
 import type { DevRequestHold, DevRequestMode } from './types';
+
+const QUERY_HEADER: DevQueryHeader = 'X-Beabee-Dev-Query';
 
 const STORAGE_KEY = 'beabee-dev-requests';
 
@@ -24,8 +29,6 @@ export const devRequests = reactive({
   listKeys: (stored.listKeys ?? []) as string[],
   /** Requests made before the first page loaded, left out of "all" */
   appKeys: [] as string[],
-  /** The component file that made each request, from its call stack */
-  sources: {} as Record<string, string>,
   /** Requests held by Alt-clicks, oldest first */
   holds: [] as DevRequestHold[],
 });
@@ -63,10 +66,6 @@ const emptyBody = (data: unknown) => {
   }
 };
 
-/** The query the frontend says it's starting, while it starts it */
-let startingQuery: string | undefined;
-export const setStartingQuery = (hash?: string) => (startingQuery = hash);
-
 /** The hashed key of the query that made each request, if one did */
 const queryOf = new Map<string, string>();
 
@@ -79,16 +78,10 @@ export function readQuery(hash: string, file: string) {
   readers.set(hash, files);
 }
 
-/**
- * The files of the components behind a request: those that read the query
- * that made it, or else the one in its call stack
- */
+/** The files of the components that read the query that made a request */
 export function sourcesOf(key: string) {
   const query = queryOf.get(key);
-  const files = query ? [...(readers.get(query) ?? [])] : [];
-  if (files.length) return files;
-  const source = devRequests.sources[key];
-  return source ? [source] : [];
+  return query ? [...(readers.get(query) ?? [])] : [];
 }
 
 const dropHold = (hold: DevRequestHold) => {
@@ -116,13 +109,11 @@ export function watchNavigation(router: Router) {
 }
 
 /**
- * Wraps `fetch` so the panel's modes apply to API requests
+ * Starts the service worker that applies the panel's modes to API requests
  *
  * @param apiPath The path API requests start with, like "/api/1.0/"
  */
-export function installRequests(apiPath: string) {
-  const realFetch = globalThis.fetch.bind(globalThis);
-
+export async function startWorker(apiPath: string) {
   /** The latest Alt-click's hold, while it still takes new requests */
   let openHold:
     | { hold: DevRequestHold; resumes: ((mode: DevRequestMode) => void)[] }
@@ -163,79 +154,67 @@ export function installRequests(apiPath: string) {
     true
   );
 
-  globalThis.fetch = async (input, init) => {
-    const url = new URL(
-      input instanceof Request ? input.url : input,
-      location.href
-    );
-    const method = (
-      init?.method ?? (input instanceof Request ? input.method : 'GET')
-    ).toUpperCase();
-    const path = url.pathname.slice(apiPath.length).replace(/\/+$/, '');
-    const key = `${method} /${path}${url.search}`;
+  const worker = setupWorker(
+    http.all(`${apiPath}*`, async ({ request }) => {
+      const url = new URL(request.url);
+      const path = url.pathname.slice(apiPath.length).replace(/\/+$/, '');
+      if (path === 'health') return passthrough();
 
-    if (!url.pathname.startsWith(apiPath) || path === 'health') {
-      return realFetch(input, init);
-    }
+      const key = `${request.method} /${path}${url.search}`;
+      const query = request.headers.get(QUERY_HEADER);
 
-    const source = new Error().stack?.match(
-      /https?:\/\/[^/]+(?:\/@fs)?(\/[^?:\s]+\.vue)/
-    )?.[1];
-    const query = startingQuery;
+      const minimum =
+        devRequests.minDuration > 0
+          ? new Promise((resume) => setTimeout(resume, devRequests.minDuration))
+          : undefined;
 
-    // Leaves the caller's reactive effect first, or a watchEffect that fetches
-    // would track this state and refetch whenever another request is made
-    await Promise.resolve();
-
-    // Counts from here, so the request's own time is part of it
-    const minimum =
-      devRequests.minDuration > 0
-        ? new Promise((resume) => setTimeout(resume, devRequests.minDuration))
-        : undefined;
-
-    if (!devRequests.seen.includes(key)) devRequests.seen.push(key);
-    if (source) devRequests.sources[key] = source;
-    if (query) queryOf.set(key, query);
-    if (booting && !devRequests.appKeys.includes(key)) {
-      devRequests.appKeys.push(key);
-    }
-
-    let mode: DevRequestMode | undefined;
-    if (openHold) {
-      const { hold, resumes } = openHold;
-      hold.keys.push(key);
-      mode = await new Promise((resume) => resumes.push(resume));
-    } else {
-      while (devRequests.modes[key] === 'hang') {
-        await new Promise<void>((resume) => hanging.add(resume));
+      if (!devRequests.seen.includes(key)) devRequests.seen.push(key);
+      if (query) queryOf.set(key, query);
+      if (booting && !devRequests.appKeys.includes(key)) {
+        devRequests.appKeys.push(key);
       }
-      mode = devRequests.modes[key];
-    }
 
-    if (mode === 'fail') {
-      await minimum;
-      return Response.json(
-        {
-          httpCode: 500,
-          code: ApiErrorCode.INTERNAL_SERVER_ERROR,
-          message: `Forced by the dev panel: ${key}`,
-        },
-        { status: 500 }
+      let mode: DevRequestMode | undefined;
+      if (openHold) {
+        const { hold, resumes } = openHold;
+        hold.keys.push(key);
+        mode = await new Promise((resume) => resumes.push(resume));
+      } else {
+        while (devRequests.modes[key] === 'hang') {
+          await new Promise<void>((resume) => hanging.add(resume));
+        }
+        mode = devRequests.modes[key];
+      }
+
+      if (mode === 'fail') {
+        await minimum;
+        return HttpResponse.json(
+          {
+            httpCode: 500,
+            code: ApiErrorCode.INTERNAL_SERVER_ERROR,
+            message: `Forced by the dev panel: ${key}`,
+          },
+          { status: 500 }
+        );
+      }
+
+      const forward = new Request(request);
+      forward.headers.delete(QUERY_HEADER);
+      const [response] = await Promise.all([fetch(bypass(forward)), minimum]);
+      if (request.method !== 'GET' || !response.ok) return response;
+
+      const empty = emptyBody(
+        await response
+          .clone()
+          .json()
+          .catch(() => null)
       );
-    }
+      if (!empty) return response;
 
-    const [response] = await Promise.all([realFetch(input, init), minimum]);
-    if (method !== 'GET' || !response.ok) return response;
+      if (!devRequests.listKeys.includes(key)) devRequests.listKeys.push(key);
+      return mode === 'empty' ? HttpResponse.json(empty) : response;
+    })
+  );
 
-    const empty = emptyBody(
-      await response
-        .clone()
-        .json()
-        .catch(() => null)
-    );
-    if (!empty) return response;
-
-    if (!devRequests.listKeys.includes(key)) devRequests.listKeys.push(key);
-    return mode === 'empty' ? Response.json(empty) : response;
-  };
+  await worker.start({ quiet: true, onUnhandledFrame: 'bypass' });
 }

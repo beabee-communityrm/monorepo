@@ -6,7 +6,7 @@
   tab's session. Changing a mode reruns the page as a first visit, or reloads
   it for app startup requests, and a hanging request carries on once its mode
   changes. Hovering a page request outlines the components that read the
-  query that made it, or else the component that made it. Alt-clicking
+  query that made it. Alt-clicking
   anything on the page holds the requests the click makes, whatever their
   mode, until Succeed, Fail or Empty is picked for them.
 -->

@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import type { Plugin } from 'vite';
 
@@ -14,6 +16,14 @@ export interface DevPanelOptions {
 
 const src = fileURLToPath(new URL('.', import.meta.url));
 
+const WORKER_PATH = '/mockServiceWorker.js';
+
+/** Replaces a worker left registered from when the panel was on, then
+ * removes itself, so nothing sits between the frontend and the API */
+const REMOVE_WORKER = `self.addEventListener('install', () => self.skipWaiting());
+self.addEventListener('activate', () => self.registration.unregister());
+`;
+
 /**
  * Adds the dev panel to the page, on the dev server only. A production build
  * never runs this plugin, so the panel can't end up in it.
@@ -27,6 +37,19 @@ export function devPanel({
     name: 'beabee-dev-panel',
     apply: 'serve',
     enforce: 'pre',
+    configureServer(server) {
+      const worker = enabled
+        ? readFileSync(
+            createRequire(import.meta.url).resolve('msw/mockServiceWorker.js'),
+            'utf8'
+          )
+        : REMOVE_WORKER;
+      server.middlewares.use(WORKER_PATH, (_req, res) => {
+        res.setHeader('Content-Type', 'text/javascript');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.end(worker);
+      });
+    },
     transform(code, id) {
       if (enabled && id.split('?')[0] === stylesheet) {
         return `${code}\n@source '${src}';\n`;

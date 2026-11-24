@@ -17,7 +17,8 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@beabee/beabee-common": "workspace:^"
+    "@beabee/beabee-common": "workspace:^",
+    "msw": "3.0.4"
   },
   "peerDependencies": {
     "@nuxt/ui": "^4.8.2",

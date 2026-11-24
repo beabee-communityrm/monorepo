@@ -31,14 +31,16 @@ export interface DevPanel {
    * @param file The component's source file
    */
   readQuery: (queryHash: string, file: string) => void;
-  /**
-   * Marks the requests made from now as the given query's, until it's called
-   * again without one
-   *
-   * @param queryHash The query's hashed key
-   */
-  startingQuery: (queryHash?: string) => void;
+  /** Settles once the panel can see requests. The frontend waits for it
+   * before it starts, so its startup requests are covered too. */
+  ready: Promise<void>;
 }
+
+/**
+ * The request header that tells the panel which query made a request, with
+ * the query's hashed key. The panel removes it before the request goes on.
+ */
+export type DevQueryHeader = 'X-Beabee-Dev-Query';
 
 declare global {
   interface Window {

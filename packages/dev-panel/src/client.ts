@@ -1,18 +1,13 @@
 /**
  * The panel's entry point, which the Vite plugin adds to the page ahead of the
- * frontend. It starts overriding requests straight away, so startup requests
- * are covered, and shows the panel once the frontend connects.
+ * frontend. It starts the service worker straight away, and shows the panel
+ * once the frontend connects.
  */
 import { h, render } from 'vue';
 
 import DevPanel from './DevPanel.vue';
 import type { DevPanelHooks } from './index';
-import {
-  installRequests,
-  readQuery,
-  setStartingQuery,
-  watchNavigation,
-} from './requests';
+import { readQuery, startWorker, watchNavigation } from './requests';
 
 /**
  * Starts the panel
@@ -20,7 +15,11 @@ import {
  * @param apiPath The path API requests start with, like "/api/1.0/"
  */
 export function start(apiPath: string) {
-  installRequests(apiPath);
+  // The frontend waits for this, so a worker that fails to start mustn't
+  // stop it starting
+  const ready = startWorker(apiPath).catch((error) => {
+    console.error('The dev panel could not start its service worker', error);
+  });
 
   window.__BEABEE_DEV_PANEL__ = {
     connect(hooks: DevPanelHooks) {
@@ -38,6 +37,6 @@ export function start(apiPath: string) {
       });
     },
     readQuery,
-    startingQuery: setStartingQuery,
+    ready,
   };
 }
