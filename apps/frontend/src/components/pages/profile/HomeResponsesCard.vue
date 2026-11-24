@@ -10,7 +10,9 @@
     icon="i-lucide-message-square-text"
     :count="t('callouts.data.responses', { n: total }, total)"
     :items="shown"
-    :error="error"
+    :loading="skeleton"
+    :error="failed"
+    :retry="retry"
     :item-key="(response) => response.id"
     :empty-text="t('homePage.noResponses')"
     :footer-label="footerLabel"
@@ -63,45 +65,32 @@ import {
 import { formatLocale } from '@beabee/vue';
 import { useToast } from '@nuxt/ui/composables';
 
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
 
 import HomeListCard from '#components/pages/profile/HomeListCard.vue';
-import { client } from '#utils/api';
+import { useLazyQuery } from '#composables/useLazyQuery';
+import { fetchMyResponses, homeQueries } from '#route-queries/home-queries';
 import { getRespondAgainKey } from '#utils/callouts';
 
 const { t } = useI18n();
 const toast = useToast();
 
-const page =
-  ref<Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>>>();
-const error = ref(false);
+const {
+  data: firstPage,
+  skeleton,
+  failed,
+  retry,
+} = useLazyQuery(homeQueries.latestResponses);
 
+/** All the responses, once expanding has loaded the rest */
+const allPage =
+  ref<Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>>>();
+
+const page = computed(() => allPage.value ?? firstPage.value);
 const responses = computed(() => page.value?.items);
 const total = computed(() => page.value?.total ?? 0);
-
-const fetchResponses = (limit: number) =>
-  client.callout.response.list(
-    {
-      sort: 'createdAt',
-      order: 'DESC',
-      limit,
-      rules: {
-        condition: 'AND',
-        rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
-      },
-    },
-    [GetCalloutResponseWith.Callout]
-  );
-
-onBeforeMount(async () => {
-  try {
-    page.value = await fetchResponses(3);
-  } catch {
-    error.value = true;
-  }
-});
 
 const collapsedCount = 3;
 const expanded = ref(false);
@@ -124,7 +113,7 @@ async function toggle() {
   if (!expanded.value && (responses.value?.length ?? 0) < total.value) {
     loadingAll.value = true;
     try {
-      page.value = await fetchResponses(Math.min(total.value, 1000));
+      allPage.value = await fetchMyResponses(Math.min(total.value, 1000));
     } catch {
       toast.add({
         title: t('homePage.loadAllResponsesError'),
