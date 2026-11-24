@@ -5,15 +5,21 @@ import {
 } from '@tanstack/vue-query';
 import type { RouteLocationNormalized } from 'vue-router';
 
+import { LOADING } from '#lib/loading';
 import { holdNavigation } from '#lib/router';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Long enough that a page's components don't fetch again what its route
-      // guard just fetched
-      staleTime: 5000,
-      retry: false,
+      // Also stops a page's components fetching again what its route guard
+      // just fetched
+      staleTime: LOADING.fresh,
+      // One retry for a request that got no answer at all, as when a
+      // connection drops. An answer from the server, even an error, isn't
+      // retried, as it would come back the same.
+      retry: (failureCount, error) =>
+        failureCount < 1 && error instanceof TypeError,
+      retryDelay: LOADING.retryDelay,
       // The route guard fetches again on the next visit
       retryOnMount: false,
       refetchOnWindowFocus: false,

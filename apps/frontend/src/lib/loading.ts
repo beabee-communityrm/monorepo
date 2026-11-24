@@ -19,4 +19,9 @@ export const LOADING = {
   hold: 300,
   /** A skeleton, once shown, stays at least this long, so it doesn't flash */
   skeletonMinimum: 400,
+  /** How long loaded data counts as fresh. Visiting it again within this time
+   * shows it without fetching it again. */
+  fresh: 5000,
+  /** How long to wait before retrying a request that got no answer */
+  retryDelay: 500,
 } as const;
