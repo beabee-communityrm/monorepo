@@ -58,7 +58,9 @@ export interface AppLinkListProps {
 const props = defineProps<AppLinkListProps>();
 
 // v-model support for the link list
-const links = defineModel<{ text: string; url: string }[]>({ default: [] });
+const links = defineModel<{ text: string; url: string }[]>({
+  default: () => [],
+});
 
 // Resolve add label: prefer provided prop, fallback to i18n default
 const resolvedAddLabel = computed(() => props.addLabel ?? t('actions.add'));

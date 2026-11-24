@@ -39,7 +39,7 @@ export interface AppRepeatableProps<T> {
 }
 
 const props = defineProps<AppRepeatableProps<T>>();
-const items = defineModel<T[]>({ default: [] });
+const items = defineModel<T[]>({ default: () => [] });
 
 function addItem() {
   items.value = [...items.value, props.newItem()];

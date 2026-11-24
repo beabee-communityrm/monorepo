@@ -20,12 +20,12 @@
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
     "@beabee/tsconfig": "workspace:^",
-    "@fortawesome/fontawesome-free": "^7.2.0",
+    "@fortawesome/fontawesome-free": "^7.3.1",
     "@types/node": "^26.6.6",
     "prettier": "^3.9.10",
     "typescript": "~6.0.3",
     "vitest": "^4.1.5",
-    "yaml": "^2.8.4"
+    "yaml": "^2.9.1"
   },
   "dependencies": {
     "minisearch": "^7.2.0"
