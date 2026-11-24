@@ -34,6 +34,7 @@ COPY apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
 COPY packages/prettier-config /opt/packages/prettier-config
 COPY packages/tsconfig /opt/packages/tsconfig
 COPY packages/vue /opt/packages/vue
+COPY packages/dev-panel /opt/packages/dev-panel
 COPY packages/fontawesome /opt/packages/fontawesome
 
 # Copy apps with relevant content
@@ -52,6 +53,8 @@ COPY apps/frontend /opt/apps/frontend
 COPY apps/frontend-old /opt/apps/frontend-old
 RUN yarn workspaces foreach --recursive --topological-dev \
   --from @beabee/frontend --from @beabee/frontend-old run build
+# The dev panel only runs on the dev server
+RUN ! grep -rq "__BEABEE_DEV_PANEL__" apps/frontend/dist
 
 FROM nginx:1.30-alpine
 
