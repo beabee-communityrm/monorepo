@@ -118,7 +118,7 @@ export function contactToProfileFields(
     FirstName_bee__c: contact.firstname.slice(0, 40),
     LastName_bee__c: contact.lastname.slice(0, 50),
     ProfileCreateDate_bee__c: contact.joined.toISOString(),
-    LastLogin_bee__c: null,
+    LastSeen_bee__c: contact.lastSeen?.toISOString() ?? null,
     beabeeProfileLink_bee__c: `${config.audience}/admin/contacts/${contact.id}`,
     MailingStreet_bee__c: address
       ? [address.line1, address.line2].filter(Boolean).join('\n').slice(0, 100)
@@ -126,5 +126,8 @@ export function contactToProfileFields(
     MailingCity_bee__c: address?.city.slice(0, 100) ?? null,
     MailingPostcode_bee__c: address?.postcode.slice(0, 12) ?? null,
     MailingCountry_bee__c: address?.country?.slice(0, 100) ?? null,
+    // The flow linking profiles to contacts only runs on this status, and the
+    // field has no default value
+    Sync_Status__c: 'Updated',
   };
 }
