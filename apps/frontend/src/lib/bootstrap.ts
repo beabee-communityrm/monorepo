@@ -10,9 +10,10 @@ import { waitForBackend } from '#utils/api/client';
 import App from '../App.vue';
 import { init as initErrorHandler } from './appsignal';
 import { i18n } from './i18n';
-import { prefetchRouteQueries, queryClient } from './query';
+import { queryClient } from './query';
 import { installRouteGuard } from './route-guard';
-import router, { waitForHolds } from './router';
+import { installRouteQueries } from './route-queries';
+import router from './router';
 
 // Flag to prevent multiple app initializations
 let isAppInitialized = false;
@@ -37,9 +38,7 @@ export async function startMainApp() {
   initErrorHandler(app);
 
   installRouteGuard(router);
-  router.beforeResolve(prefetchRouteQueries);
-  // After the route queries have started
-  router.beforeResolve(waitForHolds);
+  installRouteQueries(router);
   app.use({ ...router });
   app.use(i18n);
   app.use(icons);

@@ -1,7 +1,7 @@
 import { type Ref, onBeforeUnmount, ref, watch } from 'vue';
 
 import { LOADING } from '#lib/loading';
-import { getLoadStart } from '#lib/router';
+import { getPageLoadStart } from '#lib/route-queries';
 
 /**
  * Whether to show a skeleton for something that's loading. It only appears
@@ -31,7 +31,7 @@ export function useDelayedSkeleton(loading: Ref<boolean>) {
       if (isLoading) {
         if (visible.value) return;
         const start =
-          wasLoading === undefined ? getLoadStart() : performance.now();
+          wasLoading === undefined ? getPageLoadStart() : performance.now();
         const delay = LOADING.hold - (performance.now() - start);
         // Already past it, as when the page arrived after its hold
         if (delay <= 0) show();
