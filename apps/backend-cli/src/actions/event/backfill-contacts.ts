@@ -1,5 +1,4 @@
 import { ActivityActorType, ActivityEventType } from '@beabee/beabee-common';
-import { dataSource } from '@beabee/core/database';
 import { paymentService } from '@beabee/core/services';
 
 import chalk from 'chalk';
@@ -56,13 +55,13 @@ const backfillContributionStarted: EventBackfiller = {
   sameEvent: `${sameTarget}
     AND (y.metadata->>'subscriptionId' IS NULL
       OR y.metadata->>'subscriptionId' = x.metadata->>'subscriptionId')`,
-  backfill: async (dryRun) => {
+  backfill: async (danger, em) => {
     const eventType = ActivityEventType.ContactContributionStarted;
 
     const rows: { contactId: string; subscriptionId: string }[] =
-      await dataSource.query(noStartedEvent, [eventType]);
+      await em.query(noStartedEvent, [eventType]);
 
-    if (dryRun) {
+    if (!danger) {
       console.log(
         `${chalk.green('✓')} Would add ${rows.length} ${eventType} event(s)`
       );
@@ -74,7 +73,7 @@ const backfillContributionStarted: EventBackfiller = {
       try {
         const createdAt =
           await paymentService.getSubscriptionCreatedAt(subscriptionId);
-        const [{ id }] = await dataSource.query(
+        const [{ id }] = await em.query(
           `INSERT INTO activity_event ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata")
            VALUES ($1, $2, $1, $3, $4, jsonb_build_object('subscriptionId', $5::text))
            RETURNING id`,

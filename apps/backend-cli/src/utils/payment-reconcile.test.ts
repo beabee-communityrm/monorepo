@@ -1,17 +1,17 @@
 import { PaymentStatus, PaymentType } from '@beabee/beabee-common';
+import type { PaymentData } from '@beabee/core/type';
 
 import { describe, expect, it } from 'vitest';
 
-import type { StripeLocalPayment, StripePaymentData } from '../types/sync.js';
+import type { LocalPayment } from '../types/sync.js';
 import {
-  classifyInvoicePayments,
+  classifyPaymentRecords,
   countStatusChanges,
-  getCreatedWindows,
   getMismatchedPaymentFields,
   printPaymentMismatch,
-} from './stripe-reconcile.js';
+} from './payment-reconcile.js';
 
-function createData(overrides: Partial<StripePaymentData> = {}) {
+function createData(overrides: Partial<PaymentData> = {}) {
   return {
     amount: 25.35,
     chargeDate: new Date('2026-11-16T20:24:14Z'),
@@ -25,8 +25,8 @@ function createData(overrides: Partial<StripePaymentData> = {}) {
 
 function createPayment(
   id: string,
-  overrides: Partial<StripePaymentData> = {}
-): StripeLocalPayment {
+  overrides: Partial<PaymentData> = {}
+): LocalPayment {
   return { id, ...createData(overrides) };
 }
 
@@ -69,15 +69,15 @@ describe('getMismatchedPaymentFields', () => {
   });
 });
 
-describe('classifyInvoicePayments', () => {
+describe('classifyPaymentRecords', () => {
   const contactIdByCustomerId = new Map([['cus_known', 'contact-1']]);
 
-  it('reports a payment that differs from its invoice', () => {
+  it('reports a payment that differs from its provider payment', () => {
     const payment = createPayment('in_1', { status: PaymentStatus.Draft });
     const data = createData();
 
     expect(
-      classifyInvoicePayments(
+      classifyPaymentRecords(
         [{ id: 'in_1', customerId: 'cus_known', data }],
         new Map([[payment.id, payment]]),
         contactIdByCustomerId
@@ -88,9 +88,9 @@ describe('classifyInvoicePayments', () => {
     });
   });
 
-  it('reports nothing for a payment that matches its invoice', () => {
+  it('reports nothing for a payment that matches its provider payment', () => {
     expect(
-      classifyInvoicePayments(
+      classifyPaymentRecords(
         [{ id: 'in_1', customerId: 'cus_known', data: createData() }],
         new Map([['in_1', createPayment('in_1')]]),
         contactIdByCustomerId
@@ -99,7 +99,7 @@ describe('classifyInvoicePayments', () => {
   });
 
   it('reports a mismatch even if the customer is unknown', () => {
-    const { mismatches } = classifyInvoicePayments(
+    const { mismatches } = classifyPaymentRecords(
       [{ id: 'in_1', customerId: 'cus_unknown', data: createData() }],
       new Map([
         ['in_1', createPayment('in_1', { status: PaymentStatus.Draft })],
@@ -110,11 +110,11 @@ describe('classifyInvoicePayments', () => {
     expect(mismatches).toHaveLength(1);
   });
 
-  it('reports an invoice without a payment for a known customer', () => {
+  it('reports a provider payment without a local payment for a known customer', () => {
     const data = createData();
 
     expect(
-      classifyInvoicePayments(
+      classifyPaymentRecords(
         [{ id: 'in_1', customerId: 'cus_known', data }],
         new Map(),
         contactIdByCustomerId
@@ -125,9 +125,9 @@ describe('classifyInvoicePayments', () => {
     });
   });
 
-  it('ignores an invoice without a payment for an unknown customer', () => {
+  it('ignores a provider payment without a local payment for an unknown customer', () => {
     expect(
-      classifyInvoicePayments(
+      classifyPaymentRecords(
         [
           { id: 'in_1', customerId: 'cus_unknown', data: createData() },
           { id: 'in_2', customerId: null, data: createData() },
@@ -173,77 +173,5 @@ describe('countStatusChanges', () => {
         ['status unchanged', 1],
       ])
     );
-  });
-});
-
-describe('getCreatedWindows', () => {
-  const seconds = (date: string) => new Date(date).getTime() / 1000;
-  const now = new Date('2026-11-19T12:00:00Z');
-
-  it('splits by calendar month with open ends', () => {
-    expect(
-      getCreatedWindows(
-        new Date('2026-08-15T09:30:00Z'),
-        now,
-        undefined,
-        undefined
-      )
-    ).toEqual([
-      { lt: seconds('2026-09-01T00:00:00Z') },
-      {
-        gte: seconds('2026-09-01T00:00:00Z'),
-        lt: seconds('2026-10-01T00:00:00Z'),
-      },
-      {
-        gte: seconds('2026-10-01T00:00:00Z'),
-        lt: seconds('2026-11-01T00:00:00Z'),
-      },
-      { gte: seconds('2026-11-01T00:00:00Z') },
-    ]);
-  });
-
-  it('continues across a year end', () => {
-    expect(
-      getCreatedWindows(
-        new Date('2025-12-10T00:00:00Z'),
-        new Date('2026-01-20T00:00:00Z'),
-        undefined,
-        undefined
-      )
-    ).toEqual([
-      { lt: seconds('2026-01-01T00:00:00Z') },
-      { gte: seconds('2026-01-01T00:00:00Z') },
-    ]);
-  });
-
-  it('closes the ends at since and until', () => {
-    expect(
-      getCreatedWindows(
-        new Date('2020-01-01T00:00:00Z'),
-        now,
-        new Date('2026-09-20T00:00:00Z'),
-        new Date('2026-10-05T00:00:00Z')
-      )
-    ).toEqual([
-      {
-        gte: seconds('2026-09-20T00:00:00Z'),
-        lt: seconds('2026-10-01T00:00:00Z'),
-      },
-      {
-        gte: seconds('2026-10-01T00:00:00Z'),
-        lte: seconds('2026-10-05T00:00:00Z'),
-      },
-    ]);
-  });
-
-  it('returns one open window within a single month', () => {
-    expect(
-      getCreatedWindows(
-        new Date('2026-11-02T00:00:00Z'),
-        now,
-        undefined,
-        undefined
-      )
-    ).toEqual([{}]);
   });
 });

@@ -21,17 +21,17 @@ export function convertContactToNlUpdate(
   updates?: ContactNewsletterUpdates,
   opts?: { newsletterGroupChange?: NewsletterGroupChange }
 ): UpdateNewsletterContact | undefined {
-  let newStatus = updates?.newsletterStatus || contact.profile.newsletterStatus;
+  let newStatus = updates?.status || contact.newsletter.status;
   if (
     newStatus === NewsletterStatus.None &&
-    contact.profile.newsletterStatus === NewsletterStatus.None
+    contact.newsletter.status === NewsletterStatus.None
   ) {
     return undefined;
   }
 
   // Prevent newsletter status of subscribed users being set back to pending
   if (
-    contact.profile.newsletterStatus === NewsletterStatus.Subscribed &&
+    contact.newsletter.status === NewsletterStatus.Subscribed &&
     newStatus === NewsletterStatus.Pending
   ) {
     newStatus = NewsletterStatus.Subscribed;
@@ -40,8 +40,12 @@ export function convertContactToNlUpdate(
   return {
     email: contact.email,
     status: newStatus,
-    groups: updates?.newsletterGroups,
+    groups: updates?.groups,
     newsletterGroupChange: opts?.newsletterGroupChange,
+    previous: {
+      status: contact.newsletter.status,
+      groups: contact.newsletter.groups,
+    },
     firstname: contact.firstname,
     lastname: contact.lastname,
     fields: {

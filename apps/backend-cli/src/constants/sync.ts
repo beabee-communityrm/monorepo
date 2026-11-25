@@ -5,7 +5,7 @@ export const SYNC_NEWSLETTER_RECONCILE_TESTS = [
   'active-user-tag',
 ] as const;
 
-export const SYNC_STRIPE_RECONCILE_TESTS = [
+export const SYNC_PAYMENT_SERVICE_RECONCILE_TESTS = [
   'subscriptions',
   'payments',
   'missing-payments',

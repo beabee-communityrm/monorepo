@@ -5,17 +5,17 @@ import { Contact } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 import { newsletterBulkService } from '@beabee/core/services';
 
-import { SyncDryRunArgs } from '../../../types/sync.js';
+import { SyncDangerArgs } from '../../../types/sync.js';
 
 const log = mainLogger.child({ app: 'sync-newsletter-clear-pending-status' });
 
-export async function clearPendingStatus(args: SyncDryRunArgs): Promise<void> {
+export async function clearPendingStatus(args: SyncDangerArgs): Promise<void> {
   await runApp(async () => {
     log.info('📡 Fetching contact lists...');
 
     const pendingContacts = await createQueryBuilder(Contact, 'contact')
-      .innerJoin('contact.profile', 'profile')
-      .where('profile.newsletterStatus = :status', {
+      .innerJoin('contact.newsletter', 'newsletter')
+      .where('newsletter.status = :status', {
         status: NewsletterStatus.Pending,
       })
       .getMany();
@@ -36,7 +36,7 @@ export async function clearPendingStatus(args: SyncDryRunArgs): Promise<void> {
 
     log.info(`📊 Found ${contactsToUpdate.length} contacts to clear.`);
 
-    if (args.dryRun) {
+    if (!args.danger) {
       log.info('DRY RUN - No changes will actually be made');
     }
 
@@ -45,14 +45,11 @@ export async function clearPendingStatus(args: SyncDryRunArgs): Promise<void> {
       log.info(`  • ${contact.email}`);
     }
 
-    if (!args.dryRun) {
+    if (args.danger) {
       await newsletterBulkService.updateContactNlData(
         contactsToUpdate.map((contact) => ({
           contact,
-          updates: {
-            newsletterStatus: NewsletterStatus.None,
-            newsletterGroups: [],
-          },
+          updates: { status: NewsletterStatus.None, groups: [] },
         }))
       );
     }

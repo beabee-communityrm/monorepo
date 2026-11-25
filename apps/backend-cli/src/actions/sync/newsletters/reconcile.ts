@@ -66,14 +66,14 @@ const mismatchTests: Record<SyncNewsletterReconcileTestId, MismatchTest> = {
    * */
   status: {
     test: (contact, nlContact) =>
-      contact.profile.newsletterStatus !== nlContact.status,
+      contact.newsletter.status !== nlContact.status,
     print: (contact, nlContact) =>
-      `status=${contact.profile.newsletterStatus}→${nlContact.status}`,
+      `status=${contact.newsletter.status}→${nlContact.status}`,
     reconcile: async (mismatchedContacts) => {
       await newsletterBulkService.updateContactNlData(
         mismatchedContacts.map(([contact, nlContact]) => ({
           contact,
-          updates: { newsletterStatus: nlContact.status },
+          updates: { status: nlContact.status },
         }))
       );
     },
@@ -86,15 +86,14 @@ const mismatchTests: Record<SyncNewsletterReconcileTestId, MismatchTest> = {
    * */
   groups: {
     test: (contact, nlContact) =>
-      groupsList(contact.profile.newsletterGroups) !==
-      groupsList(nlContact.groups),
+      groupsList(contact.newsletter.groups) !== groupsList(nlContact.groups),
     print: (contact, nlContact) =>
-      `groups=[${groupsList(contact.profile.newsletterGroups)}]→[${groupsList(nlContact.groups)}]`,
+      `groups=[${groupsList(contact.newsletter.groups)}]→[${groupsList(nlContact.groups)}]`,
     reconcile: async (mismatchedContacts) => {
       await newsletterBulkService.updateContactNlData(
         mismatchedContacts.map(([contact, nlContact]) => ({
           contact,
-          updates: { newsletterGroups: nlContact.groups },
+          updates: { groups: nlContact.groups },
         }))
       );
     },
@@ -168,7 +167,9 @@ async function fetchContacts(
   argv: SyncNewsletterReconcileArgs
 ): Promise<ReconciliationData> {
   log.info('📡 Loading local contact list...');
-  const contacts = await contactsService.find({ relations: { profile: true } });
+  const contacts = await contactsService.find({
+    relations: { newsletter: true },
+  });
 
   if (argv.since || argv.until) {
     log.info(
@@ -205,8 +206,8 @@ async function fetchContacts(
     } else if (
       argv.uploadNew &&
       // Only consider active statuses for upload
-      (contact.profile.newsletterStatus === NewsletterStatus.Subscribed ||
-        contact.profile.newsletterStatus === NewsletterStatus.Pending)
+      (contact.newsletter.status === NewsletterStatus.Subscribed ||
+        contact.newsletter.status === NewsletterStatus.Pending)
     ) {
       contactsToUpload.push(contact);
     }
@@ -262,7 +263,7 @@ function printReport(
     }
     for (const c of data.contactsToUpload) {
       log.info(
-        `  • ${c.email}: status=${c.profile.newsletterStatus}, groups=[${groupsList(c.profile.newsletterGroups)}]`
+        `  • ${c.email}: status=${c.newsletter.status}, groups=[${groupsList(c.newsletter.groups)}]`
       );
     }
   }
@@ -274,11 +275,11 @@ function printReport(
  * Import contacts from the newsletter service into our database.
  *
  * @param nlContacts The newsletter contacts to import
- * @param dryRun Whether to perform a dry run (no changes made)
+ * @param danger Make the changes; otherwise only report what would be done
  */
 async function importNlContacts(
   nlContacts: NewsletterContact[],
-  dryRun: boolean
+  danger: boolean
 ) {
   log.info(
     `📥 Importing ${nlContacts.length} contacts from newsletter service...`
@@ -293,7 +294,7 @@ async function importNlContacts(
     `  ℹ️ Skipping ${nlContacts.length - validNlContacts.length} contacts with pending status`
   );
 
-  if (!dryRun) {
+  if (danger) {
     for (const nlContact of validNlContacts) {
       await contactsService.createContact(
         {
@@ -302,9 +303,10 @@ async function importNlContacts(
           lastname: nlContact.lastname,
           joined: nlContact.joined,
         },
+        {},
         {
-          newsletterStatus: nlContact.status,
-          newsletterGroups: nlContact.groups,
+          status: nlContact.status,
+          groups: nlContact.groups,
         },
         null,
         { sync: false }
@@ -317,13 +319,13 @@ async function importNlContacts(
  * Upload new contacts to the newsletter service.
  *
  * @param contacts The contacts to upload
- * @param dryRun Whether to perform a dry run (no changes made)
+ * @param danger Make the changes; otherwise only report what would be done
  */
-async function uploadNew(contacts: Contact[], dryRun: boolean) {
+async function uploadNew(contacts: Contact[], danger: boolean) {
   log.info(
     `📤 Uploading ${contacts.length} new contacts to newsletter service...`
   );
-  if (!dryRun) {
+  if (danger) {
     await newsletterBulkService.upsertContacts(contacts);
   }
 }
@@ -333,12 +335,12 @@ async function uploadNew(contacts: Contact[], dryRun: boolean) {
  *
  * @param mismatches The list of mismatches
  * @param testIds The list of test IDs to fix
- * @param dryRun Whether to perform a dry run (no changes made)
+ * @param danger Make the changes; otherwise only report what would be done
  */
 async function runMismatchFixes(
   mismatches: Mismatch[],
   testIds: SyncNewsletterReconcileTestId[],
-  dryRun: boolean
+  danger: boolean
 ) {
   for (const testId of testIds) {
     const mismatchesForTest = mismatches.filter(([, , m]) =>
@@ -347,7 +349,7 @@ async function runMismatchFixes(
     log.info(
       `️🛠️ Fixing ${mismatchesForTest.length} mismatched contacts for test "${testId}"...`
     );
-    if (mismatchesForTest.length > 0 && !dryRun) {
+    if (mismatchesForTest.length > 0 && danger) {
       await mismatchTests[testId].reconcile(mismatchesForTest);
     }
   }
@@ -376,16 +378,16 @@ export async function reconcile(
       printReport(data, argv);
     }
 
-    if (argv.dryRun) {
+    if (!argv.danger) {
       log.info('DRY RUN - No changes will actually be made');
     }
 
     if (argv.importNew) {
-      await importNlContacts(data.nlContactsToImport, argv.dryRun);
+      await importNlContacts(data.nlContactsToImport, argv.danger);
     }
-    await runMismatchFixes(data.mismatchesToFix, argv.fix, argv.dryRun);
+    await runMismatchFixes(data.mismatchesToFix, argv.fix, argv.danger);
     if (argv.uploadNew) {
-      await uploadNew(data.contactsToUpload, argv.dryRun);
+      await uploadNew(data.contactsToUpload, argv.danger);
     }
 
     log.info('✅ Newsletter reconciliation completed successfully!');

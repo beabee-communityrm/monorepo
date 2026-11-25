@@ -1,5 +1,7 @@
 import type { ActivityEventType } from '@beabee/beabee-common';
 
+import type { EntityManager } from 'typeorm';
+
 import { EVENT_BACKFILL_CATEGORIES } from '../constants/event.js';
 
 export type EventBackfillCategory = (typeof EVENT_BACKFILL_CATEGORIES)[number];
@@ -13,13 +15,16 @@ export interface EventDuplicateRule {
 }
 
 export interface EventBackfiller extends EventDuplicateRule {
-  /** Insert missing events, returning their ids (none on a dry run) */
-  backfill: (dryRun: boolean) => Promise<string[]>;
+  /**
+   * Insert missing events, returning their ids (none on a dry run). Runs in `em`,
+   * the transaction shared by every backfill of the category
+   */
+  backfill: (danger: boolean, em: EntityManager) => Promise<string[]>;
 }
 
 export interface BackfillEventsArgs {
   category: EventBackfillCategory | 'all';
-  dryRun: boolean;
+  danger: boolean;
 }
 
 export interface EventBackfill extends EventDuplicateRule {

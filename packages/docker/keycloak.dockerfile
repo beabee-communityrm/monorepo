@@ -1,4 +1,4 @@
-FROM quay.io/keycloak/keycloak:26.7
+FROM quay.io/keycloak/keycloak:26.8
 
 # Magic links let beabee hand a signup over to Keycloak without an email round
 # trip, mirroring Zitadel's invite codes

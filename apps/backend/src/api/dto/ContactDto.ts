@@ -1,4 +1,5 @@
 import {
+  ContactContributionData,
   ContributionPeriod,
   ContributionType,
   GetContactWith,
@@ -8,7 +9,6 @@ import {
   RoleType,
   RoleTypes,
 } from '@beabee/beabee-common';
-import { ContributionInfo } from '@beabee/core/type';
 
 import { Type } from 'class-transformer';
 import {
@@ -28,6 +28,10 @@ import {
 } from 'class-validator';
 
 import { GetPaginatedQuery, GetPaginatedRuleGroup } from '#api/dto/BaseDto';
+import {
+  GetContactNewsletterDto,
+  UpdateContactNewsletterDto,
+} from '#api/dto/ContactNewsletterDto';
 import {
   GetContactProfileDto,
   UpdateContactProfileDto,
@@ -68,7 +72,7 @@ export class ListContactsDto extends GetPaginatedQuery {
   sort?: string;
 }
 
-export class GetContributionInfoDto implements ContributionInfo {
+export class GetContactContributionDto implements ContactContributionData {
   @IsEnum(ContributionType)
   type!: ContributionType;
 
@@ -156,12 +160,16 @@ export class GetContactDto extends BaseContactDto {
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => GetContributionInfoDto)
-  contribution?: GetContributionInfoDto;
+  @Type(() => GetContactContributionDto)
+  contribution?: GetContactContributionDto;
 
   @IsOptional()
   @ValidateNested()
   profile?: GetContactProfileDto;
+
+  @IsOptional()
+  @ValidateNested()
+  newsletter?: GetContactNewsletterDto;
 
   @IsOptional()
   @ValidateNested()
@@ -185,6 +193,11 @@ export class UpdateContactDto extends BaseContactDto {
   @ValidateNested()
   @Type(() => UpdateContactProfileDto)
   profile?: UpdateContactProfileDto;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateContactNewsletterDto)
+  newsletter?: UpdateContactNewsletterDto;
 
   @IsOptional()
   @IsString({ each: true })

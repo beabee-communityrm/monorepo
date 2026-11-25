@@ -4,7 +4,7 @@ import { EVENT_BACKFILL_CATEGORIES } from '../constants/event.js';
 import type { BackfillEventsArgs } from '../types/index.js';
 
 export const eventCommand: CommandModule = {
-  command: 'event <action>',
+  command: 'event',
   describe: 'Manage activity feed events',
   builder: (yargs) =>
     yargs
@@ -19,9 +19,10 @@ export const eventCommand: CommandModule = {
               choices: ['all', ...EVENT_BACKFILL_CATEGORIES],
               demandOption: true,
             })
-            .option('dryRun', {
+            .option('danger', {
               type: 'boolean',
-              describe: 'Run without making changes',
+              description:
+                'Make the changes; without this flag the command only reports what it would do',
               default: false,
             }) as Argv<BackfillEventsArgs>,
         handler: async (argv: ArgumentsCamelCase<BackfillEventsArgs>) => {

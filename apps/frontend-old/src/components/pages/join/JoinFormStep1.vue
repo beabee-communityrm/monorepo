@@ -45,8 +45,7 @@
           :href="generalContent.privacyLink"
           target="_blank"
           rel="noreferrer"
-          >{{ t('join.privacy') }}</a
-        >.
+          >{{ t('join.privacy') }}</a>.
       </p>
       <p>
         <a href="https://beabee.io" target="_blank">

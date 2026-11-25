@@ -1,7 +1,7 @@
 import type { CommandModule } from 'yargs';
 
 export const emailCommand: CommandModule = {
-  command: 'email <action>',
+  command: 'email',
   describe: 'Manage email template overrides',
   builder: (yargs) => {
     return yargs
@@ -87,7 +87,8 @@ export const emailCommand: CommandModule = {
             await import('../actions/email/delete.js');
           return deleteEmailOverride(argv);
         },
-      });
+      })
+      .demandCommand(1);
   },
   handler: () => {},
 };

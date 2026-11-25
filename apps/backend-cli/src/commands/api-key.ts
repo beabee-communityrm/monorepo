@@ -3,7 +3,7 @@ import type { ArgumentsCamelCase, CommandModule } from 'yargs';
 import type { CreateApiKeyArgs, DeleteApiKeyArgs } from '../types/index.js';
 
 export const apiKeyCommand: CommandModule = {
-  command: 'api-key <action>',
+  command: 'api-key',
   describe: 'Manage API keys',
   builder: (yargs) => {
     return yargs
@@ -51,7 +51,8 @@ export const apiKeyCommand: CommandModule = {
           const { deleteApiKey } = await import('../actions/api-key/delete.js');
           return deleteApiKey(argv);
         },
-      });
+      })
+      .demandCommand(1);
   },
   handler: () => {},
 };

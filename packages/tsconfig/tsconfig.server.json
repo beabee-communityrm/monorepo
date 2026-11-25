@@ -1,11 +1,12 @@
 {
-  "extends": "@tsconfig/node24/tsconfig.json",
+  "extends": "@tsconfig/node26/tsconfig.json",
   "compilerOptions": {
     // For TypeORM and class-transformer, class-validator, etc.
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
 
-    // For strict type checking
+    // For strict type checking (@tsconfig/node26 no longer enables strict)
+    "strict": true,
     "exactOptionalPropertyTypes": true,
     "strictNullChecks": true,
 

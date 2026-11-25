@@ -27,7 +27,7 @@ export const pushContacts = async (
       relations: { profile: true },
     });
     console.log(`Pushing ${contacts.length} contact(s)`);
-    if (args.dryRun) return;
+    if (!args.danger) return;
 
     const failures = await contactSyncBulkService.upsertContacts(contacts);
     for (const failure of failures) {

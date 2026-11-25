@@ -30,13 +30,13 @@ runs:
         echo "::add-mask::$stripe_webhook_secret"
 
         cat ./packages/test-utils/fixtures/test-db-default.sql \
-          | docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database import
+          | docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database import --danger
 
         cat ./packages/test-utils/fixtures/test-db-custom.sql \
           | sed \
               -e "s|__stripeWebhookSecret__|$stripe_webhook_secret|" \
               -e "s|__stripeProductId__|${{ inputs.stripe_membership_product_id }}|" \
-          | docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database import
+          | docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database import --danger
 
     - name: Restart Docker stack
       shell: bash

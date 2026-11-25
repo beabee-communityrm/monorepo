@@ -272,7 +272,7 @@ export const importCalloutResponses = async (
       );
     }
 
-    if (args.dryRun) {
+    if (!args.danger) {
       console.error(
         `\nDry run: would import ${calloutResponses.length} responses (no DB changes).`
       );

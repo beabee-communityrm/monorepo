@@ -1,7 +1,7 @@
 import { ActivityActorType } from '@beabee/beabee-common';
-import { dataSource } from '@beabee/core/database';
 
 import chalk from 'chalk';
+import type { EntityManager } from 'typeorm';
 
 import type { EventBackfill, EventBackfiller } from '../types/index.js';
 
@@ -24,17 +24,16 @@ export const createBackfill = ({
   fields,
   params = [],
   ...rule
-}: EventBackfill): EventBackfiller => ({
-  ...rule,
-  backfill: async (dryRun) => {
+}: EventBackfill): EventBackfiller => {
+  const backfill = async (danger: boolean, em: EntityManager) => {
     const { eventType } = rule;
     const queryParams = [eventType, ...params];
 
     // Cast event type to varchar and compare with source to ensure type consistency
     const select = `SELECT $1::varchar, ${fields} ${source}`;
 
-    if (dryRun) {
-      const [{ count }] = await dataSource.query(
+    if (!danger) {
+      const [{ count }] = await em.query(
         `SELECT COUNT(*)::int AS count FROM (${select}) s`,
         queryParams
       );
@@ -44,7 +43,7 @@ export const createBackfill = ({
       return [];
     }
 
-    const inserted: { id: string }[] = await dataSource.query(
+    const inserted: { id: string }[] = await em.query(
       `INSERT INTO activity_event ("eventType", "targetId", "actorType", "actorId", "createdAt", "metadata")
        ${select}
        RETURNING id`,
@@ -54,5 +53,7 @@ export const createBackfill = ({
       `${chalk.green('✓')} Added ${inserted.length} ${eventType} event(s)`
     );
     return inserted.map(({ id }) => id);
-  },
-});
+  };
+
+  return { ...rule, backfill };
+};

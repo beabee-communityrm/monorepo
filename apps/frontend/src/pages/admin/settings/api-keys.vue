@@ -23,7 +23,11 @@ meta:
     :title="t('adminSettings.apikey.confirmCreate.title')"
     :confirm="t('actions.continue')"
     @close="newApiKeySecret = ''"
-    @confirm="newApiKeySecret = ''"
+    @confirm="
+      () => {
+        newApiKeySecret = '';
+      }
+    "
   >
     <p class="mb-4">{{ t('adminSettings.apikey.confirmCreate.text') }}</p>
     <div class="flex gap-2">

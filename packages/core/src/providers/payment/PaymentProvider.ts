@@ -1,10 +1,9 @@
-import { PaymentMethod } from '@beabee/beabee-common';
+import { ContactContributionData, PaymentMethod } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
 import { Contact, ContactContribution } from '#models/index';
 import {
   CompletedPaymentFlow,
-  ContributionInfo,
   PaymentFlowForm,
   UpdateContributionForm,
   UpdateContributionResult,
@@ -73,7 +72,7 @@ export abstract class PaymentProvider {
    * Gets current contribution information
    * @returns Promise resolving to partial contribution info
    */
-  abstract getContributionInfo(): Promise<Partial<ContributionInfo>>;
+  abstract getContributionInfo(): Promise<Partial<ContactContributionData>>;
 
   /**
    * Cancels an active contribution

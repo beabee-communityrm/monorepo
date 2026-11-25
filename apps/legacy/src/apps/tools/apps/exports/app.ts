@@ -55,10 +55,7 @@ interface DeleteSchema {
 }
 
 type UpdateSchema =
-  | AddItemSchema
-  | UpdateItemsSchema
-  | ExportSchema
-  | DeleteSchema;
+  AddItemSchema | UpdateItemsSchema | ExportSchema | DeleteSchema;
 
 async function schemaToExport(data: CreateSchema): Promise<Export> {
   const exportDetails = new Export();

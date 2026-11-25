@@ -6,15 +6,15 @@ import chalk from 'chalk';
 /**
  * Backfill width/height S3 metadata for images uploaded before dimensions
  * were stored at upload time. Exits with a non-zero code if any image failed.
- * @param dryRun Only report what would be updated
+ * @param danger Make the changes; otherwise only report what would be done
  */
-export const backfillDimensions = async (dryRun: boolean): Promise<void> => {
+export const backfillDimensions = async (danger: boolean): Promise<void> => {
   await runApp(async () => {
     const { updated, skipped, failed } =
-      await imageService.backfillImageDimensions(dryRun);
+      await imageService.backfillImageDimensions(!danger);
 
     console.log(
-      `${chalk.green('✓')} ${dryRun ? 'Would update' : 'Updated'} ${updated}, skipped ${skipped} (already have dimensions)`
+      `${chalk.green('✓')} ${danger ? 'Updated' : 'Would update'} ${updated}, skipped ${skipped} (already have dimensions)`
     );
 
     if (failed > 0) {

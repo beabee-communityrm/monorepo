@@ -52,9 +52,9 @@ import {
   BatchUpdateContactDto,
   BatchUpdateContactResultDto,
   CreateContactDto,
+  GetContactContributionDto,
   GetContactDto,
   GetContactOptsDto,
-  GetContributionInfoDto,
   ListContactsDto,
   UpdateContactDto,
 } from '#api/dto/ContactDto';
@@ -120,7 +120,8 @@ export class ContactController {
           password: await generatePassword(data.password),
         }),
       },
-      data.profile
+      data.profile,
+      data.newsletter
     );
 
     if (data.roles) {
@@ -139,6 +140,7 @@ export class ContactController {
     return ContactTransformer.convert(contact, auth, {
       with: [
         ...(data.profile ? [GetContactWith.Profile] : []),
+        ...(data.newsletter ? [GetContactWith.Newsletter] : []),
         ...(data.roles ? [GetContactWith.Roles] : []),
       ],
     });
@@ -257,16 +259,16 @@ export class ContactController {
   @Get('/:id/contribution')
   async getContribution(
     @TargetUser() target: Contact
-  ): Promise<GetContributionInfoDto> {
+  ): Promise<GetContactContributionDto> {
     const ret = await PaymentService.getContributionInfo(target);
-    return plainToInstance(GetContributionInfoDto, ret);
+    return plainToInstance(GetContactContributionDto, ret);
   }
 
   @Patch('/:id/contribution')
   async updateContribution(
     @TargetUser() target: Contact,
     @Body() data: UpdateContributionDto
-  ): Promise<GetContributionInfoDto> {
+  ): Promise<GetContactContributionDto> {
     const form = {
       monthlyAmount: getMonthlyAmount(data.amount, data.period),
       period: data.period,
@@ -413,7 +415,7 @@ export class ContactController {
   async completeStartContribution(
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
-  ): Promise<GetContributionInfoDto> {
+  ): Promise<GetContactContributionDto> {
     const result = await PaymentFlowService.completePaymentFlowAndProcess(
       target,
       data.paymentFlowId
@@ -438,7 +440,7 @@ export class ContactController {
   async forceUpdateContribution(
     @TargetUser() target: Contact,
     @Body() data: ForceUpdateContributionDto
-  ): Promise<GetContributionInfoDto> {
+  ): Promise<GetContactContributionDto> {
     await ContactsService.forceUpdateContactContribution(target, data);
     return await this.getContribution(target);
   }
@@ -529,7 +531,7 @@ export class ContactController {
   async completeUpdatePaymentMethod(
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
-  ): Promise<GetContributionInfoDto> {
+  ): Promise<GetContactContributionDto> {
     await PaymentFlowService.completePaymentFlowAndProcess(
       target,
       data.paymentFlowId

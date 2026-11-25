@@ -78,14 +78,14 @@ export class ImageService extends BaseS3ObjectService<ImageServiceConfig> {
   /**
    * Upload an image to S3/MinIO
    * @param imageData Image data as a stream or buffer
-   * @param originalFilename Original filename
+   * @param originalFilename Original filename (optional)
    * @param owner Owner's contact email (optional)
    * @param format Output format (avif, webp, jpeg, png, or "original" to keep the original format)
    * @returns Metadata for the uploaded image
    */
   async uploadImage(
     imageData: Readable | Buffer,
-    originalFilename: string,
+    originalFilename: string | undefined,
     owner?: string,
     format?: ImageFormat
   ): Promise<ImageMetadata> {

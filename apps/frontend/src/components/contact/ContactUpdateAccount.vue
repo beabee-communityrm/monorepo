@@ -154,7 +154,10 @@ const data = reactive({
 watch(
   toRef(props, 'id'),
   async (id) => {
-    const contact = await client.contact.get(id, [GetContactWith.Profile]);
+    const contact = await client.contact.get(id, [
+      GetContactWith.Profile,
+      GetContactWith.Newsletter,
+    ]);
 
     data.emailAddress = contact.email;
     data.firstName = contact.firstname;
@@ -165,7 +168,7 @@ watch(
     data.organisation = contact.profile.organisation;
     data.vatNumber = contact.profile.vatNumber;
 
-    currentNewsletterStatus.value = contact.profile.newsletterStatus;
+    currentNewsletterStatus.value = contact.newsletter.status;
 
     const address = contact.profile.deliveryAddress;
     data.addressLine1 = address?.line1 || '';
@@ -188,12 +191,12 @@ async function handleSubmit() {
     email: data.emailAddress,
     firstname: data.firstName,
     lastname: data.lastName,
+    // Only update newsletter status if the checkbox was ticked
+    ...(newNewsletterStatus && {
+      newsletter: { status: newNewsletterStatus },
+    }),
     profile: {
       telephone: data.telephone,
-      // Only update newsletter status if the checkbox was ticked
-      ...(newNewsletterStatus && {
-        newsletterStatus: newNewsletterStatus,
-      }),
       // Only update opt in if it's visible
       ...(accountContent.showMailOptIn && {
         deliveryOptIn: data.deliveryOptIn,

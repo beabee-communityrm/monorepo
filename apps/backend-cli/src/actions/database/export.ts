@@ -21,14 +21,14 @@ import {
 /**
  * Export database to SQL dump with configurable anonymization level
  *
- * @param dryRun If true, only logs what would be done
+ * @param danger Make the changes; otherwise only report what would be done
  * @param level Anonymisation level: 'full' (all data anonymised), 'safe' (contacts/payments/emails/segments anonymised, other tables raw) or 'none' (everything raw, including PII)
  * @param skipAnonymizeTables If provided, skip anonymization for the given table names
  * @param preserveCalloutAnswers If true, keep callout response answers intact (only anonymize FKs/guest data)
  * @param filePath If set, write output to this file instead of stdout
  */
 export const exportDatabase = async (
-  dryRun = false,
+  danger = false,
   level: AnonymizationLevel = 'full',
   skipAnonymizeTables: string[] = [],
   preserveCalloutAnswers = false,
@@ -46,7 +46,7 @@ export const exportDatabase = async (
     preserveCalloutAnswers
   );
 
-  if (dryRun) {
+  if (!danger) {
     const modelNames = anonymisers.map((a) =>
       typeof a.model === 'function' ? a.model.name : String(a.model)
     );

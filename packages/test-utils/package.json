@@ -25,7 +25,7 @@
     "@beabee/prettier-config": "workspace:^",
     "@beabee/tsconfig": "workspace:^",
     "@types/node": "^26.6.6",
-    "prettier": "^3.8.3",
+    "prettier": "^3.9.10",
     "typescript": "~6.0.3"
   }
 }

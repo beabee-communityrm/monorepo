@@ -1,22 +1,22 @@
-import type { Stripe } from '@beabee/core/lib/stripe';
 import type { Payment } from '@beabee/core/models';
+import type { PaymentData } from '@beabee/core/type';
 
 import {
   SYNC_NEWSLETTER_RECONCILE_TESTS,
-  SYNC_STRIPE_RECONCILE_TESTS,
+  SYNC_PAYMENT_SERVICE_RECONCILE_TESTS,
 } from '../constants/sync.js';
 
 export interface SyncNewsletterActiveMemberTagArgs {
   since: Date;
   until: Date;
-  dryRun: boolean;
+  danger: boolean;
 }
 
 export type SyncNewsletterReconcileTestId =
   (typeof SYNC_NEWSLETTER_RECONCILE_TESTS)[number];
 
 export interface SyncNewsletterReconcileArgs {
-  dryRun: boolean;
+  danger: boolean;
   report: boolean;
   importNew: boolean;
   uploadNew: boolean;
@@ -25,78 +25,52 @@ export interface SyncNewsletterReconcileArgs {
   until: Date | undefined;
 }
 
-export interface SyncDryRunArgs {
-  dryRun: boolean;
+export interface SyncDangerArgs {
+  danger: boolean;
 }
 
 export interface SyncSegmentsArgs {
   segmentId: string;
-  dryRun: boolean;
+  danger: boolean;
 }
 
 export interface SyncContactSyncServicePushArgs {
   contactIds: string[] | undefined;
-  dryRun: boolean;
+  danger: boolean;
 }
 
-export type SyncStripeReconcileTestId =
-  (typeof SYNC_STRIPE_RECONCILE_TESTS)[number];
+export type SyncPaymentServiceReconcileTestId =
+  (typeof SYNC_PAYMENT_SERVICE_RECONCILE_TESTS)[number];
 
-export interface SyncStripeReconcileArgs {
-  dryRun: boolean;
+export interface SyncPaymentServiceReconcileArgs {
+  danger: boolean;
   report: boolean;
   contactIds: string[] | undefined;
-  fix: SyncStripeReconcileTestId[];
+  fix: SyncPaymentServiceReconcileTestId[];
   since: Date | undefined;
   until: Date | undefined;
 }
 
-/** The payment fields that mirror a Stripe invoice */
-export type StripePaymentData = Pick<
-  Payment,
-  'amount' | 'chargeDate' | 'description' | 'subscriptionId' | 'status' | 'type'
->;
-
 /** A local payment as far as the reconciliation reads it */
-export type StripeLocalPayment = Pick<Payment, 'id'> & StripePaymentData;
+export type LocalPayment = Pick<Payment, 'id'> & PaymentData;
 
-/** A Stripe invoice converted to the payment it should be stored as */
-export interface StripeInvoicePayment {
-  id: string;
-  customerId: string | null;
-  data: StripePaymentData;
+/** A local payment that differs from the payment provider's in the given fields */
+export interface PaymentMismatch {
+  payment: LocalPayment;
+  data: PaymentData;
+  fields: (keyof PaymentData)[];
 }
 
-/** A local payment that differs from its Stripe invoice in the given fields */
-export interface StripePaymentMismatch {
-  payment: StripeLocalPayment;
-  data: StripePaymentData;
-  fields: (keyof StripePaymentData)[];
-}
-
-/** A Stripe invoice of a known contact without a local payment */
-export interface StripeMissingPayment {
+/** A payment provider's payment of a known contact without a local payment */
+export interface MissingPayment {
   id: string;
   contactId: string;
-  data: StripePaymentData;
+  data: PaymentData;
 }
 
-export interface StripePaymentReconciliation {
-  mismatches: StripePaymentMismatch[];
-  missing: StripeMissingPayment[];
-  /** Local payments whose invoice no longer exists on Stripe */
-  orphans: StripeLocalPayment[];
-}
-
-/** A Stripe `created` filter, in seconds */
-export interface StripeCreatedWindow {
-  gte?: number;
-  lt?: number;
-  lte?: number;
-}
-
-/** The Stripe objects of our contributions that were fetched in bulk, by id */
-export interface StripeResources {
-  subscriptions: Map<string, Stripe.Subscription>;
-  customers: Map<string, Stripe.Customer>;
+export interface PaymentReconciliation {
+  mismatches: PaymentMismatch[];
+  missing: MissingPayment[];
+  /** Local payments the payment provider no longer has */
+  orphans: LocalPayment[];
 }

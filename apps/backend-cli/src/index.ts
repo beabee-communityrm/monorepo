@@ -42,6 +42,11 @@ actorContext.run(actor, () =>
     })
     .middleware((argv) => {
       actor.actorType = argv.actor;
+      // danger is undefined for commands without the option, so only those that
+      // have it warn. stderr, as some commands write their output to stdout
+      if (argv.danger === false) {
+        console.error('Dry run: pass --danger to make the changes');
+      }
     })
     .command(apiKeyCommand)
     .command(databaseCommand)
@@ -56,6 +61,7 @@ actorContext.run(actor, () =>
     .command(testCommand)
     .command(migrateUploadsCommand)
     .demandCommand(1, 'You need at least one command before moving on')
+    .strictCommands()
     .version(pkg.version)
     .scriptName('yarn backend-cli')
     .help()

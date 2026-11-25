@@ -2,7 +2,6 @@ import {
   Address,
   ContributionPeriod,
   ContributionType,
-  NewsletterStatus,
 } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import { Contact, ContactRole } from '@beabee/core/models';
@@ -220,7 +219,6 @@ async function addNewContact(row: SteadyRow) {
     {
       deliveryOptIn,
       deliveryAddress,
-      newsletterStatus: NewsletterStatus.None,
     }
   );
 
@@ -298,8 +296,7 @@ async function loadRows(): Promise<SteadyRow[]> {
             plan_monthly_amount_cents: parseInt(row.plan_monthly_amount_cents),
             gifted: row.gifted === 'true',
             subscription_period: row.subscription_period as
-              | 'annual'
-              | 'monthly',
+              'annual' | 'monthly',
           });
         } else {
           console.error('Invalid row', row);

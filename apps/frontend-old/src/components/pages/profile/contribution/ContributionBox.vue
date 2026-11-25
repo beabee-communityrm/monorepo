@@ -68,7 +68,7 @@
 
 <script lang="ts" setup>
 import {
-  type ContributionInfo,
+  type ContactContributionData,
   ContributionPeriod,
   ContributionType,
   MembershipStatus,
@@ -79,5 +79,5 @@ import { useI18n } from 'vue-i18n';
 
 const { n, t } = useI18n();
 
-defineProps<{ contribution: ContributionInfo }>();
+defineProps<{ contribution: ContactContributionData }>();
 </script>

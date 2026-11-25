@@ -22,7 +22,7 @@ export const syncActiveMemberTag = async (
         type: 'member',
         dateExpires: Between(args.since, args.until),
       },
-      relations: { contact: { profile: true } },
+      relations: { contact: { newsletter: true } },
     });
 
     log.info(`📊 Got ${memberships.length} memberships`);
@@ -31,7 +31,7 @@ export const syncActiveMemberTag = async (
     const inactiveContacts = memberships
       .filter(
         (m) =>
-          m.contact.profile.newsletterStatus !== NewsletterStatus.None &&
+          m.contact.newsletter.status !== NewsletterStatus.None &&
           !m.contact.membership?.isActive
       )
       .map((m) => m.contact);
@@ -40,7 +40,7 @@ export const syncActiveMemberTag = async (
       'newsletter-active-member-tag'
     );
 
-    if (args.dryRun) {
+    if (!args.danger) {
       log.info('DRY RUN - No changes will actually be made');
     }
 
@@ -51,7 +51,7 @@ export const syncActiveMemberTag = async (
       log.info(`  • ${contact.email}`);
     }
 
-    if (!args.dryRun) {
+    if (args.danger) {
       await newsletterBulkService.removeTagFromContacts(
         inactiveContacts,
         activeMemberTag

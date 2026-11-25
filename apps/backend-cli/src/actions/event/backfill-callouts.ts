@@ -1,5 +1,4 @@
 import { ActivityActorType, ActivityEventType } from '@beabee/beabee-common';
-import { dataSource } from '@beabee/core/database';
 
 import chalk from 'chalk';
 
@@ -60,9 +59,10 @@ const insertAnswered = createBackfill({
 // Remove all `callout.answered` events, then backfill
 const refillAnswered: EventBackfiller = {
   ...insertAnswered,
-  backfill: async (dryRun) => {
-    if (!dryRun) {
-      const [, deleted] = await dataSource.query(
+  backfill: async (danger, em) => {
+    if (danger) {
+      // Deleted in the same transaction as the insert, so a failed insert keeps the old events
+      const [, deleted] = await em.query(
         `DELETE FROM activity_event WHERE "eventType" = $1`,
         [insertAnswered.eventType]
       );
@@ -70,7 +70,7 @@ const refillAnswered: EventBackfiller = {
         `${chalk.green('✓')} Deleted ${deleted} ${insertAnswered.eventType} event(s)`
       );
     }
-    return insertAnswered.backfill(dryRun);
+    return insertAnswered.backfill(danger, em);
   },
 };
 

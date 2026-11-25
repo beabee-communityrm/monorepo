@@ -22,6 +22,7 @@ import {
   CalloutVariant,
   Contact,
   ContactContribution,
+  ContactNewsletter,
   ContactProfile,
   ContactRole,
   ContactTag,
@@ -96,13 +97,10 @@ import { v4 as uuidv4 } from 'uuid';
  */
 export type ObjectMap<T> = { [K in keyof T]?: PropertyMap<T[K]> };
 export type PropertyMap<T> =
-  | ((prop: T) => T)
-  | [Symbol, (prop: T) => T]
-  | ObjectMap<T>;
+  ((prop: T) => T) | [Symbol, (prop: T) => T] | ObjectMap<T>;
 
 export type ModelAnonymiserStrategy =
-  | 'default'
-  | 'calloutResponsesPerComponent';
+  'default' | 'calloutResponsesPerComponent';
 
 /**
  * A model anonymiser describes how to anonymise a given database model
@@ -393,6 +391,13 @@ export const contactProfileAnonymiser = createModelAnonymiser(ContactProfile, {
     postcode: () => 'BS1 1AA',
   },
 });
+
+export const contactNewsletterAnonymiser = createModelAnonymiser(
+  ContactNewsletter,
+  {
+    contactId: () => uuidv4(),
+  }
+);
 
 export const contactRoleAnonymiser = createModelAnonymiser(ContactRole, {
   contactId: () => uuidv4(),

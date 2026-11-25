@@ -17,7 +17,7 @@ const CALLOUT_ANONYMIZATION_LEVELS: readonly CalloutAnonymizationLevel[] = [
 ] as const;
 
 export const databaseCommand: CommandModule = {
-  command: 'database <action>',
+  command: 'database',
   describe: 'Database management commands',
   builder: (yargs) =>
     yargs
@@ -26,9 +26,10 @@ export const databaseCommand: CommandModule = {
         describe: 'Export database to SQL dump (see --anonymize levels)',
         builder: (yargs) =>
           yargs
-            .option('dryRun', {
+            .option('danger', {
               type: 'boolean',
-              description: 'Run without making changes',
+              description:
+                'Make the changes; without this flag the command only reports what it would do',
               default: false,
             })
             .option('anonymize', {
@@ -59,7 +60,7 @@ export const databaseCommand: CommandModule = {
           const { exportDatabase } =
             await import('../actions/database/export.js');
           return exportDatabase(
-            argv.dryRun,
+            argv.danger,
             argv.anonymize as AnonymizationLevel,
             argv.skipAnonymizeTables ?? [],
             argv.preserveCalloutAnswers,
@@ -73,9 +74,10 @@ export const databaseCommand: CommandModule = {
           'Export demo subset (limited contacts, latest callouts, anonymized)',
         builder: (yargs) =>
           yargs
-            .option('dryRun', {
+            .option('danger', {
               type: 'boolean',
-              description: 'Run without making changes',
+              description:
+                'Make the changes; without this flag the command only reports what it would do',
               default: false,
             })
             .option('file', {
@@ -86,7 +88,7 @@ export const databaseCommand: CommandModule = {
         handler: async (argv) => {
           const { exportDemoDatabase } =
             await import('../actions/database/export-demo.js');
-          return exportDemoDatabase(argv.dryRun, argv.file);
+          return exportDemoDatabase(argv.danger, argv.file);
         },
       })
       .command({
@@ -95,9 +97,10 @@ export const databaseCommand: CommandModule = {
           'Export callout data only (for migration testing). Keeps form schemas and answers intact.',
         builder: (yargs) =>
           yargs
-            .option('dryRun', {
+            .option('danger', {
               type: 'boolean',
-              description: 'Run without making changes',
+              description:
+                'Make the changes; without this flag the command only reports what it would do',
               default: false,
             })
             .option('anonymize', {
@@ -128,7 +131,7 @@ export const databaseCommand: CommandModule = {
           const { exportCalloutsDatabase } =
             await import('../actions/database/export-callouts.js');
           return exportCalloutsDatabase(
-            argv.dryRun,
+            argv.danger,
             argv.anonymize as CalloutAnonymizationLevel,
             argv.preserveCalloutAnswers,
             argv.file,
@@ -146,9 +149,10 @@ export const databaseCommand: CommandModule = {
               type: 'string',
               description: 'Path to dump file (default: read from stdin)',
             })
-            .option('dryRun', {
+            .option('danger', {
               type: 'boolean',
-              description: 'Run without making changes',
+              description:
+                'Make the changes; without this flag the command only reports what it would do',
               default: false,
             })
             .option('merge', {
@@ -160,7 +164,7 @@ export const databaseCommand: CommandModule = {
         handler: async (argv) => {
           const { importDatabase } =
             await import('../actions/database/import.js');
-          return importDatabase(argv.file, argv.dryRun, argv.merge);
+          return importDatabase(argv.file, argv.danger, argv.merge);
         },
       })
       .command({
@@ -178,10 +182,10 @@ export const databaseCommand: CommandModule = {
               type: 'string',
               description: 'Path to CSV file (default: read from stdin)',
             })
-            .option('dryRun', {
+            .option('danger', {
               type: 'boolean',
               description:
-                'Parse and report what would be imported, but do not write to the database.',
+                'Make the changes; without this flag the command only reports what it would do',
               default: false,
             })
             .option('failOnUnknown', {
@@ -201,7 +205,7 @@ export const databaseCommand: CommandModule = {
             await import('../actions/database/import-callout-responses.js');
           return importCalloutResponses({
             slug: argv.slug as string,
-            dryRun: argv.dryRun as boolean,
+            danger: argv.danger,
             failOnUnknown: argv.failOnUnknown as boolean,
             dateFormat: argv.dateFormat as string,
             ...(argv.file ? { file: argv.file as string } : {}),
@@ -216,6 +220,7 @@ export const databaseCommand: CommandModule = {
             await import('../actions/database/clean.js');
           return cleanDatabase();
         },
-      }),
+      })
+      .demandCommand(1),
   handler: () => {},
 };

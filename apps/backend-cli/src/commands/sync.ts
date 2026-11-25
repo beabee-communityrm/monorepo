@@ -2,12 +2,12 @@ import type { CommandModule } from 'yargs';
 
 import {
   SYNC_NEWSLETTER_RECONCILE_TESTS,
-  SYNC_STRIPE_RECONCILE_TESTS,
+  SYNC_PAYMENT_SERVICE_RECONCILE_TESTS,
 } from '../constants/sync.js';
 import { coerceToDate } from '../utils/coerce.js';
 
 export const syncCommand: CommandModule = {
-  command: 'sync <action>',
+  command: 'sync',
   describe: 'Synchronization commands',
   builder: (yargs) =>
     yargs
@@ -36,9 +36,10 @@ export const syncCommand: CommandModule = {
                     coerce: coerceToDate,
                     default: () => new Date(),
                   })
-                  .option('dryRun', {
+                  .option('danger', {
                     type: 'boolean',
-                    description: 'Run without making changes',
+                    description:
+                      'Make the changes; without this flag the command only reports what it would do',
                     default: false,
                   }),
               handler: async (argv) => {
@@ -52,9 +53,10 @@ export const syncCommand: CommandModule = {
               describe: 'Reconcile changes from the newsletter service',
               builder: (yargs) =>
                 yargs
-                  .option('dryRun', {
+                  .option('danger', {
                     type: 'boolean',
-                    description: 'Run without making changes',
+                    description:
+                      'Make the changes; without this flag the command only reports what it would do',
                     default: false,
                   })
                   .option('report', {
@@ -103,9 +105,10 @@ export const syncCommand: CommandModule = {
               describe:
                 'Remove pending status from contacts that no longer exist on the newsletter service',
               builder: (yargs) =>
-                yargs.option('dryRun', {
+                yargs.option('danger', {
                   type: 'boolean',
-                  description: 'Run without making changes',
+                  description:
+                    'Make the changes; without this flag the command only reports what it would do',
                   default: false,
                 }),
               handler: async (argv) => {
@@ -119,9 +122,10 @@ export const syncCommand: CommandModule = {
               describe:
                 'Refresh the newsletter groups cached in the database from the newsletter service',
               builder: (yargs) =>
-                yargs.option('dryRun', {
+                yargs.option('danger', {
                   type: 'boolean',
-                  description: 'Run without making changes',
+                  description:
+                    'Make the changes; without this flag the command only reports what it would do',
                   default: false,
                 }),
               handler: async (argv) => {
@@ -147,9 +151,10 @@ export const syncCommand: CommandModule = {
                   string: true,
                   description: 'Push specific contact IDs only',
                 })
-                .option('dryRun', {
+                .option('danger', {
                   type: 'boolean',
-                  description: 'Run without making changes',
+                  description:
+                    'Make the changes; without this flag the command only reports what it would do',
                   default: false,
                 }),
             handler: async (argv) => {
@@ -170,9 +175,10 @@ export const syncCommand: CommandModule = {
               description: 'Process specific segment ID',
               required: true,
             })
-            .option('dryRun', {
+            .option('danger', {
               type: 'boolean',
-              description: 'Run without making changes',
+              description:
+                'Make the changes; without this flag the command only reports what it would do',
               default: false,
             }),
         handler: async (argv) => {
@@ -181,17 +187,19 @@ export const syncCommand: CommandModule = {
         },
       })
       .command({
-        command: 'stripe',
-        describe: 'Sync data with Stripe',
+        command: 'payment-service',
+        describe: 'Sync data with the payment service',
         builder: (yargs) =>
           yargs.command({
             command: 'reconcile',
-            describe: 'Reconcile subscriptions and payments with Stripe',
+            describe:
+              'Reconcile subscriptions and payments with the payment service',
             builder: (yargs) =>
               yargs
-                .option('dryRun', {
+                .option('danger', {
                   type: 'boolean',
-                  description: 'Run without making changes',
+                  description:
+                    'Make the changes; without this flag the command only reports what it would do',
                   default: false,
                 })
                 .option('report', {
@@ -208,28 +216,29 @@ export const syncCommand: CommandModule = {
                 .option('fix', {
                   type: 'array',
                   description: 'The data to check and fix',
-                  choices: SYNC_STRIPE_RECONCILE_TESTS,
+                  choices: SYNC_PAYMENT_SERVICE_RECONCILE_TESTS,
                   demandOption: true,
                 })
                 .option('since', {
                   type: 'string',
                   description:
-                    'Check invoices created since date or duration (ISO format)',
+                    'Check payments created since date or duration (ISO format)',
                   coerce: coerceToDate,
                 })
                 .option('until', {
                   type: 'string',
                   description:
-                    'Check invoices created until date or duration (ISO format)',
+                    'Check payments created until date or duration (ISO format)',
                   coerce: coerceToDate,
                 }),
             handler: async (argv) => {
               const { reconcile } =
-                await import('../actions/sync/stripe/reconcile.js');
+                await import('../actions/sync/payment-service/reconcile.js');
               return reconcile(argv);
             },
           }),
         handler: () => {},
-      }),
+      })
+      .demandCommand(1),
   handler: () => {},
 };

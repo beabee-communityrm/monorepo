@@ -49,10 +49,12 @@ When user explicitly asks ("add error handling", "refactor", "add tests"), do it
 |---|---|
 | `@beabee/backend` | Main API server |
 | `@beabee/frontend` | Vue 3 frontend |
+| `@beabee/frontend-old` | Outgoing Vue frontend, served by default (`DEFAULT_FRONTEND`): user-facing fixes go into both frontends |
 | `@beabee/webhooks` | External integrations (Stripe, GoCardless) |
 | `@beabee/backend-cli` | Admin CLI |
-| `@beabee/legacy` | Legacy frontend (phasing out) |
+| `@beabee/legacy` | Older separate UI, no tests (phasing out). "Legacy" names only this app; anything paired with `frontend-old` takes the suffix `-old` |
 | `@beabee/e2e-api-tests` | API tests |
+| `@beabee/browser-tests` | Playwright tests |
 | `@beabee/dev-cli` | Dev tools (index gen, building) |
 | `@beabee/router` | Nginx routing |
 
@@ -79,6 +81,13 @@ When user explicitly asks ("add error handling", "refactor", "add tests"), do it
 
 Build follows topological order (deps first).
 
+**Gotchas:**
+- Fresh worktree: `yarn install`, then build `@beabee/beabee-common` + `@beabee/locale` before `yarn workspace @beabee/core check:tsc` (else TS6305/TS2307 on every import)
+- `packages/core` tests: `#*` imports resolve to `dist/` → rebuild core before trusting tests of src changes
+- `yarn generate:index` re-sorts unrelated entries: keep only the lines for files you added | new migrations/models: `yarn workspace @beabee/core generate:class-index`
+- `docker-compose.yml` is dev-only; deployments use the helm chart → production rollout steps go in the PR description
+- Hosted IdP testing: your own Zitadel dev instance (`docs/oidc-local-development.md`), never a tenant or demo instance
+
 ## General Code Standards
 
 For all TypeScript, JavaScript, and Vue files:
@@ -88,6 +97,7 @@ For all TypeScript, JavaScript, and Vue files:
 - Types/interfaces: package-local in `<pkg>/src/types/` (app or package) | shared across backend+frontend in `packages/common/src/types/` — NEVER inline in action/component/util files. Utils in `src/utils/`.
 - Modularize into smaller reusable pieces
 - Document in code (not separate docs) | Reference existing docs, don't rewrite
+- Local-run docs: verify the README steps from an empty state and fix/extend those; new pages, scripts or feature recipes only when asked
 - English for comments/docs/code
 - Common, understandable naming
 - Use latest source versions (don't overwrite manual changes)
@@ -95,6 +105,11 @@ For all TypeScript, JavaScript, and Vue files:
 - Read existing code first to stay consistent
 
 **Tests:** Never mock an external provider's API (IdP, Stripe, newsletter) to assert its contract; such tests only restate our assumptions. Test our own logic (caching, guards, mapping) and verify the contract against the real provider.
+
+## Backend
+
+- Validate request input declaratively: `@QueryParams()` + `api/dto/*OptsDto`, `@Params()` + `api/params/`, `@Body()` + DTO | custom rules → `api/validators/` (`ValidateBy` + `buildMessage`, e.g. `IsTrustedUrl`) | handlers receive validated input
+- Stripe accounts may be shared with other integrations: an object is ours only if it links to our rows (`customerId`, `subscriptionId`, payment id) | bulk listings filter by that link
 
 ## Frontend / Vue Components
 
@@ -106,32 +121,17 @@ For all TypeScript, JavaScript, and Vue files:
 
 **Features:** Props for customization | Slots for content projection | Event system | Proper disabled states
 
-### New Vue Component
-
-Templates: `packages/vue/src/components/template/` (AppTemplate.vue, index.ts)
-
-**req:** App-independent (no API deps) | Create `.story.vue` + `.story.md` | Follow patterns in `packages/vue/src/components` | Assign to semantically appropriate dir (create if needed) | Reference existing docs, don't duplicate | Additional types in `packages/vue/src/types`
-
-### Story Documentation (`.story.md`)
-
-Template: `packages/vue/src/components/template/AppTemplate.story.md`
-
-**Rules:** Minimal docs only (beyond source code) | No duplication of props/events/examples (already in interfaces/defineEmits/.story.vue) | Focus on purpose, use cases, non-obvious implementation notes
-
-### Story Vue Files
-
-Ref: `packages/vue/src/components/template/AppTemplate.story.vue`
-
-- Analyze component + current usage in `apps/frontend` for context
-- Create `.story.vue` + `.story.md`
-- Tailwind config: `packages/vue/tailwind.config.js`
-- If component can't be used standalone, don't create story
+**CNR mode:** CNR instances always get `hideContribution: true` at setup (policy, not code) → `!hideContribution` alone hides contribution UI
 
 ## Git Commit Practices
 
 **Format:** `<type>[scope]: <description>` — feat|fix|docs|refactor|test|chore
 
 **Rules:** Commit at logical breakpoints | Atomic changes (one logical change per commit) | Check `git log --oneline -10` to match existing patterns | Imperative mood | Subject <50 chars | Use `git mv` for moves | Pipe interactive git commands through `| cat`
+
+**Language:** Commits, PR titles and PR bodies in English, whatever language the chat is in
+
+**`main` ruleset:** 1 approval + `test` check required | every push dismisses existing approvals → warn before force-pushing an approved PR
 
 **Authorization:** Always ask before committing unless user explicitly requests auto-commit. Show planned message + changed files, wait for confirmation.
 
@@ -142,31 +142,6 @@ yarn format && yarn check  # Both MUST exit 0
 
 **Checklist:** Format passes | Type check passes | Lint passes | Conventional format | Atomic + focused | No debug code/console.logs
 
-## Task: Migrate Component to Vue Package
-
-Migrate from `apps/frontend` → `packages/vue/src/components`.
-
-**Prereq:** Identify target | Analyze current usage (context, props, interactions)
-
-**Block:** Components using `@utils/api`, `client.ts`, API imports
-
-**Keep:** `useI18n()` / `t()` translations | **Remove:** Direct store access (pass as props)
-
-**Steps:** Follow new-vue-component rules + git commit practices | Clean refactor with TSDoc | Semantic HTML + ARIA | Keyboard nav | Migrate related components/utils/interfaces/types | For multiple components, apply migration iteratively
-
-**Completion:** Update `apps/frontend` imports to `@beabee/vue` | Create wrappers for repeated prop combos | Reuse existing import declarations | Remove translation prop drilling | Run `yarn generate:index && yarn format && yarn build && yarn check` | Verify stories exist | Suggest pages/routes to test | Provide commit msg + PR description
-
 ## Task: Scaffold Vanilla Package
 
 Use `packages/template-vanilla` conventions. Read its `README.md` and follow instructions. The template ships source TS with no build; not suitable for packages that need a published JS artifact.
-
-## Prompt Compression
-
-When writing/editing AGENTS.md or agent context files:
-- Pipe-delimited format for indexes/structured refs
-- Single-line directives, not multi-paragraph explanations
-- Strip explanatory prose — keep only actionable content
-- Abbreviated keys: req|opt|str|int|bool|len|min|max|def
-- Flatten nested hierarchies with brace expansion + path prefixes
-- Target 70-80% token reduction preserving all actionable info
-- Keep non-obvious code examples | Never compress error messages or edge case docs

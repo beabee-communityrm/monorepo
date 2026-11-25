@@ -1,5 +1,5 @@
 import {
-  ContributionInfo,
+  ContactContributionData,
   ContributionPeriod,
   ContributionType,
   RoleType,
@@ -24,6 +24,7 @@ import { ContactTagAssignment } from './ContactTagAssignment.js';
 import { Password } from './Password.js';
 import type {
   ContactContribution,
+  ContactNewsletter,
   ContactProfile,
   ContactRole,
 } from './index.js';
@@ -79,7 +80,10 @@ export class Contact implements TaggableEntity<TagData> {
   @OneToOne('ContactContribution', 'contact')
   contribution!: ContactContribution;
 
-  contributionInfo?: ContributionInfo;
+  @OneToOne('ContactNewsletter', 'contact')
+  newsletter!: ContactNewsletter;
+
+  contributionInfo?: ContactContributionData;
 
   @OneToMany('ContactTagAssignment', 'contact')
   tags!: ContactTagAssignment[];

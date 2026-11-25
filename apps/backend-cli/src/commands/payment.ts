@@ -6,7 +6,7 @@ import type { ArgumentsCamelCase } from 'yargs';
 import type { CreatePaymentArgs } from '../types/payment.js';
 
 export const paymentCommand: CommandModule = {
-  command: 'payment <action>',
+  command: 'payment',
   describe: 'Payment management commands',
   builder: (yargs) =>
     yargs
@@ -69,6 +69,7 @@ export const paymentCommand: CommandModule = {
           const { listPayments } = await import('../actions/payment/list.js');
           return listPayments(argv.email as string | undefined);
         },
-      }),
+      })
+      .demandCommand(1),
   handler: () => {},
 };

@@ -15,6 +15,7 @@ export * from './CalloutVariantDto.js';
 export * from './ContactAuthMethodDto.js';
 export * from './ContactDto.js';
 export * from './ContactMfaDto.js';
+export * from './ContactNewsletterDto.js';
 export * from './ContactOriginDto.js';
 export * from './ContactProfileDto.js';
 export * from './ContactRoleDto.js';

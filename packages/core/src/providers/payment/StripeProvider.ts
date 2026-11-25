@@ -1,5 +1,6 @@
 import {
   ApiHealthStatus,
+  ContactContributionData,
   ContributionType,
   PaymentFlowParamsStripe,
   PaymentSource,
@@ -26,7 +27,6 @@ import { Contact } from '#models/index';
 import optionsService from '#services/OptionsService';
 import {
   CompletedPaymentFlow,
-  ContributionInfo,
   PaymentFlowFormCreateOneTimePayment,
   UpdateContributionForm,
   UpdateContributionResult,
@@ -144,7 +144,7 @@ export class StripeProvider extends PaymentProvider {
    *
    * @returns Information about the current contribution payment source
    */
-  async getContributionInfo(): Promise<Partial<ContributionInfo>> {
+  async getContributionInfo(): Promise<Partial<ContactContributionData>> {
     let paymentSource: PaymentSource | undefined;
     try {
       paymentSource = this.data.mandateId
@@ -152,13 +152,11 @@ export class StripeProvider extends PaymentProvider {
         : undefined;
     } catch (err) {
       // 404s can happen on dev as we don't use real mandate IDs
-      if (
-        !(
-          config.dev &&
-          err instanceof Stripe.errors.StripeInvalidRequestError &&
-          err.statusCode === 404
-        )
-      ) {
+      if (!(
+        config.dev &&
+        err instanceof Stripe.errors.StripeInvalidRequestError &&
+        err.statusCode === 404
+      )) {
         throw err;
       }
     }

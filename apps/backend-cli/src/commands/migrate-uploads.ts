@@ -19,9 +19,10 @@ export const migrateUploadsCommand = {
         type: 'string',
         default: '/old_data',
       })
-      .option('dryRun', {
-        describe: 'Simulate migration without actually uploading files',
+      .option('danger', {
         type: 'boolean',
+        description:
+          'Make the changes; without this flag the command only reports what it would do',
         default: false,
       })
       .option('steps', {
@@ -49,7 +50,7 @@ export const migrateUploadsCommand = {
         await import('../actions/migrate-uploads/migrate-uploads.js');
       await migrateUploads({
         source: args.source,
-        dryRun: args.dryRun,
+        danger: args.danger,
         steps: args.steps || [
           'calloutImages',
           'optionImages',
