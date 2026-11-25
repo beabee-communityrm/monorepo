@@ -13,9 +13,9 @@ import type { RouteQueries, RouteQuery } from '#type';
  * A query for a page's `routeQueries`
  *
  * @param options The query, from `queryOptions()`
- * @param wait Whether the navigation waits for it. For data that decides what
- *   the page offers. Otherwise it waits for up to `LOADING.hold`, the first
- *   time.
+ * @param wait Whether the navigation waits for it when it has no data yet.
+ *   For data that decides what the page offers. Otherwise it waits for up to
+ *   `LOADING.hold`.
  */
 export function routeQuery<TQueryFnData, TQueryKey extends QueryKey>(
   options: FetchQueryOptions<TQueryFnData, Error, TQueryFnData, TQueryKey>,
@@ -45,10 +45,10 @@ const hasRouteQueries = (mod: unknown): mod is { routeQueries: RouteQueries } =>
   typeof mod === 'object' && mod !== null && 'routeQueries' in mod;
 
 /**
- * Starts the queries the matched pages export as `routeQueries`. Waits for
- * those marked to wait. Holds the navigation, for up to `LOADING.hold`, for
- * the others that have no data yet. Those with data show it while they
- * refresh.
+ * Starts the queries the matched pages export as `routeQueries`. Those with
+ * data show it while they refresh. For those without, it waits for the ones
+ * marked to wait, and holds the navigation for up to `LOADING.hold` for the
+ * others.
  */
 async function prefetchRouteQueries(to: RouteLocationNormalized) {
   const waitedLoads: Promise<void>[] = [];
@@ -62,8 +62,9 @@ async function prefetchRouteQueries(to: RouteLocationNormalized) {
     for (const query of mod.routeQueries(to)) {
       const cached = queryClient.getQueryData(query.queryKey) !== undefined;
       const load = query.prefetch();
+      if (cached) continue;
       if (query.wait) waitedLoads.push(load);
-      else if (!cached) lazyLoads.push(load);
+      else lazyLoads.push(load);
     }
   }
 

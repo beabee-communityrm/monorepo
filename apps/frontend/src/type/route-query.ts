@@ -4,8 +4,8 @@ import type { RouteLocationNormalized } from 'vue-router';
 /** A query a page starts on each visit, before the page shows */
 export interface RouteQuery {
   queryKey: QueryKey;
-  /** Whether the navigation waits for it, rather than for up to
-   * `LOADING.hold` */
+  /** Whether the navigation waits for it when it has no data yet, rather
+   * than for up to `LOADING.hold` */
   wait: boolean;
   /** Fetches it unless it's fresh. Never rejects; a failure is kept in the
    * query. */
