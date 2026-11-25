@@ -22,6 +22,6 @@ export const LOADING = {
   /** How long loaded data counts as fresh. Visiting it again within this time
    * shows it without fetching it again. */
   fresh: 5000,
-  /** How long to wait before retrying a request that got no answer */
+  /** How long to wait before retrying a failed request */
   retryDelay: 500,
 } as const;

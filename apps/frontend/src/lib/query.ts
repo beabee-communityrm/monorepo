@@ -1,3 +1,5 @@
+import { ApiError } from '@beabee/client';
+
 import {
   type FetchQueryOptions,
   QueryClient,
@@ -16,11 +18,10 @@ export const queryClient = new QueryClient({
       // Also stops a page's components fetching again what its route guard
       // just fetched
       staleTime: LOADING.fresh,
-      // One retry for a request that got no answer at all, as when a
-      // connection drops. An answer from the server, even an error, isn't
-      // retried, as it would come back the same.
+      // One retry, unless the API answered, as its answer would come back the
+      // same. A dropped connection or the API restarting gets one.
       retry: (failureCount, error) =>
-        failureCount < 1 && error instanceof TypeError,
+        failureCount < 1 && !(error instanceof ApiError),
       retryDelay: LOADING.retryDelay,
       // The route guard fetches again on the next visit
       retryOnMount: false,
