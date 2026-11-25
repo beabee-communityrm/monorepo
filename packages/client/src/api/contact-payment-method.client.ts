@@ -1,5 +1,5 @@
 import type {
-  ContributionInfo,
+  ContactContributionData,
   PaymentFlowResult,
 } from '@beabee/beabee-common';
 
@@ -47,7 +47,9 @@ export class ContactPaymentMethodClient extends BaseClient {
    * @param paymentFlowId - The ID of the payment flow to complete
    * @returns Updated contribution information
    */
-  async completeUpdate(paymentFlowId: string): Promise<ContributionInfo> {
+  async completeUpdate(
+    paymentFlowId: string
+  ): Promise<ContactContributionData> {
     const { data } = await this.fetch.post('/me/payment-method/complete', {
       paymentFlowId,
     });

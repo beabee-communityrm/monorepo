@@ -1,11 +1,11 @@
-import {
+import type {
   ContributionPeriod,
   ContributionType,
   MembershipStatus,
-  PaymentSource,
-} from '@beabee/beabee-common';
+} from '../data/index.js';
+import type { PaymentSource } from './index.js';
 
-export interface ContributionInfo {
+export interface ContactContributionData {
   type: ContributionType;
   amount?: number;
   nextAmount?: number;

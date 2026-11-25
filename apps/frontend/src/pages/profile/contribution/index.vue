@@ -69,7 +69,7 @@ meta:
 <script lang="ts" setup>
 import {
   type ContentPaymentData,
-  type ContributionInfo,
+  type ContactContributionData,
   ContributionPeriod,
   ContributionType,
   MembershipStatus,
@@ -138,7 +138,7 @@ const paymentContent = ref<ContentPaymentData>({
 });
 
 const isIniting = ref(true);
-const contribution = ref<ContributionInfo>({
+const contribution = ref<ContactContributionData>({
   type: ContributionType.None,
   membershipStatus: MembershipStatus.None,
 });

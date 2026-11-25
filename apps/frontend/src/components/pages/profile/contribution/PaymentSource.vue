@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 import {
-  type ContributionInfo,
+  type ContactContributionData,
   type PaymentFlowResult,
   type PaymentSource,
   type PaymentSourceManual,
@@ -41,7 +41,7 @@ const props = defineProps<{
   paymentData: PaymentFlowFormData;
 }>();
 
-const contribution = defineModel<ContributionInfo>({ required: true });
+const contribution = defineModel<ContactContributionData>({ required: true });
 
 const changeLabel = computed(() =>
   t(`paymentMethods.${props.paymentSource.method}.changeLabel`)

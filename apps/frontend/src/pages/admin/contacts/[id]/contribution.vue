@@ -57,7 +57,7 @@ meta:
 </template>
 <script lang="ts" setup>
 import {
-  type ContributionInfo,
+  type ContactContributionData,
   ContributionType,
   type GetContactData,
   GetContactWith,
@@ -86,7 +86,7 @@ const props = defineProps<{ contact: GetContactData }>();
 
 const router = useRouter();
 
-const contributionInfo = ref<ContributionInfo>();
+const contributionInfo = ref<ContactContributionData>();
 const contributionData = ref<UpdateContribution>();
 const showCancelDialog = ref(false);
 

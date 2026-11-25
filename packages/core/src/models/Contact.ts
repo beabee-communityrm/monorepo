@@ -1,5 +1,5 @@
 import {
-  ContributionInfo,
+  ContactContributionData,
   ContributionPeriod,
   ContributionType,
   RoleType,
@@ -83,7 +83,7 @@ export class Contact implements TaggableEntity<TagData> {
   @OneToOne('ContactNewsletter', 'contact')
   newsletter!: ContactNewsletter;
 
-  contributionInfo?: ContributionInfo;
+  contributionInfo?: ContactContributionData;
 
   @OneToMany('ContactTagAssignment', 'contact')
   tags!: ContactTagAssignment[];

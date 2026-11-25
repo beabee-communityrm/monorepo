@@ -1,5 +1,5 @@
 import {
-  type ContributionInfo,
+  type ContactContributionData,
   ContributionPeriod,
   type ForceUpdateContributionData,
   type PaymentFlowResult,
@@ -26,7 +26,9 @@ export class ContactContributionClient extends BaseClient {
   /**
    * Deserialize a contribution
    */
-  static deserialize(data: Serial<ContributionInfo>): ContributionInfo {
+  static deserialize(
+    data: Serial<ContactContributionData>
+  ): ContactContributionData {
     return {
       ...data,
       cancellationDate: this.deserializeDate(data.cancellationDate),
@@ -38,17 +40,19 @@ export class ContactContributionClient extends BaseClient {
   /**
    * Get the current user's contribution information
    */
-  async get(): Promise<ContributionInfo> {
+  async get(): Promise<ContactContributionData> {
     const { data } =
-      await this.fetch.get<Serial<ContributionInfo>>('/me/contribution');
+      await this.fetch.get<Serial<ContactContributionData>>('/me/contribution');
     return ContactContributionClient.deserialize(data);
   }
 
   /**
    * Update the current user's contribution
    */
-  async update(updateData: SetContributionData): Promise<ContributionInfo> {
-    const { data } = await this.fetch.patch<Serial<ContributionInfo>>(
+  async update(
+    updateData: SetContributionData
+  ): Promise<ContactContributionData> {
+    const { data } = await this.fetch.patch<Serial<ContactContributionData>>(
       '/me/contribution',
       {
         amount: updateData.amount,
@@ -69,7 +73,7 @@ export class ContactContributionClient extends BaseClient {
   async forceUpdate(
     id: string,
     updateData: ForceUpdateContributionData
-  ): Promise<ContributionInfo> {
+  ): Promise<ContactContributionData> {
     const { data } = await this.fetch.patch(
       `/${id}/contribution/force`,
       updateData
@@ -91,8 +95,8 @@ export class ContactContributionClient extends BaseClient {
   /**
    * Complete starting a contribution
    */
-  async completeStart(paymentFlowId: string): Promise<ContributionInfo> {
-    const { data } = await this.fetch.post<Serial<ContributionInfo>>(
+  async completeStart(paymentFlowId: string): Promise<ContactContributionData> {
+    const { data } = await this.fetch.post<Serial<ContactContributionData>>(
       '/me/contribution/complete',
       {
         paymentFlowId,

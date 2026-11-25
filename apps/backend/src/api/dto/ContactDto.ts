@@ -1,4 +1,5 @@
 import {
+  ContactContributionData,
   ContributionPeriod,
   ContributionType,
   GetContactWith,
@@ -8,7 +9,6 @@ import {
   RoleType,
   RoleTypes,
 } from '@beabee/beabee-common';
-import { ContributionInfo } from '@beabee/core/type';
 
 import { Type } from 'class-transformer';
 import {
@@ -72,7 +72,7 @@ export class ListContactsDto extends GetPaginatedQuery {
   sort?: string;
 }
 
-export class GetContributionInfoDto implements ContributionInfo {
+export class GetContactContributionDto implements ContactContributionData {
   @IsEnum(ContributionType)
   type!: ContributionType;
 
@@ -160,8 +160,8 @@ export class GetContactDto extends BaseContactDto {
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => GetContributionInfoDto)
-  contribution?: GetContributionInfoDto;
+  @Type(() => GetContactContributionDto)
+  contribution?: GetContactContributionDto;
 
   @IsOptional()
   @ValidateNested()
