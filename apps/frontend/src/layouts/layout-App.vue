@@ -16,6 +16,7 @@ watch(
     const layoutName = meta.layout ? meta.layout : 'Dashboard';
     const component = await import(`./layout-${layoutName}.vue`);
     layout.value = component.default;
-  }
+  },
+  { immediate: route.matched.length > 0 }
 );
 </script>

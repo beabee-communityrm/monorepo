@@ -2,7 +2,7 @@
   <UApp>
     <RouteProgress />
 
-    <LayoutApp />
+    <LayoutApp :key="pageKey" />
 
     <AppNotificationContainer
       :class="!isEmbed && 'fixed bottom-16 left-16 z-50 w-96'"
@@ -14,6 +14,7 @@
 import { AppNotificationContainer } from '@beabee/vue';
 
 import RouteProgress from './components/RouteProgress.vue';
+import { pageKey } from './lib/dev-panel';
 import LayoutApp from './layouts/layout-App.vue';
 import { isEmbed } from './store';
 </script>
