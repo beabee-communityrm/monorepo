@@ -45,7 +45,7 @@
         <p class="flex-1 self-center text-sm">
           <i18n-t v-if="result.count > 0" keypath="common.pageCount">
             <template #pageNumber
-              ><b>{{ n(props.page + 1) }}</b></template
+              ><b>{{ n(currentPage + 1) }}</b></template
             >
             <template #pageTotal
               ><b>{{ n(totalPages) }}</b></template
@@ -73,10 +73,6 @@ import { useI18n } from 'vue-i18n';
 const { t, n } = useI18n();
 
 export interface AppPaginatedTableResultProps {
-  /** Current page number (0-based) */
-  page: number;
-  /** Items per page */
-  limit: number;
   /** Paginated result data */
   result: Paginated<unknown> | undefined;
   /** Hide the items per page selector */
