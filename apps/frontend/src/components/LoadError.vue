@@ -76,7 +76,11 @@ async function focusHeadingOf(card: Element | null | undefined) {
 async function onRetry() {
   if (!props.retry || retrying.value) return;
   retrying.value = true;
-  const card = root.value?.closest('[data-slot="root"]');
+  // The card it sits in. Other Nuxt UI components mark their root the same
+  // way, but only a card has a header.
+  const card = root.value?.closest(
+    '[data-slot="root"]:has(> [data-slot="header"])'
+  );
   try {
     await props.retry();
     await focusHeadingOf(card);
