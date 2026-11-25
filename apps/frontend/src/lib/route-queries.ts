@@ -52,23 +52,7 @@ let shownLoadStart = 0;
  */
 export const getPageLoadStart = () => shownLoadStart;
 
-const holds = new Set<Promise<void>>();
-
-/** Keeps the current page up while a load runs, for up to `LOADING.hold` */
-function holdNavigation(load: Promise<void>) {
-  holds.add(load);
-  load.finally(() => holds.delete(load));
-}
-
-/** Waits for held loads, until `LOADING.hold` after they started */
-async function waitForHolds() {
-  const remaining = LOADING.hold - (performance.now() - loadStart);
-  if (!holds.size || remaining <= 0) return;
-  await Promise.race([
-    Promise.allSettled(holds),
-    new Promise((resolve) => setTimeout(resolve, remaining)),
-  ]);
-}
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const hasRouteQueries = (mod: unknown): mod is { routeQueries: RouteQueries } =>
   typeof mod === 'object' && mod !== null && 'routeQueries' in mod;
@@ -80,7 +64,8 @@ const hasRouteQueries = (mod: unknown): mod is { routeQueries: RouteQueries } =>
  * refresh.
  */
 async function prefetchRouteQueries(to: RouteLocationNormalized) {
-  const waits: Promise<void>[] = [];
+  const waitedLoads: Promise<void>[] = [];
+  const lazyLoads: Promise<void>[] = [];
 
   for (const mod of to.matched.flatMap((record) =>
     Object.values(record.mods)
@@ -90,12 +75,16 @@ async function prefetchRouteQueries(to: RouteLocationNormalized) {
     for (const query of mod.routeQueries(to)) {
       const cached = queryClient.getQueryData(query.queryKey) !== undefined;
       const load = query.prefetch();
-      if (query.wait) waits.push(load);
-      else if (!cached) holdNavigation(load);
+      if (query.wait) waitedLoads.push(load);
+      else if (!cached) lazyLoads.push(load);
     }
   }
 
-  await Promise.all(waits);
+  await Promise.all([
+    ...waitedLoads,
+    // Lazy queries get up to LOADING.hold
+    Promise.race([Promise.all(lazyLoads), delay(LOADING.hold)]),
+  ]);
 }
 
 /** Starts each navigation's route queries, and holds it while they load */
@@ -104,8 +93,6 @@ export function installRouteQueries(router: Router) {
     loadStart = performance.now();
     return prefetchRouteQueries(to);
   });
-  // After the route queries have started
-  router.beforeResolve(waitForHolds);
   router.afterEach((to, from, failure) => {
     if (!failure) shownLoadStart = loadStart;
   });
