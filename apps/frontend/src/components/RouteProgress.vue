@@ -90,7 +90,6 @@ function done() {
 
 // The first navigation starts before the app mounts
 start();
-router.isReady().then(done, done);
 
 const removers = [
   // Carries on rather than starting again, for the first navigation, which
