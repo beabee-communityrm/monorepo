@@ -1,0 +1,43 @@
+{
+  "name": "@beabee/dev-panel",
+  "description": "Development-only panel for simulating API responses in the frontend",
+  "version": "0.45.0",
+  "license": "AGPL-3.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts",
+    "./vite": "./src/vite.ts"
+  },
+  "scripts": {
+    "check": "yarn check:tsc && yarn check:prettier",
+    "check:tsc": "vue-tsc --noEmit",
+    "check:prettier": "prettier -c .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@beabee/beabee-common": "workspace:^",
+    "msw": "3.0.4"
+  },
+  "peerDependencies": {
+    "@nuxt/ui": "^4.8.2",
+    "@tanstack/vue-query": "5.107.1",
+    "vite": "*",
+    "vue": "^3.5.34",
+    "vue-router": "^5.0.7"
+  },
+  "devDependencies": {
+    "@beabee/prettier-config": "workspace:^",
+    "@beabee/tsconfig": "workspace:^",
+    "@nuxt/ui": "^4.8.2",
+    "@tanstack/vue-query": "5.107.1",
+    "@types/node": "^26.6.6",
+    "prettier": "^3.8.3",
+    "typescript": "~6.0.3",
+    "vite": "8.0.13",
+    "vue": "^3.5.34",
+    "vue-router": "^5.0.7",
+    "vue-tsc": "^3.2.8"
+  }
+}
