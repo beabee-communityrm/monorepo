@@ -919,6 +919,9 @@
     "joinNow": "Приєднатися зараз",
     "language": "Мова",
     "leavePreview": "Вийти з попереднього перегляду",
+    "loadError": "Не вдалося завантажити цю CrowdNewsroom. Напишіть на {support}, якщо проблема повториться.",
+    "loadResponseError": "Не вдалося завантажити вашу відповідь. Напишіть на {support}, якщо проблема повториться.",
+    "loadResponsesError": "Не вдалося завантажити ваші відповіді. Напишіть на {support}, якщо проблема повториться.",
     "logInOrSignUp": "Увійдіть або станьте учасником, щоб взяти участь.",
     "loginToYourAccount": "Увійдіть до свого облікового запису",
     "loginToYourAccount-nuxt": "Увійти",
@@ -926,10 +929,12 @@
     "membersOnly-nuxt": "Цей CrowdNewsroom відкритий лише для учасників.",
     "nextResponse": "Наступна відповідь",
     "notAnswered": "Без відповіді",
+    "notFound": "Ця CrowdNewsroom не існує або її було видалено.",
     "previousResponse": "Попередня відповідь",
     "replied": "Відповідь надіслано",
     "responseNumber": "Відповідь {number} з {total}",
     "responseSubmitted": "Відповідь надіслано",
+    "seeAll": "Усі CrowdNewsroom",
     "share": {
       "address": "Поділитися за цим посиланням:",
       "aria": {

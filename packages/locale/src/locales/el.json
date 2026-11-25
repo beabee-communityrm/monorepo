@@ -919,6 +919,9 @@
     "joinNow": "",
     "language": "Γλώσσα",
     "leavePreview": "Έξοδος από την προεπισκόπηση",
+    "loadError": "Δεν ήταν δυνατή η φόρτωση αυτού του CrowdNewsroom. Επικοινωνήστε με {support} αν το πρόβλημα συνεχιστεί.",
+    "loadResponseError": "Δεν ήταν δυνατή η φόρτωση της απάντησής σας. Επικοινωνήστε με {support} αν το πρόβλημα συνεχιστεί.",
+    "loadResponsesError": "Δεν ήταν δυνατή η φόρτωση των απαντήσεών σας. Επικοινωνήστε με {support} αν το πρόβλημα συνεχιστεί.",
     "logInOrSignUp": "Συνδεθείτε ή γίνετε μέλος για να συμμετάσχετε.",
     "loginToYourAccount": "",
     "loginToYourAccount-nuxt": "Σύνδεση",
@@ -926,10 +929,12 @@
     "membersOnly-nuxt": "Αυτό το CrowdNewsroom είναι ανοιχτό μόνο για μέλη.",
     "nextResponse": "Επόμενη απάντηση",
     "notAnswered": "Δεν απαντήθηκε",
+    "notFound": "Αυτό το CrowdNewsroom δεν υπάρχει ή έχει αφαιρεθεί.",
     "previousResponse": "Προηγούμενη απάντηση",
     "replied": "Απαντήθηκε",
     "responseNumber": "Απάντηση {number} από {total}",
     "responseSubmitted": "Το μήνυμά σας έχει σταλεί.",
+    "seeAll": "Δείτε όλα τα CrowdNewsroom",
     "share": {
       "address": "Εδώ μπορείτε να προωθήσετε αυτήν τη φόρμα στην ακόλουθη διεύθυνση:",
       "aria": {
