@@ -163,28 +163,3 @@ jobs:
             done
             docker buildx imagetools create "${args[@]}" "$ORG/$image:sha-$GITHUB_SHA"
           done
-
-  release:
-    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
-    runs-on: ubuntu-24.04
-    needs: [init, publish-tags]
-
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          repository: beabee-communityrm/hive-deploy-stack
-          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ref: main
-
-      - run: |
-          git config --global user.name "Deploy bot"
-          git config --global user.email "<>"
-
-          echo -n ${{ needs.init.outputs.version }} > VERSION
-          ./update.sh
-
-          git add VERSION docker-compose.yml
-          if ! git diff --quiet --cached; then
-            git commit -m "Deploy version ${{ needs.init.outputs.version }}"
-            git push
-          fi

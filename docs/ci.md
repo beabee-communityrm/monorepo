@@ -47,8 +47,6 @@ These live in the GitHub settings, not in this repository:
 | `vX.Y.Z` | tag `vX.Y.Z` |
 | `release` | tag `vX.Y.Z` without a pre-release suffix |
 
-For `v*` tags, the `release` job also writes the version to `beabee-communityrm/hive-deploy-stack`.
-
 Deploy runs no tests itself: commits on `main` have passed the queue, and release tags are cut from `main`. Pushes to `dev` skip the queue, so they deploy untested.
 
 ## When a test fails
@@ -66,4 +64,3 @@ To reproduce a failure locally, start the stack the way `.github/actions/test-se
 |---|---|
 | `BEABEE_STRIPE_PUBLICKEY`, `BEABEE_STRIPE_SECRETKEY`, `BEABEE_STRIPE_MEMBERSHIPPRODUCTID` | test workflows, Stripe test mode |
 | `DOCKER_USERNAME`, `DOCKER_PASSWORD`, `DOCKER_ORGANISATION` | `deploy.yml`, Docker Hub |
-| `SSH_PRIVATE_KEY` | `deploy.yml` `release` job, push to `hive-deploy-stack` |
