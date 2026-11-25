@@ -233,6 +233,7 @@ yarn format
 - [Environment Variables Guide](docs/environment-variables.md) - Setup and workflow guide
 - [Payment System](docs/payment/README.md) - Payment architecture and workflows
 - [Release Workflow](docs/release-workflow.md) - How releases and npm publishes work
+- [CI and Deployment](docs/ci.md) - Merge queue, required checks and how images get deployed
 
 For environment variable reference, see the `.env.example` files.
 
