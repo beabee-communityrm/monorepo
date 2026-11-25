@@ -55,13 +55,13 @@ const backfillContributionStarted: EventBackfiller = {
   sameEvent: `${sameTarget}
     AND (y.metadata->>'subscriptionId' IS NULL
       OR y.metadata->>'subscriptionId' = x.metadata->>'subscriptionId')`,
-  backfill: async (dryRun, em) => {
+  backfill: async (danger, em) => {
     const eventType = ActivityEventType.ContactContributionStarted;
 
     const rows: { contactId: string; subscriptionId: string }[] =
       await em.query(noStartedEvent, [eventType]);
 
-    if (dryRun) {
+    if (!danger) {
       console.log(
         `${chalk.green('✓')} Would add ${rows.length} ${eventType} event(s)`
       );

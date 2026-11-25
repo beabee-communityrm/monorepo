@@ -28,7 +28,7 @@ const backfillers: Record<EventBackfillCategory, EventBackfiller[]> = {
  */
 export const backfillEvents = async ({
   category,
-  dryRun,
+  danger,
 }: BackfillEventsArgs): Promise<void> => {
   const categories =
     category === 'all' ? EVENT_BACKFILL_CATEGORIES : [category];
@@ -44,7 +44,7 @@ export const backfillEvents = async ({
           for (const rule of backfillers[c]) {
             categoryResults.push({
               rule,
-              ids: await rule.backfill(dryRun, em),
+              ids: await rule.backfill(danger, em),
             });
           }
           return categoryResults;
@@ -57,7 +57,7 @@ export const backfillEvents = async ({
       }
     }
     // Nothing is inserted on a dry run, so there is nothing to clean up
-    if (!dryRun) {
+    if (danger) {
       await cleanupDuplicates(backfilled);
     }
   });

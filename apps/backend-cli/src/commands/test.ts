@@ -8,16 +8,10 @@ export const testCommand: CommandModule = {
       .command({
         command: 'list-users',
         describe: 'List test users with various contribution scenarios',
-        builder: (yargs) =>
-          yargs.option('dryRun', {
-            type: 'boolean',
-            description: 'Run without making changes',
-            default: false,
-          }),
-        handler: async (argv) => {
+        handler: async () => {
           const { listTestUsers } =
             await import('../actions/test/list-users.js');
-          return listTestUsers(argv.dryRun);
+          return listTestUsers();
         },
       })
       .demandCommand(1),

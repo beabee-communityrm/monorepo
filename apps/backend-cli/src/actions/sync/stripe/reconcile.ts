@@ -469,7 +469,7 @@ async function fixPayments(
 
   if (argv.fix.includes('payments')) {
     log.info(`🛠️ Fixing ${data.mismatches.length} mismatched payments...`);
-    if (!argv.dryRun) {
+    if (argv.danger) {
       for (const { payment, data: updates } of data.mismatches) {
         try {
           // Only write over the status that was compared: a webhook can
@@ -491,7 +491,7 @@ async function fixPayments(
 
   if (argv.fix.includes('missing-payments')) {
     log.info(`📥 Creating ${data.missing.length} missing payments...`);
-    if (!argv.dryRun) {
+    if (argv.danger) {
       for (const { id, contactId, data: payment } of data.missing) {
         try {
           // Ignore the payment if a webhook has created it since
@@ -569,7 +569,7 @@ async function processContribution(
       updates
     );
 
-    if (!argv.dryRun) {
+    if (argv.danger) {
       // The contribution can change while the Stripe objects are fetched, so
       // only write if it still has the ids that were checked
       const result = await getRepository(ContactContribution).update(
@@ -628,7 +628,7 @@ export const reconcile = async (
 
     log.info(`📊 Found ${contributions.length} Stripe contributions`);
 
-    if (argv.dryRun) {
+    if (!argv.danger) {
       log.info('🔍 DRY RUN - No changes will actually be made');
     }
 

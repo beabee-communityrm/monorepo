@@ -25,9 +25,8 @@ interface TestUserFilters {
 
 /**
  * Lists test users with various contribution scenarios
- * @param dryRun If true, only logs what would be done
  */
-export const listTestUsers = async (dryRun = false): Promise<void> => {
+export const listTestUsers = async (): Promise<void> => {
   await runApp(async () => {
     const filters = await getFilters();
 

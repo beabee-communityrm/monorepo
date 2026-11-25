@@ -92,9 +92,10 @@ export const setupCommand: CommandModule = {
               describe: 'Set up Stripe integration',
               builder: (yargs) =>
                 yargs
-                  .option('dry-run', {
+                  .option('danger', {
                     type: 'boolean',
-                    describe: 'Run setup without making changes',
+                    description:
+                      'Make the changes; without this flag the command only reports what it would do',
                     default: false,
                   })
                   .option('webhook-secret', {
@@ -105,22 +106,23 @@ export const setupCommand: CommandModule = {
               handler: async (argv) => {
                 const { setupStripe } =
                   await import('../actions/setup/integrations.js');
-                return setupStripe(argv.dryRun, argv.webhookSecret);
+                return setupStripe(argv.danger, argv.webhookSecret);
               },
             })
             .command({
               command: 'mailchimp',
               describe: 'Set up Mailchimp integration',
               builder: (yargs) =>
-                yargs.option('dry-run', {
+                yargs.option('danger', {
                   type: 'boolean',
-                  describe: 'Run setup without making changes',
+                  description:
+                    'Make the changes; without this flag the command only reports what it would do',
                   default: false,
                 }),
               handler: async (argv) => {
                 const { setupMailchimp } =
                   await import('../actions/setup/integrations.js');
-                return setupMailchimp(argv.dryRun);
+                return setupMailchimp(argv.danger);
               },
             })
             .command({

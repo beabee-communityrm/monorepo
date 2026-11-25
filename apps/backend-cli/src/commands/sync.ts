@@ -36,9 +36,10 @@ export const syncCommand: CommandModule = {
                     coerce: coerceToDate,
                     default: () => new Date(),
                   })
-                  .option('dryRun', {
+                  .option('danger', {
                     type: 'boolean',
-                    description: 'Run without making changes',
+                    description:
+                      'Make the changes; without this flag the command only reports what it would do',
                     default: false,
                   }),
               handler: async (argv) => {
@@ -52,9 +53,10 @@ export const syncCommand: CommandModule = {
               describe: 'Reconcile changes from the newsletter service',
               builder: (yargs) =>
                 yargs
-                  .option('dryRun', {
+                  .option('danger', {
                     type: 'boolean',
-                    description: 'Run without making changes',
+                    description:
+                      'Make the changes; without this flag the command only reports what it would do',
                     default: false,
                   })
                   .option('report', {
@@ -103,9 +105,10 @@ export const syncCommand: CommandModule = {
               describe:
                 'Remove pending status from contacts that no longer exist on the newsletter service',
               builder: (yargs) =>
-                yargs.option('dryRun', {
+                yargs.option('danger', {
                   type: 'boolean',
-                  description: 'Run without making changes',
+                  description:
+                    'Make the changes; without this flag the command only reports what it would do',
                   default: false,
                 }),
               handler: async (argv) => {
@@ -119,9 +122,10 @@ export const syncCommand: CommandModule = {
               describe:
                 'Refresh the newsletter groups cached in the database from the newsletter service',
               builder: (yargs) =>
-                yargs.option('dryRun', {
+                yargs.option('danger', {
                   type: 'boolean',
-                  description: 'Run without making changes',
+                  description:
+                    'Make the changes; without this flag the command only reports what it would do',
                   default: false,
                 }),
               handler: async (argv) => {
@@ -147,9 +151,10 @@ export const syncCommand: CommandModule = {
                   string: true,
                   description: 'Push specific contact IDs only',
                 })
-                .option('dryRun', {
+                .option('danger', {
                   type: 'boolean',
-                  description: 'Run without making changes',
+                  description:
+                    'Make the changes; without this flag the command only reports what it would do',
                   default: false,
                 }),
             handler: async (argv) => {
@@ -170,9 +175,10 @@ export const syncCommand: CommandModule = {
               description: 'Process specific segment ID',
               required: true,
             })
-            .option('dryRun', {
+            .option('danger', {
               type: 'boolean',
-              description: 'Run without making changes',
+              description:
+                'Make the changes; without this flag the command only reports what it would do',
               default: false,
             }),
         handler: async (argv) => {
@@ -189,9 +195,10 @@ export const syncCommand: CommandModule = {
             describe: 'Reconcile subscriptions and payments with Stripe',
             builder: (yargs) =>
               yargs
-                .option('dryRun', {
+                .option('danger', {
                   type: 'boolean',
-                  description: 'Run without making changes',
+                  description:
+                    'Make the changes; without this flag the command only reports what it would do',
                   default: false,
                 })
                 .option('report', {

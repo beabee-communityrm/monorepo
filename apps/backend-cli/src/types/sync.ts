@@ -9,14 +9,14 @@ import {
 export interface SyncNewsletterActiveMemberTagArgs {
   since: Date;
   until: Date;
-  dryRun: boolean;
+  danger: boolean;
 }
 
 export type SyncNewsletterReconcileTestId =
   (typeof SYNC_NEWSLETTER_RECONCILE_TESTS)[number];
 
 export interface SyncNewsletterReconcileArgs {
-  dryRun: boolean;
+  danger: boolean;
   report: boolean;
   importNew: boolean;
   uploadNew: boolean;
@@ -25,25 +25,25 @@ export interface SyncNewsletterReconcileArgs {
   until: Date | undefined;
 }
 
-export interface SyncDryRunArgs {
-  dryRun: boolean;
+export interface SyncDangerArgs {
+  danger: boolean;
 }
 
 export interface SyncSegmentsArgs {
   segmentId: string;
-  dryRun: boolean;
+  danger: boolean;
 }
 
 export interface SyncContactSyncServicePushArgs {
   contactIds: string[] | undefined;
-  dryRun: boolean;
+  danger: boolean;
 }
 
 export type SyncStripeReconcileTestId =
   (typeof SYNC_STRIPE_RECONCILE_TESTS)[number];
 
 export interface SyncStripeReconcileArgs {
-  dryRun: boolean;
+  danger: boolean;
   report: boolean;
   contactIds: string[] | undefined;
   fix: SyncStripeReconcileTestId[];

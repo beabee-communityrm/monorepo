@@ -119,7 +119,7 @@ async function importFromLines(lines: string[], merge = false): Promise<void> {
 
 export const importDatabase = async (
   filePath: string | undefined,
-  dryRun = false,
+  danger = false,
   merge = false
 ): Promise<void> => {
   if (!config.dev) {
@@ -127,7 +127,7 @@ export const importDatabase = async (
     process.exit(1);
   }
 
-  if (dryRun) {
+  if (!danger) {
     console.log('Dry run: would import from', filePath ?? 'stdin');
     return;
   }
