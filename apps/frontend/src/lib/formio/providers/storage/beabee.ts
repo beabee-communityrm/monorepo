@@ -98,7 +98,7 @@ export default class BeabeeStorage {
         'unsupported-file-type': t('form.errors.file.unsupportedType'),
         'file-upload-error': t('form.errors.file.uploadFailed'),
       });
-      throw new Error(errorText);
+      throw new Error(errorText, { cause: err });
     } finally {
       // Always decrement counter when upload completes (success or failure)
       activeUploadsCount.value--;
