@@ -1151,6 +1151,7 @@
     "id": "ID",
     "itemsPerPage": "{items} elementos por página",
     "label": "Etiqueta",
+    "loadError": "No se ha podido cargar. Recarga la página y escribe a {support} si sigue pasando.",
     "loading": "Cargando...",
     "login": "Iniciar sesión",
     "manualPaymentSource": {
@@ -1782,7 +1783,6 @@
     },
     "groupCount": "{n} grupo | {n} grupos",
     "loadAllResponsesError": "No se han podido cargar todas tus respuestas. Inténtalo de nuevo.",
-    "loadError": "No se ha podido cargar. Recarga la página y escribe a {support} si sigue pasando.",
     "makeOneTimeDonationButton": "Contribuir",
     "makeOneTimeDonationTitle": "Realizar contribución única",
     "manageContribution": "Gestionar tu contribución",

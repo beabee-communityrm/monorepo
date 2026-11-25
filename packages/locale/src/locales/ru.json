@@ -1152,6 +1152,7 @@
     "id": "",
     "itemsPerPage": "",
     "label": "",
+    "loadError": "Не удалось загрузить. Перезагрузите страницу и напишите на {support}, если проблема повторится.",
     "loading": "Загрузка...",
     "login": "Войти",
     "manualPaymentSource": {
@@ -1785,7 +1786,6 @@
     },
     "groupCount": "{n} группа | {n} групп",
     "loadAllResponsesError": "Не удалось загрузить все ваши ответы. Попробуйте ещё раз.",
-    "loadError": "Не удалось загрузить. Перезагрузите страницу и напишите на {support}, если проблема повторится.",
     "makeOneTimeDonationButton": "Взнос",
     "makeOneTimeDonationTitle": "Сделать разовый взнос сейчас",
     "manageContribution": "Изменить ваш взнос",

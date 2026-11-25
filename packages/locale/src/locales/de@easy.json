@@ -1151,6 +1151,7 @@
     "id": "",
     "itemsPerPage": "",
     "label": "Betreff",
+    "loadError": "",
     "loading": "Der Computer arbeitet.",
     "login": "",
     "manualPaymentSource": {
@@ -1784,7 +1785,6 @@
     },
     "groupCount": "",
     "loadAllResponsesError": "",
-    "loadError": "",
     "makeOneTimeDonationButton": "",
     "makeOneTimeDonationTitle": "",
     "manageContribution": "",

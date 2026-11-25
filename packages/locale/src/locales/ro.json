@@ -1150,6 +1150,7 @@
     "id": "",
     "itemsPerPage": "",
     "label": "",
+    "loadError": "",
     "loading": "",
     "login": "Conectați-vă",
     "manualPaymentSource": {
@@ -1781,7 +1782,6 @@
     },
     "groupCount": "",
     "loadAllResponsesError": "",
-    "loadError": "",
     "makeOneTimeDonationButton": "",
     "makeOneTimeDonationTitle": "",
     "manageContribution": "",

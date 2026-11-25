@@ -51,7 +51,7 @@ const props = withDefaults(
     /** Locale key for the line, with a `{support}` placeholder */
     keypath?: string;
   }>(),
-  { retry: undefined, keypath: 'homePage.loadError' }
+  { retry: undefined, keypath: 'common.loadError' }
 );
 
 const { t } = useI18n();
