@@ -1,4 +1,5 @@
 import { ActivityEventType, PaymentStatus } from '@beabee/beabee-common';
+import { config } from '@beabee/core/config';
 import { stripe } from '@beabee/core/lib/stripe';
 
 import chalk from 'chalk';
@@ -81,6 +82,13 @@ const backfillPaymentFailed: EventBackfiller = {
   sameEvent: `${sameTarget} AND y.metadata->>'paymentId' = x.metadata->>'paymentId'`,
   backfill: async (dryRun, em) => {
     const eventType = ActivityEventType.ContactPaymentFailed;
+
+    if (!config.stripe.secretKey) {
+      console.log(
+        `${chalk.yellow('-')} Skipped ${eventType}: Stripe is not configured`
+      );
+      return [];
+    }
 
     const invoices = await stripe.invoices
       .list({ status: 'uncollectible', limit: 100 })
