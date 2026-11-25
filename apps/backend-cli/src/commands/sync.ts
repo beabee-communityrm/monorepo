@@ -2,7 +2,7 @@ import type { CommandModule } from 'yargs';
 
 import {
   SYNC_NEWSLETTER_RECONCILE_TESTS,
-  SYNC_STRIPE_RECONCILE_TESTS,
+  SYNC_PAYMENT_SERVICE_RECONCILE_TESTS,
 } from '../constants/sync.js';
 import { coerceToDate } from '../utils/coerce.js';
 
@@ -187,12 +187,13 @@ export const syncCommand: CommandModule = {
         },
       })
       .command({
-        command: 'stripe',
-        describe: 'Sync data with Stripe',
+        command: 'payment-service',
+        describe: 'Sync data with the payment service',
         builder: (yargs) =>
           yargs.command({
             command: 'reconcile',
-            describe: 'Reconcile subscriptions and payments with Stripe',
+            describe:
+              'Reconcile subscriptions and payments with the payment service',
             builder: (yargs) =>
               yargs
                 .option('danger', {
@@ -215,24 +216,24 @@ export const syncCommand: CommandModule = {
                 .option('fix', {
                   type: 'array',
                   description: 'The data to check and fix',
-                  choices: SYNC_STRIPE_RECONCILE_TESTS,
+                  choices: SYNC_PAYMENT_SERVICE_RECONCILE_TESTS,
                   demandOption: true,
                 })
                 .option('since', {
                   type: 'string',
                   description:
-                    'Check invoices created since date or duration (ISO format)',
+                    'Check payments created since date or duration (ISO format)',
                   coerce: coerceToDate,
                 })
                 .option('until', {
                   type: 'string',
                   description:
-                    'Check invoices created until date or duration (ISO format)',
+                    'Check payments created until date or duration (ISO format)',
                   coerce: coerceToDate,
                 }),
             handler: async (argv) => {
               const { reconcile } =
-                await import('../actions/sync/stripe/reconcile.js');
+                await import('../actions/sync/payment-service/reconcile.js');
               return reconcile(argv);
             },
           }),

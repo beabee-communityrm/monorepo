@@ -155,7 +155,8 @@ export class SalesforceProvider implements NewsletterProvider {
 
   private async getHealthStatus(): Promise<ApiHealthStatus> {
     try {
-      await this.api.get('limits/');
+      // Needs only the object access every profile write relies on anyway
+      await this.api.get(`sobjects/${PROFILE_OBJECT}/`);
       return ApiHealthStatus.HEALTHY;
     } catch (err) {
       log.error('Salesforce health check failed', err);

@@ -93,7 +93,7 @@
 
 <script lang="ts" setup>
 import {
-  type ContributionInfo,
+  type ContactContributionData,
   ContributionPeriod,
   ContributionType,
   type GetPaymentData,
@@ -112,7 +112,7 @@ import { routeIcons } from '#utils/route-nav';
 
 const { t, n } = useI18n();
 
-const contribution = ref<ContributionInfo>();
+const contribution = ref<ContactContributionData>();
 const lastPayment = ref<GetPaymentData | null>();
 const error = ref(false);
 
@@ -136,7 +136,7 @@ const fetchLastPayment = async () => {
 };
 
 onBeforeMount(async () => {
-  let info: ContributionInfo;
+  let info: ContactContributionData;
   try {
     info = await client.contact.contribution.get();
   } catch {

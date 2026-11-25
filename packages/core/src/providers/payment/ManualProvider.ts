@@ -1,5 +1,7 @@
+import { ContactContributionData } from '@beabee/beabee-common';
+
 import { Contact } from '#models/index';
-import { ContributionInfo, UpdateContributionResult } from '#type/index';
+import { UpdateContributionResult } from '#type/index';
 
 import { PaymentProvider } from './PaymentProvider.js';
 
@@ -45,7 +47,7 @@ export class ManualProvider extends PaymentProvider {
    * Gets current contribution information
    * @returns Promise resolving to partial contribution info with basic payment source data
    */
-  async getContributionInfo(): Promise<Partial<ContributionInfo>> {
+  async getContributionInfo(): Promise<Partial<ContactContributionData>> {
     return {
       paymentSource: {
         method: null,

@@ -1,5 +1,6 @@
 import {
   ApiHealthStatus,
+  ContactContributionData,
   ContributionPeriod,
   PaymentMethod,
   PaymentSource,
@@ -20,7 +21,6 @@ import { log as mainLogger } from '#logging';
 import { Contact } from '#models/index';
 import {
   CompletedPaymentFlow,
-  ContributionInfo,
   PaymentFlowForm,
   UpdateContributionForm,
   UpdateContributionResult,
@@ -163,7 +163,7 @@ export class GCProvider extends PaymentProvider {
    * Retrieves current contribution information including mandate and payment status
    * @returns Promise resolving to partial contribution info
    */
-  async getContributionInfo(): Promise<Partial<ContributionInfo>> {
+  async getContributionInfo(): Promise<Partial<ContactContributionData>> {
     let paymentSource: PaymentSource | undefined;
     let pendingPayment = false;
 

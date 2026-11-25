@@ -20,6 +20,7 @@ export * from './NewsletterBulkService.js';
 export * from './NewsletterService.js';
 export * from './OptionsService.js';
 export * from './PageSettingsService.js';
+export * from './PaymentBulkService.js';
 export * from './PaymentFlowService.js';
 export * from './PaymentService.js';
 export * from './ReferralsService.js';
