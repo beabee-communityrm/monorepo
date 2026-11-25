@@ -10,145 +10,22 @@ The CLI runs inside the `api_app` container, which provides its environment:
 docker compose exec api_app yarn backend-cli <command>
 ```
 
-The commands below are shown as they are run inside the container.
-
-The CLI provides several commands for managing different aspects of Beabee, you can see the list of commands by running `yarn backend-cli --help`:
+The CLI documents its own commands and options:
 
 ```bash
 yarn backend-cli --help
-yarn backend-cli <command>
-
-Commands:
-  yarn backend-cli api-key <action>  Manage API keys
-  yarn backend-cli database <action>  Database management commands
-  yarn backend-cli user <action>     Manage users
-  yarn backend-cli setup <action>    Configure system settings
-  yarn backend-cli payment <action>  Payment management commands
-  yarn backend-cli process <action>  Processing commands
-  yarn backend-cli rate-limiter      Manage rate limiter functionality
-  yarn backend-cli sync <action>     Synchronization commands
-  yarn backend-cli test <action>     Test environment commands
-  yarn backend-cli migrate-uploads   Migrate uploads from local storage to MinIO
-
-Options:
-  --version  Show version number                                       [boolean]
-  --help     Show help                                                 [boolean]
+yarn backend-cli <command> --help
+yarn backend-cli <command> <subcommand> --help
 ```
 
-## Available Commands
+An unknown or missing command exits with a non-zero code.
 
-### API Key Management
+## Database dumps
 
-```bash
-yarn backend-cli api-key list          List all API keys
-yarn backend-cli api-key create        Create a new API key
-yarn backend-cli api-key delete <id>   Delete an API key
-```
-
-### Database Management
-
-```bash
-# Export full database (SQL dump with anonymised data)
-yarn backend-cli database export \
-  [--dryRun] \
-  [--anonymize=full|safe|none] \
-  [--skipAnonymizeTables contact segment ...]
-
-# Export demo subset (limited random contacts and latest callouts, anonymised)
-yarn backend-cli database export-demo [--dryRun]
-
-# Export callout data only
-yarn backend-cli database export-callouts \
-  [--dryRun] \
-  [--anonymize=full|none]
-
-# Import database from SQL dump (dev only)
-yarn backend-cli database import \
-  [--file path/to/dump.sql] \
-  [--dryRun]
-```
-
-Notes:
-
-- **Export format** is a SQL dump: each pair of lines is a SQL statement followed by a JSON array of parameters (or an empty line).
-- **`--anonymize` levels for `database export`:**
-  - `full` (default) — all data anonymised including contacts, payments, emails and segments
-  - `safe` — contacts/payments/emails/segments anonymised, other tables exported as-is
-  - `none` — **everything raw including PII** — for local migration testing only. Emits a stderr warning.
-- **`--anonymize` levels for `database export-callouts`:**
-  - `full` (default) — personal data anonymised (guest names/emails, contact FKs)
-  - `none` — everything raw — for local migration testing only. Emits a stderr warning.
-- `--skipAnonymizeTables` lets you export specific tables without anonymisation while still keeping foreign keys consistent.
-- Database dumps are stored in the `exports/` directory at the monorepo root (git-ignored).
-
-### User Management
-
-```bash
-yarn backend-cli user list [email]                  List users
-yarn backend-cli user list --without-password       List users without a password set
-yarn backend-cli user create                        Create a new user
-yarn backend-cli user unlock <email>                Lift the lock after too many failed logins, locally and at the identity provider
-yarn backend-cli user delete <email>                Permanently delete a user by email
-yarn backend-cli user delete --without-password     Delete all users without a password set
-yarn backend-cli user delete --without-password -y  Delete without confirmation prompt
-```
-
-### System Setup
-
-```bash
-yarn backend-cli setup support-email    Set up support email configuration
-yarn backend-cli setup payment-methods  Set up payment methods configuration
-yarn backend-cli setup admin            Set up initial admin user
-yarn backend-cli setup system           Set up support email, payment methods and admin user in sequence
-```
-
-### Payment Management
-
-```bash
-yarn backend-cli payment create        Create a new payment
-yarn backend-cli payment list [email]  List payments
-```
-
-### Rate Limiter Management
-
-```bash
-yarn backend-cli rate-limiter clear  Clear the rate limiter cache
-```
-
-### Synchronization Commands
-
-```bash
-yarn backend-cli sync contact-sync-service push  Push contacts to the contact sync service
-yarn backend-cli sync mailchimp  Sync newsletter status with Mailchimp
-yarn backend-cli sync segments   Process segment memberships
-yarn backend-cli sync stripe reconcile  Reconcile subscriptions and payments with Stripe
-```
-
-### Test Environment Commands
-
-```bash
-yarn backend-cli test list-users  List test users with various contribution scenarios
-```
-
-### Migration Commands
-
-```bash
-yarn backend-cli migrate-uploads  Migrate uploads from local storage to MinIO using ImageService and DocumentService
-```
-
-You can also run `yarn backend-cli <command> --help` to see the help for any specific command.
-
-## Development
-
-### Project Structure
-
-```
-src/
-├── actions/       # Command implementation logic
-├── commands/      # Command definitions
-├── env.ts         # Environment configuration
-└── index.ts       # CLI entry point
-```
+`database export` writes a SQL dump in which each pair of lines is a SQL
+statement followed by a JSON array of its parameters (or an empty line).
+`database import` reads that format. Save dumps in `exports/` at the monorepo
+root, which is git-ignored.
 
 ## License
 

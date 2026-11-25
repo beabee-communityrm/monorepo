@@ -1,7 +1,7 @@
 import type { CommandModule } from 'yargs';
 
 export const setupCommand: CommandModule = {
-  command: 'setup <action>',
+  command: 'setup',
   describe: 'Configure system settings',
   builder: (yargs) => {
     return yargs
@@ -83,7 +83,7 @@ export const setupCommand: CommandModule = {
         },
       })
       .command({
-        command: 'integrations <integration>',
+        command: 'integrations',
         describe: 'Set up third-party integrations',
         builder: (yargs) => {
           return yargs
@@ -132,7 +132,8 @@ export const setupCommand: CommandModule = {
                   await import('../actions/setup/integrations.js');
                 return setupIdp();
               },
-            });
+            })
+            .demandCommand(1);
         },
         handler: () => {},
       })
@@ -191,7 +192,8 @@ export const setupCommand: CommandModule = {
           const { setupSystem } = await import('../actions/setup/system.js');
           return setupSystem(argv);
         },
-      });
+      })
+      .demandCommand(1);
   },
   handler: () => {},
 };
