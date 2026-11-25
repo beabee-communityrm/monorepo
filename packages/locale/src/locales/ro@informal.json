@@ -1110,6 +1110,7 @@
     "empty": {
       "active": ""
     },
+    "loadOpenError": "Nu s-au putut încărca CrowdNewsroom-urile deschise. Contactează {support} dacă problema persistă.",
     "noArchivedCallouts": "",
     "openCallouts": "",
     "search": "",

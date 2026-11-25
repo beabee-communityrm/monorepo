@@ -1115,6 +1115,7 @@
     "empty": {
       "active": "Aucune campagne active pour le moment."
     },
+    "loadOpenError": "Impossible de charger les CrowdNewsrooms ouvertes. Contactez {support} si le problème persiste.",
     "noArchivedCallouts": "Aucune campagne",
     "openCallouts": "CrowdNewsrooms ouvertes",
     "search": "Rechercher une campagne…",

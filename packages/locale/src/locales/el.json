@@ -1111,6 +1111,7 @@
     "empty": {
       "active": ""
     },
+    "loadOpenError": "Δεν ήταν δυνατή η φόρτωση των ανοιχτών CrowdNewsroom. Επικοινωνήστε με {support} αν το πρόβλημα συνεχιστεί.",
     "noArchivedCallouts": "",
     "openCallouts": "",
     "search": "",

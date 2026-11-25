@@ -1111,6 +1111,7 @@
     "empty": {
       "active": "Наразі немає активних CrowdNewsroom."
     },
+    "loadOpenError": "Не вдалося завантажити відкриті CrowdNewsroom. Напишіть на {support}, якщо проблема повториться.",
     "noArchivedCallouts": "Тут поки нічого немає",
     "openCallouts": "Відкриті CrowdNewsroom",
     "search": "Пошук",
