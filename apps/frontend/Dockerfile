@@ -53,7 +53,7 @@ COPY apps/frontend-old /opt/apps/frontend-old
 RUN yarn workspaces foreach --recursive --topological-dev \
   --from @beabee/frontend --from @beabee/frontend-old run build
 
-FROM nginx:1.30-alpine
+FROM nginx:1.31-alpine
 
 ARG REVISION
 ARG VERSION

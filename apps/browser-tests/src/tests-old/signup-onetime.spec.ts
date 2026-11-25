@@ -89,10 +89,9 @@ test("Join Flow", async ({ page, browserName }) => {
     ).not.toBeVisible();
 
     await page
-      .locator(".email-item-link")
+      .getByTestId("email-list-item")
       .filter({
         hasText: "Do you want to setup an account?",
-        has: page.locator(`span[title*="${emailAddress}"]`),
       })
       .first()
       .click();

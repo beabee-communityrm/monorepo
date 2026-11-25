@@ -1,4 +1,4 @@
-FROM nginx:1.30-alpine
+FROM nginx:1.31-alpine
 
 COPY apps/router/14-hive-service-defaults.envsh /docker-entrypoint.d/
 COPY apps/router/15-trusted-origins.envsh /docker-entrypoint.d/
