@@ -29,13 +29,11 @@ const responseLinks = reactive({
   ],
 });
 
-const socialLinks = reactive({
-  links: [
-    { text: 'Twitter', url: 'https://twitter.com/example' },
-    { text: 'Facebook', url: 'https://facebook.com/example' },
-    { text: 'LinkedIn', url: 'https://linkedin.com/company/example' },
-  ],
-});
+const socialLinks = ref([
+  { text: 'Twitter', url: 'https://twitter.com/example' },
+  { text: 'Facebook', url: 'https://facebook.com/example' },
+  { text: 'LinkedIn', url: 'https://linkedin.com/company/example' },
+]);
 
 const emptyLinks = ref([]);
 </script>
@@ -156,7 +154,7 @@ const emptyLinks = ref([]);
           </p>
 
           <AppLinkList
-            v-model="socialLinks.links"
+            v-model="socialLinks"
             text-label="Platform"
             url-label="Profile URL"
             placeholder-label="e.g., Twitter"

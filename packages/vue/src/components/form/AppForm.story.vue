@@ -172,8 +172,7 @@ function resetForm() {
               <label class="block">
                 <span class="text-sm font-medium">Description</span>
                 <textarea class="mt-1 w-full rounded border p-2" rows="3">
-A community platform for engagement</textarea
-                >
+A community platform for engagement</textarea>
               </label>
             </div>
           </AppForm>

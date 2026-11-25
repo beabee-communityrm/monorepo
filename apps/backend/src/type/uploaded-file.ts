@@ -6,6 +6,6 @@ import { Readable } from 'stream';
  */
 export interface UploadedFile {
   stream: Readable;
-  filename: string;
+  filename: string | undefined;
   mimetype: string;
 }

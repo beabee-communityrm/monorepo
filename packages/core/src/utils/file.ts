@@ -279,7 +279,7 @@ export const getOrientedDimensions = (
  * @param filename Original filename
  * @returns Sanitized filename
  */
-export const sanitizeFilename = (filename: string): string => {
+export const sanitizeFilename = (filename: string | undefined): string => {
   if (!filename) return '';
 
   // First convert to string just in case
@@ -365,8 +365,8 @@ export async function extractJsonArchive<T = unknown>(
       if (header.type === 'file') {
         let chunks: Buffer[] = [];
 
-        stream.on('data', (chunk: Buffer) => {
-          chunks.push(chunk);
+        stream.on('data', (chunk) => {
+          if (Buffer.isBuffer(chunk)) chunks.push(chunk);
         });
 
         stream.on('end', () => {
@@ -379,7 +379,7 @@ export async function extractJsonArchive<T = unknown>(
             }
             next();
           } catch (error) {
-            next(error);
+            next(error instanceof Error ? error : new Error(String(error)));
           }
         });
 

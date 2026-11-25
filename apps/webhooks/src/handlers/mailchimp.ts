@@ -51,9 +51,7 @@ interface MCCleanedEmailWebhook {
 }
 
 type MCWebhook =
-  | MCProfileWebhook
-  | MCUpdateEmailWebhook
-  | MCCleanedEmailWebhook;
+  MCProfileWebhook | MCUpdateEmailWebhook | MCCleanedEmailWebhook;
 
 function isKnownWebhook(body: unknown): body is MCWebhook {
   return (

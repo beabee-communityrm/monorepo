@@ -16,5 +16,4 @@ export interface PaymentSourceStripeCardLink extends PaymentSourceBase {
 }
 
 export type PaymentSourceStripeCard =
-  | PaymentSourceStripeCardActual
-  | PaymentSourceStripeCardLink;
+  PaymentSourceStripeCardActual | PaymentSourceStripeCardLink;

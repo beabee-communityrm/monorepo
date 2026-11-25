@@ -20,9 +20,9 @@ import type {
 
 declare module 'vue-router' {
   interface TypesConfig {
-    ParamParsers:
-      | never
+    _ParamParsers: {}
     RouteNamedMap: import('vue-router/auto-routes').RouteNamedMap
+    _RouteFileInfoMap: import('vue-router/auto-routes')._RouteFileInfoMap
   }
 }
 
@@ -557,11 +557,15 @@ declare module 'vue-router/auto-routes' {
         | '/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/_theme.vue': {
       routes:
         | 'theme'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/[...all].vue': {
@@ -569,11 +573,15 @@ declare module 'vue-router/auto-routes' {
         | '/[...all]'
       views:
         | never
+      pathParamNames:
+        | 'all'
     }
     'src/pages/admin/index.vue': {
       routes:
         | 'admin'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/activity/index.vue': {
@@ -581,11 +589,15 @@ declare module 'vue-router/auto-routes' {
         | 'adminActivity'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/admin/contacts/index.vue': {
       routes:
         | 'adminContacts'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/contacts/[id].vue': {
@@ -598,11 +610,15 @@ declare module 'vue-router/auto-routes' {
         | 'adminContactsViewOverview'
       views:
         | 'default'
+      pathParamNames:
+        | 'id'
     }
     'src/pages/admin/contacts/[id]/index.vue': {
       routes:
         | 'adminContactsViewOverview'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/contacts/[id]/account.vue': {
@@ -610,11 +626,15 @@ declare module 'vue-router/auto-routes' {
         | 'adminContactsViewAccount'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/admin/contacts/[id]/activity.vue': {
       routes:
         | 'adminContactsViewActivity'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/contacts/[id]/callouts.vue': {
@@ -622,11 +642,15 @@ declare module 'vue-router/auto-routes' {
         | 'adminContactsViewCallouts'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/admin/contacts/[id]/contribution.vue': {
       routes:
         | 'adminContactsViewContribution'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/contacts/add.vue': {
@@ -634,11 +658,15 @@ declare module 'vue-router/auto-routes' {
         | 'adminContactsAdd'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/admin/contacts/email-templates/index.vue': {
       routes:
         | 'adminContactsEmailTemplates'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/contacts/email-templates/edit/[emailId].vue': {
@@ -646,11 +674,15 @@ declare module 'vue-router/auto-routes' {
         | 'adminContactsEmailTemplatesEdit'
       views:
         | never
+      pathParamNames:
+        | 'emailId'
     }
     'src/pages/admin/contacts/email-templates/new.vue': {
       routes:
         | 'adminContactsEmailTemplatesNew'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/contacts/send-email/[segmentId].vue': {
@@ -658,11 +690,15 @@ declare module 'vue-router/auto-routes' {
         | 'adminContactsSendEmailSegmentId'
       views:
         | never
+      pathParamNames:
+        | 'segmentId'
     }
     'src/pages/admin/contacts/tags.vue': {
       routes:
         | 'adminContactTags'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/crowdnewsroom/index.vue': {
@@ -670,17 +706,23 @@ declare module 'vue-router/auto-routes' {
         | 'adminCallouts'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/admin/crowdnewsroom/edit/[id].vue': {
       routes:
         | 'adminCalloutEdit'
       views:
         | never
+      pathParamNames:
+        | 'id'
     }
     'src/pages/admin/crowdnewsroom/new.vue': {
       routes:
         | 'adminCalloutNew'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/crowdnewsroom/view/[id].vue': {
@@ -692,11 +734,15 @@ declare module 'vue-router/auto-routes' {
         | 'adminCalloutViewResponsesTags'
       views:
         | 'default'
+      pathParamNames:
+        | 'id'
     }
     'src/pages/admin/crowdnewsroom/view/[id]/index.vue': {
       routes:
         | 'adminCalloutViewOverview'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/crowdnewsroom/view/[id]/responses/index.vue': {
@@ -704,17 +750,23 @@ declare module 'vue-router/auto-routes' {
         | 'adminCalloutViewResponsesTable'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/admin/crowdnewsroom/view/[id]/responses/[rid].vue': {
       routes:
         | 'adminCalloutViewResponsesItem'
       views:
         | never
+      pathParamNames:
+        | 'rid'
     }
     'src/pages/admin/crowdnewsroom/view/[id]/responses/tags.vue': {
       routes:
         | 'adminCalloutViewResponsesTags'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/membership-builder.vue': {
@@ -725,11 +777,15 @@ declare module 'vue-router/auto-routes' {
         | 'adminMembershipBuilderJoinForm'
       views:
         | 'default'
+      pathParamNames:
+        | never
     }
     'src/pages/admin/membership-builder/index.vue': {
       routes:
         | 'adminMembershipBuilderJoinForm'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/membership-builder/confirmation.vue': {
@@ -737,11 +793,15 @@ declare module 'vue-router/auto-routes' {
         | 'adminMembershipBuilderAccountConfirmation'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/admin/membership-builder/intro.vue': {
       routes:
         | 'adminMembershipBuilderIntroMessages'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/notices/index.vue': {
@@ -749,11 +809,15 @@ declare module 'vue-router/auto-routes' {
         | 'adminNotices'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/admin/notices/add.vue': {
       routes:
         | 'adminNoticesAdd'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/notices/edit/[id].vue': {
@@ -761,17 +825,23 @@ declare module 'vue-router/auto-routes' {
         | 'adminNoticeEdit'
       views:
         | never
+      pathParamNames:
+        | 'id'
     }
     'src/pages/admin/notices/view/[id].vue': {
       routes:
         | 'adminNoticeView'
       views:
         | never
+      pathParamNames:
+        | 'id'
     }
     'src/pages/admin/payments/index.vue': {
       routes:
         | 'adminPayments'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/settings.vue': {
@@ -785,11 +855,15 @@ declare module 'vue-router/auto-routes' {
         | 'adminSettingsTheme'
       views:
         | 'default'
+      pathParamNames:
+        | never
     }
     'src/pages/admin/settings/index.vue': {
       routes:
         | 'adminSettingsGeneral'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/settings/api-keys.vue': {
@@ -797,17 +871,23 @@ declare module 'vue-router/auto-routes' {
         | 'adminSettingsApikeys'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/admin/settings/email/[id].vue': {
       routes:
         | 'adminSettingsEmailEdit'
       views:
         | never
+      pathParamNames:
+        | 'id'
     }
     'src/pages/admin/settings/emails.vue': {
       routes:
         | 'adminSettingsEmail'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/settings/integrations.vue': {
@@ -815,11 +895,15 @@ declare module 'vue-router/auto-routes' {
         | 'adminSettingsIntegrations'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/admin/settings/theme.vue': {
       routes:
         | 'adminSettingsTheme'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/ui-toolkit/index.vue': {
@@ -827,11 +911,15 @@ declare module 'vue-router/auto-routes' {
         | 'adminUiToolkit'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/auth/forgot-password.vue': {
       routes:
         | 'forgot-password'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/auth/login.vue': {
@@ -839,11 +927,15 @@ declare module 'vue-router/auto-routes' {
         | 'login'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/auth/login-error.vue': {
       routes:
         | 'login-error'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/auth/lost-device.vue': {
@@ -851,29 +943,39 @@ declare module 'vue-router/auto-routes' {
         | 'lost-device'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/auth/reset-device/[id].vue': {
       routes:
         | 'reset_device'
       views:
         | never
+      pathParamNames:
+        | 'id'
     }
     'src/pages/auth/reset-password/[id].vue': {
       routes:
         | 'reset_password'
       views:
         | never
+      pathParamNames:
+        | 'id'
     }
     'src/pages/auth/set-password/[id].vue': {
       routes:
         | 'set_password'
       views:
         | never
+      pathParamNames:
+        | 'id'
     }
     'src/pages/crowdnewsroom/index.vue': {
       routes:
         | 'callouts'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/crowdnewsroom/[id].vue': {
@@ -886,11 +988,15 @@ declare module 'vue-router/auto-routes' {
         | 'calloutThanks'
       views:
         | 'default'
+      pathParamNames:
+        | 'id'
     }
     'src/pages/crowdnewsroom/[id]/index.vue': {
       routes:
         | 'callout'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/crowdnewsroom/[id]/gallery.vue': {
@@ -898,11 +1004,15 @@ declare module 'vue-router/auto-routes' {
         | 'calloutGallery'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/crowdnewsroom/[id]/map.vue': {
       routes:
         | 'calloutMap'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/crowdnewsroom/[id]/respond.vue': {
@@ -910,11 +1020,15 @@ declare module 'vue-router/auto-routes' {
         | 'calloutRespond'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/crowdnewsroom/[id]/thanks.vue': {
       routes:
         | 'calloutThanks'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/join/index.vue': {
@@ -922,11 +1036,15 @@ declare module 'vue-router/auto-routes' {
         | 'join'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/join/complete.vue': {
       routes:
         | 'joinComplete'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/join/confirm-email/index.vue': {
@@ -934,17 +1052,23 @@ declare module 'vue-router/auto-routes' {
         | 'confirmEmail'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/join/confirm-email/[id].vue': {
       routes:
         | 'confirmEmailLoading'
       views:
         | never
+      pathParamNames:
+        | 'id'
     }
     'src/pages/join/failed.vue': {
       routes:
         | 'joinFailed'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/join/not-found.vue': {
@@ -952,11 +1076,15 @@ declare module 'vue-router/auto-routes' {
         | 'joinNotFound'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/join/payment-failed.vue': {
       routes:
         | 'joinPaymentFailed'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/join/setup.vue': {
@@ -964,11 +1092,15 @@ declare module 'vue-router/auto-routes' {
         | 'joinSetup'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/join/survey.vue': {
       routes:
         | 'joinSurvey'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/profile/index.vue': {
@@ -976,11 +1108,15 @@ declare module 'vue-router/auto-routes' {
         | 'profile'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/profile/account.vue': {
       routes:
         | 'profileAccount'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/profile/contribution/index.vue': {
@@ -988,11 +1124,15 @@ declare module 'vue-router/auto-routes' {
         | 'profileContribution'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/profile/contribution/cancel.vue': {
       routes:
         | 'profileContributionCancel'
       views:
+        | never
+      pathParamNames:
         | never
     }
   }

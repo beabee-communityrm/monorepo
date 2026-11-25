@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
-    "prettier": "^3.8.3",
+    "prettier": "^3.9.10",
     "typescript": "~6.0.3"
   },
   "files": [

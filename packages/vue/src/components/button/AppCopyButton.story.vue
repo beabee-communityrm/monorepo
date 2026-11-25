@@ -82,8 +82,7 @@ function handleCopy() {
           >
 This is a longer text
 that spans multiple lines
-and can be copied with a single click.</textarea
-          >
+and can be copied with a single click.</textarea>
           <div class="h-full border-l border-main-40">
             <AppCopyButton
               text="This is a longer text

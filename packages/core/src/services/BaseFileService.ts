@@ -56,7 +56,7 @@ export abstract class BaseFileService<
    */
   async upload(
     data: Readable | Buffer,
-    originalFilename: string,
+    originalFilename: string | undefined,
     mimetype?: string,
     owner?: string
   ): Promise<TMetadata> {

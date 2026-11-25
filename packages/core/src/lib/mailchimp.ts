@@ -202,7 +202,7 @@ export function createInstance(
   ): Promise<T | null> {
     const resp = await instance({
       method: operation.method,
-      params: operation.params,
+      ...(operation.params && { params: operation.params }),
       url: operation.path,
       ...(operation.body && { data: JSON.parse(operation.body) }),
       validateStatus: validateStatus || null,

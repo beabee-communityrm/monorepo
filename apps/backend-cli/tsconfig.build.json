@@ -12,6 +12,10 @@
       "#type": ["./src/type/index"],
       "#type/*": ["./src/type/*"]
     },
-    "typeRoots": ["./src/typings", "./node_modules/@types/"]
+    "typeRoots": [
+      "./src/typings",
+      "./node_modules/@types/",
+      "../../node_modules/@types/"
+    ]
   }
 }

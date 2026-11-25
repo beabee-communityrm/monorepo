@@ -48,7 +48,11 @@
             color="error"
             size="sm"
             icon="i-lucide-trash-2"
-            @click="methodToRemove = method"
+            @click="
+              () => {
+                methodToRemove = method;
+              }
+            "
           >
             {{ t('actions.delete') }}
           </UButton>

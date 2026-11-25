@@ -65,10 +65,7 @@ interface NoneEmailConfig {
 
 // Union type for email configuration - only one provider can be used at a time
 type EmailConfig =
-  | SMTPEmailConfig
-  | MandrillEmailConfig
-  | SendGridEmailConfig
-  | NoneEmailConfig;
+  SMTPEmailConfig | MandrillEmailConfig | SendGridEmailConfig | NoneEmailConfig;
 
 // Get email provider from environment, with validation for allowed values
 const emailProvider = env.e('BEABEE_EMAIL_PROVIDER', [

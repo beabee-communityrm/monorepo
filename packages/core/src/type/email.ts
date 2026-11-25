@@ -108,9 +108,7 @@ export type ContactEmailTemplateId = keyof typeof contactEmailTemplates;
  * All available email template IDs
  */
 export type EmailTemplateId =
-  | GeneralEmailTemplateId
-  | AdminEmailTemplateId
-  | ContactEmailTemplateId;
+  GeneralEmailTemplateId | AdminEmailTemplateId | ContactEmailTemplateId;
 
 /**
  * Helper type to extract parameters for general email templates

@@ -1,6 +1,2 @@
 export type MCStatus =
-  | 'subscribed'
-  | 'unsubscribed'
-  | 'pending'
-  | 'cleaned'
-  | 'archived';
+  'subscribed' | 'unsubscribed' | 'pending' | 'cleaned' | 'archived';
