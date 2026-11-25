@@ -3,10 +3,12 @@ import {
   QueryClient,
   type QueryKey,
 } from '@tanstack/vue-query';
+import { watch } from 'vue';
 import type { RouteLocationNormalized } from 'vue-router';
 
 import { LOADING } from '#lib/loading';
 import { holdNavigation } from '#lib/router';
+import { currentUser } from '#store/currentUser';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,6 +28,16 @@ export const queryClient = new QueryClient({
     },
   },
 });
+
+// Cached data belongs to whoever was logged in when it loaded
+watch(
+  () => currentUser.value?.id,
+  () => {
+    queryClient.cancelQueries();
+    queryClient.clear();
+  },
+  { flush: 'sync' }
+);
 
 /** A query a page starts on each visit, before the page shows */
 export interface RouteQuery {
