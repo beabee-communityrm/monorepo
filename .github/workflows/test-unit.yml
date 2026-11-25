@@ -1,17 +1,14 @@
-name: Test on Approval
+name: Unit tests
 
 on:
+  pull_request:
+  merge_group:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-  pull_request_review:
-    types: [submitted]
 
 jobs:
   test:
-    # Run for workflow_dispatch, push to main, or approved pull request reviews
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.review.state == 'approved'
+    # Skipped on pull requests so the required check passes there; the merge queue runs it
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-24.04
 
     steps:
