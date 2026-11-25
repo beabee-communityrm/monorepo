@@ -1187,6 +1187,7 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "",
+    "retryError": "",
     "role": {
       "admin": "",
       "member": "",
@@ -1793,7 +1794,6 @@
     "openCallouts": "",
     "openCount": "",
     "quickActions": "",
-    "retryError": "",
     "seeAllOpen": "",
     "showAllResponses": "",
     "showFewer": "",

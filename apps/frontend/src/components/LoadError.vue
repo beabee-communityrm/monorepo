@@ -82,7 +82,7 @@ async function onRetry() {
     await focusHeadingOf(card);
   } catch {
     toast.add({
-      title: t('homePage.retryError'),
+      title: t('common.retryError'),
       color: 'error',
       icon: 'i-lucide-circle-alert',
     });
