@@ -1193,6 +1193,7 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "/ an",
+    "retryError": "Le chargement a de nouveau échoué. Réessayez dans un instant.",
     "role": {
       "admin": "Administrateur",
       "member": "Membre",

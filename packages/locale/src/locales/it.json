@@ -1189,6 +1189,7 @@
     "perOneTime": "",
     "perOneTimeText": "una tantum",
     "perYear": "/ anno",
+    "retryError": "Caricamento ancora non riuscito. Riprova tra poco.",
     "role": {
       "admin": "Admin",
       "member": "Membro",

@@ -1189,6 +1189,7 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "/ jaar",
+    "retryError": "Laden opnieuw mislukt. Probeer het zo nog eens.",
     "role": {
       "admin": "Beheerder",
       "member": "Lid",

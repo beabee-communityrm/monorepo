@@ -1189,6 +1189,7 @@
     "perOneTime": " único",
     "perOneTimeText": "único",
     "perYear": "/ año",
+    "retryError": "Sigue sin cargarse. Inténtalo de nuevo en un momento.",
     "role": {
       "admin": "Administrador",
       "member": "Miembro",

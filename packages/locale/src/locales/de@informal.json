@@ -1189,6 +1189,7 @@
     "perOneTime": "einmalig",
     "perOneTimeText": "einmalig",
     "perYear": "/ Jahr",
+    "retryError": "Laden wieder fehlgeschlagen. Versuch es gleich noch einmal.",
     "role": {
       "admin": "Admin",
       "member": "Mitglied",
