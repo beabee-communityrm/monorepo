@@ -8,7 +8,7 @@
 -->
 <template>
   <Transition
-    leave-active-class="transition-opacity duration-200 motion-reduce:transition-none"
+    leave-active-class="transition-opacity duration-(--route-progress-fade) motion-reduce:transition-none"
     leave-to-class="opacity-0"
   >
     <UProgress
@@ -19,6 +19,7 @@
       class="fixed inset-x-0 top-0 z-100"
       :style="{
         '--route-progress-duration': `${filling ? LOADING.barFill : LOADING.barCreep}ms`,
+        '--route-progress-fade': `${LOADING.barFade}ms`,
       }"
       :ui="{
         base: 'rounded-none bg-transparent',

@@ -14,6 +14,8 @@ export const LOADING = {
   barFill: 200,
   /** The full loading bar stays this long before fading */
   barFilled: 200,
+  /** How long the loading bar takes to fade out */
+  barFade: 200,
   /** The page waits this long for its data, counted from when its loads
    * start, then shows with skeletons for what's still loading */
   hold: 300,
