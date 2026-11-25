@@ -47,7 +47,9 @@ These live in the GitHub settings, not in this repository:
 | `vX.Y.Z` | tag `vX.Y.Z` |
 | `release` | tag `vX.Y.Z` without a pre-release suffix |
 
-Deploy runs no tests itself: commits on `main` have passed the queue, and release tags are cut from `main`. Pushes to `dev` skip the queue, so they deploy untested.
+Deploy runs no tests itself: commits on `main` have passed the queue, and release tags are cut from `main`.
+
+`dev` deploys to the hosted dev environment. To try a feature branch there, merge it into `dev` and push; several branches can be on `dev` at once. `dev` has no queue or required checks, so a failing test doesn't stop a dev deploy, but a type error does, because the Docker builds compile the code.
 
 ## When a test fails
 
