@@ -1112,6 +1112,7 @@
     "empty": {
       "active": "Сейчас нет активных CrowdNewsroom."
     },
+    "loadOpenError": "Не удалось загрузить открытые CrowdNewsroom. Напишите на {support}, если проблема повторится.",
     "noArchivedCallouts": "Нет опросов",
     "openCallouts": "Открытые CrowdNewsroom",
     "search": "Поиск опросов",

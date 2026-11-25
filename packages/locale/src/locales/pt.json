@@ -1111,6 +1111,7 @@
     "empty": {
       "active": "Não há CrowdNewsrooms ativas no momento."
     },
+    "loadOpenError": "Não foi possível carregar as CrowdNewsrooms abertas. Contacta {support} se o problema continuar.",
     "noArchivedCallouts": "Não há chamadas",
     "openCallouts": "CrowdNewsrooms abertas",
     "search": "Pesquisar chamadas...",
