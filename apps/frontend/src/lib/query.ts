@@ -27,9 +27,6 @@ export const queryClient = new QueryClient({
 // Cached data belongs to whoever was logged in when it loaded
 watch(
   () => currentUser.value?.id,
-  () => {
-    queryClient.cancelQueries();
-    queryClient.clear();
-  },
+  () => queryClient.clear(),
   { flush: 'sync' }
 );
