@@ -1,7 +1,7 @@
 import type {
+  ContributionStateResult,
   PaymentBulkProvider,
-  ProviderContributionResult,
-  ProviderPayment,
+  PaymentRecord,
 } from '#type/index';
 
 /**
@@ -9,14 +9,14 @@ import type {
  */
 export class NoneBulkProvider implements PaymentBulkProvider {
   async fetchContributionStates(): Promise<
-    Map<string, ProviderContributionResult>
+    Map<string, ContributionStateResult>
   > {
     return new Map();
   }
-  async fetchPayments(): Promise<ProviderPayment[]> {
+  async fetchPayments(): Promise<PaymentRecord[]> {
     return [];
   }
-  async fetchPaymentsByIds(): Promise<Map<string, ProviderPayment | null>> {
+  async fetchPaymentsByIds(): Promise<Map<string, PaymentRecord | null>> {
     return new Map();
   }
 }

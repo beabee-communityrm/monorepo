@@ -6,11 +6,11 @@ import {
   StripeBulkProvider,
 } from '#providers/payment-bulk/index';
 import type {
+  ContributionStateResult,
   PaymentBulkFetchContributionsOpts,
   PaymentBulkFetchPaymentsOpts,
   PaymentBulkProvider,
-  ProviderContributionResult,
-  ProviderPayment,
+  PaymentRecord,
 } from '#type/index';
 
 const log = mainLogger.child({ app: 'payment-bulk-service' });
@@ -39,7 +39,7 @@ class PaymentBulkService {
   async fetchContributionStates(
     contributions: ContactContribution[],
     opts: PaymentBulkFetchContributionsOpts
-  ): Promise<Map<string, ProviderContributionResult>> {
+  ): Promise<Map<string, ContributionStateResult>> {
     log.info(`Fetch the states of ${contributions.length} contributions`);
     return await this.provider.fetchContributionStates(contributions, opts);
   }
@@ -52,7 +52,7 @@ class PaymentBulkService {
    */
   async fetchPayments(
     opts: PaymentBulkFetchPaymentsOpts
-  ): Promise<ProviderPayment[]> {
+  ): Promise<PaymentRecord[]> {
     log.info('Fetch payments');
     return await this.provider.fetchPayments(opts);
   }
@@ -65,7 +65,7 @@ class PaymentBulkService {
    */
   async fetchPaymentsByIds(
     ids: string[]
-  ): Promise<Map<string, ProviderPayment | null>> {
+  ): Promise<Map<string, PaymentRecord | null>> {
     log.info(`Fetch ${ids.length} payments`);
     return await this.provider.fetchPaymentsByIds(ids);
   }

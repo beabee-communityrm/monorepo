@@ -4,15 +4,15 @@ import { Stripe, convertInvoiceToPayment, stripe } from '#lib/stripe';
 import { log as mainLogger } from '#logging';
 import type { ContactContribution } from '#models/index';
 import type {
+  ContributionCustomerState,
+  ContributionMandateState,
+  ContributionState,
+  ContributionStateResult,
+  ContributionSubscriptionState,
   PaymentBulkFetchContributionsOpts,
   PaymentBulkFetchPaymentsOpts,
   PaymentBulkProvider,
-  ProviderContributionResult,
-  ProviderContributionState,
-  ProviderCustomerState,
-  ProviderMandateState,
-  ProviderPayment,
-  ProviderSubscriptionState,
+  PaymentRecord,
 } from '#type/index';
 import { getCreatedWindows } from '#utils/stripe';
 
@@ -111,7 +111,7 @@ async function fetchKnown<T extends { id: string }>(
  *
  * @param invoice The Stripe invoice
  */
-function toProviderPayment(invoice: Stripe.Invoice): ProviderPayment {
+function toPaymentRecord(invoice: Stripe.Invoice): PaymentRecord {
   return {
     id: invoice.id,
     customerId:
@@ -129,7 +129,7 @@ function toProviderPayment(invoice: Stripe.Invoice): ProviderPayment {
 async function getSubscriptionState(
   subscriptionId: string,
   listed: Stripe.Subscription | undefined
-): Promise<ProviderSubscriptionState> {
+): Promise<ContributionSubscriptionState> {
   try {
     const subscription =
       listed ||
@@ -164,7 +164,7 @@ async function getSubscriptionState(
 async function getMandateState(
   mandateId: string,
   customer: Stripe.Customer | undefined
-): Promise<ProviderMandateState> {
+): Promise<ContributionMandateState> {
   // A customer's default payment method is attached to that customer
   if (customer?.invoice_settings.default_payment_method === mandateId) {
     return 'attached';
@@ -190,7 +190,7 @@ async function getMandateState(
 async function getCustomerState(
   customerId: string,
   listed: Stripe.Customer | undefined
-): Promise<ProviderCustomerState> {
+): Promise<ContributionCustomerState> {
   try {
     const customer =
       listed ||
@@ -208,7 +208,7 @@ export class StripeBulkProvider implements PaymentBulkProvider {
   async fetchContributionStates(
     contributions: ContactContribution[],
     opts: PaymentBulkFetchContributionsOpts
-  ): Promise<Map<string, ProviderContributionResult>> {
+  ): Promise<Map<string, ContributionStateResult>> {
     // Listing the whole account takes far fewer requests than retrieving
     // each object, so only retrieve them all one by one for specific
     // contacts. An object missing from a list is still retrieved, so nothing
@@ -230,12 +230,12 @@ export class StripeBulkProvider implements PaymentBulkProvider {
           )
         : new Map<string, Stripe.Customer>();
 
-    const results = new Map<string, ProviderContributionResult>();
+    const results = new Map<string, ContributionStateResult>();
     for (const contribution of contributions) {
       const { subscriptionId, mandateId, customerId } = contribution;
       const customer = customerId ? customers.get(customerId) : undefined;
       try {
-        const state: ProviderContributionState = {};
+        const state: ContributionState = {};
         if (subscriptionId && opts.subscriptions) {
           state.subscription = await getSubscriptionState(
             subscriptionId,
@@ -258,7 +258,7 @@ export class StripeBulkProvider implements PaymentBulkProvider {
 
   async fetchPayments(
     opts: PaymentBulkFetchPaymentsOpts
-  ): Promise<ProviderPayment[]> {
+  ): Promise<PaymentRecord[]> {
     const window: Stripe.InvoiceListParams =
       opts.since || opts.until
         ? {
@@ -283,7 +283,7 @@ export class StripeBulkProvider implements PaymentBulkProvider {
         );
 
     log.info(`📡 Fetching Stripe invoices in ${filters.length} lists...`);
-    const payments: ProviderPayment[] = [];
+    const payments: PaymentRecord[] = [];
     const queue = [...filters];
     let done = 0;
     await Promise.all(
@@ -294,7 +294,7 @@ export class StripeBulkProvider implements PaymentBulkProvider {
             for await (const invoices of fetchPages((page) =>
               stripe.invoices.list({ ...params, ...page })
             )) {
-              payments.push(...invoices.map(toProviderPayment));
+              payments.push(...invoices.map(toPaymentRecord));
               log.info(
                 `  • Fetched ${payments.length} invoices, ${done} of ${filters.length} lists done`
               );
@@ -315,15 +315,15 @@ export class StripeBulkProvider implements PaymentBulkProvider {
 
   async fetchPaymentsByIds(
     ids: string[]
-  ): Promise<Map<string, ProviderPayment | null>> {
+  ): Promise<Map<string, PaymentRecord | null>> {
     log.info(`📡 Fetching ${ids.length} Stripe invoices...`);
-    const payments = new Map<string, ProviderPayment | null>();
+    const payments = new Map<string, PaymentRecord | null>();
     for (const id of ids) {
       try {
         const invoice = await retryRateLimited(() =>
           stripe.invoices.retrieve(id)
         );
-        payments.set(id, toProviderPayment(invoice));
+        payments.set(id, toPaymentRecord(invoice));
       } catch (e) {
         if (!isResourceMissingError(e)) {
           throw e;

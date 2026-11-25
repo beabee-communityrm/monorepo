@@ -1,5 +1,5 @@
 import { PaymentStatus } from '@beabee/beabee-common';
-import type { ProviderPayment, ProviderPaymentData } from '@beabee/core/type';
+import type { PaymentData, PaymentRecord } from '@beabee/core/type';
 
 import type {
   StripeLocalPayment,
@@ -24,9 +24,9 @@ const PAYMENT_FIELDS = [
  * @returns The names of the differing fields
  */
 export function getMismatchedPaymentFields(
-  payment: ProviderPaymentData,
-  data: ProviderPaymentData
-): (keyof ProviderPaymentData)[] {
+  payment: PaymentData,
+  data: PaymentData
+): (keyof PaymentData)[] {
   return PAYMENT_FIELDS.filter((field) => {
     switch (field) {
       case 'chargeDate':
@@ -40,7 +40,7 @@ export function getMismatchedPaymentFields(
   });
 }
 
-function printValue(value: ProviderPaymentData[keyof ProviderPaymentData]) {
+function printValue(value: PaymentData[keyof PaymentData]) {
   return value instanceof Date ? value.toISOString() : String(value);
 }
 
@@ -73,7 +73,7 @@ export function printPaymentMismatch({
  * @returns The mismatched and the missing payments
  */
 export function classifyInvoicePayments(
-  invoicePayments: ProviderPayment[],
+  invoicePayments: PaymentRecord[],
   payments: Map<string, StripeLocalPayment>,
   contactIdByCustomerId: Map<string, string>
 ): { mismatches: StripePaymentMismatch[]; missing: StripeMissingPayment[] } {

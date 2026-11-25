@@ -1,5 +1,5 @@
 import type { Payment } from '@beabee/core/models';
-import type { ProviderPaymentData } from '@beabee/core/type';
+import type { PaymentData } from '@beabee/core/type';
 
 import {
   SYNC_NEWSLETTER_RECONCILE_TESTS,
@@ -52,20 +52,20 @@ export interface SyncStripeReconcileArgs {
 }
 
 /** A local payment as far as the reconciliation reads it */
-export type StripeLocalPayment = Pick<Payment, 'id'> & ProviderPaymentData;
+export type StripeLocalPayment = Pick<Payment, 'id'> & PaymentData;
 
 /** A local payment that differs from its Stripe invoice in the given fields */
 export interface StripePaymentMismatch {
   payment: StripeLocalPayment;
-  data: ProviderPaymentData;
-  fields: (keyof ProviderPaymentData)[];
+  data: PaymentData;
+  fields: (keyof PaymentData)[];
 }
 
 /** A Stripe invoice of a known contact without a local payment */
 export interface StripeMissingPayment {
   id: string;
   contactId: string;
-  data: ProviderPaymentData;
+  data: PaymentData;
 }
 
 export interface StripePaymentReconciliation {

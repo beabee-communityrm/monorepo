@@ -1,11 +1,11 @@
 import type { ContactContribution } from '#models/index';
 
+import type { ContributionStateResult } from './contribution-state.js';
 import type {
   PaymentBulkFetchContributionsOpts,
   PaymentBulkFetchPaymentsOpts,
 } from './payment-bulk-fetch-opts.js';
-import type { ProviderContributionResult } from './provider-contribution-state.js';
-import type { ProviderPayment } from './provider-payment.js';
+import type { PaymentRecord } from './payment-record.js';
 
 /**
  * Bulk counterpart of PaymentProvider, used to compare many contributions and
@@ -20,19 +20,17 @@ export interface PaymentBulkProvider {
   fetchContributionStates(
     contributions: ContactContribution[],
     opts: PaymentBulkFetchContributionsOpts
-  ): Promise<Map<string, ProviderContributionResult>>;
+  ): Promise<Map<string, ContributionStateResult>>;
 
   /**
    * Fetch the payments created in the given range. The account can be shared
    * with other integrations, so these can include payments that aren't ours.
    */
-  fetchPayments(opts: PaymentBulkFetchPaymentsOpts): Promise<ProviderPayment[]>;
+  fetchPayments(opts: PaymentBulkFetchPaymentsOpts): Promise<PaymentRecord[]>;
 
   /**
    * Fetch the given payments
    * @returns Each payment by id, null if it no longer exists
    */
-  fetchPaymentsByIds(
-    ids: string[]
-  ): Promise<Map<string, ProviderPayment | null>>;
+  fetchPaymentsByIds(ids: string[]): Promise<Map<string, PaymentRecord | null>>;
 }

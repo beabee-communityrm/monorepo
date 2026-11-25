@@ -1,5 +1,5 @@
 import { PaymentStatus, PaymentType } from '@beabee/beabee-common';
-import type { ProviderPaymentData } from '@beabee/core/type';
+import type { PaymentData } from '@beabee/core/type';
 
 import { describe, expect, it } from 'vitest';
 
@@ -11,7 +11,7 @@ import {
   printPaymentMismatch,
 } from './stripe-reconcile.js';
 
-function createData(overrides: Partial<ProviderPaymentData> = {}) {
+function createData(overrides: Partial<PaymentData> = {}) {
   return {
     amount: 25.35,
     chargeDate: new Date('2026-11-16T20:24:14Z'),
@@ -25,7 +25,7 @@ function createData(overrides: Partial<ProviderPaymentData> = {}) {
 
 function createPayment(
   id: string,
-  overrides: Partial<ProviderPaymentData> = {}
+  overrides: Partial<PaymentData> = {}
 ): StripeLocalPayment {
   return { id, ...createData(overrides) };
 }

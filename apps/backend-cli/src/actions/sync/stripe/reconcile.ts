@@ -9,11 +9,11 @@ import {
   paymentBulkService,
 } from '@beabee/core/services';
 import type {
-  ProviderContributionState,
-  ProviderCustomerState,
-  ProviderMandateState,
-  ProviderPayment,
-  ProviderSubscriptionState,
+  ContributionCustomerState,
+  ContributionMandateState,
+  ContributionState,
+  ContributionSubscriptionState,
+  PaymentRecord,
 } from '@beabee/core/type';
 
 import { In, IsNull, Like } from 'typeorm';
@@ -40,7 +40,7 @@ const log = mainLogger.child({ app: 'sync-stripe-reconcile' });
  */
 function syncSubscription(
   subscriptionId: string,
-  state: ProviderSubscriptionState
+  state: ContributionSubscriptionState
 ):
   | {
       updates: { subscriptionId: null; cancelledAt?: Date };
@@ -72,7 +72,7 @@ function syncSubscription(
  */
 function syncPaymentMethod(
   mandateId: string,
-  state: ProviderMandateState
+  state: ContributionMandateState
 ): { mandateId: null } | undefined {
   switch (state) {
     case 'detached':
@@ -93,7 +93,7 @@ function syncPaymentMethod(
  */
 function syncCustomer(
   customerId: string,
-  state: ProviderCustomerState
+  state: ContributionCustomerState
 ): { customerId: null; mandateId: null; subscriptionId: null } | undefined {
   switch (state) {
     case 'deleted':
@@ -185,7 +185,7 @@ async function fetchPayments(
   );
   const { mismatches } = classifyInvoicePayments(
     [...unfinishedInvoices.values()].filter(
-      (invoice): invoice is ProviderPayment => invoice !== null
+      (invoice): invoice is PaymentRecord => invoice !== null
     ),
     payments,
     contactIdByCustomerId
@@ -315,7 +315,7 @@ async function fixPayments(
 async function processContribution(
   contribution: ContactContribution,
   argv: SyncStripeReconcileArgs,
-  state: ProviderContributionState
+  state: ContributionState
 ) {
   log.info(`👤 Syncing ${contribution.contact.email}`);
 
