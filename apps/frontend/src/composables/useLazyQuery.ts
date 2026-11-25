@@ -3,7 +3,7 @@ import {
   type UseQueryOptions,
   useQuery,
 } from '@tanstack/vue-query';
-import { computed, ref, watch } from 'vue';
+import { computed, readonly, ref, watch } from 'vue';
 
 import { useDelayedSkeleton } from '#composables/useDelayedSkeleton';
 
@@ -49,5 +49,5 @@ export function useLazyQuery<TQueryFnData, TQueryKey extends QueryKey>(
     if (result.isError) throw result.error;
   }
 
-  return { data, skeleton, failed, retry };
+  return { data, skeleton, failed: readonly(failed), retry };
 }
