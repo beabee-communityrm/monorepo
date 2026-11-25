@@ -86,6 +86,17 @@ class PaymentBulkService {
     log.info(`Fetch ${ids.length} payments`);
     return await this.provider.fetchPaymentsByIds(ids);
   }
+
+  /**
+   * Fetch when each subscription was created. These can include
+   * subscriptions that aren't ours.
+   *
+   * @returns Each subscription's creation date by id
+   */
+  async fetchSubscriptionCreatedAts(): Promise<Map<string, Date>> {
+    log.info('Fetch the creation dates of subscriptions');
+    return await this.provider.fetchSubscriptionCreatedAts();
+  }
 }
 
 export const paymentBulkService = new PaymentBulkService();

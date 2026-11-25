@@ -38,4 +38,11 @@ export interface PaymentBulkProvider {
    * @returns Each payment by id, null if it no longer exists
    */
   fetchPaymentsByIds(ids: string[]): Promise<Map<string, PaymentRecord | null>>;
+
+  /**
+   * Fetch when each subscription was created. The account can be shared with
+   * other integrations, so these can include subscriptions that aren't ours.
+   * @returns Each subscription's creation date by id
+   */
+  fetchSubscriptionCreatedAts(): Promise<Map<string, Date>>;
 }

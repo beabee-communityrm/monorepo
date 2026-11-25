@@ -1,5 +1,5 @@
 import { ActivityActorType, ActivityEventType } from '@beabee/beabee-common';
-import { paymentService } from '@beabee/core/services';
+import { paymentBulkService } from '@beabee/core/services';
 
 import chalk from 'chalk';
 
@@ -71,11 +71,20 @@ const backfillContributionStarted: EventBackfiller = {
       return [];
     }
 
+    // List all the provider's subscriptions once, then keep only ours
+    const allCreatedAts =
+      await paymentBulkService.fetchSubscriptionCreatedAts();
+
     const ids: string[] = [];
     for (const { contactId, subscriptionId } of rows) {
+      const createdAt = allCreatedAts.get(subscriptionId);
+      if (!createdAt) {
+        console.log(
+          `${chalk.red('✗')} Could not backfill subscription (${subscriptionId}) for contact ${contactId}: not found at the payment provider`
+        );
+        continue;
+      }
       try {
-        const createdAt =
-          await paymentService.getSubscriptionCreatedAt(subscriptionId);
         const [{ id }] = await em.query(
           `INSERT INTO activity_event ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata")
            VALUES ($1, $2, $1, $3, $4, jsonb_build_object('subscriptionId', $5::text))

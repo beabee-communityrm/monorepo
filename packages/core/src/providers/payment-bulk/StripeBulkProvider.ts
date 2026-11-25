@@ -341,4 +341,19 @@ export class StripeBulkProvider implements PaymentBulkProvider {
     }
     return payments;
   }
+
+  async fetchSubscriptionCreatedAts(): Promise<Map<string, Date>> {
+    log.info('📡 Fetching Stripe subscriptions...');
+    const createdAts = new Map<string, Date>();
+    for await (const subscriptions of fetchPages((page) =>
+      stripe.subscriptions.list({ status: 'all', ...page })
+    )) {
+      for (const subscription of subscriptions) {
+        // convert from unix seconds
+        createdAts.set(subscription.id, new Date(subscription.created * 1000));
+      }
+      log.info(`  • Fetched ${createdAts.size} subscriptions`);
+    }
+    return createdAts;
+  }
 }
