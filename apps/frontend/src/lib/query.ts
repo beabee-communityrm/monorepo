@@ -24,9 +24,12 @@ export const queryClient = new QueryClient({
   },
 });
 
-// Cached data belongs to whoever was logged in when it loaded
-watch(
-  () => currentUser.value?.id,
-  () => queryClient.clear(),
-  { flush: 'sync' }
-);
+/** Empties the cache whenever the logged-in user changes, as cached data
+ * belongs to whoever was logged in when it loaded */
+export function clearCacheOnUserChange() {
+  watch(
+    () => currentUser.value?.id,
+    () => queryClient.clear(),
+    { flush: 'sync' }
+  );
+}

@@ -10,7 +10,7 @@ import { waitForBackend } from '#utils/api/client';
 import App from '../App.vue';
 import { init as initErrorHandler } from './appsignal';
 import { i18n } from './i18n';
-import { queryClient } from './query';
+import { clearCacheOnUserChange, queryClient } from './query';
 import { installRouteGuard } from './route-guard';
 import { installRouteQueries } from './route-queries';
 import router from './router';
@@ -39,6 +39,7 @@ export async function startMainApp() {
 
   installRouteGuard(router);
   installRouteQueries(router);
+  clearCacheOnUserChange();
   app.use({ ...router });
   app.use(i18n);
   app.use(icons);
