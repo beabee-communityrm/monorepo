@@ -22,8 +22,13 @@ test("Integration health status and group refresh", async ({ page }) => {
 
     // Go to integration setting page
     await page.goto("/admin/settings/integrations");
+    // Nearest ancestor of the "Mailchimp" label that also holds a status, i.e. its own card
+    const mailchimpCard = page
+      .getByText("Mailchimp", { exact: true })
+      .locator("xpath=ancestor::*[contains(., 'Disabled')][1]");
+
     await expect(
-      page.getByText(/disabled/i),
+      mailchimpCard.getByText(/disabled/i),
       "Disabled status visible",
     ).toBeVisible();
   });
