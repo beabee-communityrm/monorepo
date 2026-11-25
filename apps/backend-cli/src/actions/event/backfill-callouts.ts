@@ -61,6 +61,9 @@ const refillAnswered: EventBackfiller = {
   ...insertAnswered,
   backfill: async (danger, em) => {
     if (danger) {
+      console.log(
+        `${chalk.blue('→')} Deleting all ${insertAnswered.eventType} events`
+      );
       // Deleted in the same transaction as the insert, so a failed insert keeps the old events
       const [, deleted] = await em.query(
         `DELETE FROM activity_event WHERE "eventType" = $1`,

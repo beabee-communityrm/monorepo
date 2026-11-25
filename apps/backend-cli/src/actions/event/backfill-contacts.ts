@@ -57,6 +57,9 @@ const backfillContributionStarted: EventBackfiller = {
       OR y.metadata->>'subscriptionId' = x.metadata->>'subscriptionId')`,
   backfill: async (danger, em) => {
     const eventType = ActivityEventType.ContactContributionStarted;
+    console.log(
+      `${chalk.blue('→')} ${danger ? 'Adding' : 'Counting'} missing ${eventType} events from charged subscriptions`
+    );
 
     const rows: { contactId: string; subscriptionId: string }[] =
       await em.query(noStartedEvent, [eventType]);

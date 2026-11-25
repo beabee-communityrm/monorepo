@@ -56,7 +56,6 @@ export const backfillEvents = async ({
         );
       }
     }
-    // Nothing is inserted on a dry run, so there is nothing to clean up
     if (danger) {
       await cleanupDuplicates(backfilled);
     }

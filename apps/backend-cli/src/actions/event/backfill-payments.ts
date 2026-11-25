@@ -46,6 +46,9 @@ const refillPaymentSuccessful: EventBackfiller = {
   ...insertPaymentSuccessful,
   backfill: async (danger, em) => {
     if (danger) {
+      console.log(
+        `${chalk.blue('→')} Deleting all ${insertPaymentSuccessful.eventType} events`
+      );
       const [, deleted] = await em.query(
         `DELETE FROM activity_event WHERE "eventType" = $1`,
         [insertPaymentSuccessful.eventType]
@@ -90,9 +93,15 @@ const backfillPaymentFailed: EventBackfiller = {
       return [];
     }
 
+    console.log(
+      `${chalk.blue('→')} Querying Stripe for uncollectible invoices`
+    );
     const invoices = await stripe.invoices
       .list({ status: 'uncollectible', limit: 100 })
       .autoPagingToArray({ limit: 10000 });
+    console.log(
+      `${chalk.blue('→')} Received ${invoices.length} uncollectible invoices`
+    );
 
     const params = [
       eventType,

@@ -32,6 +32,10 @@ export const createBackfill = ({
     // Cast event type to varchar and compare with source to ensure type consistency
     const select = `SELECT $1::varchar, ${fields} ${source}`;
 
+    console.log(
+      `${chalk.blue('→')} ${danger ? 'Adding' : 'Counting'} missing ${eventType} events`
+    );
+
     if (!danger) {
       const [{ count }] = await em.query(
         `SELECT COUNT(*)::int AS count FROM (${select}) s`,
