@@ -167,7 +167,7 @@
     "showPassword": "",
     "skip": "",
     "submit": "Trimiteți",
-    "tryAgain": "",
+    "tryAgain": "Încercați din nou",
     "unpublish": "",
     "update": "",
     "view": "",
@@ -1150,7 +1150,7 @@
     "id": "",
     "itemsPerPage": "",
     "label": "",
-    "loadError": "",
+    "loadError": "Nu s-a putut încărca. Reîncărcați pagina și contactați {support} dacă problema persistă.",
     "loading": "",
     "login": "Conectați-vă",
     "manualPaymentSource": {
@@ -1188,7 +1188,7 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "",
-    "retryError": "",
+    "retryError": "Tot nu s-a putut încărca. Încercați din nou peste câteva momente.",
     "role": {
       "admin": "",
       "member": "",
