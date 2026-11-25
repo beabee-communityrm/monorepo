@@ -1,11 +1,9 @@
 import { PaymentStatus } from '@beabee/beabee-common';
+import type { ProviderPayment, ProviderPaymentData } from '@beabee/core/type';
 
 import type {
-  StripeCreatedWindow,
-  StripeInvoicePayment,
   StripeLocalPayment,
   StripeMissingPayment,
-  StripePaymentData,
   StripePaymentMismatch,
 } from '../types/sync.js';
 
@@ -26,9 +24,9 @@ const PAYMENT_FIELDS = [
  * @returns The names of the differing fields
  */
 export function getMismatchedPaymentFields(
-  payment: StripePaymentData,
-  data: StripePaymentData
-): (keyof StripePaymentData)[] {
+  payment: ProviderPaymentData,
+  data: ProviderPaymentData
+): (keyof ProviderPaymentData)[] {
   return PAYMENT_FIELDS.filter((field) => {
     switch (field) {
       case 'chargeDate':
@@ -42,7 +40,7 @@ export function getMismatchedPaymentFields(
   });
 }
 
-function printValue(value: StripePaymentData[keyof StripePaymentData]) {
+function printValue(value: ProviderPaymentData[keyof ProviderPaymentData]) {
   return value instanceof Date ? value.toISOString() : String(value);
 }
 
@@ -75,7 +73,7 @@ export function printPaymentMismatch({
  * @returns The mismatched and the missing payments
  */
 export function classifyInvoicePayments(
-  invoicePayments: StripeInvoicePayment[],
+  invoicePayments: ProviderPayment[],
   payments: Map<string, StripeLocalPayment>,
   contactIdByCustomerId: Map<string, string>
 ): { mismatches: StripePaymentMismatch[]; missing: StripeMissingPayment[] } {
@@ -125,47 +123,4 @@ export function countStatusChanges(
     counts.set(change, (counts.get(change) || 0) + 1);
   }
   return counts;
-}
-
-/**
- * Splits a time range into consecutive windows of one calendar month, for
- * listing Stripe objects by creation time. Each window ends where the next
- * begins, so together they cover the range exactly once.
- *
- * Without `since` the first window has no start and without `until` the last
- * has no end, so objects older or newer than expected are still covered.
- *
- * @param oldest Where to start splitting if there is no `since`
- * @param now Where to stop splitting if there is no `until`
- * @param since The start of the range, if it is limited
- * @param until The end of the range, if it is limited
- * @returns The windows as Stripe `created` filters
- */
-export function getCreatedWindows(
-  oldest: Date,
-  now: Date,
-  since: Date | undefined,
-  until: Date | undefined
-): StripeCreatedWindow[] {
-  const from = since || oldest;
-  const to = until || now;
-
-  const windows: StripeCreatedWindow[] = [];
-  let start = since && Math.floor(since.getTime() / 1000);
-  for (let month = from.getUTCMonth() + 1; ; month++) {
-    const cut = Date.UTC(from.getUTCFullYear(), month, 1);
-    if (cut >= to.getTime()) break;
-
-    windows.push({
-      ...(start !== undefined && { gte: start }),
-      lt: cut / 1000,
-    });
-    start = cut / 1000;
-  }
-  windows.push({
-    ...(start !== undefined && { gte: start }),
-    ...(until && { lte: Math.floor(until.getTime() / 1000) }),
-  });
-
-  return windows;
 }

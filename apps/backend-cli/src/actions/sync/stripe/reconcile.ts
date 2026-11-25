@@ -1,254 +1,107 @@
 import { ActivityEventType, PaymentStatus } from '@beabee/beabee-common';
-import { config } from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
-import {
-  Stripe,
-  convertInvoiceToPayment,
-  stripe,
-} from '@beabee/core/lib/stripe';
 import { log as mainLogger } from '@beabee/core/logging';
 import { ContactContribution, Payment } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
-import { activityService, contactsService } from '@beabee/core/services';
+import {
+  activityService,
+  contactsService,
+  paymentBulkService,
+} from '@beabee/core/services';
+import type {
+  ProviderContributionState,
+  ProviderCustomerState,
+  ProviderMandateState,
+  ProviderPayment,
+  ProviderSubscriptionState,
+} from '@beabee/core/type';
 
-import { setTimeout } from 'node:timers/promises';
 import { In, IsNull, Like } from 'typeorm';
 
 import type {
-  StripeInvoicePayment,
   StripePaymentReconciliation,
-  StripeResources,
   SyncStripeReconcileArgs,
 } from '../../../types/sync.js';
 import {
   classifyInvoicePayments,
   countStatusChanges,
-  getCreatedWindows,
   printPaymentMismatch,
 } from '../../../utils/stripe-reconcile.js';
 
 const log = mainLogger.child({ app: 'sync-stripe-reconcile' });
 
-const MAX_RATE_LIMIT_RETRIES = 5;
-
-/** The number of invoice lists fetched at the same time */
-const INVOICE_LIST_CONCURRENCY = 4;
-
 /**
- * Helper function to determine if an error is a Stripe "resource missing" error
- */
-function isResourceMissingError(e: unknown): boolean {
-  return (
-    e instanceof Stripe.errors.StripeError && e.code === 'resource_missing'
-  );
-}
-
-/**
- * Runs a Stripe request, waiting and trying again while it is rate limited
+ * Sync our subscription data with the Stripe subscription's state
  *
- * @param request The Stripe request
- */
-async function retryRateLimited<T>(request: () => Promise<T>): Promise<T> {
-  for (let attempt = 0; ; attempt++) {
-    try {
-      return await request();
-    } catch (e) {
-      if (
-        !(e instanceof Stripe.errors.StripeRateLimitError) ||
-        attempt === MAX_RATE_LIMIT_RETRIES
-      ) {
-        throw e;
-      }
-      // Exponential backoff with jitter, as Stripe asks for
-      await setTimeout(2 ** attempt * 1000 + Math.random() * 1000);
-    }
-  }
-}
-
-/**
- * Helper function to fetch a Stripe list, a page at a time
- *
- * Pages by cursor instead of using the SDK's auto-pagination, which does not
- * retry a rate limited request: one rate limit would end the listing and it
- * would have to start again from the first page.
- *
- * @param list Requests the page of the list at the given cursor
- */
-async function* fetchPages<T extends { id: string }>(
-  list: (page: Stripe.PaginationParams) => Promise<Stripe.ApiList<T>>
-): AsyncGenerator<T[]> {
-  let startingAfter: string | undefined;
-  do {
-    const page = await retryRateLimited(() =>
-      list({
-        limit: 100,
-        ...(startingAfter && { starting_after: startingAfter }),
-      })
-    );
-    yield page.data;
-    startingAfter = page.has_more ? page.data.at(-1)?.id : undefined;
-  } while (startingAfter);
-}
-
-/**
- * Fetch a whole Stripe list and keep the objects with the given ids. The
- * Stripe account can be shared with other integrations, so only objects
- * linked to our own data are ours.
- *
- * @param name The name of the objects, for the log
- * @param ids The ids of the objects to keep
- * @param list Requests the page of the list at the given cursor
- * @returns The kept objects by id
- */
-async function fetchKnown<T extends { id: string }>(
-  name: string,
-  ids: Set<string | null>,
-  list: (page: Stripe.PaginationParams) => Promise<Stripe.ApiList<T>>
-): Promise<Map<string, T>> {
-  log.info(`📡 Fetching Stripe ${name}...`);
-  const known = new Map<string, T>();
-  let fetched = 0;
-  for await (const page of fetchPages(list)) {
-    for (const item of page) {
-      if (ids.has(item.id)) {
-        known.set(item.id, item);
-      }
-    }
-    fetched += page.length;
-    log.info(`  • Fetched ${fetched} ${name}`);
-  }
-  return known;
-}
-
-/**
- * Converts a Stripe invoice to the payment it should be stored as
- *
- * @param invoice The Stripe invoice
- */
-function toInvoicePayment(invoice: Stripe.Invoice): StripeInvoicePayment {
-  return {
-    id: invoice.id,
-    customerId:
-      typeof invoice.customer === 'string'
-        ? invoice.customer
-        : invoice.customer?.id || null,
-    data: convertInvoiceToPayment(invoice),
-  };
-}
-
-/**
- * Sync our subscription data with the live Stripe data
- *
- * @param subscriptionId The Stripe subscription ID to check
- * @param listed The subscription if it was already fetched
+ * @param subscriptionId The Stripe subscription ID
+ * @param state The subscription's state on Stripe
  * @returns Any updates to be applied to the contribution, and whether the
  * contact should lose their membership
  */
-async function syncSubscription(
+function syncSubscription(
   subscriptionId: string,
-  listed: Stripe.Subscription | undefined
-): Promise<
+  state: ProviderSubscriptionState
+):
   | {
       updates: { subscriptionId: null; cancelledAt?: Date };
       revokeMember: boolean;
     }
-  | undefined
-> {
-  try {
-    const subscription =
-      listed ||
-      (await retryRateLimited(() =>
-        stripe.subscriptions.retrieve(subscriptionId)
-      ));
-    if (subscription.status === 'canceled') {
+  | undefined {
+  switch (state.status) {
+    case 'cancelled':
       log.info(`    🚫 Cancelling subscription ${subscriptionId}`);
-
       return {
-        updates: {
-          cancelledAt: subscription.canceled_at
-            ? new Date(subscription.canceled_at * 1000)
-            : new Date(),
-          subscriptionId: null,
-        },
+        updates: { cancelledAt: state.cancelledAt, subscriptionId: null },
         revokeMember: false,
       };
-    } else if (subscription.status === 'incomplete_expired') {
+    case 'expired':
       log.info(`    🗑️ Removing incomplete subscription ${subscriptionId}`);
-
       return { updates: { subscriptionId: null }, revokeMember: true };
-    }
-  } catch (e) {
-    if (isResourceMissingError(e)) {
+    case 'missing':
       log.info(`    🗑️ Removing missing subscription ${subscriptionId}`);
       return { updates: { subscriptionId: null }, revokeMember: false };
-    } else {
-      throw e;
-    }
   }
 }
 
 /**
- * Sync our payment method data with the live Stripe data
+ * Sync our payment method data with the Stripe payment method's state
  *
  * @param mandateId The Stripe payment method ID
- * @param customer The customer if it was already fetched
+ * @param state The payment method's state on Stripe
  * @returns Any updates to be applied to the contribution
  */
-async function syncPaymentMethod(
+function syncPaymentMethod(
   mandateId: string,
-  customer: Stripe.Customer | undefined
-): Promise<{ mandateId: null } | undefined> {
-  // A customer's default payment method is attached to that customer
-  if (customer?.invoice_settings.default_payment_method === mandateId) {
-    return;
-  }
-
-  try {
-    const paymentMethod = await retryRateLimited(() =>
-      stripe.paymentMethods.retrieve(mandateId)
-    );
-    if (!paymentMethod.customer) {
+  state: ProviderMandateState
+): { mandateId: null } | undefined {
+  switch (state) {
+    case 'detached':
       log.info(`    🔌 Detaching payment method ${mandateId}`);
       return { mandateId: null };
-    }
-  } catch (e) {
-    if (isResourceMissingError(e)) {
+    case 'missing':
       log.info(`    🗑️ Removing missing mandate ${mandateId}`);
       return { mandateId: null };
-    } else {
-      throw e;
-    }
   }
 }
 
 /**
- * Sync our customer data with the live Stripe data
+ * Sync our customer data with the Stripe customer's state
  *
- * @param customerId The Stripe customer Id
- * @param listed The customer if it was already fetched
+ * @param customerId The Stripe customer ID
+ * @param state The customer's state on Stripe
  * @returns Any updates to be applied to the contribution
  */
-async function syncCustomer(
+function syncCustomer(
   customerId: string,
-  listed: Stripe.Customer | undefined
-): Promise<
-  { customerId: null; mandateId: null; subscriptionId: null } | undefined
-> {
-  try {
-    const customer =
-      listed ||
-      (await retryRateLimited(() => stripe.customers.retrieve(customerId)));
-    if (customer.deleted) {
+  state: ProviderCustomerState
+): { customerId: null; mandateId: null; subscriptionId: null } | undefined {
+  switch (state) {
+    case 'deleted':
       log.info(`    🗑️ Removing deleted customer ${customerId}`);
       return { customerId: null, mandateId: null, subscriptionId: null };
-    }
-  } catch (e) {
-    if (isResourceMissingError(e)) {
+    case 'missing':
       log.info(`    🗑️ Removing missing customer ${customerId}`);
       return { customerId: null, mandateId: null, subscriptionId: null };
-    } else {
-      throw e;
-    }
   }
 }
 
@@ -270,12 +123,6 @@ async function fetchPayments(
   contributions: ContactContribution[],
   argv: SyncStripeReconcileArgs
 ): Promise<StripePaymentReconciliation> {
-  const data: StripePaymentReconciliation = {
-    mismatches: [],
-    missing: [],
-    orphans: [],
-  };
-
   const contactIdByCustomerId = new Map<string, string>();
   for (const contribution of contributions) {
     if (contribution.customerId) {
@@ -308,100 +155,45 @@ async function fetchPayments(
   );
   log.info(`📊 Found ${payments.size} Stripe payments`);
 
-  const window: Stripe.InvoiceListParams =
-    argv.since || argv.until
-      ? {
-          created: {
-            ...(argv.since && { gte: Math.floor(argv.since.getTime() / 1000) }),
-            ...(argv.until && { lte: Math.floor(argv.until.getTime() / 1000) }),
-          },
-        }
-      : {};
-  const now = new Date();
-  let oldest = now;
+  let oldest = new Date();
   for (const payment of payments.values()) {
     if (payment.chargeDate < oldest) {
       oldest = payment.chargeDate;
     }
   }
-  // Listing the whole account takes far fewer requests than listing each
-  // customer, so only list by customer when limited to specific contacts.
-  // The account is listed a month at a time: one list can only be read page
-  // after page, separate months can be fetched at the same time.
-  const filters: Stripe.InvoiceListParams[] = argv.contactIds
-    ? [...contactIdByCustomerId.keys()].map((customer) => ({
-        ...window,
-        customer,
-      }))
-    : getCreatedWindows(oldest, now, argv.since, argv.until).map((created) =>
-        Object.keys(created).length > 0 ? { created } : {}
-      );
 
-  log.info(`📡 Fetching Stripe invoices in ${filters.length} lists...`);
-  const checkedIds = new Set<string>();
-  const queue = [...filters];
-  let done = 0;
-  await Promise.all(
-    Array.from({ length: INVOICE_LIST_CONCURRENCY }, async () => {
-      for (let filter = queue.shift(); filter; filter = queue.shift()) {
-        const params = filter;
-        try {
-          for await (const invoices of fetchPages((page) =>
-            stripe.invoices.list({ ...params, ...page })
-          )) {
-            const { mismatches, missing } = classifyInvoicePayments(
-              invoices.map(toInvoicePayment),
-              payments,
-              contactIdByCustomerId
-            );
-            data.mismatches.push(...mismatches);
-            data.missing.push(...missing);
-            for (const invoice of invoices) {
-              checkedIds.add(invoice.id);
-            }
-            log.info(
-              `  • Fetched ${checkedIds.size} invoices, ${done} of ${filters.length} lists done`
-            );
-          }
-        } catch (e) {
-          // A missing customer is handled by the customers fix
-          if (!isResourceMissingError(e)) {
-            throw e;
-          }
-        }
-        done++;
-      }
-    })
+  const invoices = await paymentBulkService.fetchPayments({
+    ...(argv.contactIds && { customerIds: [...contactIdByCustomerId.keys()] }),
+    since: argv.since,
+    until: argv.until,
+    oldest,
+  });
+  const data: StripePaymentReconciliation = {
+    ...classifyInvoicePayments(invoices, payments, contactIdByCustomerId),
+    orphans: [],
+  };
+
+  const checkedIds = new Set(invoices.map((invoice) => invoice.id));
+  const unfinished = [...payments.values()].filter(
+    (payment) =>
+      !checkedIds.has(payment.id) &&
+      (payment.status === PaymentStatus.Draft ||
+        payment.status === PaymentStatus.Pending)
   );
-
-  log.info('📡 Fetching Stripe invoices of unfinished payments...');
-  for (const payment of payments.values()) {
-    if (
-      checkedIds.has(payment.id) ||
-      (payment.status !== PaymentStatus.Draft &&
-        payment.status !== PaymentStatus.Pending)
-    ) {
-      continue;
-    }
-
-    try {
-      const invoice = await retryRateLimited(() =>
-        stripe.invoices.retrieve(payment.id)
-      );
-      const { mismatches } = classifyInvoicePayments(
-        [toInvoicePayment(invoice)],
-        payments,
-        contactIdByCustomerId
-      );
-      data.mismatches.push(...mismatches);
-    } catch (e) {
-      if (isResourceMissingError(e)) {
-        data.orphans.push(payment);
-      } else {
-        throw e;
-      }
-    }
-  }
+  const unfinishedInvoices = await paymentBulkService.fetchPaymentsByIds(
+    unfinished.map((payment) => payment.id)
+  );
+  const { mismatches } = classifyInvoicePayments(
+    [...unfinishedInvoices.values()].filter(
+      (invoice): invoice is ProviderPayment => invoice !== null
+    ),
+    payments,
+    contactIdByCustomerId
+  );
+  data.mismatches.push(...mismatches);
+  data.orphans = unfinished.filter(
+    (payment) => unfinishedInvoices.get(payment.id) === null
+  );
 
   log.info(
     `📊 Found ${data.mismatches.length} mismatched, ${data.missing.length} missing and ${data.orphans.length} orphaned payments`
@@ -514,51 +306,46 @@ async function fixPayments(
 
 /**
  * Process a single contribution, syncing its subscription, mandate and
- * customer as necessary.
+ * customer with their states on Stripe.
  *
  * @param contribution The contribution to process
  * @param argv The command line arguments
- * @param resources The Stripe objects that were already fetched
+ * @param state The states of the contribution's Stripe objects
  */
 async function processContribution(
   contribution: ContactContribution,
   argv: SyncStripeReconcileArgs,
-  resources: StripeResources
+  state: ProviderContributionState
 ) {
   log.info(`👤 Syncing ${contribution.contact.email}`);
 
   const updates: Partial<ContactContribution> = {};
   let revokeMember = false;
-  const customer = contribution.customerId
-    ? resources.customers.get(contribution.customerId)
-    : undefined;
 
-  if (contribution.subscriptionId && argv.fix.includes('subscriptions')) {
+  if (contribution.subscriptionId && state.subscription) {
     log.info(`  📋 Syncing subscription ${contribution.subscriptionId}`);
-    const result = await syncSubscription(
+    const result = syncSubscription(
       contribution.subscriptionId,
-      resources.subscriptions.get(contribution.subscriptionId)
+      state.subscription
     );
     Object.assign(updates, result?.updates);
     revokeMember = !!result?.revokeMember;
   }
 
-  if (contribution.mandateId && argv.fix.includes('mandates')) {
+  if (contribution.mandateId && state.mandate) {
     log.info(`  💳 Syncing mandate ${contribution.mandateId}`);
-    const mandateUpdates = await syncPaymentMethod(
-      contribution.mandateId,
-      customer
+    Object.assign(
+      updates,
+      syncPaymentMethod(contribution.mandateId, state.mandate)
     );
-    Object.assign(updates, mandateUpdates);
   }
 
-  if (contribution.customerId && argv.fix.includes('customers')) {
+  if (contribution.customerId && state.customer) {
     log.info(`  👤 Syncing customer ${contribution.customerId}`);
-    const customerUpdates = await syncCustomer(
-      contribution.customerId,
-      customer
+    Object.assign(
+      updates,
+      syncCustomer(contribution.customerId, state.customer)
     );
-    Object.assign(updates, customerUpdates);
   }
 
   // Apply updates
@@ -610,7 +397,7 @@ async function processContribution(
 export const reconcile = async (
   argv: SyncStripeReconcileArgs
 ): Promise<void> => {
-  if (!config.stripe.secretKey) {
+  if (!paymentBulkService.isEnabled) {
     log.error('❌ BEABEE_STRIPE_SECRETKEY is not set');
     process.exitCode = 1;
     return;
@@ -638,34 +425,23 @@ export const reconcile = async (
       argv.fix.includes('mandates') ||
       argv.fix.includes('customers')
     ) {
-      const resources: StripeResources = {
-        subscriptions: new Map(),
-        customers: new Map(),
-      };
-      // Listing the whole account takes far fewer requests than retrieving
-      // each object, so only retrieve them all one by one when limited to
-      // specific contacts. An object missing from a list is still retrieved,
-      // so nothing is removed on the word of a list alone.
-      if (!argv.contactIds) {
-        if (argv.fix.includes('subscriptions')) {
-          resources.subscriptions = await fetchKnown(
-            'subscriptions',
-            new Set(contributions.map((c) => c.subscriptionId)),
-            (page) => stripe.subscriptions.list({ status: 'all', ...page })
-          );
+      const results = await paymentBulkService.fetchContributionStates(
+        contributions,
+        {
+          partial: !!argv.contactIds,
+          subscriptions: argv.fix.includes('subscriptions'),
+          mandates: argv.fix.includes('mandates'),
+          customers: argv.fix.includes('customers'),
         }
-        if (argv.fix.includes('mandates') || argv.fix.includes('customers')) {
-          resources.customers = await fetchKnown(
-            'customers',
-            new Set(contributions.map((c) => c.customerId)),
-            (page) => stripe.customers.list(page)
-          );
-        }
-      }
+      );
 
       for (const contribution of contributions) {
+        const result = results.get(contribution.contactId) ?? { state: {} };
         try {
-          await processContribution(contribution, argv, resources);
+          if ('error' in result) {
+            throw result.error;
+          }
+          await processContribution(contribution, argv, result.state);
         } catch (e) {
           failed++;
           log.error(`  ❌ Failed to sync ${contribution.contact.email}`, e);
