@@ -7,7 +7,7 @@ import type {
   ContributionCustomerState,
   ContributionMandateState,
   ContributionState,
-  ContributionStateResult,
+  ContributionStates,
   ContributionSubscriptionState,
   PaymentBulkFetchContributionsOpts,
   PaymentBulkFetchPaymentsOpts,
@@ -208,7 +208,7 @@ export class StripeBulkProvider implements PaymentBulkProvider {
   async fetchContributionStates(
     contributions: ContactContribution[],
     opts: PaymentBulkFetchContributionsOpts
-  ): Promise<Map<string, ContributionStateResult>> {
+  ): Promise<ContributionStates> {
     // Listing the whole account takes far fewer requests than retrieving
     // each object, so only retrieve them all one by one for specific
     // contacts. An object missing from a list is still retrieved, so nothing
@@ -230,7 +230,7 @@ export class StripeBulkProvider implements PaymentBulkProvider {
           )
         : new Map<string, Stripe.Customer>();
 
-    const results = new Map<string, ContributionStateResult>();
+    const results: ContributionStates = { states: new Map(), failures: [] };
     for (const contribution of contributions) {
       const { subscriptionId, mandateId, customerId } = contribution;
       const customer = customerId ? customers.get(customerId) : undefined;
@@ -248,9 +248,9 @@ export class StripeBulkProvider implements PaymentBulkProvider {
         if (customerId && opts.customers) {
           state.customer = await getCustomerState(customerId, customer);
         }
-        results.set(contribution.contactId, { state });
+        results.states.set(contribution.contactId, state);
       } catch (error) {
-        results.set(contribution.contactId, { error });
+        results.failures.push({ contactId: contribution.contactId, error });
       }
     }
     return results;

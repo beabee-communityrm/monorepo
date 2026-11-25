@@ -425,23 +425,29 @@ export const reconcile = async (
       argv.fix.includes('mandates') ||
       argv.fix.includes('customers')
     ) {
-      const results = await paymentBulkService.fetchContributionStates(
-        contributions,
-        {
+      const { states, failures } =
+        await paymentBulkService.fetchContributionStates(contributions, {
           partial: !!argv.contactIds,
           subscriptions: argv.fix.includes('subscriptions'),
           mandates: argv.fix.includes('mandates'),
           customers: argv.fix.includes('customers'),
-        }
-      );
+        });
+
+      for (const { contactId, error } of failures) {
+        failed++;
+        log.error(
+          `  ❌ Failed to fetch the Stripe state of ${contactId}`,
+          error
+        );
+      }
 
       for (const contribution of contributions) {
-        const result = results.get(contribution.contactId) ?? { state: {} };
+        const state = states.get(contribution.contactId);
+        if (!state) {
+          continue;
+        }
         try {
-          if ('error' in result) {
-            throw result.error;
-          }
-          await processContribution(contribution, argv, result.state);
+          await processContribution(contribution, argv, state);
         } catch (e) {
           failed++;
           log.error(`  ❌ Failed to sync ${contribution.contact.email}`, e);

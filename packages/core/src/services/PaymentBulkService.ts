@@ -6,7 +6,7 @@ import {
   StripeBulkProvider,
 } from '#providers/payment-bulk/index';
 import type {
-  ContributionStateResult,
+  ContributionStates,
   PaymentBulkFetchContributionsOpts,
   PaymentBulkFetchPaymentsOpts,
   PaymentBulkProvider,
@@ -34,12 +34,11 @@ class PaymentBulkService {
    *
    * @param contributions The contributions
    * @param opts Which states to fetch
-   * @returns The result of each contribution, by contact id
    */
   async fetchContributionStates(
     contributions: ContactContribution[],
     opts: PaymentBulkFetchContributionsOpts
-  ): Promise<Map<string, ContributionStateResult>> {
+  ): Promise<ContributionStates> {
     log.info(`Fetch the states of ${contributions.length} contributions`);
     return await this.provider.fetchContributionStates(contributions, opts);
   }

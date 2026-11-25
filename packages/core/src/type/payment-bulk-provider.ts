@@ -1,6 +1,6 @@
 import type { ContactContribution } from '#models/index';
 
-import type { ContributionStateResult } from './contribution-state.js';
+import type { ContributionStates } from './contribution-state.js';
 import type {
   PaymentBulkFetchContributionsOpts,
   PaymentBulkFetchPaymentsOpts,
@@ -15,12 +15,11 @@ export interface PaymentBulkProvider {
   /**
    * Fetch the states of the contributions' subscriptions, mandates and
    * customers
-   * @returns The result of each contribution, by contact id
    */
   fetchContributionStates(
     contributions: ContactContribution[],
     opts: PaymentBulkFetchContributionsOpts
-  ): Promise<Map<string, ContributionStateResult>>;
+  ): Promise<ContributionStates>;
 
   /**
    * Fetch the payments created in the given range. The account can be shared

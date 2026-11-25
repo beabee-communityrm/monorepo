@@ -1,5 +1,5 @@
 import type {
-  ContributionStateResult,
+  ContributionStates,
   PaymentBulkProvider,
   PaymentRecord,
 } from '#type/index';
@@ -8,10 +8,8 @@ import type {
  * Used when no Stripe secret key is configured
  */
 export class NoneBulkProvider implements PaymentBulkProvider {
-  async fetchContributionStates(): Promise<
-    Map<string, ContributionStateResult>
-  > {
-    return new Map();
+  async fetchContributionStates(): Promise<ContributionStates> {
+    return { states: new Map(), failures: [] };
   }
   async fetchPayments(): Promise<PaymentRecord[]> {
     return [];

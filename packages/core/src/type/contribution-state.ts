@@ -1,3 +1,5 @@
+import type { ContributionStateFailure } from './contribution-state-failure.js';
+
 export type ContributionSubscriptionState =
   /** Any state that needs no change on our side */
   | { status: 'active' }
@@ -17,7 +19,9 @@ export interface ContributionState {
   customer?: ContributionCustomerState;
 }
 
-/** A contribution's state, or why it could not be fetched */
-export type ContributionStateResult =
-  | { state: ContributionState }
-  | { error: unknown };
+/** The fetched contribution states, and the contributions that failed */
+export interface ContributionStates {
+  /** By contact id */
+  states: Map<string, ContributionState>;
+  failures: ContributionStateFailure[];
+}

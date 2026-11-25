@@ -7,6 +7,7 @@ export * from './contact-newsletter-updates.js';
 export * from './contact-sync-bulk-provider.js';
 export * from './contact-sync-failure.js';
 export * from './contact-sync-provider.js';
+export * from './contribution-state-failure.js';
 export * from './contribution-state.js';
 export * from './create-contact-mfa-data.js';
 export * from './delete-contact-mfa-data.js';
