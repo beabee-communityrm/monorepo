@@ -13,8 +13,11 @@
         <div id="sticky-top-banner" class="bg-default"></div>
       </div>
       <div
-        class="flex flex-col p-4 md:p-5"
-        :class="!currentUser && 'mx-auto w-full max-w-3xl'"
+        class="flex flex-col"
+        :class="[
+          route.meta.fullBleed ? 'flex-1' : 'p-4 md:p-5',
+          !currentUser && 'mx-auto w-full max-w-3xl',
+        ]"
       >
         <router-view />
       </div>
@@ -33,8 +36,12 @@
  *
  * @component
  */
+import { useRoute } from 'vue-router';
+
 import TheFooter from '../components/TheFooter.vue';
 import { currentUser, isEmbed } from '../store';
 import TheSidebar from './menu/TheSidebar.vue';
 import TheNavbar from './menu/TheNavbar.vue';
+
+const route = useRoute();
 </script>

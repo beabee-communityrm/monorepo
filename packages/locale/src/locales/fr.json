@@ -163,6 +163,7 @@
     "search": "Rechercher",
     "sendEmails": "Envoyer des e-mails",
     "sendOneOffEmail": "Envoyer un e-mail",
+    "sendOneOffEmail-nuxt": "",
     "sendOngoingEmails": "E-mails récurrents",
     "share": "Partager",
     "showPassword": "Afficher le mot de passe",
@@ -443,21 +444,44 @@
   },
   "advancedSearch": {
     "addRule": "Ajouter une règle",
+    "addRule-nuxt": "",
+    "allFields-nuxt": "",
     "button": "Filtres",
     "createFiltersAfter": "règles",
+    "createFiltersAfter-nuxt": "",
     "createFiltersBefore": "Afficher uniquement les résultats correspondants",
+    "createFiltersBefore-nuxt": "",
     "createFiltersType": {
       "all": "tout",
       "any": "peu importe"
     },
     "createdSegment": "Segment « {segment} » créé",
+    "fieldType-nuxt": {
+      "array": "",
+      "blob": "",
+      "boolean": "",
+      "contact": "",
+      "date": "",
+      "enum": "",
+      "number": "",
+      "text": ""
+    },
     "invalidRuleError": "Quelque chose ne va pas dans cette règle : \"{ rule }\". Veuillez mettre à jour !",
+    "matchCondition-nuxt": "",
+    "matchCount-nuxt": "",
     "matchWord": {
       "AND": "et",
       "OR": "ou"
     },
     "nestedRules": "Règles imbriquées",
+    "nestedRules-nuxt": "",
+    "noFieldsMatch-nuxt": "",
     "noNestedRules": "Ce filtre comporte des règles imbriquées ne pouvant pas être modifiées via l'éditeur de recherche avancée.",
+    "noOptions-nuxt": "",
+    "operatorGroup-nuxt": {
+      "blank": "",
+      "not": ""
+    },
     "operators": {
       "all": {
         "is_empty": "est vide",
@@ -509,6 +533,10 @@
         "not_equal": "n'est pas"
       }
     },
+    "relativeDate-nuxt": "",
+    "relativeDateExample-nuxt": "",
+    "relativeDateInvalid-nuxt": "",
+    "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
         "create": "Créer un nouveau segment",
@@ -516,11 +544,14 @@
         "update": "Mettre à jour le segment « {segment} »"
       },
       "createSegment": "Créer un segment",
+      "failed-nuxt": "",
       "segmentName": "Nom du segment",
       "text": "Un segment est un groupe de contacts correspondant un à un ensemble de filtres comme ceux que vous venez de créer. Les nouveaux contacts correspondant à ces filtres seront automatiquement ajoutés à ce segment.",
+      "text-nuxt": "",
       "title": "Enregistrer le segment",
       "updateSegment": "Mettre à jour le segment"
     },
+    "searchFields-nuxt": "",
     "selectFilter": "Sélectionner un filtre",
     "updatedSegment": "Segment « {segment} » mis à jour"
   },
@@ -1170,6 +1201,7 @@
     "no": "Non",
     "noResults": "Aucun résultat trouvé",
     "pageCount": "Page {pageNumber} sur {pageTotal}",
+    "pageCount-nuxt": "",
     "paymentPeriod": {
       "annually": "Annuellement",
       "monthly": "Mensuellement",
@@ -1192,11 +1224,14 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "/ an",
+    "range-nuxt": "",
     "role": {
       "admin": "Administrateur",
       "member": "Membre",
       "superadmin": "Super administrateur"
     },
+    "rowsPerPage-nuxt": "",
+    "selectAll": "",
     "selectNone": "-- Aucun --",
     "selectOne": "Sélectionner…",
     "show": "Afficher",
@@ -1341,6 +1376,7 @@
     },
     "dataGroup": {
       "callout": "CrowdNewsrooms",
+      "callout-nuxt": "",
       "contact": "Informations de contact",
       "oneTimeContributions": "Dons uniques",
       "recurringContributions": "Cotisations récurrentes",
@@ -1371,6 +1407,14 @@
     "noResults": "Aucun contact trouvé",
     "numResults": "{n} contact trouvé | {n} contacts trouvés",
     "search": "Rechercher un contact…",
+    "segments-nuxt": "",
+    "selectAllBanner-nuxt": {
+      "allSelected": "",
+      "clearSelection": "",
+      "pageSelected": "",
+      "selectAll": "",
+      "someSelected": ""
+    },
     "selectedCount": "{n} contact sélectionné | {n} contacts sélectionnés",
     "sendEmail": {
       "newEmail": "Nouvel e-mail",
@@ -1380,7 +1424,11 @@
       "templateNameRequired": "Veuillez saisir un nom pour le nouveau modèle.",
       "title": "Envoyer un e-mail au segment"
     },
-    "showingOf": "Affichage des contacts {start} à {end} sur {total}"
+    "sendEmailNoSegment-nuxt": "",
+    "sendEmailSelection-nuxt": "",
+    "sendEmailToSelected-nuxt": "",
+    "showingOf": "Affichage des contacts {start} à {end} sur {total}",
+    "showingOf-nuxt": ""
   },
   "contribution": {
     "adminCancelDescription": "Si vous annulez la cotisation du contact son adhésion prendra fin à la fin de sont cycle de paiement actuel le {date}.",
@@ -2225,13 +2273,26 @@
     "name": "Nom"
   },
   "tags": {
+    "clearTags-nuxt": "",
+    "countOfSelected-nuxt": "",
     "manageTags": "Gérer les libellés",
+    "manageTagsDescription-nuxt": "",
+    "newTagName-nuxt": "",
     "noTags": "Aucun libellé",
     "notifications": {
       "addedTag": "Libellé « {tag} » ajouté",
-      "removedTag": "Libellé « {tag} » supprimé "
+      "createFailed-nuxt": "",
+      "createdTag-nuxt": "",
+      "deleteFailed-nuxt": "",
+      "deletedTag-nuxt": "",
+      "removedTag": "Libellé « {tag} » supprimé ",
+      "renameFailed-nuxt": "",
+      "renamedTag-nuxt": "",
+      "updateFailed-nuxt": ""
     },
     "searchTag": "Libellé par…",
+    "selectToTag-nuxt": "",
+    "tagSelected-nuxt": "",
     "toggleTag": "Activer/Désactiver le libellé"
   }
 }

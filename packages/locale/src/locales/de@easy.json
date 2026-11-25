@@ -163,6 +163,7 @@
     "search": "",
     "sendEmails": "E-Mails schicken",
     "sendOneOffEmail": "E-Mail schicken",
+    "sendOneOffEmail-nuxt": "",
     "sendOngoingEmails": "E-Mails die immer wieder gehen",
     "share": "Hier schickst du den Text / die Datei / das Bild an andere.",
     "showPassword": "Passwort zeigen",
@@ -443,21 +444,44 @@
   },
   "advancedSearch": {
     "addRule": "",
+    "addRule-nuxt": "",
+    "allFields-nuxt": "",
     "button": "",
     "createFiltersAfter": "",
+    "createFiltersAfter-nuxt": "",
     "createFiltersBefore": "",
+    "createFiltersBefore-nuxt": "",
     "createFiltersType": {
       "all": "",
       "any": ""
     },
     "createdSegment": "Erstellte Gruppe „{segment}“",
+    "fieldType-nuxt": {
+      "array": "",
+      "blob": "",
+      "boolean": "",
+      "contact": "",
+      "date": "",
+      "enum": "",
+      "number": "",
+      "text": ""
+    },
     "invalidRuleError": "",
+    "matchCondition-nuxt": "",
+    "matchCount-nuxt": "",
     "matchWord": {
       "AND": "",
       "OR": ""
     },
     "nestedRules": "",
+    "nestedRules-nuxt": "",
+    "noFieldsMatch-nuxt": "",
     "noNestedRules": "",
+    "noOptions-nuxt": "",
+    "operatorGroup-nuxt": {
+      "blank": "",
+      "not": ""
+    },
     "operators": {
       "all": {
         "is_empty": "",
@@ -509,6 +533,10 @@
         "not_equal": ""
       }
     },
+    "relativeDate-nuxt": "",
+    "relativeDateExample-nuxt": "",
+    "relativeDateInvalid-nuxt": "",
+    "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
         "create": "Neue Gruppe erstellen",
@@ -516,11 +544,14 @@
         "update": "Gruppe „{segment}“ aktualisieren"
       },
       "createSegment": "Gruppe erstellen",
+      "failed-nuxt": "",
       "segmentName": "Name der Gruppe",
       "text": "Eine Gruppe ist eine Sammlung von Kontakten, auf die bestimmte Filter zutreffen. Neue Kontakte, auf die die Filter auch zutreffen, kommen automatisch in die Gruppe.",
+      "text-nuxt": "",
       "title": "Gruppe speichern",
       "updateSegment": "Gruppe aktualisieren"
     },
+    "searchFields-nuxt": "",
     "selectFilter": "",
     "updatedSegment": "Aktualisierte Gruppe „{segment}“"
   },
@@ -1166,6 +1197,7 @@
     "no": "",
     "noResults": "Der Computer hat keine Ergebnisse gefunden.",
     "pageCount": "",
+    "pageCount-nuxt": "",
     "paymentPeriod": {
       "annually": "",
       "monthly": "",
@@ -1188,11 +1220,14 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "",
+    "range-nuxt": "",
     "role": {
       "admin": "",
       "member": "",
       "superadmin": ""
     },
+    "rowsPerPage-nuxt": "",
+    "selectAll": "",
     "selectNone": "keine",
     "selectOne": "Hier kannst du ein Bild / eine Unterschrift / … aus-suchen",
     "show": "Hier wird das Bild / der Text gezeigt.",
@@ -1337,6 +1372,7 @@
     },
     "dataGroup": {
       "callout": "",
+      "callout-nuxt": "",
       "contact": "",
       "oneTimeContributions": "",
       "recurringContributions": "Regelmäßige Beiträge",
@@ -1367,6 +1403,14 @@
     "noResults": "",
     "numResults": "",
     "search": "",
+    "segments-nuxt": "",
+    "selectAllBanner-nuxt": {
+      "allSelected": "",
+      "clearSelection": "",
+      "pageSelected": "",
+      "selectAll": "",
+      "someSelected": ""
+    },
     "selectedCount": "",
     "sendEmail": {
       "newEmail": "Neue E-Mail",
@@ -1376,7 +1420,11 @@
       "templateNameRequired": "Bitte gib einen Namen für die neue Vorlage ein.",
       "title": "E-Mail an Gruppe schicken"
     },
-    "showingOf": ""
+    "sendEmailNoSegment-nuxt": "",
+    "sendEmailSelection-nuxt": "",
+    "sendEmailToSelected-nuxt": "",
+    "showingOf": "",
+    "showingOf-nuxt": ""
   },
   "contribution": {
     "adminCancelDescription": "",
@@ -2221,13 +2269,26 @@
     "name": ""
   },
   "tags": {
+    "clearTags-nuxt": "",
+    "countOfSelected-nuxt": "",
     "manageTags": "",
+    "manageTagsDescription-nuxt": "",
+    "newTagName-nuxt": "",
     "noTags": "",
     "notifications": {
       "addedTag": "",
-      "removedTag": ""
+      "createFailed-nuxt": "",
+      "createdTag-nuxt": "",
+      "deleteFailed-nuxt": "",
+      "deletedTag-nuxt": "",
+      "removedTag": "",
+      "renameFailed-nuxt": "",
+      "renamedTag-nuxt": "",
+      "updateFailed-nuxt": ""
     },
     "searchTag": "",
+    "selectToTag-nuxt": "",
+    "tagSelected-nuxt": "",
     "toggleTag": ""
   }
 }

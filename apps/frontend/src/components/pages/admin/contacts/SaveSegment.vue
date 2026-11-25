@@ -1,71 +1,67 @@
 <template>
-  <AppButton
-    class="mb-3"
-    variant="link"
-    size="sm"
-    :icon="faFloppyDisk"
-    @click="handleOpen"
-  >
+  <UButton icon="i-lucide-save" @click="handleOpen">
     {{ t('advancedSearch.saveSegment.title') }}
-  </AppButton>
-  <AppModal
-    :open="showModal"
+  </UButton>
+
+  <UModal
+    v-model:open="showModal"
     :title="t('advancedSearch.saveSegment.title')"
-    @close="showModal = false"
   >
-    <p class="mb-4">
-      {{ t('advancedSearch.saveSegment.text') }}
-    </p>
-    <form @submit.prevent="handleSubmit">
-      <AppRadioGroup
-        v-if="segment"
-        v-model="shouldUpdate"
-        :label="t('advancedSearch.saveSegment.createOrUpdate.label')"
-        :options="[
-          [false, t('advancedSearch.saveSegment.createOrUpdate.create')],
-          [
-            true,
-            t('advancedSearch.saveSegment.createOrUpdate.update', {
-              segment: segment.name,
-            }),
-          ],
-        ]"
-        class="mb-4"
-        required
-      />
-      <div class="mb-4">
-        <AppInput
+    <template #body>
+      <form class="flex flex-col gap-5" @submit.prevent="handleSubmit">
+        <p class="text-muted">
+          {{ t('advancedSearch.saveSegment.text-nuxt') }}
+        </p>
+
+        <URadioGroup
+          v-if="segment"
+          v-model="shouldUpdate"
+          :legend="t('advancedSearch.saveSegment.createOrUpdate.label')"
+          :items="[
+            {
+              value: false,
+              label: t('advancedSearch.saveSegment.createOrUpdate.create'),
+            },
+            {
+              value: true,
+              label: t('advancedSearch.saveSegment.createOrUpdate.update', {
+                segment: segment.name,
+              }),
+            },
+          ]"
+        />
+
+        <UFormField
           v-if="!shouldUpdate"
-          v-model="newSegmentName"
           :label="t('advancedSearch.saveSegment.segmentName')"
           required
-        />
-      </div>
-      <AppButton
-        class="w-full"
-        type="submit"
-        :disabled="validation.$invalid"
-        :loading="isSaving"
-      >
-        {{
-          shouldUpdate
-            ? t('advancedSearch.saveSegment.updateSegment')
-            : t('advancedSearch.saveSegment.createSegment')
-        }}
-      </AppButton>
-    </form>
-  </AppModal>
+        >
+          <UInput v-model="newSegmentName" class="w-full" autofocus />
+        </UFormField>
+
+        <UButton
+          type="submit"
+          block
+          :disabled="!shouldUpdate && !newSegmentName.trim()"
+          :loading="isSaving"
+        >
+          {{
+            shouldUpdate
+              ? t('advancedSearch.saveSegment.updateSegment')
+              : t('advancedSearch.saveSegment.createSegment')
+          }}
+        </UButton>
+      </form>
+    </template>
+  </UModal>
 </template>
 
 <script lang="ts" setup>
 import type { GetSegmentData, RuleGroup } from '@beabee/beabee-common';
-import { AppButton, AppInput, AppModal, AppRadioGroup } from '@beabee/vue';
-import { addNotification } from '@beabee/vue/store/notifications';
-
-import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
-import useVuelidate from '@vuelidate/core';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { useAppToast } from '#composables/useAppToast';
 
 const emit = defineEmits(['saved']);
 const props = defineProps<{
@@ -80,14 +76,14 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
-const validation = useVuelidate();
+const toast = useAppToast();
 
 const showModal = ref(false);
 const shouldUpdate = ref(false);
 const newSegmentName = ref('');
 const isSaving = ref(false);
 
-async function handleOpen() {
+function handleOpen() {
   showModal.value = true;
   shouldUpdate.value = false;
   newSegmentName.value = '';
@@ -105,18 +101,19 @@ async function handleSubmit() {
         props.segment.name,
         props.rules
       );
-      addNotification({
-        variant: 'success',
-        title: t('advancedSearch.updatedSegment', { segment: segment.name }),
-      });
+      toast.success(
+        t('advancedSearch.updatedSegment', { segment: segment.name })
+      );
     } else {
       segment = await props.saveSegment(newSegmentName.value, props.rules);
-      addNotification({
-        variant: 'success',
-        title: t('advancedSearch.createdSegment', { segment: segment.name }),
-      });
+      toast.success(
+        t('advancedSearch.createdSegment', { segment: segment.name })
+      );
     }
+    showModal.value = false;
     emit('saved', segment);
+  } catch {
+    toast.error(t('advancedSearch.saveSegment.failed-nuxt'));
   } finally {
     isSaving.value = false;
   }

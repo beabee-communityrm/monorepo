@@ -27,6 +27,10 @@ export const nuxtUiConfig: NuxtUIOptions = {
           xl: { base: 'rounded-full' },
         },
       },
+      compoundVariants: [
+        // One step darker than Nuxt UI's default bg-elevated.
+        { color: 'neutral', variant: 'soft', class: 'bg-accented' },
+      ],
     },
     navigationMenu: {
       slots: {

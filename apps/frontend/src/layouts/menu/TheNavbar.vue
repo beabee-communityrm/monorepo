@@ -13,6 +13,10 @@
         {{ t(route.meta.pageTitle) }}
       </h1>
     </template>
+    <template #right>
+      <!-- Teleport target for page-level header actions -->
+      <div id="page-header-actions" class="flex items-center gap-2"></div>
+    </template>
   </UDashboardNavbar>
   <UDashboardNavbar v-else :toggle="false" :ui="{ root: 'bg-default' }">
     <template #left>

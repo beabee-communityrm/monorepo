@@ -163,6 +163,7 @@
     "search": "Искать",
     "sendEmails": "Отправить e-mails",
     "sendOneOffEmail": "Отправить письмо",
+    "sendOneOffEmail-nuxt": "",
     "sendOngoingEmails": "Регулярные рассылки",
     "share": "Поделиться",
     "showPassword": "Показать пароль",
@@ -444,21 +445,44 @@
   },
   "advancedSearch": {
     "addRule": "",
+    "addRule-nuxt": "",
+    "allFields-nuxt": "",
     "button": "",
     "createFiltersAfter": "",
+    "createFiltersAfter-nuxt": "",
     "createFiltersBefore": "",
+    "createFiltersBefore-nuxt": "",
     "createFiltersType": {
       "all": "",
       "any": ""
     },
     "createdSegment": "",
+    "fieldType-nuxt": {
+      "array": "",
+      "blob": "",
+      "boolean": "",
+      "contact": "",
+      "date": "",
+      "enum": "",
+      "number": "",
+      "text": ""
+    },
     "invalidRuleError": "",
+    "matchCondition-nuxt": "",
+    "matchCount-nuxt": "",
     "matchWord": {
       "AND": "",
       "OR": ""
     },
     "nestedRules": "",
+    "nestedRules-nuxt": "",
+    "noFieldsMatch-nuxt": "",
     "noNestedRules": "",
+    "noOptions-nuxt": "",
+    "operatorGroup-nuxt": {
+      "blank": "",
+      "not": ""
+    },
     "operators": {
       "all": {
         "is_empty": "",
@@ -510,6 +534,10 @@
         "not_equal": ""
       }
     },
+    "relativeDate-nuxt": "",
+    "relativeDateExample-nuxt": "",
+    "relativeDateInvalid-nuxt": "",
+    "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
         "create": "",
@@ -517,11 +545,14 @@
         "update": ""
       },
       "createSegment": "",
+      "failed-nuxt": "",
       "segmentName": "",
       "text": "",
+      "text-nuxt": "",
       "title": "",
       "updateSegment": ""
     },
+    "searchFields-nuxt": "",
     "selectFilter": "",
     "updatedSegment": ""
   },
@@ -1167,6 +1198,7 @@
     "no": "Нет",
     "noResults": "Ничего не найдено",
     "pageCount": "Страница {pageNumber} из {pageTotal}",
+    "pageCount-nuxt": "",
     "paymentPeriod": {
       "annually": "ежегодно",
       "monthly": "ежемесячно",
@@ -1189,11 +1221,14 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "/ год",
+    "range-nuxt": "",
     "role": {
       "admin": "Администратор",
       "member": "Участник",
       "superadmin": "Главный aдминистратор"
     },
+    "rowsPerPage-nuxt": "",
+    "selectAll": "",
     "selectNone": "Отсутствует",
     "selectOne": "Выбрать одну опцию",
     "show": "Показать",
@@ -1338,6 +1373,7 @@
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
+      "callout-nuxt": "",
       "contact": "Контакты",
       "oneTimeContributions": "Разовые взносы",
       "recurringContributions": "Регулярные взносы",
@@ -1368,6 +1404,14 @@
     "noResults": "",
     "numResults": "",
     "search": "",
+    "segments-nuxt": "",
+    "selectAllBanner-nuxt": {
+      "allSelected": "",
+      "clearSelection": "",
+      "pageSelected": "",
+      "selectAll": "",
+      "someSelected": ""
+    },
     "selectedCount": "",
     "sendEmail": {
       "newEmail": "Новое письмо",
@@ -1377,7 +1421,11 @@
       "templateNameRequired": "Введите название нового шаблона.",
       "title": "Отправить письмо сегменту"
     },
-    "showingOf": ""
+    "sendEmailNoSegment-nuxt": "",
+    "sendEmailSelection-nuxt": "",
+    "sendEmailToSelected-nuxt": "",
+    "showingOf": "",
+    "showingOf-nuxt": ""
   },
   "contribution": {
     "adminCancelDescription": "Если вы отмените взнос этого контакта, он будет считаться членом клуба до завершения подписки {date}.",
@@ -2226,13 +2274,26 @@
     "name": ""
   },
   "tags": {
+    "clearTags-nuxt": "",
+    "countOfSelected-nuxt": "",
     "manageTags": "",
+    "manageTagsDescription-nuxt": "",
+    "newTagName-nuxt": "",
     "noTags": "",
     "notifications": {
       "addedTag": "",
-      "removedTag": ""
+      "createFailed-nuxt": "",
+      "createdTag-nuxt": "",
+      "deleteFailed-nuxt": "",
+      "deletedTag-nuxt": "",
+      "removedTag": "",
+      "renameFailed-nuxt": "",
+      "renamedTag-nuxt": "",
+      "updateFailed-nuxt": ""
     },
     "searchTag": "",
+    "selectToTag-nuxt": "",
+    "tagSelected-nuxt": "",
     "toggleTag": ""
   }
 }
