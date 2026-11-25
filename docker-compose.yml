@@ -10,9 +10,25 @@ x-service-app: &service-app
     # The webhook app also serves the legacy app
     HIVE_SERVICE_APP: http://webhook_app
 
-x-backend-app: &backend-app
-  <<: *service-app
-  command: ["node", "--watch", "--watch-preserve-output", "./dist/app.js"]
+# Backend services run the host's build: their image is the runtime stage,
+# which has no code, and the dist folders are mounted in
+x-backend: &backend
+  build: &backend-build
+    context: .
+    dockerfile: ./packages/docker/base.dockerfile
+    target: runtime
+  env_file:
+    - .env
+  volumes:
+    - ./packages/core/dist:/opt/packages/core/dist
+    - ./packages/common/dist:/opt/packages/common/dist
+    - ./packages/locale/dist:/opt/packages/locale/dist
+    - ./apps/backend/dist:/opt/apps/backend/dist
+    - ./apps/backend-cli/dist:/opt/apps/backend-cli/dist
+    - ./apps/webhooks/dist:/opt/apps/webhooks/dist
+    - ./apps/legacy/dist:/opt/apps/legacy/dist
+    # Allow migrations to be written out from the container
+    - ./packages/core/src/migrations:/opt/packages/core/src/migrations
 
 services:
   db:
@@ -39,49 +55,22 @@ services:
 
   # API app
   api_app:
-    <<: *backend-app
-    build:
-      context: .
-      dockerfile: ./packages/docker/base.dockerfile
-      target: api_app
-    env_file:
-      - .env
-    volumes:
-      - ./packages/core/dist:/opt/packages/core/dist
-      - ./packages/common/dist:/opt/packages/common/dist
-      - ./packages/locale/dist:/opt/packages/locale/dist
-      - ./apps/backend/dist:/opt/apps/backend/dist
-      - ./apps/backend-cli/dist:/opt/apps/backend-cli/dist
-      # Allow migrations to be written out from the container
-      - ./packages/core/src/migrations:/opt/packages/core/src/migrations
+    <<: [*service-app, *backend]
     # TODO: Use standard dist folder
     command: ["node", "--watch", "--watch-preserve-output", "./dist/api/app.js"]
 
   # Webhook app, also serves the legacy app
   webhook_app:
-    <<: *backend-app
-    build:
-      context: .
-      dockerfile: ./packages/docker/base.dockerfile
-      target: webhook_app
-    env_file:
-      - .env
-    volumes:
-      - ./packages/core/dist:/opt/packages/core/dist
-      - ./packages/common/dist:/opt/packages/common/dist
-      - ./packages/locale/dist:/opt/packages/locale/dist
-      - ./apps/webhooks/dist:/opt/apps/webhooks/dist
-      - ./apps/legacy/dist:/opt/apps/legacy/dist
+    <<: [*service-app, *backend]
+    working_dir: /opt/apps/webhooks
+    command: ["node", "--watch", "--watch-preserve-output", "./dist/app.js"]
 
   # Cron app
   cron_app:
-    <<: *service-app
+    <<: [*service-app, *backend]
     build:
-      context: .
-      dockerfile: ./packages/docker/base.dockerfile
-      target: cron_app
-    env_file:
-      - .env
+      <<: *backend-build
+      target: cron-runtime
 
   # MinIO service
   minio:
@@ -153,21 +142,12 @@ services:
 
   # Database migration service
   migration:
-    build:
-      context: .
-      dockerfile: ./packages/docker/base.dockerfile
-      target: api_app
+    <<: *backend
     command: "yarn run typeorm migration:run"
     # Wait for the database to be ready
     depends_on:
       db:
         condition: service_healthy
-    volumes:
-      # Mount the entire core dist so newly generated migrations and the
-      # regenerated migrations.js index are both visible to the runner
-      - ./packages/core/dist:/opt/packages/core/dist
-    env_file:
-      - .env
 
   # Stripe CLI for webhook forwarding
   # Only used in local development
