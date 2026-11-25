@@ -1,6 +1,7 @@
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import { Callout, CalloutResponse } from '@beabee/core/models';
 import { wrapAsync } from '@beabee/core/utils/express';
+import { countRelatedByParentId } from '@beabee/core/utils/relation-count';
 
 import express, { type Express, type Request, type Response } from 'express';
 import moment from 'moment';
@@ -21,9 +22,16 @@ app.get(
   '/',
   wrapAsync(async (req: Request, res: Response) => {
     const polls = await createQueryBuilder(Callout, 'p')
-      .loadRelationCountAndMap('p.responseCount', 'p.responses')
       .orderBy({ date: 'DESC' })
       .getMany();
+    const responseCounts = await countRelatedByParentId(
+      CalloutResponse,
+      'calloutId',
+      polls.map((p) => p.id)
+    );
+    for (const poll of polls) {
+      poll.responseCount = responseCounts.get(poll.id) ?? 0;
+    }
 
     res.render('index', { polls });
   })

@@ -6,6 +6,7 @@ import {
   ProjectEngagement,
 } from '@beabee/core/models';
 import { wrapAsync } from '@beabee/core/utils/express';
+import { countRelatedByParentId } from '@beabee/core/utils/relation-count';
 
 import express, { type Express } from 'express';
 import _ from 'lodash';
@@ -100,9 +101,15 @@ app.use(isAdmin);
 app.get(
   '/',
   wrapAsync(async (req, res) => {
-    const projects = await createQueryBuilder(Project, 'p')
-      .loadRelationCountAndMap('p.itemCount', 'p.contacts')
-      .getMany();
+    const projects = await createQueryBuilder(Project, 'p').getMany();
+    const itemCounts = await countRelatedByParentId(
+      ProjectContact,
+      'projectId',
+      projects.map((p) => p.id)
+    );
+    for (const project of projects) {
+      project.itemCount = itemCounts.get(project.id) ?? 0;
+    }
 
     res.render('index', { projects });
   })

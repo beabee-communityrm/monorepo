@@ -1,5 +1,6 @@
 import { EmailFilterName, emailFilters } from '@beabee/beabee-common';
-import { Email } from '@beabee/core/models';
+import { Email, EmailMailing } from '@beabee/core/models';
+import { countRelatedByParentId } from '@beabee/core/utils/relation-count';
 
 import { TransformPlainToInstance } from 'class-transformer';
 import { SelectQueryBuilder } from 'typeorm';
@@ -51,17 +52,22 @@ class EmailTransformer extends BaseTransformer<
     qb: SelectQueryBuilder<Email>,
     fieldPrefix: string
   ): void {
-    // Load mailing count relation
-    qb.loadRelationCountAndMap(
-      `${fieldPrefix}mailingCount`,
-      `${fieldPrefix}mailings`
-    );
-
     // Load ongoing email with segment for detail data
     qb.leftJoinAndSelect(
       `${fieldPrefix}ongoingEmail`,
       'ongoingEmail'
     ).leftJoinAndSelect('ongoingEmail.segment', 'ongoingSegment');
+  }
+
+  protected async modifyItems(emails: Email[]): Promise<void> {
+    const mailingCounts = await countRelatedByParentId(
+      EmailMailing,
+      'emailId',
+      emails.map((e) => e.id)
+    );
+    for (const email of emails) {
+      email.mailingCount = mailingCounts.get(email.id) ?? 0;
+    }
   }
 }
 

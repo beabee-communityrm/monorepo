@@ -5,7 +5,7 @@ import { runApp } from '@beabee/core/server';
 export const listApiKeys = async (): Promise<void> => {
   await runApp(async () => {
     const apiKeys = await getRepository(ApiKey).find({
-      relations: ['creator'],
+      relations: { creator: true },
       order: { createdAt: 'DESC' },
     });
 

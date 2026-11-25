@@ -5,6 +5,7 @@ import OptionsService from '@beabee/core/services/OptionsService';
 import { formatEmailBody } from '@beabee/core/templates/email';
 import { EmailMailingRecipient, EmailTemplateId } from '@beabee/core/type';
 import { wrapAsync } from '@beabee/core/utils/express';
+import { countRelatedByParentId } from '@beabee/core/utils/relation-count';
 
 import busboy from 'connect-busboy';
 import express, { type Express } from 'express';
@@ -144,9 +145,16 @@ app.get(
   '/',
   wrapAsync(async (req, res) => {
     const emails = await createQueryBuilder(Email, 'e')
-      .loadRelationCountAndMap('e.mailingCount', 'e.mailings')
       .orderBy({ name: 'ASC' })
       .getMany();
+    const mailingCounts = await countRelatedByParentId(
+      EmailMailing,
+      'emailId',
+      emails.map((e) => e.id)
+    );
+    for (const email of emails) {
+      email.mailingCount = mailingCounts.get(email.id) ?? 0;
+    }
 
     const segmentEmails = await getRepository(SegmentOngoingEmail).find();
     const systemEmails = Object.values(providerTemplateMap());

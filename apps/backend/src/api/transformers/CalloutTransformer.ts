@@ -22,6 +22,7 @@ import {
 } from '@beabee/core/models';
 import { AuthInfo, FilterHandlers } from '@beabee/core/type';
 import { groupBy } from '@beabee/core/utils/objects';
+import { countRelatedByParentId } from '@beabee/core/utils/relation-count';
 
 import { TransformPlainToInstance } from 'class-transformer';
 import { SelectQueryBuilder } from 'typeorm';
@@ -238,16 +239,6 @@ class CalloutTransformer extends BaseTransformer<
     auth: AuthInfo,
     operation: TransformerOperation
   ): void {
-    if (
-      query.with?.includes(GetCalloutWith.ResponseCount) &&
-      auth.roles.includes('admin')
-    ) {
-      qb.loadRelationCountAndMap(
-        `${fieldPrefix}responseCount`,
-        `${fieldPrefix}responses`
-      );
-    }
-
     if (operation === 'read') {
       // Always load a variant for filtering and sorting
       qb.leftJoinAndSelect(
@@ -271,6 +262,20 @@ class CalloutTransformer extends BaseTransformer<
   ): Promise<void> {
     if (callouts.length > 0) {
       const calloutIds = callouts.map((c) => c.id);
+
+      if (
+        query.with?.includes(GetCalloutWith.ResponseCount) &&
+        auth.roles.includes('admin')
+      ) {
+        const responseCounts = await countRelatedByParentId(
+          CalloutResponse,
+          'calloutId',
+          calloutIds
+        );
+        for (const callout of callouts) {
+          callout.responseCount = responseCounts.get(callout.id) ?? 0;
+        }
+      }
 
       const withVariants = query.with?.includes(GetCalloutWith.Variants);
       const withVariantNames = query.with?.includes(

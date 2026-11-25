@@ -60,7 +60,7 @@
     "routing-controllers": "^0.11.3",
     "slugify": "^1.6.9",
     "stripe": "^15.12.0",
-    "typeorm": "^0.3.31",
+    "typeorm": "^1.1.2",
     "uuid": "^14.0.3"
   },
   "devDependencies": {
