@@ -7,7 +7,7 @@ import {
 import { coerceToDate } from '../utils/coerce.js';
 
 export const syncCommand: CommandModule = {
-  command: 'sync <action>',
+  command: 'sync',
   describe: 'Synchronization commands',
   builder: (yargs) =>
     yargs
@@ -230,6 +230,7 @@ export const syncCommand: CommandModule = {
             },
           }),
         handler: () => {},
-      }),
+      })
+      .demandCommand(1),
   handler: () => {},
 };

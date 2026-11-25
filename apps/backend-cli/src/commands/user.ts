@@ -9,7 +9,7 @@ import type {
 } from '../types/index.js';
 
 export const userCommand: CommandModule = {
-  command: 'user <action>',
+  command: 'user',
   describe: 'Manage users',
   builder: (yargs) => {
     return yargs
@@ -150,7 +150,8 @@ export const userCommand: CommandModule = {
           const { deleteUsers } = await import('../actions/user/delete.js');
           return deleteUsers(argv);
         },
-      });
+      })
+      .demandCommand(1);
   },
   handler: () => {},
 };

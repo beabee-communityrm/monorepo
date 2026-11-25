@@ -17,7 +17,7 @@ const CALLOUT_ANONYMIZATION_LEVELS: readonly CalloutAnonymizationLevel[] = [
 ] as const;
 
 export const databaseCommand: CommandModule = {
-  command: 'database <action>',
+  command: 'database',
   describe: 'Database management commands',
   builder: (yargs) =>
     yargs
@@ -216,6 +216,7 @@ export const databaseCommand: CommandModule = {
             await import('../actions/database/clean.js');
           return cleanDatabase();
         },
-      }),
+      })
+      .demandCommand(1),
   handler: () => {},
 };

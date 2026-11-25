@@ -4,7 +4,7 @@ import { EVENT_BACKFILL_CATEGORIES } from '../constants/event.js';
 import type { BackfillEventsArgs } from '../types/index.js';
 
 export const eventCommand: CommandModule = {
-  command: 'event <action>',
+  command: 'event',
   describe: 'Manage activity feed events',
   builder: (yargs) =>
     yargs

@@ -1,7 +1,7 @@
 import type { CommandModule } from 'yargs';
 
 export const healthCommand: CommandModule = {
-  command: 'health <integration>',
+  command: 'health',
   describe: 'Check the health of the app and its integrations',
   builder: (yargs) =>
     yargs
@@ -57,6 +57,7 @@ export const healthCommand: CommandModule = {
           const { checkHealth } = await import('../actions/health.js');
           return checkHealth(undefined, argv.notify as boolean);
         },
-      }),
+      })
+      .demandCommand(1),
   handler: () => {},
 };

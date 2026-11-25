@@ -56,6 +56,7 @@ actorContext.run(actor, () =>
     .command(testCommand)
     .command(migrateUploadsCommand)
     .demandCommand(1, 'You need at least one command before moving on')
+    .strictCommands()
     .version(pkg.version)
     .scriptName('yarn backend-cli')
     .help()
