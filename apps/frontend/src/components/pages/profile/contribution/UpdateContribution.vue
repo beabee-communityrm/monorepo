@@ -80,7 +80,7 @@
 <script lang="ts" setup>
 import {
   type ContentPaymentData,
-  type ContributionInfo,
+  type ContactContributionData,
   ContributionPeriod,
   ContributionType,
   MembershipStatus,
@@ -110,7 +110,7 @@ const props = defineProps<{
   paymentContent: ContentPaymentData;
 }>();
 
-const contribution = defineModel<ContributionInfo>({ required: true });
+const contribution = defineModel<ContactContributionData>({ required: true });
 
 const newContribution = reactive({
   amount: 5,
@@ -168,7 +168,7 @@ const buttonText = computed(() =>
  * it never does, so the contribution is refetched either way.
  */
 async function applyContributionChange(
-  change: () => Promise<ContributionInfo>
+  change: () => Promise<ContactContributionData>
 ) {
   try {
     contribution.value = await change();

@@ -1,6 +1,7 @@
 import {
   ActivityEventType,
   ApiHealthStatus,
+  ContactContributionData,
   ContributionPeriod,
   MembershipStatus,
   PaymentFlowParams,
@@ -20,7 +21,6 @@ import {
 import ActivityService from '#services/ActivityService';
 import {
   CompletedPaymentFlow,
-  ContributionInfo,
   PaymentFlowForm,
   PaymentFlowFormCreateOneTimePayment,
   UpdateContributionForm,
@@ -221,40 +221,45 @@ class PaymentService {
     return ret;
   }
 
-  async getContributionInfo(contact: Contact): Promise<ContributionInfo> {
-    return await this.provider<ContributionInfo>(contact, async (p, d) => {
-      // Store payment data in contact for getMembershipStatus
-      // TODO: fix this!
-      contact.contribution = d;
+  async getContributionInfo(
+    contact: Contact
+  ): Promise<ContactContributionData> {
+    return await this.provider<ContactContributionData>(
+      contact,
+      async (p, d) => {
+        // Store payment data in contact for getMembershipStatus
+        // TODO: fix this!
+        contact.contribution = d;
 
-      const renewalDate = !d.cancelledAt && calcRenewalDate(contact);
+        const renewalDate = !d.cancelledAt && calcRenewalDate(contact);
 
-      return {
-        type: contact.contributionType,
-        ...(contact.contributionAmount !== null && {
-          amount: contact.contributionAmount,
-        }),
-        ...(contact.contributionPeriod !== null && {
-          period: contact.contributionPeriod,
-        }),
-        ...(d.payFee !== null && { payFee: d.payFee }),
-        ...(d.nextAmount &&
-          contact.contributionPeriod && {
-            nextAmount: getActualAmount(
-              d.nextAmount.monthly,
-              contact.contributionPeriod
-            ),
-            ...(d.nextAmount.pending && { nextAmountPending: true }),
+        return {
+          type: contact.contributionType,
+          ...(contact.contributionAmount !== null && {
+            amount: contact.contributionAmount,
           }),
-        ...(contact.membership?.dateExpires && {
-          membershipExpiryDate: contact.membership.dateExpires,
-        }),
-        membershipStatus: getMembershipStatus(contact),
-        ...(await p.getContributionInfo()),
-        ...(d.cancelledAt && { cancellationDate: d.cancelledAt }),
-        ...(renewalDate && { renewalDate }),
-      };
-    });
+          ...(contact.contributionPeriod !== null && {
+            period: contact.contributionPeriod,
+          }),
+          ...(d.payFee !== null && { payFee: d.payFee }),
+          ...(d.nextAmount &&
+            contact.contributionPeriod && {
+              nextAmount: getActualAmount(
+                d.nextAmount.monthly,
+                contact.contributionPeriod
+              ),
+              ...(d.nextAmount.pending && { nextAmountPending: true }),
+            }),
+          ...(contact.membership?.dateExpires && {
+            membershipExpiryDate: contact.membership.dateExpires,
+          }),
+          membershipStatus: getMembershipStatus(contact),
+          ...(await p.getContributionInfo()),
+          ...(d.cancelledAt && { cancellationDate: d.cancelledAt }),
+          ...(renewalDate && { renewalDate }),
+        };
+      }
+    );
   }
 
   async cancelContribution(

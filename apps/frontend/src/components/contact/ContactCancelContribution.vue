@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
 import {
-  type ContributionInfo,
+  type ContactContributionData,
   ContributionType,
   MembershipStatus,
 } from '@beabee/beabee-common';
@@ -37,7 +37,7 @@ const { t } = useI18n();
 defineEmits<{ (evt: 'cancel'): void }>();
 const props = defineProps<{
   id: string;
-  contribution: ContributionInfo;
+  contribution: ContactContributionData;
 }>();
 
 const canCancel = computed(

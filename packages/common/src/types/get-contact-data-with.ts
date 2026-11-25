@@ -1,9 +1,9 @@
 import { GetContactWith } from '../index.js';
 import type {
+  ContactContributionData,
   ContactNewsletterData,
   ContactProfileData,
   ContactRoleData,
-  ContributionInfo,
   GetContactData,
   Noop,
 } from './index.js';
@@ -14,7 +14,7 @@ export type GetContactDataWith<With extends GetContactWith | void> =
       ? { profile: ContactProfileData }
       : Noop) &
     (GetContactWith.Contribution extends With
-      ? { contribution: ContributionInfo }
+      ? { contribution: ContactContributionData }
       : Noop) &
     (GetContactWith.Newsletter extends With
       ? { newsletter: ContactNewsletterData }
