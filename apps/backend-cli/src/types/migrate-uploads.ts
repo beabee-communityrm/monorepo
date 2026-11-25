@@ -1,6 +1,6 @@
 export interface MigrateUploadsArgs {
   source: string;
-  dryRun: boolean;
+  danger: boolean;
   /**
    * Comma-separated list of migration steps to run. Allowed values:
    * - calloutImages
@@ -18,8 +18,8 @@ export interface MigrateUploadsArgs {
 export interface MigrateUploadsOptions {
   /** Source directory containing images and documents to migrate */
   source: string;
-  /** Whether to perform a dry run (no actual uploads) */
-  dryRun?: boolean;
+  /** Upload the files; otherwise only report what would be uploaded */
+  danger: boolean;
   /**
    * Array of migration steps to run. Allowed values:
    * - calloutImages

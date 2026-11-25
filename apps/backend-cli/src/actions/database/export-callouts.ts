@@ -58,14 +58,14 @@ function buildSlugFilter(
 /**
  * Export callout data to SQL dump
  *
- * @param dryRun If true, only logs what would be done
+ * @param danger Make the changes; otherwise only report what would be done
  * @param level Anonymisation level: 'full' (personal data anonymised) or 'none' (everything raw)
  * @param preserveCalloutAnswers If true, keep answers intact; if false, anonymize per component type
  * @param filePath If set, write output to this file instead of stdout
  * @param slugs If set, only export callouts with these slugs (no DELETE statements emitted; use --merge on import)
  */
 export const exportCalloutsDatabase = async (
-  dryRun = false,
+  danger = false,
   level: CalloutAnonymizationLevel = 'full',
   preserveCalloutAnswers = true,
   filePath?: string,
@@ -84,7 +84,7 @@ export const exportCalloutsDatabase = async (
         ? CALLOUT_EXPORT_ANONYMIZERS
         : CALLOUT_EXPORT_FULL_ANONYMIZERS;
 
-  if (dryRun) {
+  if (!danger) {
     const modelNames = anonymisers.map((a) =>
       typeof a.model === 'function' ? a.model.name : String(a.model)
     );

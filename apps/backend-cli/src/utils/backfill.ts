@@ -25,14 +25,14 @@ export const createBackfill = ({
   params = [],
   ...rule
 }: EventBackfill): EventBackfiller => {
-  const backfill = async (dryRun: boolean, em: EntityManager) => {
+  const backfill = async (danger: boolean, em: EntityManager) => {
     const { eventType } = rule;
     const queryParams = [eventType, ...params];
 
     // Cast event type to varchar and compare with source to ensure type consistency
     const select = `SELECT $1::varchar, ${fields} ${source}`;
 
-    if (dryRun) {
+    if (!danger) {
       const [{ count }] = await em.query(
         `SELECT COUNT(*)::int AS count FROM (${select}) s`,
         queryParams

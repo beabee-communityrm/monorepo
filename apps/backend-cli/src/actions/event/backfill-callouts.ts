@@ -59,8 +59,8 @@ const insertAnswered = createBackfill({
 // Remove all `callout.answered` events, then backfill
 const refillAnswered: EventBackfiller = {
   ...insertAnswered,
-  backfill: async (dryRun, em) => {
-    if (!dryRun) {
+  backfill: async (danger, em) => {
+    if (danger) {
       // Deleted in the same transaction as the insert, so a failed insert keeps the old events
       const [, deleted] = await em.query(
         `DELETE FROM activity_event WHERE "eventType" = $1`,
@@ -70,7 +70,7 @@ const refillAnswered: EventBackfiller = {
         `${chalk.green('✓')} Deleted ${deleted} ${insertAnswered.eventType} event(s)`
       );
     }
-    return insertAnswered.backfill(dryRun, em);
+    return insertAnswered.backfill(danger, em);
   },
 };
 

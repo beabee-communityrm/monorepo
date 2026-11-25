@@ -108,7 +108,7 @@ Follow these exact steps to obtain the Stripe values and make the local webhook 
    - Store it, together with the membership product, with the setup command. Stripe only accepts public URLs for webhook endpoints, so the secret of the local listener replaces creating one:
 
    ```bash
-   docker compose run --rm api_app yarn backend-cli setup integrations stripe --webhook-secret whsec_...
+   docker compose run --rm api_app yarn backend-cli setup integrations stripe --webhook-secret whsec_... --danger
    ```
 
 Once all four variables are set, restart the stack if needed.

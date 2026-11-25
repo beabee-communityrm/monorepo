@@ -18,7 +18,8 @@ yarn backend-cli <command> --help
 yarn backend-cli <command> <subcommand> --help
 ```
 
-An unknown or missing command exits with a non-zero code.
+An unknown or missing command exits with a non-zero code. Commands that change
+data or write a dump only report what they would do unless you pass `--danger`.
 
 ## Database dumps
 

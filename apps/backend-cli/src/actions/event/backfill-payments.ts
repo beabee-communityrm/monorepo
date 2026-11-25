@@ -44,8 +44,8 @@ const insertPaymentSuccessful = createBackfill({
 // Remove all successful payment events, then backfill (both in the same transaction)
 const refillPaymentSuccessful: EventBackfiller = {
   ...insertPaymentSuccessful,
-  backfill: async (dryRun, em) => {
-    if (!dryRun) {
+  backfill: async (danger, em) => {
+    if (danger) {
       const [, deleted] = await em.query(
         `DELETE FROM activity_event WHERE "eventType" = $1`,
         [insertPaymentSuccessful.eventType]
@@ -54,7 +54,7 @@ const refillPaymentSuccessful: EventBackfiller = {
         `${chalk.green('✓')} Deleted ${deleted} ${insertPaymentSuccessful.eventType} event(s)`
       );
     }
-    return insertPaymentSuccessful.backfill(dryRun, em);
+    return insertPaymentSuccessful.backfill(danger, em);
   },
 };
 
@@ -80,7 +80,7 @@ const backfillPaymentFailed: EventBackfiller = {
   eventType: ActivityEventType.ContactPaymentFailed,
   isBackfilled: noActor,
   sameEvent: `${sameTarget} AND y.metadata->>'paymentId' = x.metadata->>'paymentId'`,
-  backfill: async (dryRun, em) => {
+  backfill: async (danger, em) => {
     const eventType = ActivityEventType.ContactPaymentFailed;
 
     if (!config.stripe.secretKey) {
@@ -106,7 +106,7 @@ const backfillPaymentFailed: EventBackfiller = {
       ),
     ];
 
-    if (dryRun) {
+    if (!danger) {
       const [{ count }] = await em.query(
         `SELECT COUNT(*)::int AS count ${noFailedEvent}`,
         params

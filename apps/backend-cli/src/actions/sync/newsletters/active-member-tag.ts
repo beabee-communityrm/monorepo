@@ -40,7 +40,7 @@ export const syncActiveMemberTag = async (
       'newsletter-active-member-tag'
     );
 
-    if (args.dryRun) {
+    if (!args.danger) {
       log.info('DRY RUN - No changes will actually be made');
     }
 
@@ -51,7 +51,7 @@ export const syncActiveMemberTag = async (
       log.info(`  • ${contact.email}`);
     }
 
-    if (!args.dryRun) {
+    if (args.danger) {
       await newsletterBulkService.removeTagFromContacts(
         inactiveContacts,
         activeMemberTag

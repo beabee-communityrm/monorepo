@@ -10,12 +10,12 @@ import { optionsService } from '@beabee/core/services/OptionsService';
 import { MCWebhook } from '@beabee/core/type';
 
 /**
- * @param dryRun Report what would change without changing anything
+ * @param danger Make the changes; otherwise only report what would be done
  * @param webhookSecret Signing secret of a Stripe CLI listener. Stripe only
  * accepts public URLs for webhook endpoints, so a local instance stores the
  * listener's secret instead of creating one
  */
-export const setupStripe = async (dryRun: boolean, webhookSecret?: string) => {
+export const setupStripe = async (danger: boolean, webhookSecret?: string) => {
   if (!config.stripe.secretKey) {
     throw new Error(
       'BEABEE_STRIPE_SECRETKEY must be set before running Stripe setup'
@@ -24,7 +24,7 @@ export const setupStripe = async (dryRun: boolean, webhookSecret?: string) => {
 
   console.log('Setting up Stripe integration...\n');
 
-  if (dryRun) {
+  if (!danger) {
     console.log('⚠️ Running in dry-run mode. No changes will be made.');
   }
 
@@ -37,7 +37,7 @@ export const setupStripe = async (dryRun: boolean, webhookSecret?: string) => {
         console.log(`✅ Membership product already exists: ${productId}`);
       } else {
         console.log('Creating Stripe membership product...');
-        if (dryRun) {
+        if (!danger) {
           console.log(`✅ Created membership product: [DRY RUN]`);
         } else {
           const product = await stripe.products.create({
@@ -50,7 +50,7 @@ export const setupStripe = async (dryRun: boolean, webhookSecret?: string) => {
 
       // Step 2: Check/create webhook
       if (webhookSecret) {
-        if (!dryRun) {
+        if (danger) {
           await optionsService.set('stripe-webhook-secret', webhookSecret);
         }
         console.log('✅ Stored webhook secret of the local listener');
@@ -77,7 +77,7 @@ export const setupStripe = async (dryRun: boolean, webhookSecret?: string) => {
             (endpoint) => endpoint.url === oldWebhookUrl
           );
           if (webhook) {
-            if (!dryRun) {
+            if (danger) {
               await stripe.webhookEndpoints.del(webhook.id);
             }
             console.log(`🗑️ Deleted old webhook with URL ${oldWebhookUrl}`);
@@ -94,7 +94,7 @@ export const setupStripe = async (dryRun: boolean, webhookSecret?: string) => {
         console.warn(
           `⚠️ Webhook API version mismatch: expected ${config.stripe.version}, got ${existingWebhook.api_version}`
         );
-        if (!dryRun) {
+        if (danger) {
           await stripe.webhookEndpoints.del(existingWebhook.id);
         }
         console.log(`🗑️ Deleted existing webhook with wrong API version`);
@@ -102,7 +102,7 @@ export const setupStripe = async (dryRun: boolean, webhookSecret?: string) => {
       }
 
       if (existingWebhook) {
-        if (!dryRun) {
+        if (danger) {
           await stripe.webhookEndpoints.update(existingWebhook.id, {
             enabled_events: [...STRIPE_WEBHOOK_EVENTS],
           });
@@ -110,7 +110,7 @@ export const setupStripe = async (dryRun: boolean, webhookSecret?: string) => {
         console.log(`✅ Updated existing webhook: ${existingWebhook.id}`);
       } else {
         console.log('Creating Stripe webhook...');
-        if (dryRun) {
+        if (!danger) {
           console.log(`✅ Created webhook endpoint: [DRY RUN]`);
         } else {
           const webhookEndpoint = await stripe.webhookEndpoints.create({
@@ -137,13 +137,13 @@ export const setupStripe = async (dryRun: boolean, webhookSecret?: string) => {
   }
 };
 
-export const setupMailchimp = async (dryRun: boolean) => {
+export const setupMailchimp = async (danger: boolean) => {
   if (config.newsletter.provider !== 'mailchimp') {
     throw new Error('BEABEE_NEWSLETTER_PROVIDER must be mailchimp');
   }
   console.log('Setting up Mailchimp integration...\n');
 
-  if (dryRun) {
+  if (!danger) {
     console.log('⚠️ Running in dry-run mode. No changes will be made.');
   }
 
@@ -184,7 +184,7 @@ export const setupMailchimp = async (dryRun: boolean) => {
 
       if (existingWebhook) {
         // Always update the URL in case the secret changed or something
-        if (!dryRun) {
+        if (danger) {
           await mailchimp.instance.patch(
             `lists/${listId}/webhooks/${existingWebhook.id}`,
             { url: webhookUrlWithSecret, events, sources }
@@ -193,7 +193,7 @@ export const setupMailchimp = async (dryRun: boolean) => {
         console.log(`✅ Updated existing webhook: ${existingWebhook.id}`);
       } else {
         console.log('Creating Mailchimp webhook...');
-        if (dryRun) {
+        if (!danger) {
           console.log(`✅ Created webhook: [DRY RUN]`);
         } else {
           const { data: webhook } = await mailchimp.instance.post(
@@ -206,7 +206,7 @@ export const setupMailchimp = async (dryRun: boolean) => {
 
       // Step 2: Cache newsletter groups
       const mailchimpGroups = await newsletterService.getAllNewsletterGroups();
-      if (dryRun) {
+      if (!danger) {
         console.log(
           `Added ${mailchimpGroups.length} newsletter groups: [DRY RUN]`
         );

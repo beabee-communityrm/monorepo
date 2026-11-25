@@ -79,14 +79,14 @@ async function fetchDemoContext(options: {
 /**
  * Export a demo subset of the database (limited contacts, latest callouts, and responses).
  *
- * @param dryRun If true, only logs what would be done
+ * @param danger Make the changes; otherwise only report what would be done
  * @param filePath If set, write output to this file instead of stdout
  */
 export const exportDemoDatabase = async (
-  dryRun = false,
+  danger = false,
   filePath?: string
 ): Promise<void> => {
-  if (dryRun) {
+  if (!danger) {
     console.log('Dry run: would export database (demo subset)');
     console.log(
       `Would export up to ${DEMO_EXPORT_CONFIG.contacts} random contacts, ${DEMO_EXPORT_CONFIG.callouts} latest callouts, and their responses (anonymized)`

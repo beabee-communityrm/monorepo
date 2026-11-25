@@ -11,7 +11,7 @@ runs:
   steps:
     - name: Export database
       shell: bash
-      run: docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database export --anonymize=none >> ${{ inputs.db_name }}.sql
+      run: docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database export --anonymize=none --danger >> ${{ inputs.db_name }}.sql
 
     - name: Upload database dump
       if: always()

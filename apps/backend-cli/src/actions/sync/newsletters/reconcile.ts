@@ -275,11 +275,11 @@ function printReport(
  * Import contacts from the newsletter service into our database.
  *
  * @param nlContacts The newsletter contacts to import
- * @param dryRun Whether to perform a dry run (no changes made)
+ * @param danger Make the changes; otherwise only report what would be done
  */
 async function importNlContacts(
   nlContacts: NewsletterContact[],
-  dryRun: boolean
+  danger: boolean
 ) {
   log.info(
     `📥 Importing ${nlContacts.length} contacts from newsletter service...`
@@ -294,7 +294,7 @@ async function importNlContacts(
     `  ℹ️ Skipping ${nlContacts.length - validNlContacts.length} contacts with pending status`
   );
 
-  if (!dryRun) {
+  if (danger) {
     for (const nlContact of validNlContacts) {
       await contactsService.createContact(
         {
@@ -319,13 +319,13 @@ async function importNlContacts(
  * Upload new contacts to the newsletter service.
  *
  * @param contacts The contacts to upload
- * @param dryRun Whether to perform a dry run (no changes made)
+ * @param danger Make the changes; otherwise only report what would be done
  */
-async function uploadNew(contacts: Contact[], dryRun: boolean) {
+async function uploadNew(contacts: Contact[], danger: boolean) {
   log.info(
     `📤 Uploading ${contacts.length} new contacts to newsletter service...`
   );
-  if (!dryRun) {
+  if (danger) {
     await newsletterBulkService.upsertContacts(contacts);
   }
 }
@@ -335,12 +335,12 @@ async function uploadNew(contacts: Contact[], dryRun: boolean) {
  *
  * @param mismatches The list of mismatches
  * @param testIds The list of test IDs to fix
- * @param dryRun Whether to perform a dry run (no changes made)
+ * @param danger Make the changes; otherwise only report what would be done
  */
 async function runMismatchFixes(
   mismatches: Mismatch[],
   testIds: SyncNewsletterReconcileTestId[],
-  dryRun: boolean
+  danger: boolean
 ) {
   for (const testId of testIds) {
     const mismatchesForTest = mismatches.filter(([, , m]) =>
@@ -349,7 +349,7 @@ async function runMismatchFixes(
     log.info(
       `️🛠️ Fixing ${mismatchesForTest.length} mismatched contacts for test "${testId}"...`
     );
-    if (mismatchesForTest.length > 0 && !dryRun) {
+    if (mismatchesForTest.length > 0 && danger) {
       await mismatchTests[testId].reconcile(mismatchesForTest);
     }
   }
@@ -378,16 +378,16 @@ export async function reconcile(
       printReport(data, argv);
     }
 
-    if (argv.dryRun) {
+    if (!argv.danger) {
       log.info('DRY RUN - No changes will actually be made');
     }
 
     if (argv.importNew) {
-      await importNlContacts(data.nlContactsToImport, argv.dryRun);
+      await importNlContacts(data.nlContactsToImport, argv.danger);
     }
-    await runMismatchFixes(data.mismatchesToFix, argv.fix, argv.dryRun);
+    await runMismatchFixes(data.mismatchesToFix, argv.fix, argv.danger);
     if (argv.uploadNew) {
-      await uploadNew(data.contactsToUpload, argv.dryRun);
+      await uploadNew(data.contactsToUpload, argv.danger);
     }
 
     log.info('✅ Newsletter reconciliation completed successfully!');

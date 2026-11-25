@@ -89,8 +89,7 @@ export async function migrateUploads(
   options: MigrateUploadsOptions
 ): Promise<void> {
   try {
-    const isDryRun = options.dryRun === true;
-    if (isDryRun) {
+    if (!options.danger) {
       console.log(chalk.yellow('DRY RUN MODE: No files will be uploaded'));
     }
     const steps = options.steps;
@@ -172,7 +171,7 @@ export async function migrateUploads(
     }
 
     // Print summary
-    printMigrationSummary(stats, isDryRun);
+    printMigrationSummary(stats, options.danger);
   } catch (error) {
     console.error(chalk.red('Error during migration:'), error);
     throw error;
@@ -390,7 +389,7 @@ async function processCalloutImage(
     )
   );
 
-  if (!options.dryRun) {
+  if (options.danger) {
     try {
       // Read the file as buffer
       const fileBuffer = await fs.readFile(filePath);
@@ -478,7 +477,7 @@ async function processOptionImage(
 
   console.log(chalk.blue(`Processing image for ${optionLabel}: ${filePath}`));
 
-  if (!options.dryRun) {
+  if (options.danger) {
     try {
       // Read the file as buffer
       const fileBuffer = await fs.readFile(filePath);
@@ -704,7 +703,7 @@ async function processFileUpload(
     chalk.blue(`Processing ${fileType} for ${locationInfo}: ${sourcePath}`)
   );
 
-  if (!options.dryRun) {
+  if (options.danger) {
     try {
       // Read the file as buffer
       const fileBuffer = await fs.readFile(sourcePath);
@@ -963,7 +962,7 @@ async function processGeneralBackgroundImage(
     chalk.blue(`Processing background image for general content: ${filePath}`)
   );
 
-  if (!options.dryRun) {
+  if (options.danger) {
     try {
       // Read the file as buffer
       const fileBuffer = await fs.readFile(filePath);
@@ -1015,12 +1014,12 @@ async function processGeneralBackgroundImage(
 /**
  * Print migration summary
  * @param stats Migration statistics
- * @param isDryRun Whether this was a dry run
+ * @param danger Whether the files were uploaded
  */
-function printMigrationSummary(stats: MigrationStats, isDryRun: boolean): void {
+function printMigrationSummary(stats: MigrationStats, danger: boolean): void {
   console.log(chalk.blue('\nMigration Summary:'));
 
-  if (isDryRun) {
+  if (!danger) {
     console.log(chalk.yellow('DRY RUN - No files were actually uploaded'));
     console.log(
       chalk.green(

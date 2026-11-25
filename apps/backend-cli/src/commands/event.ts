@@ -19,9 +19,10 @@ export const eventCommand: CommandModule = {
               choices: ['all', ...EVENT_BACKFILL_CATEGORIES],
               demandOption: true,
             })
-            .option('dryRun', {
+            .option('danger', {
               type: 'boolean',
-              describe: 'Run without making changes',
+              description:
+                'Make the changes; without this flag the command only reports what it would do',
               default: false,
             }) as Argv<BackfillEventsArgs>,
         handler: async (argv: ArgumentsCamelCase<BackfillEventsArgs>) => {
