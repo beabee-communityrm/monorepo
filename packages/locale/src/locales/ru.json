@@ -920,6 +920,9 @@
     "joinNow": "Присоединиться",
     "language": "Язык",
     "leavePreview": "Выйти из предварительного просмотра",
+    "loadError": "Не удалось загрузить эту CrowdNewsroom. Напишите на {support}, если проблема повторится.",
+    "loadResponseError": "Не удалось загрузить ваш ответ. Напишите на {support}, если проблема повторится.",
+    "loadResponsesError": "Не удалось загрузить ваши ответы. Напишите на {support}, если проблема повторится.",
     "logInOrSignUp": "Войдите или станьте членом, чтобы участвовать.",
     "loginToYourAccount": "Войти в мой профиль",
     "loginToYourAccount-nuxt": "Войти",
@@ -927,10 +930,12 @@
     "membersOnly-nuxt": "Эта CrowdNewsroom открыта только для членов.",
     "nextResponse": "Следующий ответ",
     "notAnswered": "Без ответа",
+    "notFound": "Эта CrowdNewsroom не существует или была удалена.",
     "previousResponse": "Предыдущий ответ",
     "replied": "Отвечено",
     "responseNumber": "Ответ {number} из {total}",
     "responseSubmitted": "Ответ отправлен",
+    "seeAll": "Все CrowdNewsroom",
     "share": {
       "address": "Отправить этот опрос на почту:",
       "aria": {

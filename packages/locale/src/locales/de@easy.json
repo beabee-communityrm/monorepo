@@ -919,6 +919,9 @@
     "joinNow": "",
     "language": "",
     "leavePreview": "",
+    "loadError": "",
+    "loadResponseError": "",
+    "loadResponsesError": "",
     "logInOrSignUp": "",
     "loginToYourAccount": "",
     "loginToYourAccount-nuxt": "",
@@ -926,10 +929,12 @@
     "membersOnly-nuxt": "",
     "nextResponse": "",
     "notAnswered": "",
+    "notFound": "",
     "previousResponse": "",
     "replied": "",
     "responseNumber": "",
     "responseSubmitted": "Dein Brief / Deine Mail wurde weg-geschickt.",
+    "seeAll": "",
     "share": {
       "address": "Hier kannst du die CrowdNewsroom an andere schicken. Drücke dazu hier.",
       "aria": {

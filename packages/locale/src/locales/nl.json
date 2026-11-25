@@ -919,6 +919,9 @@
     "joinNow": "Nu meedoen",
     "language": "Taal",
     "leavePreview": "Voorbeeld verlaten",
+    "loadError": "Deze CrowdNewsroom kon niet worden geladen. Neem contact op met {support} als het probleem blijft.",
+    "loadResponseError": "Je reactie kon niet worden geladen. Neem contact op met {support} als het probleem blijft.",
+    "loadResponsesError": "Je reacties konden niet worden geladen. Neem contact op met {support} als het probleem blijft.",
     "logInOrSignUp": "Log in of word lid om deel te nemen.",
     "loginToYourAccount": "Inloggen op je account",
     "loginToYourAccount-nuxt": "Inloggen",
@@ -926,10 +929,12 @@
     "membersOnly-nuxt": "Deze CrowdNewsroom is alleen toegankelijk voor leden.",
     "nextResponse": "Volgende reactie",
     "notAnswered": "Niet beantwoord",
+    "notFound": "Deze CrowdNewsroom bestaat niet of is verwijderd.",
     "previousResponse": "Vorige reactie",
     "replied": "Gereageerd",
     "responseNumber": "Reactie {number} van {total}",
     "responseSubmitted": "Reactie ingediend",
+    "seeAll": "Alle CrowdNewsrooms bekijken",
     "share": {
       "address": "Deel deze oproep met het volgende adres:",
       "aria": {

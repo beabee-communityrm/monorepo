@@ -918,6 +918,9 @@
     "joinNow": "Devino membru",
     "language": "Limba",
     "leavePreview": "",
+    "loadError": "Nu s-a putut încărca acest CrowdNewsroom. Contactează {support} dacă problema persistă.",
+    "loadResponseError": "Nu s-a putut încărca răspunsul tău. Contactează {support} dacă problema persistă.",
+    "loadResponsesError": "Nu s-au putut încărca răspunsurile tale. Contactează {support} dacă problema persistă.",
     "logInOrSignUp": "Conectează-te sau devino membru pentru a participa.",
     "loginToYourAccount": "Conectează-te la cont",
     "loginToYourAccount-nuxt": "Conectează-te",
@@ -925,10 +928,12 @@
     "membersOnly-nuxt": "Acest CrowdNewsroom este deschis doar membrilor.",
     "nextResponse": "Răspunsul următor",
     "notAnswered": "Fără răspuns",
+    "notFound": "Acest CrowdNewsroom nu există sau a fost eliminat.",
     "previousResponse": "Răspunsul anterior",
     "replied": "",
     "responseNumber": "Răspunsul {number} din {total}",
     "responseSubmitted": "Răspuns trimis",
+    "seeAll": "Vezi toate CrowdNewsroom-urile",
     "share": {
       "address": "Distribuie folosind următorul link:",
       "aria": {
