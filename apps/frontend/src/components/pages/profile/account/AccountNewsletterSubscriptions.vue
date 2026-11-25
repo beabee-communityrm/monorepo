@@ -67,6 +67,11 @@ async function handleUnsubscribe(group: BaseNewsletterGroupData) {
   const { submit } = useApiSubmit(
     async () => {
       await client.contact.newsletter.unsubscribe('me', group.id);
+      // A fetch still running holds the list from before the unsubscribe
+      await queryClient.cancelQueries({
+        queryKey: newsletterGroupsQuery.queryKey,
+        exact: true,
+      });
       queryClient.setQueryData(newsletterGroupsQuery.queryKey, (groups) =>
         groups?.filter((g) => g.id !== group.id)
       );
