@@ -6,6 +6,8 @@ import {
 import { computed, readonly, ref, watch } from 'vue';
 
 import { useDelayedSkeleton } from '#composables/useDelayedSkeleton';
+import { queryClient } from '#lib/query';
+import { getPageLoadStart } from '#lib/route-queries';
 
 /**
  * A block's view of a route query, for a block that loads on its own. What
@@ -22,8 +24,14 @@ export function useLazyQuery<TQueryFnData, TQueryKey extends QueryKey>(
     TQueryFnData,
     TQueryFnData,
     TQueryKey
-  >
+  > & { queryKey: TQueryKey }
 ) {
+  // A route query the page started counts from when the page's loads did.
+  // One the block starts itself counts from now.
+  const startedAt =
+    queryClient.isFetching({ queryKey: options.queryKey, exact: true }) > 0
+      ? getPageLoadStart()
+      : performance.now();
   const query = useQuery(options);
 
   /** Whether the last finished load failed. A query with no data goes back to
@@ -35,7 +43,8 @@ export function useLazyQuery<TQueryFnData, TQueryKey extends QueryKey>(
 
   /** Whether to show a skeleton: whenever there's neither data nor an error */
   const skeleton = useDelayedSkeleton(
-    computed(() => query.data.value === undefined && !failed.value)
+    computed(() => query.data.value === undefined && !failed.value),
+    startedAt
   );
 
   /** The loaded data, held back while a skeleton is still showing */
