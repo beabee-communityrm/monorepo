@@ -2,9 +2,9 @@ import { PaymentStatus } from '@beabee/beabee-common';
 import type { PaymentData, PaymentRecord } from '@beabee/core/type';
 
 import type {
-  StripeLocalPayment,
-  StripeMissingPayment,
-  StripePaymentMismatch,
+  LocalPayment,
+  MissingPayment,
+  PaymentMismatch,
 } from '../types/sync.js';
 
 const PAYMENT_FIELDS = [
@@ -17,10 +17,10 @@ const PAYMENT_FIELDS = [
 ] as const;
 
 /**
- * Finds the fields of a local payment that differ from its Stripe invoice
+ * Finds the fields of a local payment that differ from the payment provider's
  *
  * @param payment The local payment
- * @param data The payment data from the Stripe invoice
+ * @param data The payment data from the payment provider
  * @returns The names of the differing fields
  */
 export function getMismatchedPaymentFields(
@@ -53,7 +53,7 @@ export function printPaymentMismatch({
   payment,
   data,
   fields,
-}: StripePaymentMismatch): string {
+}: PaymentMismatch): string {
   return fields
     .map(
       (field) =>
@@ -63,33 +63,34 @@ export function printPaymentMismatch({
 }
 
 /**
- * Compares Stripe invoices against the local payments with the same ids.
- * Invoices without a payment are only reported for customers of a known
- * contact, other invoices on the Stripe account are not ours.
+ * Compares the payment provider's payments against the local payments with
+ * the same ids. Payments without a local payment are only reported for
+ * customers of a known contact, as the provider's account can be shared with
+ * other integrations.
  *
- * @param invoicePayments The Stripe invoices as payment data
+ * @param records The payment provider's payments
  * @param payments The local payments by id
- * @param contactIdByCustomerId The contact of each known Stripe customer
+ * @param contactIdByCustomerId The contact of each known customer
  * @returns The mismatched and the missing payments
  */
-export function classifyInvoicePayments(
-  invoicePayments: PaymentRecord[],
-  payments: Map<string, StripeLocalPayment>,
+export function classifyPaymentRecords(
+  records: PaymentRecord[],
+  payments: Map<string, LocalPayment>,
   contactIdByCustomerId: Map<string, string>
-): { mismatches: StripePaymentMismatch[]; missing: StripeMissingPayment[] } {
-  const mismatches: StripePaymentMismatch[] = [];
-  const missing: StripeMissingPayment[] = [];
+): { mismatches: PaymentMismatch[]; missing: MissingPayment[] } {
+  const mismatches: PaymentMismatch[] = [];
+  const missing: MissingPayment[] = [];
 
-  for (const { id, customerId, data: invoiceData } of invoicePayments) {
+  for (const { id, customerId, data: recordData } of records) {
     const payment = payments.get(id);
     if (payment) {
-      // An invoice stays open after its payment fails, so open is no reason
-      // to set a failed payment back to pending
+      // A provider can keep a payment pending while it retries a failed
+      // attempt, so pending is no reason to set a failed payment back
       const data =
         payment.status === PaymentStatus.Failed &&
-        invoiceData.status === PaymentStatus.Pending
-          ? { ...invoiceData, status: payment.status }
-          : invoiceData;
+        recordData.status === PaymentStatus.Pending
+          ? { ...recordData, status: payment.status }
+          : recordData;
 
       const fields = getMismatchedPaymentFields(payment, data);
       if (fields.length > 0) {
@@ -98,7 +99,7 @@ export function classifyInvoicePayments(
     } else {
       const contactId = customerId && contactIdByCustomerId.get(customerId);
       if (contactId) {
-        missing.push({ id, contactId, data: invoiceData });
+        missing.push({ id, contactId, data: recordData });
       }
     }
   }
@@ -113,7 +114,7 @@ export function classifyInvoicePayments(
  * @returns The number of mismatches per status change
  */
 export function countStatusChanges(
-  mismatches: StripePaymentMismatch[]
+  mismatches: PaymentMismatch[]
 ): Map<string, number> {
   const counts = new Map<string, number>();
   for (const { payment, data, fields } of mismatches) {

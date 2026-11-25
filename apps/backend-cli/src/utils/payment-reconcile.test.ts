@@ -3,13 +3,13 @@ import type { PaymentData } from '@beabee/core/type';
 
 import { describe, expect, it } from 'vitest';
 
-import type { StripeLocalPayment } from '../types/sync.js';
+import type { LocalPayment } from '../types/sync.js';
 import {
-  classifyInvoicePayments,
+  classifyPaymentRecords,
   countStatusChanges,
   getMismatchedPaymentFields,
   printPaymentMismatch,
-} from './stripe-reconcile.js';
+} from './payment-reconcile.js';
 
 function createData(overrides: Partial<PaymentData> = {}) {
   return {
@@ -26,7 +26,7 @@ function createData(overrides: Partial<PaymentData> = {}) {
 function createPayment(
   id: string,
   overrides: Partial<PaymentData> = {}
-): StripeLocalPayment {
+): LocalPayment {
   return { id, ...createData(overrides) };
 }
 
@@ -69,15 +69,15 @@ describe('getMismatchedPaymentFields', () => {
   });
 });
 
-describe('classifyInvoicePayments', () => {
+describe('classifyPaymentRecords', () => {
   const contactIdByCustomerId = new Map([['cus_known', 'contact-1']]);
 
-  it('reports a payment that differs from its invoice', () => {
+  it('reports a payment that differs from its provider payment', () => {
     const payment = createPayment('in_1', { status: PaymentStatus.Draft });
     const data = createData();
 
     expect(
-      classifyInvoicePayments(
+      classifyPaymentRecords(
         [{ id: 'in_1', customerId: 'cus_known', data }],
         new Map([[payment.id, payment]]),
         contactIdByCustomerId
@@ -88,9 +88,9 @@ describe('classifyInvoicePayments', () => {
     });
   });
 
-  it('reports nothing for a payment that matches its invoice', () => {
+  it('reports nothing for a payment that matches its provider payment', () => {
     expect(
-      classifyInvoicePayments(
+      classifyPaymentRecords(
         [{ id: 'in_1', customerId: 'cus_known', data: createData() }],
         new Map([['in_1', createPayment('in_1')]]),
         contactIdByCustomerId
@@ -99,7 +99,7 @@ describe('classifyInvoicePayments', () => {
   });
 
   it('reports a mismatch even if the customer is unknown', () => {
-    const { mismatches } = classifyInvoicePayments(
+    const { mismatches } = classifyPaymentRecords(
       [{ id: 'in_1', customerId: 'cus_unknown', data: createData() }],
       new Map([
         ['in_1', createPayment('in_1', { status: PaymentStatus.Draft })],
@@ -110,11 +110,11 @@ describe('classifyInvoicePayments', () => {
     expect(mismatches).toHaveLength(1);
   });
 
-  it('reports an invoice without a payment for a known customer', () => {
+  it('reports a provider payment without a local payment for a known customer', () => {
     const data = createData();
 
     expect(
-      classifyInvoicePayments(
+      classifyPaymentRecords(
         [{ id: 'in_1', customerId: 'cus_known', data }],
         new Map(),
         contactIdByCustomerId
@@ -125,9 +125,9 @@ describe('classifyInvoicePayments', () => {
     });
   });
 
-  it('ignores an invoice without a payment for an unknown customer', () => {
+  it('ignores a provider payment without a local payment for an unknown customer', () => {
     expect(
-      classifyInvoicePayments(
+      classifyPaymentRecords(
         [
           { id: 'in_1', customerId: 'cus_unknown', data: createData() },
           { id: 'in_2', customerId: null, data: createData() },

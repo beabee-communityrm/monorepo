@@ -12,6 +12,12 @@ import type { PaymentRecord } from './payment-record.js';
  * payments with the payment provider at once
  */
 export interface PaymentBulkProvider {
+  /** Whether the id is one of this payment provider's customer ids */
+  isCustomerId(id: string): boolean;
+
+  /** Whether the id is one of this payment provider's payment ids */
+  isPaymentId(id: string): boolean;
+
   /**
    * Fetch the states of the contributions' subscriptions, mandates and
    * customers

@@ -3,7 +3,7 @@ import type { PaymentData } from '@beabee/core/type';
 
 import {
   SYNC_NEWSLETTER_RECONCILE_TESTS,
-  SYNC_STRIPE_RECONCILE_TESTS,
+  SYNC_PAYMENT_SERVICE_RECONCILE_TESTS,
 } from '../constants/sync.js';
 
 export interface SyncNewsletterActiveMemberTagArgs {
@@ -39,38 +39,38 @@ export interface SyncContactSyncServicePushArgs {
   dryRun: boolean;
 }
 
-export type SyncStripeReconcileTestId =
-  (typeof SYNC_STRIPE_RECONCILE_TESTS)[number];
+export type SyncPaymentServiceReconcileTestId =
+  (typeof SYNC_PAYMENT_SERVICE_RECONCILE_TESTS)[number];
 
-export interface SyncStripeReconcileArgs {
+export interface SyncPaymentServiceReconcileArgs {
   dryRun: boolean;
   report: boolean;
   contactIds: string[] | undefined;
-  fix: SyncStripeReconcileTestId[];
+  fix: SyncPaymentServiceReconcileTestId[];
   since: Date | undefined;
   until: Date | undefined;
 }
 
 /** A local payment as far as the reconciliation reads it */
-export type StripeLocalPayment = Pick<Payment, 'id'> & PaymentData;
+export type LocalPayment = Pick<Payment, 'id'> & PaymentData;
 
-/** A local payment that differs from its Stripe invoice in the given fields */
-export interface StripePaymentMismatch {
-  payment: StripeLocalPayment;
+/** A local payment that differs from the payment provider's in the given fields */
+export interface PaymentMismatch {
+  payment: LocalPayment;
   data: PaymentData;
   fields: (keyof PaymentData)[];
 }
 
-/** A Stripe invoice of a known contact without a local payment */
-export interface StripeMissingPayment {
+/** A payment provider's payment of a known contact without a local payment */
+export interface MissingPayment {
   id: string;
   contactId: string;
   data: PaymentData;
 }
 
-export interface StripePaymentReconciliation {
-  mismatches: StripePaymentMismatch[];
-  missing: StripeMissingPayment[];
-  /** Local payments whose invoice no longer exists on Stripe */
-  orphans: StripeLocalPayment[];
+export interface PaymentReconciliation {
+  mismatches: PaymentMismatch[];
+  missing: MissingPayment[];
+  /** Local payments the payment provider no longer has */
+  orphans: LocalPayment[];
 }

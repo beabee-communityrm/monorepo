@@ -29,6 +29,24 @@ class PaymentBulkService {
   }
 
   /**
+   * Whether the id is one of the payment provider's customer ids
+   *
+   * @param id The customer id
+   */
+  isCustomerId(id: string): boolean {
+    return this.provider.isCustomerId(id);
+  }
+
+  /**
+   * Whether the id is one of the payment provider's payment ids
+   *
+   * @param id The payment id
+   */
+  isPaymentId(id: string): boolean {
+    return this.provider.isPaymentId(id);
+  }
+
+  /**
    * Fetch the states of the contributions' subscriptions, mandates and
    * customers
    *

@@ -205,6 +205,14 @@ async function getCustomerState(
 }
 
 export class StripeBulkProvider implements PaymentBulkProvider {
+  isCustomerId(id: string): boolean {
+    return id.startsWith('cus_');
+  }
+
+  isPaymentId(id: string): boolean {
+    return id.startsWith('in_');
+  }
+
   async fetchContributionStates(
     contributions: ContactContribution[],
     opts: PaymentBulkFetchContributionsOpts

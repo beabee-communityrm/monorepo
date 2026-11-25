@@ -16,25 +16,25 @@ import type {
   PaymentRecord,
 } from '@beabee/core/type';
 
-import { In, IsNull, Like } from 'typeorm';
+import { In, IsNull, Not } from 'typeorm';
 
 import type {
-  StripePaymentReconciliation,
-  SyncStripeReconcileArgs,
+  PaymentReconciliation,
+  SyncPaymentServiceReconcileArgs,
 } from '../../../types/sync.js';
 import {
-  classifyInvoicePayments,
+  classifyPaymentRecords,
   countStatusChanges,
   printPaymentMismatch,
-} from '../../../utils/stripe-reconcile.js';
+} from '../../../utils/payment-reconcile.js';
 
-const log = mainLogger.child({ app: 'sync-stripe-reconcile' });
+const log = mainLogger.child({ app: 'sync-payment-service-reconcile' });
 
 /**
- * Sync our subscription data with the Stripe subscription's state
+ * Sync our subscription data with the payment provider's subscription state
  *
- * @param subscriptionId The Stripe subscription ID
- * @param state The subscription's state on Stripe
+ * @param subscriptionId The subscription ID
+ * @param state The subscription's state at the payment provider
  * @returns Any updates to be applied to the contribution, and whether the
  * contact should lose their membership
  */
@@ -64,10 +64,10 @@ function syncSubscription(
 }
 
 /**
- * Sync our payment method data with the Stripe payment method's state
+ * Sync our mandate data with the payment provider's mandate state
  *
- * @param mandateId The Stripe payment method ID
- * @param state The payment method's state on Stripe
+ * @param mandateId The mandate ID
+ * @param state The mandate's state at the payment provider
  * @returns Any updates to be applied to the contribution
  */
 function syncPaymentMethod(
@@ -76,7 +76,7 @@ function syncPaymentMethod(
 ): { mandateId: null } | undefined {
   switch (state) {
     case 'detached':
-      log.info(`    🔌 Detaching payment method ${mandateId}`);
+      log.info(`    🔌 Detaching mandate ${mandateId}`);
       return { mandateId: null };
     case 'missing':
       log.info(`    🗑️ Removing missing mandate ${mandateId}`);
@@ -85,10 +85,10 @@ function syncPaymentMethod(
 }
 
 /**
- * Sync our customer data with the Stripe customer's state
+ * Sync our customer data with the payment provider's customer state
  *
- * @param customerId The Stripe customer ID
- * @param state The customer's state on Stripe
+ * @param customerId The customer ID
+ * @param state The customer's state at the payment provider
  * @returns Any updates to be applied to the contribution
  */
 function syncCustomer(
@@ -106,23 +106,22 @@ function syncCustomer(
 }
 
 /**
- * Compare our payments with the live Stripe invoices. Checks the invoices
- * created in the reconciliation window, plus the invoices of all payments we
- * hold as unfinished, as those can change long after they were created.
+ * Compare our payments with the payment provider's. Checks the payments
+ * created in the reconciliation window, plus all payments we hold as
+ * unfinished, as those can change long after they were created.
  *
- * Our payments are read before the first invoice, so an invoice is never
- * older than the payment it is compared with. Read the other way round, a
- * payment that a webhook updated in between would be set back to the
- * invoice's earlier state.
+ * Our payments are read before the provider's, so the provider's payment is
+ * never older than ours. Read the other way round, a payment that a webhook
+ * updated in between would be set back to the provider's earlier state.
  *
- * @param contributions The Stripe contributions to reconcile payments for
+ * @param contributions The contributions to reconcile payments for
  * @param argv The command line arguments
  * @returns The payment reconciliation data
  */
 async function fetchPayments(
   contributions: ContactContribution[],
-  argv: SyncStripeReconcileArgs
-): Promise<StripePaymentReconciliation> {
+  argv: SyncPaymentServiceReconcileArgs
+): Promise<PaymentReconciliation> {
   const contactIdByCustomerId = new Map<string, string>();
   for (const contribution of contributions) {
     if (contribution.customerId) {
@@ -133,14 +132,11 @@ async function fetchPayments(
     }
   }
 
-  log.info('📡 Loading Stripe payments...');
+  log.info('📡 Loading payments...');
   const payments = new Map(
     (
       await getRepository(Payment).find({
-        where: {
-          id: Like('in_%'),
-          ...(argv.contactIds && { contactId: In(argv.contactIds) }),
-        },
+        where: { ...(argv.contactIds && { contactId: In(argv.contactIds) }) },
         select: {
           id: true,
           status: true,
@@ -151,9 +147,11 @@ async function fetchPayments(
           type: true,
         },
       })
-    ).map((payment) => [payment.id, payment])
+    )
+      .filter((payment) => paymentBulkService.isPaymentId(payment.id))
+      .map((payment) => [payment.id, payment])
   );
-  log.info(`📊 Found ${payments.size} Stripe payments`);
+  log.info(`📊 Found ${payments.size} payments with the payment provider`);
 
   let oldest = new Date();
   for (const payment of payments.values()) {
@@ -162,37 +160,37 @@ async function fetchPayments(
     }
   }
 
-  const invoices = await paymentBulkService.fetchPayments({
+  const records = await paymentBulkService.fetchPayments({
     ...(argv.contactIds && { customerIds: [...contactIdByCustomerId.keys()] }),
     since: argv.since,
     until: argv.until,
     oldest,
   });
-  const data: StripePaymentReconciliation = {
-    ...classifyInvoicePayments(invoices, payments, contactIdByCustomerId),
+  const data: PaymentReconciliation = {
+    ...classifyPaymentRecords(records, payments, contactIdByCustomerId),
     orphans: [],
   };
 
-  const checkedIds = new Set(invoices.map((invoice) => invoice.id));
+  const checkedIds = new Set(records.map((record) => record.id));
   const unfinished = [...payments.values()].filter(
     (payment) =>
       !checkedIds.has(payment.id) &&
       (payment.status === PaymentStatus.Draft ||
         payment.status === PaymentStatus.Pending)
   );
-  const unfinishedInvoices = await paymentBulkService.fetchPaymentsByIds(
+  const unfinishedRecords = await paymentBulkService.fetchPaymentsByIds(
     unfinished.map((payment) => payment.id)
   );
-  const { mismatches } = classifyInvoicePayments(
-    [...unfinishedInvoices.values()].filter(
-      (invoice): invoice is PaymentRecord => invoice !== null
+  const { mismatches } = classifyPaymentRecords(
+    [...unfinishedRecords.values()].filter(
+      (record): record is PaymentRecord => record !== null
     ),
     payments,
     contactIdByCustomerId
   );
   data.mismatches.push(...mismatches);
   data.orphans = unfinished.filter(
-    (payment) => unfinishedInvoices.get(payment.id) === null
+    (payment) => unfinishedRecords.get(payment.id) === null
   );
 
   log.info(
@@ -211,7 +209,7 @@ async function fetchPayments(
  *
  * @param data The payment reconciliation data
  */
-function printPaymentReport(data: StripePaymentReconciliation) {
+function printPaymentReport(data: PaymentReconciliation) {
   log.info('');
   log.info('============ Payment Reconciliation Report ============');
 
@@ -233,7 +231,7 @@ function printPaymentReport(data: StripePaymentReconciliation) {
     );
   }
 
-  log.info('🗑️ Payments without an invoice on Stripe (not changed):');
+  log.info('🗑️ Payments the payment provider no longer has (not changed):');
   if (data.orphans.length === 0) {
     log.info('  • (none)');
   }
@@ -254,8 +252,8 @@ function printPaymentReport(data: StripePaymentReconciliation) {
  * @returns The number of payments that could not be written
  */
 async function fixPayments(
-  data: StripePaymentReconciliation,
-  argv: SyncStripeReconcileArgs
+  data: PaymentReconciliation,
+  argv: SyncPaymentServiceReconcileArgs
 ): Promise<number> {
   let failed = 0;
 
@@ -306,15 +304,15 @@ async function fixPayments(
 
 /**
  * Process a single contribution, syncing its subscription, mandate and
- * customer with their states on Stripe.
+ * customer with their states at the payment provider.
  *
  * @param contribution The contribution to process
  * @param argv The command line arguments
- * @param state The states of the contribution's Stripe objects
+ * @param state The states of the contribution's objects at the payment provider
  */
 async function processContribution(
   contribution: ContactContribution,
-  argv: SyncStripeReconcileArgs,
+  argv: SyncPaymentServiceReconcileArgs,
   state: ContributionState
 ) {
   log.info(`👤 Syncing ${contribution.contact.email}`);
@@ -357,7 +355,7 @@ async function processContribution(
     );
 
     if (!argv.dryRun) {
-      // The contribution can change while the Stripe objects are fetched, so
+      // The contribution can change while the provider's objects are fetched, so
       // only write if it still has the ids that were checked
       const result = await getRepository(ContactContribution).update(
         {
@@ -388,32 +386,40 @@ async function processContribution(
 }
 
 /**
- * Reconcile our contribution and payment data with Stripe. This tool can be
- * used to bring our side back in line after webhooks were missed or handled
- * incorrectly.
+ * Reconcile our contribution and payment data with the payment provider. This
+ * tool can be used to bring our side back in line after webhooks were missed
+ * or handled incorrectly.
  *
  * @param argv The command line arguments
  */
 export const reconcile = async (
-  argv: SyncStripeReconcileArgs
+  argv: SyncPaymentServiceReconcileArgs
 ): Promise<void> => {
   if (!paymentBulkService.isEnabled) {
-    log.error('❌ BEABEE_STRIPE_SECRETKEY is not set');
+    log.error('❌ No payment provider is configured');
     process.exitCode = 1;
     return;
   }
 
   await runApp(async () => {
-    log.info('📡 Loading Stripe contributions...');
-    const contributions = await getRepository(ContactContribution).find({
-      where: {
-        customerId: Like('cus_%'),
-        ...(argv.contactIds && { contactId: In(argv.contactIds) }),
-      },
-      relations: { contact: true },
-    });
+    log.info('📡 Loading contributions...');
+    const contributions = (
+      await getRepository(ContactContribution).find({
+        where: {
+          customerId: Not(IsNull()),
+          ...(argv.contactIds && { contactId: In(argv.contactIds) }),
+        },
+        relations: { contact: true },
+      })
+    ).filter(
+      (contribution) =>
+        !!contribution.customerId &&
+        paymentBulkService.isCustomerId(contribution.customerId)
+    );
 
-    log.info(`📊 Found ${contributions.length} Stripe contributions`);
+    log.info(
+      `📊 Found ${contributions.length} contributions with the payment provider`
+    );
 
     if (argv.dryRun) {
       log.info('🔍 DRY RUN - No changes will actually be made');
@@ -436,7 +442,7 @@ export const reconcile = async (
       for (const { contactId, error } of failures) {
         failed++;
         log.error(
-          `  ❌ Failed to fetch the Stripe state of ${contactId}`,
+          `  ❌ Failed to fetch the payment provider state of ${contactId}`,
           error
         );
       }
@@ -467,10 +473,10 @@ export const reconcile = async (
     }
 
     if (failed > 0) {
-      log.error(`❌ Stripe reconciliation completed with ${failed} failures`);
+      log.error(`❌ Reconciliation completed with ${failed} failures`);
       process.exitCode = 1;
     } else {
-      log.info('✅ Stripe reconciliation completed successfully!');
+      log.info('✅ Reconciliation completed successfully!');
     }
   });
 };
