@@ -1,4 +1,8 @@
-import type { FetchQueryOptions, QueryKey } from '@tanstack/vue-query';
+import {
+  type FetchQueryOptions,
+  type QueryKey,
+  noop,
+} from '@tanstack/vue-query';
 import type { RouteLocationNormalized, Router } from 'vue-router';
 
 import { LOADING } from '#lib/loading';
@@ -33,7 +37,7 @@ export function routeQuery<TQueryFnData, TQueryKey extends QueryKey>(
   return {
     queryKey: options.queryKey,
     wait,
-    prefetch: () => queryClient.prefetchQuery(options),
+    prefetch: () => queryClient.query(options).then(noop, noop),
   };
 }
 
