@@ -20,6 +20,7 @@ export * from './navigation';
 export * from './notification';
 export * from './paginated';
 export * from './payment-flow-form-data';
+export * from './route-query';
 export * from './search';
 export * from './selection-state';
 export * from './set-mfa-totp-identity';
