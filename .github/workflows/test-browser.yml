@@ -22,12 +22,17 @@ jobs:
           stripe_public_key: ${{ secrets.BEABEE_STRIPE_PUBLICKEY }}
           stripe_secret_key: ${{ secrets.BEABEE_STRIPE_SECRETKEY }}
 
+      - name: Playwright Setup
+        id: playwright
+        background: true
+        run: yarn workspace @beabee/browser-tests playwright install firefox --with-deps
+
       - uses: ./.github/actions/test-setup
         with:
           stripe_membership_product_id: ${{ secrets.BEABEE_STRIPE_MEMBERSHIPPRODUCTID }}
 
-      - name: Playwright Setup
-        run: yarn workspace @beabee/browser-tests playwright install firefox --with-deps
+      - name: Wait for Playwright Setup
+        wait: playwright
 
       - name: Run browser tests
         env:
