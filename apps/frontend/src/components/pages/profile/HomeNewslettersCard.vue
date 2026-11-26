@@ -28,17 +28,22 @@
 </template>
 
 <script lang="ts" setup>
+import type { BaseNewsletterGroupData } from '@beabee/beabee-common';
+
 import { useI18n } from 'vue-i18n';
 
 import HomeListCard from '#components/pages/profile/HomeListCard.vue';
-import { useLazyQuery } from '#composables/useLazyQuery';
-import { homeQueries } from '#route-queries/home-queries';
+import type { LazyQuery } from '#type';
+
+/** Props for HomeNewslettersCard */
+export interface HomeNewslettersCardProps {
+  /** The newsletter groups the member is subscribed to */
+  query: LazyQuery<BaseNewsletterGroupData[]>;
+}
+
+const props = defineProps<HomeNewslettersCardProps>();
 
 const { t } = useI18n();
 
-const {
-  data: groups,
-  failed,
-  retry,
-} = useLazyQuery(homeQueries.newsletterGroups);
+const { data: groups, failed, retry } = props.query;
 </script>

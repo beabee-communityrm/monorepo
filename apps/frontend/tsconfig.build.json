@@ -18,7 +18,6 @@
       "#layouts/*": ["./src/layouts/*"],
       "#lib/*": ["./src/lib/*"],
       "#pages/*": ["./src/pages/*"],
-      "#route-queries/*": ["./src/route-queries/*"],
       "#store/*": ["./src/store/*"],
       "#type/*": ["./src/type/*"],
       "#utils/*": ["./src/utils/*"],

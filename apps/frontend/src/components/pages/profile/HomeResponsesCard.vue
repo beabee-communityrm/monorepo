@@ -70,19 +70,29 @@ import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
 
 import HomeListCard from '#components/pages/profile/HomeListCard.vue';
-import { useLazyQuery } from '#composables/useLazyQuery';
-import { fetchMyResponses, homeQueries } from '#route-queries/home-queries';
+import type { LazyQuery } from '#type';
 import { getRespondAgainKey } from '#utils/callouts';
+
+/** Props for HomeResponsesCard */
+export interface HomeResponsesCardProps {
+  /** The member's latest responses, newest first */
+  query: LazyQuery<
+    Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>>
+  >;
+  /** Loads up to `limit` of the member's responses, newest first */
+  loadAll: (
+    limit: number
+  ) => Promise<
+    Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>>
+  >;
+}
+
+const props = defineProps<HomeResponsesCardProps>();
 
 const { t } = useI18n();
 const toast = useToast();
 
-const {
-  data: firstPage,
-  skeleton,
-  failed,
-  retry,
-} = useLazyQuery(homeQueries.latestResponses);
+const { data: firstPage, skeleton, failed, retry } = props.query;
 
 /** All the responses, once expanding has loaded the rest */
 const allPage =
@@ -113,7 +123,7 @@ async function toggle() {
   if (!expanded.value && (responses.value?.length ?? 0) < total.value) {
     loadingAll.value = true;
     try {
-      allPage.value = await fetchMyResponses(Math.min(total.value, 1000));
+      allPage.value = await props.loadAll(Math.min(total.value, 1000));
     } catch {
       toast.add({
         title: t('homePage.loadAllResponsesError'),

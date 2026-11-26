@@ -58,6 +58,8 @@
 </template>
 
 <script lang="ts" setup>
+import type { Paginated } from '@beabee/beabee-common';
+
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
@@ -65,21 +67,22 @@ import { RouterLink } from 'vue-router';
 import CalloutMetaList from '#components/callout/CalloutMetaList.vue';
 import CalloutRespondLinks from '#components/callout/CalloutRespondLinks.vue';
 import HomeListCard from '#components/pages/profile/HomeListCard.vue';
-import { useLazyQuery } from '#composables/useLazyQuery';
-import { homeQueries } from '#route-queries/home-queries';
+import type { CalloutCardData, LazyQuery } from '#type';
 import { getCalloutImageUrl } from '#utils/callouts';
 import { routeIcons } from '#utils/route-nav';
 
+/** Props for HomeCalloutsCard */
+export interface HomeCalloutsCardProps {
+  /** The open CrowdNewsrooms, newest first */
+  query: LazyQuery<Paginated<CalloutCardData>>;
+}
+
+const props = defineProps<HomeCalloutsCardProps>();
+
 const { t } = useI18n();
 
-const {
-  data: page,
-  skeleton,
-  failed,
-  retry,
-} = useLazyQuery(homeQueries.openCallouts);
+const { data: page, skeleton, failed, retry } = props.query;
 
-// The CrowdNewsroom list's query, so both pages share it
 const callouts = computed(() => page.value?.items.slice(0, 3));
 const total = computed(() => page.value?.total ?? 0);
 </script>

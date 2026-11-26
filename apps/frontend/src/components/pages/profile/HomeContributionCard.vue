@@ -104,15 +104,20 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import LoadError from '#components/LoadError.vue';
-import { useLazyQuery } from '#composables/useLazyQuery';
-import { homeQueries } from '#route-queries/home-queries';
+import type { HomeContributionData, LazyQuery } from '#type';
 import { routeIcons } from '#utils/route-nav';
+
+/** Props for HomeContributionCard */
+export interface HomeContributionCardProps {
+  /** The member's contribution and most recent payment */
+  query: LazyQuery<HomeContributionData>;
+}
+
+const props = defineProps<HomeContributionCardProps>();
 
 const { t, n } = useI18n();
 
-const { data, skeleton, failed, retry } = useLazyQuery(
-  homeQueries.contribution
-);
+const { data, skeleton, failed, retry } = props.query;
 
 const contribution = computed(() => data.value?.info);
 const lastPayment = computed(() => data.value?.lastPayment);

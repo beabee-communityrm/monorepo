@@ -11,6 +11,7 @@ export * from './email-editor';
 export * from './formio';
 export * from './geocode-pick-event';
 export * from './get-callout-response-map-data-with-address';
+export * from './home-contribution-data';
 export * from './integration';
 export * from './item-with-status';
 export * from './join-form-data';
