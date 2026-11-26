@@ -23,9 +23,12 @@ RUN yarn workspaces foreach -pv --worktree --topological-dev run build
 
 ## Available Stages
 
-- `base`: Basic Node.js setup with tini and workspace configuration
-- `builder`: Extends base, adds build dependencies and yarn workspace setup
-- `dist-common`: Common distribution base with production dependencies
+- `base`: Node.js with tini, jemalloc, Yarn and the workspace manifests
+- `builder`: all dependencies and the sources, runs `yarn build`
+- `prod-deps`: production dependencies of the backend apps only, no sources
+- `code`: every built `dist` folder
+- `runtime`, `cron-runtime`: everything but the code; `docker-compose.yml` targets these and mounts the host's `dist` folders
+- `api_app`, `webhook_app`, `cron_app`, `legacy_app`: a runtime stage plus `code`, the images we deploy
 
 ## Features
 

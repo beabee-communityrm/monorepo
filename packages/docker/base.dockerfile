@@ -52,8 +52,9 @@ ENV LD_PRELOAD=libjemalloc.so.2
 WORKDIR /opt
 
 ##################################
-# The builder stage
-# Install build dependencies and build the application
+# Dependency stages
+# The Yarn cache is a cache mount so it stays out of the images and is reused
+# between local builds
 ##################################
 FROM base AS builder
 
@@ -62,8 +63,7 @@ RUN node --version
 RUN npm --version
 RUN yarn --version
 
-# Install dependencies
-RUN yarn workspaces focus -A
+RUN --mount=type=cache,target=/root/.yarn/berry/cache yarn workspaces focus -A
 
 # Copy source files
 COPY packages /opt/packages
@@ -73,59 +73,45 @@ COPY apps/legacy /opt/apps/legacy
 COPY apps/webhooks /opt/apps/webhooks
 COPY apps/dev-cli /opt/apps/dev-cli
 
-# Build the applications
 RUN yarn build
 
-# Prune non-production dependencies
-RUN yarn workspaces focus -A --production
+# Only the package manifests, so code changes don't invalidate it. Only the
+# backend apps, so the frontend packages' dependencies stay out
+FROM base AS prod-deps
+
+RUN --mount=type=cache,target=/root/.yarn/berry/cache yarn workspaces focus --production \
+    @beabee/backend @beabee/backend-cli @beabee/webhooks @beabee/legacy \
+    && chown -R node:node /opt/node_modules
+
+# Every built dist folder, copied into the images by the output stages
+FROM scratch AS code
+
+COPY --from=builder /opt/packages/core/dist /opt/packages/core/dist
+COPY --from=builder /opt/packages/common/dist /opt/packages/common/dist
+COPY --from=builder /opt/packages/locale/dist /opt/packages/locale/dist
+COPY --from=builder /opt/apps/backend/dist /opt/apps/backend/dist
+COPY --from=builder /opt/apps/backend-cli/dist /opt/apps/backend-cli/dist
+COPY --from=builder /opt/apps/webhooks/dist /opt/apps/webhooks/dist
+COPY --from=builder /opt/apps/legacy/dist /opt/apps/legacy/dist
 
 ##################################
-# Distribution stages
-# The images containing the built application
+# Runtime stages
+# Everything but the code. docker-compose.yml targets these and mounts the
+# host's dist folders in their place
 ##################################
+FROM prod-deps AS runtime
 
-# Common distribution base
-FROM base AS dist-common
-
-COPY --chown=node:node --from=builder /opt/node_modules /opt/node_modules
-COPY --chown=node:node --from=builder /opt/packages/core/dist /opt/packages/core/dist
-COPY --chown=node:node --from=builder /opt/packages/common/dist /opt/packages/common/dist
-COPY --chown=node:node --from=builder /opt/packages/locale /opt/packages/locale
+WORKDIR /opt/apps/backend
+USER node
 
 ENTRYPOINT [ "tini", "--" ]
 CMD [ "node", "./dist/app.js" ]
 
-# Backend distribution base
-FROM dist-common AS dist-backend
+FROM runtime AS cron-runtime
 
-COPY --chown=node:node --from=builder /opt/apps/backend/dist /opt/apps/backend/dist
-
-WORKDIR /opt/apps/backend
-
-##################################
-# Output stages
-##################################
-
-## Backend images
-FROM dist-backend AS api_app
-
-USER node
-
-COPY --chown=node:node --from=builder /opt/apps/backend-cli/dist /opt/apps/backend-cli/dist
-
-# Health check using our custom health endpoint
-HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost:3000/1.0/health || exit 1
-
-CMD [ "node", "./dist/api/app.js" ]
-
-## Cron image
-FROM dist-backend AS cron_app
+USER root
 
 RUN apt-get update && apt-get install -y cron rsyslog && rm -rf /var/lib/apt/lists/*
-
-# Copy backend-cli for cron jobs
-COPY --chown=node:node --from=builder /opt/apps/backend-cli/dist /opt/apps/backend-cli/dist
 
 # Disable Kernal logging
 RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf
@@ -142,17 +128,36 @@ RUN crontab ./crontab
 # 3. Start cron in the foreground with log level 15
 CMD [ "sh", "-c", "env > /etc/environment; rsyslogd; exec cron -fL 15" ]
 
-## Webhooks image, also serves the legacy app
-FROM dist-common AS webhook_app
+##################################
+# Output stages
+# The runtime stages with the built code
+##################################
 
-COPY --chown=node:node --from=builder /opt/apps/legacy/dist /opt/apps/legacy/dist
-COPY --chown=node:node --from=builder /opt/apps/webhooks/dist /opt/apps/webhooks/dist
+## API app
+FROM runtime AS api_app
+
+COPY --chown=node:node --from=code /opt /opt
+
+# Health check using our custom health endpoint
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost:3000/1.0/health || exit 1
+
+CMD [ "node", "./dist/api/app.js" ]
+
+## Cron image
+FROM cron-runtime AS cron_app
+
+COPY --chown=node:node --from=code /opt /opt
+
+## Webhooks image, also serves the legacy app
+FROM runtime AS webhook_app
+
+COPY --chown=node:node --from=code /opt /opt
 
 ARG REVISION=DEV
-RUN echo -n ${REVISION} > /opt/apps/legacy/dist/revision.txt && chown node:node /opt/apps/legacy/dist/revision.txt
+RUN echo -n ${REVISION} > /opt/apps/legacy/dist/revision.txt
 
 WORKDIR /opt/apps/webhooks
-USER node
 
 ## Legacy image, the same image for stacks that run a separate legacy service
 FROM webhook_app AS legacy_app

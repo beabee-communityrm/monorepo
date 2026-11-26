@@ -18,7 +18,7 @@ Done when http://localhost:4002 answers. Containers vanish on reboot while the d
 
 ## Run
 
-- Backend services run your local build (`dist` mounts + `node --watch`), so `yarn build` is enough. `frontend`, `app_router` and `cron_app` run what is baked into their image: after a change, `build <service>` + `up -d <service>`.
+- Backend services, cron included, run your local build (`dist` mounts; their images build no code), so `yarn build` is enough. `frontend` and `app_router` run what is baked into their image: after a change, `build <service>` + `up -d <service>`.
 - `curl` drops the `Domain=localhost` session cookie: pass it with `-H 'Cookie: …'`.
 
 ## Memory measurements

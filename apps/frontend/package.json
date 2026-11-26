@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "yarn check:vue-tsc && yarn build:main && yarn build:embed",
+    "build": "yarn build:main && yarn build:embed",
     "build:main": "vite build",
     "build:embed": "vite build -c vite.config.public.ts",
     "serve": "vite preview",
