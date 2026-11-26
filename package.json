@@ -9,6 +9,7 @@
   "scripts": {
     "clear": "yarn workspaces foreach -v -W run clear",
     "build": "yarn workspaces foreach -v -W --topological-dev run build",
+    "build:check": "yarn workspaces foreach -v -R --topological-dev --from '@beabee/*' --exclude @beabee/frontend --exclude @beabee/frontend-old run build",
     "dev": "yarn workspaces foreach -v -W -p -i -j unlimited run dev",
     "format": "yarn workspaces foreach -v -W -p run format",
     "test": "yarn workspaces foreach -v -W --exclude @beabee/browser-tests --exclude @beabee/e2e-api-tests run test",
