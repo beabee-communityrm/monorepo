@@ -1,13 +1,13 @@
-name: Check
+name: Check and unit tests
 
 on: [pull_request, merge_group]
 
 concurrency:
-  group: check-${{ github.event.pull_request.number || github.ref }}
+  group: check-and-unit-tests-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  check:
+  check-and-unit-tests:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
