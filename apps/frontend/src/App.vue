@@ -1,5 +1,7 @@
 <template>
   <UApp>
+    <RouteProgress />
+
     <LayoutApp />
 
     <AppNotificationContainer
@@ -11,6 +13,7 @@
 <script lang="ts" setup>
 import { AppNotificationContainer } from '@beabee/vue';
 
+import RouteProgress from './components/RouteProgress.vue';
 import LayoutApp from './layouts/layout-App.vue';
 import { isEmbed } from './store';
 </script>

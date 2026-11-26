@@ -2,6 +2,7 @@ import { AppStatusPage } from '@beabee/vue';
 import { icons } from '@beabee/vue/plugins/icons';
 
 import ui from '@nuxt/ui/vue-plugin';
+import { VueQueryPlugin } from '@tanstack/vue-query';
 import { type App as VueApp, createApp, h } from 'vue';
 
 import { waitForBackend } from '#utils/api/client';
@@ -9,7 +10,9 @@ import { waitForBackend } from '#utils/api/client';
 import App from '../App.vue';
 import { init as initErrorHandler } from './appsignal';
 import { i18n } from './i18n';
+import { clearCacheOnUserChange, queryClient } from './query';
 import { installRouteGuard } from './route-guard';
+import { installRouteQueries } from './route-queries';
 import router from './router';
 
 // Flag to prevent multiple app initializations
@@ -35,10 +38,13 @@ export async function startMainApp() {
   initErrorHandler(app);
 
   installRouteGuard(router);
+  installRouteQueries(router);
+  clearCacheOnUserChange();
   app.use({ ...router });
   app.use(i18n);
   app.use(icons);
   app.use(ui);
+  app.use(VueQueryPlugin, { queryClient });
 
   app.mount('#app');
 }

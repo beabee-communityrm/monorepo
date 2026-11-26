@@ -1151,6 +1151,7 @@
     "id": "ID",
     "itemsPerPage": "{items} elementi per pagina",
     "label": "Etichetta",
+    "loadError": "Caricamento non riuscito. Contatta {support} se il problema persiste.",
     "loading": "Caricamento...",
     "login": "Accedi",
     "manualPaymentSource": {
@@ -1188,6 +1189,7 @@
     "perOneTime": "",
     "perOneTimeText": "una tantum",
     "perYear": "/ anno",
+    "retryError": "Caricamento ancora non riuscito. Riprova tra poco.",
     "role": {
       "admin": "Admin",
       "member": "Membro",
@@ -1784,7 +1786,6 @@
     },
     "groupCount": "{n} gruppo | {n} gruppi",
     "loadAllResponsesError": "Non è stato possibile caricare tutte le tue risposte. Riprova.",
-    "loadError": "Caricamento non riuscito. Ricarica la pagina e contatta {support} se il problema persiste.",
     "makeOneTimeDonationButton": "Fai un contributo",
     "makeOneTimeDonationTitle": "Fai un contributo una tantum",
     "manageContribution": "Gestisci il tuo contributo",

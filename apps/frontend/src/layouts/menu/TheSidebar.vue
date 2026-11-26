@@ -42,6 +42,7 @@ import type { NavigationMenuItem } from '@nuxt/ui';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
+import { currentUser } from '#store/currentUser';
 import { client } from '#utils/api';
 
 import AppLogo from '../../components/AppLogo.vue';
@@ -64,7 +65,8 @@ async function doLogout() {
   if (redirectUrl) {
     window.location.href = redirectUrl;
   } else {
-    router.push('/auth/login');
+    await router.push('/auth/login');
+    currentUser.value = null;
   }
 }
 </script>

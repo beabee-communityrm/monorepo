@@ -24,7 +24,7 @@
       </AppCardHeader>
     </template>
 
-    <HomeLoadError v-if="error" />
+    <LoadError v-if="error" />
 
     <div v-else-if="!view" class="space-y-3">
       <USkeleton class="h-8 w-1/3" />
@@ -106,7 +106,7 @@ import { AppCardHeader, formatLocale } from '@beabee/vue';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import HomeLoadError from '#components/pages/profile/HomeLoadError.vue';
+import LoadError from '#components/LoadError.vue';
 import { client } from '#utils/api';
 import { routeIcons } from '#utils/route-nav';
 

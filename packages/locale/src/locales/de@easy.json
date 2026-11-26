@@ -1151,6 +1151,7 @@
     "id": "",
     "itemsPerPage": "",
     "label": "Betreff",
+    "loadError": "",
     "loading": "Der Computer arbeitet.",
     "login": "",
     "manualPaymentSource": {
@@ -1188,6 +1189,7 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "",
+    "retryError": "",
     "role": {
       "admin": "",
       "member": "",
@@ -1784,7 +1786,6 @@
     },
     "groupCount": "",
     "loadAllResponsesError": "",
-    "loadError": "",
     "makeOneTimeDonationButton": "",
     "makeOneTimeDonationTitle": "",
     "manageContribution": "",

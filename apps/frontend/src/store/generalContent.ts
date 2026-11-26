@@ -1,6 +1,6 @@
 import type { ContentGeneralData } from '@beabee/beabee-common';
 
-import { computed, ref } from 'vue';
+import { computed, readonly, ref } from 'vue';
 
 import { client } from '#utils/api';
 import { resolveImageUrl } from '#utils/url';
@@ -25,6 +25,9 @@ export const generalContent = ref<ContentGeneralData>({
   enableOneTimeDonations: false,
   oidcEnabled: false,
 });
+
+/** Whether the general content, and so the site's theme, has loaded */
+export const generalContentLoaded = readonly(isInited);
 
 export const initGeneralContent = async () => {
   if (!isInited.value) {

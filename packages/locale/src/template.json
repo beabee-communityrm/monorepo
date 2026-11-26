@@ -1150,6 +1150,7 @@
     "id": "",
     "itemsPerPage": "",
     "label": "",
+    "loadError": "",
     "loading": "",
     "login": "",
     "manualPaymentSource": {
@@ -1187,6 +1188,7 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "",
+    "retryError": "",
     "role": {
       "admin": "",
       "member": "",
@@ -1781,7 +1783,6 @@
     },
     "groupCount": "",
     "loadAllResponsesError": "",
-    "loadError": "",
     "makeOneTimeDonationButton": "",
     "makeOneTimeDonationTitle": "",
     "manageContribution": "",

@@ -5,7 +5,11 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from) {
-    return from && to.name === from.name ? undefined : { top: 0 };
+    if (from && to.name === from.name) return;
+    // Vue Router only resets the window. The Dashboard layout scrolls its
+    // <main id="top"> instead, so that's reset here too.
+    document.getElementById('top')?.scrollTo({ top: 0 });
+    return { top: 0 };
   },
 });
 

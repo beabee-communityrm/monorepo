@@ -1150,6 +1150,7 @@
     "id": "ID",
     "itemsPerPage": "{items} items per page",
     "label": "Label",
+    "loadError": "Failed to load. Contact {support} if it keeps happening.",
     "loading": "Loading...",
     "login": "Log in",
     "manualPaymentSource": {
@@ -1187,6 +1188,7 @@
     "perOneTime": " one-time",
     "perOneTimeText": "one-time",
     "perYear": "/ year",
+    "retryError": "Still couldn't load. Try again in a moment.",
     "role": {
       "admin": "Admin",
       "member": "Member",
@@ -1781,7 +1783,6 @@
     },
     "groupCount": "{n} group | {n} groups",
     "loadAllResponsesError": "Couldn't load all your responses. Try again.",
-    "loadError": "Failed to load. Try reloading the page, and contact {support} if it keeps happening.",
     "makeOneTimeDonationButton": "Make contribution",
     "makeOneTimeDonationTitle": "Make one-time contribution",
     "manageContribution": "Manage your contribution",
