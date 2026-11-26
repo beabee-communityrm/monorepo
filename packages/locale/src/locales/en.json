@@ -918,6 +918,9 @@
     "joinNow": "Join now",
     "language": "Language",
     "leavePreview": "Leave preview",
+    "loadError": "Failed to load this CrowdNewsroom. Contact {support} if it keeps happening.",
+    "loadResponseError": "Failed to load your response. Contact {support} if it keeps happening.",
+    "loadResponsesError": "Failed to load your responses. Contact {support} if it keeps happening.",
     "logInOrSignUp": "Log in or join to take part.",
     "loginToYourAccount": "Login to your account",
     "loginToYourAccount-nuxt": "Log in",
@@ -925,10 +928,12 @@
     "membersOnly-nuxt": "This CrowdNewsroom is open to members only.",
     "nextResponse": "Next response",
     "notAnswered": "Not answered",
+    "notFound": "This CrowdNewsroom doesn't exist or has been removed.",
     "previousResponse": "Previous response",
     "replied": "Replied",
     "responseNumber": "Response {number} of {total}",
     "responseSubmitted": "Response submitted",
+    "seeAll": "See all CrowdNewsrooms",
     "share": {
       "address": "Share using the following link:",
       "aria": {

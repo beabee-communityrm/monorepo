@@ -923,6 +923,9 @@
     "joinNow": "S'inscrire maintenant",
     "language": "Langue",
     "leavePreview": "Quitter l’aperçu",
+    "loadError": "Impossible de charger cette CrowdNewsroom. Contactez {support} si le problème persiste.",
+    "loadResponseError": "Impossible de charger votre réponse. Contactez {support} si le problème persiste.",
+    "loadResponsesError": "Impossible de charger vos réponses. Contactez {support} si le problème persiste.",
     "logInOrSignUp": "Connectez-vous ou adhérez pour participer.",
     "loginToYourAccount": "Connectez-vous à votre compte",
     "loginToYourAccount-nuxt": "Se connecter",
@@ -930,10 +933,12 @@
     "membersOnly-nuxt": "Cette CrowdNewsrooms est ouverte aux membres uniquement.",
     "nextResponse": "Réponse suivante",
     "notAnswered": "Sans réponse",
+    "notFound": "Cette CrowdNewsroom n'existe pas ou a été supprimée.",
     "previousResponse": "Réponse précédente",
     "replied": "Répondu",
     "responseNumber": "Réponse {number} sur {total}",
     "responseSubmitted": "Réponse envoyée",
+    "seeAll": "Voir toutes les CrowdNewsrooms",
     "share": {
       "address": "Partagez cette campagne avec l'adresse suivante :",
       "aria": {
