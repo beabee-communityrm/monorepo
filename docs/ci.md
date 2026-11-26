@@ -15,6 +15,7 @@ PR push ──► check, lint ──► approval ──► merge queue: check, t
 | `test-unit.yml` → `test` | merge queue, manual | `yarn test` |
 | `test-api.yml` → `run-api-tests` | merge queue, manual | API tests against the `docker-compose.test.yml` stack |
 | `test-browser.yml` → `run-browser-tests` | merge queue, manual | Playwright tests against the same stack |
+| `test-stripe.yml` → `run-stripe-tests` | merge queue, manual | Stripe test clock tests against the same stack. Not a required check, so a failure doesn't block the merge |
 | `deploy.yml` | push to `main` or `dev`, tags `v*` | builds and pushes the Docker images |
 | `database-report.yml` | push to `main`, manual | SchemaSpy report of the database schema |
 | `publish-npm.yml` | GitHub release, manual | see [Release Workflow](release-workflow.md) |
