@@ -1151,7 +1151,7 @@
     "id": "ID",
     "itemsPerPage": "{items} elementi per pagina",
     "label": "Etichetta",
-    "loadError": "Caricamento non riuscito. Ricarica la pagina e contatta {support} se il problema persiste.",
+    "loadError": "Caricamento non riuscito. Contatta {support} se il problema persiste.",
     "loading": "Caricamento...",
     "login": "Accedi",
     "manualPaymentSource": {

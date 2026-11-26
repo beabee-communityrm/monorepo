@@ -1151,7 +1151,7 @@
     "id": "ID",
     "itemsPerPage": "{items} elementos por página",
     "label": "Etiqueta",
-    "loadError": "No se ha podido cargar. Recarga la página y escribe a {support} si sigue pasando.",
+    "loadError": "No se ha podido cargar. Escribe a {support} si sigue pasando.",
     "loading": "Cargando...",
     "login": "Iniciar sesión",
     "manualPaymentSource": {

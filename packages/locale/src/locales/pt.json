@@ -1151,7 +1151,7 @@
     "id": "ID",
     "itemsPerPage": "{items} itens por página",
     "label": "Label",
-    "loadError": "Não foi possível carregar. Recarrega a página e contacta {support} se o problema continuar.",
+    "loadError": "Não foi possível carregar. Contacta {support} se o problema continuar.",
     "loading": "A carregar...",
     "login": "Entrar",
     "manualPaymentSource": {

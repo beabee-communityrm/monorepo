@@ -1150,7 +1150,7 @@
     "id": "ID",
     "itemsPerPage": "{items} items per page",
     "label": "Label",
-    "loadError": "Failed to load. Try reloading the page, and contact {support} if it keeps happening.",
+    "loadError": "Failed to load. Contact {support} if it keeps happening.",
     "loading": "Loading...",
     "login": "Log in",
     "manualPaymentSource": {

@@ -1151,7 +1151,7 @@
     "id": "ID",
     "itemsPerPage": "{items} Einträge pro Seite",
     "label": "Label",
-    "loadError": "Laden fehlgeschlagen. Laden Sie die Seite neu und wenden Sie sich an {support}, wenn das Problem weiterhin besteht.",
+    "loadError": "Laden fehlgeschlagen. Wenden Sie sich an {support}, wenn das Problem weiterhin besteht.",
     "loading": "Lädt...",
     "login": "Anmelden",
     "manualPaymentSource": {

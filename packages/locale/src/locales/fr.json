@@ -1155,7 +1155,7 @@
     "id": "Identifiant",
     "itemsPerPage": "{items} éléments par page",
     "label": "Intitulé",
-    "loadError": "Échec du chargement. Rechargez la page et contactez {support} si le problème persiste.",
+    "loadError": "Échec du chargement. Contactez {support} si le problème persiste.",
     "loading": "Chargement…",
     "login": "Se connecter",
     "manualPaymentSource": {

@@ -1151,7 +1151,7 @@
     "id": "ID",
     "itemsPerPage": "{items} items per pagina",
     "label": "Label",
-    "loadError": "Laden mislukt. Laad de pagina opnieuw en neem contact op met {support} als het probleem blijft.",
+    "loadError": "Laden mislukt. Neem contact op met {support} als het probleem blijft.",
     "loading": "Aan het laden...",
     "login": "Inloggen",
     "manualPaymentSource": {
