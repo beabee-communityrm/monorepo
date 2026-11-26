@@ -1111,6 +1111,7 @@
     "empty": {
       "active": "Op dit moment zijn er geen actieve oproepen."
     },
+    "loadOpenError": "Open CrowdNewsrooms konden niet worden geladen. Neem contact op met {support} als het probleem blijft.",
     "noArchivedCallouts": "Geen oproepen",
     "openCallouts": "Open oproepen",
     "search": "Zoeken...",

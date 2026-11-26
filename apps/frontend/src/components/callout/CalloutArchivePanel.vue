@@ -14,8 +14,14 @@
           >
             <UIcon name="i-lucide-archive" class="size-4 text-muted" />
             {{ t('callouts.archive') }}
-            <UBadge color="neutral" variant="subtle" size="sm">
-              {{ archivedTotal ?? 0 }}
+            <USkeleton v-if="totalSkeleton" as="span" class="h-5 w-6" />
+            <UBadge
+              v-else-if="archivedTotal !== undefined"
+              color="neutral"
+              variant="subtle"
+              size="sm"
+            >
+              {{ archivedTotal }}
             </UBadge>
           </span>
           <UIcon
@@ -69,8 +75,24 @@
         </UButton>
       </div>
 
+      <LoadError
+        v-if="listFailed"
+        :retry="retryList"
+        class="border-t border-default p-4"
+      />
+
       <div
-        v-if="archivedCallouts && archivedCallouts.items.length > 0"
+        v-else-if="listSkeleton"
+        class="divide-y divide-default border-t border-default"
+      >
+        <div v-for="n in 2" :key="n" class="space-y-2 p-3">
+          <USkeleton class="h-4 w-1/2" />
+          <USkeleton class="h-4 w-1/3" />
+        </div>
+      </div>
+
+      <div
+        v-else-if="archivedCallouts?.items.length"
         class="divide-y divide-default border-t border-default"
       >
         <CalloutArchiveRow
@@ -80,7 +102,7 @@
         />
       </div>
       <p
-        v-else
+        v-else-if="archivedCallouts"
         class="border-t border-default px-4 py-8 text-center text-muted"
       >
         {{ t('callouts.noArchivedCallouts') }}
@@ -116,19 +138,20 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  type GetCalloutsQuery,
-  ItemStatus,
-  type Paginated,
-} from '@beabee/beabee-common';
-
-import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
 import CalloutArchiveRow from '#components/callout/CalloutArchiveRow.vue';
-import { client } from '#utils/api';
+import LoadError from '#components/LoadError.vue';
+import {
+  archiveParams,
+  archivePageSize,
+  archivedCalloutsQuery,
+  archivedTotalQuery,
+} from '#components/pages/callouts/use-callout-list';
+import { useLazyQuery } from '#composables/useLazyQuery';
 import { defineParam } from '#utils/pagination';
-import type { CalloutCardData } from '#type';
 
 const { t } = useI18n();
 
@@ -153,68 +176,30 @@ function clearArchiveSearch() {
   archiveSearch.value = '';
 }
 
-const archivePageSize = 10;
+const route = useRoute();
 
-const archivedCallouts = ref<Paginated<CalloutCardData>>();
-const archivedTotal = ref<number>();
+const { data: archivedTotal, skeleton: totalSkeleton } =
+  useLazyQuery(archivedTotalQuery);
+
+const {
+  data: archivedCallouts,
+  skeleton: listSkeleton,
+  failed: listFailed,
+  retry: retryList,
+} = useLazyQuery(() => archivedCalloutsQuery(archiveParams(route.query)));
 
 const archiveTotalPages = computed(() =>
   archivedCallouts.value
     ? Math.ceil(archivedCallouts.value.total / archivePageSize)
     : 0
 );
-watch(archiveTotalPages, (value) => {
-  if (archivePage.value > value) {
-    archivePage.value = Math.max(0, value - 1);
-  }
-});
-
-onBeforeMount(async () => {
-  const archived = await client.callout.list({
-    limit: 1,
-    rules: {
-      condition: 'AND',
-      rules: [
-        { field: 'status', operator: 'equal', value: [ItemStatus.Ended] },
-        { field: 'hidden', operator: 'equal', value: [false] },
-      ],
-    },
-  });
-  archivedTotal.value = archived.total;
-});
-
-watchEffect(async () => {
-  const query: GetCalloutsQuery = {
-    offset: archivePage.value * archivePageSize,
-    limit: archivePageSize,
-    sort: 'expires',
-    order: 'DESC',
-    rules: {
-      condition: 'AND',
-      rules: [
-        {
-          field: 'title',
-          operator: 'contains',
-          value: [archiveSearch.value],
-        },
-        { field: 'hidden', operator: 'equal', value: [false] },
-        { field: 'status', operator: 'equal', value: [ItemStatus.Ended] },
-        ...(archiveAnsweredOnly.value
-          ? [
-              {
-                field: 'answeredBy' as const,
-                operator: 'equal' as const,
-                value: ['me'],
-              },
-            ]
-          : []),
-      ],
-    },
-  };
-
-  archivedCallouts.value = await client.callout.list(query, [
-    'hasAnswered',
-    'responseCount',
-  ]);
-});
+watch(
+  archiveTotalPages,
+  (value) => {
+    if (archivedCallouts.value && archivePage.value > value) {
+      archivePage.value = Math.max(0, value - 1);
+    }
+  },
+  { immediate: true }
+);
 </script>
