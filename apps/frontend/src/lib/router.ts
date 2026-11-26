@@ -6,7 +6,8 @@ const router = createRouter({
   routes,
   scrollBehavior(to, from) {
     if (from && to.name === from.name) return;
-    // The dashboard layout scrolls its main element rather than the window
+    // Vue Router only resets the window. The Dashboard layout scrolls its
+    // <main id="top"> instead, so that's reset here too.
     document.getElementById('top')?.scrollTo({ top: 0 });
     return { top: 0 };
   },
