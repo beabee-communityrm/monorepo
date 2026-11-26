@@ -97,6 +97,8 @@
         </li>
       </template>
     </ul>
+    <LoadError v-else-if="failed" :retry="retry" />
+    <AppFormSkeleton v-else :rows="3" />
   </AppSectionCard>
 
   <UModal
@@ -136,12 +138,21 @@ import {
   type LoginAction,
 } from '@beabee/beabee-common';
 import { UnauthorizedError } from '@beabee/client';
-import { AppModalActions, AppSectionCard, addNotification } from '@beabee/vue';
+import {
+  AppFormSkeleton,
+  AppModalActions,
+  AppSectionCard,
+  addNotification,
+} from '@beabee/vue';
 
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
+import LoadError from '#components/LoadError.vue';
+import { authMethodsQuery } from '#components/pages/profile/account/use-account-data';
+import { useLazyQuery } from '#composables/useLazyQuery';
+import { queryClient } from '#lib/query';
 import { client } from '#utils/api';
 
 const METHOD_ICONS: Record<ContactAuthMethodType, string> = {
@@ -167,13 +178,11 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
-const methods = ref<GetContactAuthMethodData[]>();
+const { data: methods, failed, retry } = useLazyQuery(authMethodsQuery);
 const methodToRemove = ref<GetContactAuthMethodData>();
 const removing = ref(false);
 
-async function load() {
-  methods.value = await client.contact.authMethod.list('me');
-}
+const load = () => queryClient.refetchQueries(authMethodsQuery);
 
 async function remove(id: string, loginAgain = true) {
   removing.value = true;
@@ -205,7 +214,6 @@ async function remove(id: string, loginAgain = true) {
 }
 
 onBeforeMount(async () => {
-  await load();
   // Back from the fresh login: finish what the member confirmed before it
   const id = route.query.removeAuthMethod;
   if (typeof id === 'string') {

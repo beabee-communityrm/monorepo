@@ -15,8 +15,7 @@
       icon="i-lucide-user-round"
       :title="t('accountPage.personalDetails')"
     >
-      <AppFormSkeleton v-if="loading" :rows="3" />
-      <template v-else>
+      <template v-if="loaded">
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <UFormField :label="t('form.firstName')" required name="firstName">
             <UInput v-model="data.firstName" class="w-full" />
@@ -55,14 +54,16 @@
           <UInput v-model="data.vatNumber" class="w-full" disabled />
         </UFormField>
       </template>
+      <LoadError v-else-if="failed" :retry="retry" />
+      <AppFormSkeleton v-else :rows="3" />
     </AppSectionCard>
 
     <AppSectionCard
+      v-if="!failed"
       icon="i-lucide-map-pin"
       :title="t('accountPage.deliveryAddress')"
     >
-      <AppFormSkeleton v-if="loading" :rows="3" />
-      <template v-else>
+      <template v-if="loaded">
         <template v-if="accountContent?.showMailOptIn">
           <div class="flex flex-col gap-4">
             <div class="space-y-1">
@@ -121,6 +122,7 @@
           />
         </UFormField>
       </template>
+      <AppFormSkeleton v-else :rows="3" />
     </AppSectionCard>
 
     <AppStickySaveBar v-if="dirty" form="account-form" @cancel="handleCancel" />
@@ -128,8 +130,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { ContentData } from '@beabee/beabee-common';
-import { GetContactWith, toPhoneNumber } from '@beabee/beabee-common';
+import { toPhoneNumber } from '@beabee/beabee-common';
 import {
   AppFormSkeleton,
   AppSectionCard,
@@ -137,18 +138,47 @@ import {
   getCountryItems,
 } from '@beabee/vue';
 
-import { computed, onMounted, reactive, ref, useTemplateRef } from 'vue';
+import { computed, reactive, useTemplateRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { z } from 'zod';
 
+import LoadError from '#components/LoadError.vue';
+import {
+  contactProfileQuery,
+  joinContentQuery,
+  joinSetupContentQuery,
+} from '#components/pages/profile/account/use-account-data';
 import { useApiSubmit } from '#composables/useApiSubmit';
+import { useLazyQuery } from '#composables/useLazyQuery';
+import { queryClient } from '#lib/query';
 import { client } from '#utils/api';
 
 const { t, locale } = useI18n();
 
-const loading = ref(true);
-const accountContent = ref<ContentData<'join/setup'> | null>(null);
-const joinContent = ref<ContentData<'join'> | null>(null);
+const setupContent = useLazyQuery(joinSetupContentQuery);
+const join = useLazyQuery(joinContentQuery);
+const contact = useLazyQuery(contactProfileQuery('me'));
+
+const accountContent = setupContent.data;
+const joinContent = join.data;
+
+/** Whether anything the form needs failed to load */
+const failed = computed(
+  () => setupContent.failed.value || join.failed.value || contact.failed.value
+);
+
+/** Whether everything the form needs has loaded */
+const loaded = computed(
+  () => !!accountContent.value && !!joinContent.value && !!contact.data.value
+);
+
+/** Loads what failed again; rejects if it still fails */
+const retry = () =>
+  Promise.all(
+    [setupContent, join, contact]
+      .filter((q) => q.failed.value)
+      .map((q) => q.retry())
+  );
 
 const data = reactive({
   emailAddress: '',
@@ -170,32 +200,33 @@ const countryItems = computed(() => getCountryItems(locale.value));
 /** Snapshot of the last-saved (or initially loaded) values, for Cancel */
 const savedData = reactive({ ...data });
 
-onMounted(async () => {
-  const [content, join, contact] = await Promise.all([
-    client.content.get('join/setup'),
-    client.content.get('join'),
-    client.contact.get('me', [GetContactWith.Profile]),
-  ]);
-  accountContent.value = content;
-  joinContent.value = join;
-  Object.assign(data, {
-    emailAddress: contact.email,
-    firstName: contact.firstname,
-    lastName: contact.lastname,
-    organisation: contact.profile.organisation,
-    vatNumber: contact.profile.vatNumber,
-    telephone: contact.profile.telephone,
-    deliveryOptIn: contact.profile.deliveryOptIn,
-    addressLine1: contact.profile.deliveryAddress?.line1 || '',
-    addressLine2: contact.profile.deliveryAddress?.line2 || '',
-    cityOrTown: contact.profile.deliveryAddress?.city || '',
-    postCode: contact.profile.deliveryAddress?.postcode || '',
-    country: contact.profile.deliveryAddress?.country || '',
-  });
+/** Whether the form has been filled from the contact. Only once, so a
+ * refresh doesn't undo edits. */
+let filled = false;
 
-  Object.assign(savedData, data);
-  loading.value = false;
-});
+watch(
+  contact.data,
+  (loadedContact) => {
+    if (!loadedContact || filled) return;
+    filled = true;
+    Object.assign(data, {
+      emailAddress: loadedContact.email,
+      firstName: loadedContact.firstname,
+      lastName: loadedContact.lastname,
+      organisation: loadedContact.profile.organisation,
+      vatNumber: loadedContact.profile.vatNumber,
+      telephone: loadedContact.profile.telephone,
+      deliveryOptIn: loadedContact.profile.deliveryOptIn,
+      addressLine1: loadedContact.profile.deliveryAddress?.line1 || '',
+      addressLine2: loadedContact.profile.deliveryAddress?.line2 || '',
+      cityOrTown: loadedContact.profile.deliveryAddress?.city || '',
+      postCode: loadedContact.profile.deliveryAddress?.postcode || '',
+      country: loadedContact.profile.deliveryAddress?.country || '',
+    });
+    Object.assign(savedData, data);
+  },
+  { immediate: true }
+);
 
 // Incomplete phone number validation
 function isValidPhone(value: string): boolean {
@@ -289,6 +320,7 @@ const { submit: handleSave } = useApiSubmit(
       },
     });
     Object.assign(savedData, data);
+    queryClient.invalidateQueries(contactProfileQuery('me'));
   },
   { successMessage: () => t('form.saved') }
 );

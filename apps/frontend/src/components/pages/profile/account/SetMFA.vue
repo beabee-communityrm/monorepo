@@ -18,7 +18,7 @@
     :title="t('accountPage.mfa.title-nuxt')"
     :description="t('accountPage.mfa.description')"
   >
-    <div class="flex items-start justify-between gap-4">
+    <div v-if="loaded" class="flex items-start justify-between gap-4">
       <div class="space-y-1">
         <p class="font-medium">
           {{
@@ -41,6 +41,8 @@
         @update:model-value="onSwitchToggle"
       />
     </div>
+    <LoadError v-else-if="failed" :retry="retry" />
+    <AppFormSkeleton v-else :rows="1" />
   </AppSectionCard>
 
   <UModal
@@ -205,15 +207,12 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  CONTACT_MFA_TYPE,
-  GetContactWith,
-  LOGIN_CODES,
-} from '@beabee/beabee-common';
+import { CONTACT_MFA_TYPE, LOGIN_CODES } from '@beabee/beabee-common';
 import { UnauthorizedError } from '@beabee/client';
 import {
   AppCodeInput,
   AppCopyIconButton,
+  AppFormSkeleton,
   AppModalActions,
   AppQRCode,
   AppSectionCard,
@@ -222,9 +221,16 @@ import {
 } from '@beabee/vue';
 
 import { Secret, TOTP } from 'otpauth';
-import { computed, ref, toRef, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import LoadError from '#components/LoadError.vue';
+import {
+  contactMfaQuery,
+  contactProfileQuery,
+} from '#components/pages/profile/account/use-account-data';
+import { useLazyQuery } from '#composables/useLazyQuery';
+import { queryClient } from '#lib/query';
 import { generalContent } from '#store/index';
 import type { SetMfaTotpIdentity } from '#type/set-mfa-totp-identity';
 import { client } from '#utils/api';
@@ -366,6 +372,7 @@ const disableMfa = async () => {
     return false;
   }
   isEnabled.value = false;
+  queryClient.invalidateQueries(contactMfaQuery(props.contactId));
   return true;
 };
 
@@ -377,6 +384,7 @@ const enableMfaAndNotify = async () => {
   }
 
   isEnabled.value = true;
+  queryClient.invalidateQueries(contactMfaQuery(props.contactId));
   closeEnableModal();
   addNotification({
     title: t('accountPage.mfa.enabledNotification'),
@@ -503,27 +511,48 @@ const onTotpIdentityChanged = (newValue: SetMfaTotpIdentity) => {
   totpUrl.value = totp.toString();
 };
 
-/** Fetch the contact and set the TOTP identity */
+const contact = useLazyQuery(() => contactProfileQuery(props.contactId));
+const contactMfa = useLazyQuery(() => contactMfaQuery(props.contactId));
+
+/** Whether the contact or their MFA failed to load */
+const failed = computed(() => contact.failed.value || contactMfa.failed.value);
+
+/** Whether both have loaded */
+const loaded = computed(
+  () => contact.data.value !== undefined && contactMfa.data.value !== undefined
+);
+
+/** Loads what failed again; rejects if it still fails */
+const retry = () =>
+  Promise.all(
+    [contact, contactMfa].filter((q) => q.failed.value).map((q) => q.retry())
+  );
+
+/** Set the TOTP identity from the contact */
 watch(
-  toRef(props, 'contactId'),
-  async (contactId) => {
-    const contact = await client.contact.get(contactId, [
-      GetContactWith.Profile,
-    ]);
+  contact.data,
+  (data) => {
+    if (!data) return;
     totpIdentity.value.issuer =
       generalContent.value.organisationName || 'beabee';
-    totpIdentity.value.label = contact.email;
+    totpIdentity.value.label = data.email;
+  },
+  { immediate: true }
+);
 
-    const contactMfa = await client.contact.mfa.get(contactId);
-    if (contactMfa && contactMfa.type === CONTACT_MFA_TYPE.TOTP) {
-      isEnabled.value = true;
+/** Whether MFA is on, from the loaded MFA */
+watch(
+  contactMfa.data,
+  (data) => {
+    if (data !== undefined) {
+      isEnabled.value = data?.type === CONTACT_MFA_TYPE.TOTP;
     }
   },
   { immediate: true }
 );
 
 /** Watch TOTP identity changes */
-watch(totpIdentity, onTotpIdentityChanged, { deep: true });
+watch(totpIdentity, onTotpIdentityChanged, { deep: true, immediate: true });
 
 /** Hide the invalid-code error as soon as the user edits the token again */
 watch(disableToken, () => {

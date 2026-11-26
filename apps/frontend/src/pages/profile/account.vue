@@ -40,6 +40,10 @@ meta:
   </div>
 </template>
 
+<script lang="ts">
+export { accountQueries as routeQueries } from '#components/pages/profile/account/use-account-data';
+</script>
+
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
