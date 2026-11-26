@@ -25,7 +25,7 @@ RUN yarn workspaces foreach -pv --worktree --topological-dev run build
 
 - `base`: Node.js with tini, jemalloc, Yarn and the workspace manifests
 - `builder`: all dependencies and the sources, runs `yarn build`
-- `prod-deps`: production dependencies only, no sources
+- `prod-deps`: production dependencies of the backend apps only, no sources
 - `code`: every built `dist` folder
 - `runtime`, `cron-runtime`: everything but the code; `docker-compose.yml` targets these and mounts the host's `dist` folders
 - `api_app`, `webhook_app`, `cron_app`, `legacy_app`: a runtime stage plus `code`, the images we deploy

@@ -75,10 +75,12 @@ COPY apps/dev-cli /opt/apps/dev-cli
 
 RUN yarn build
 
-# Only the package manifests, so code changes don't invalidate it
+# Only the package manifests, so code changes don't invalidate it. Only the
+# backend apps, so the frontend packages' dependencies stay out
 FROM base AS prod-deps
 
-RUN --mount=type=cache,target=/root/.yarn/berry/cache yarn workspaces focus -A --production \
+RUN --mount=type=cache,target=/root/.yarn/berry/cache yarn workspaces focus --production \
+    @beabee/backend @beabee/backend-cli @beabee/webhooks @beabee/legacy \
     && chown -R node:node /opt/node_modules
 
 # Every built dist folder, copied into the images by the output stages
