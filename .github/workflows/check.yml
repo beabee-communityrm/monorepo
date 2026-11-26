@@ -2,6 +2,10 @@ name: Check
 
 on: [pull_request, merge_group]
 
+concurrency:
+  group: check-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
     runs-on: ubuntu-24.04
