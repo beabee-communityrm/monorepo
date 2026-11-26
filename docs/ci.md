@@ -22,7 +22,7 @@ The two E2E workflows also trigger on `pull_request`, but their jobs are skipped
 
 ## Merging a pull request
 
-1. Get one approval. Pushing a new commit dismisses it.
+1. Get one approval, unless you are a repository admin. Pushing a new commit dismisses it.
 2. Click **Merge when ready**. The PR joins the queue, and GitHub tests it merged with `main` and any PRs queued ahead of it.
 3. If all checks pass, GitHub merges it. If one fails, the PR leaves the queue: fix it, get it approved again and queue it again.
 
@@ -32,7 +32,8 @@ To see test results before queueing, run the test workflows by hand on your bran
 
 These live in the GitHub settings, not in this repository:
 
-- **Ruleset on `main`:** merge queue (merge method MERGE), 1 approval, and the required checks `check-and-unit-tests`, `run-api-tests` and `run-browser-tests`. The E2E jobs are skipped on PRs, so without the merge queue these required checks would pass without any tests running.
+- **Ruleset "Merge queue and tests" on `main`:** merge queue (merge method MERGE) and the required checks `check-and-unit-tests`, `run-api-tests` and `run-browser-tests`, with no bypass. The E2E jobs are skipped on PRs, so without the merge queue these required checks would pass without any tests running.
+- **Ruleset "Review" on `main`:** 1 approval. Admins are exempt rather than allowed to bypass: a bypass only applies to a direct merge, which the merge queue doesn't allow.
 - **Merge commit message:** must be the PR title, see [Release Workflow](release-workflow.md#required-github-repo-setting).
 
 ## Deployment
@@ -48,7 +49,7 @@ These live in the GitHub settings, not in this repository:
 
 Deploy runs no tests itself: commits on `main` have passed the queue, and release tags are cut from `main`.
 
-`dev` deploys to the hosted dev environment. To try a feature branch there, merge it into `dev` and push; several branches can be on `dev` at once. `dev` has no queue or required checks, so a failing test doesn't stop a dev deploy, but a type error does, because the Docker builds compile the code.
+`dev` deploys to the hosted dev environment. To try a feature branch there, merge it into `dev` and push; several branches can be on `dev` at once. `dev` has no queue or required checks, so a failing test doesn't stop a dev deploy. A backend type error does, because the Docker build compiles the backend with `tsc`; the frontend builds don't type check.
 
 ## When a test fails
 
