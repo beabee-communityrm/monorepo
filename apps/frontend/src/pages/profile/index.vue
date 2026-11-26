@@ -23,7 +23,7 @@ meta:
     <div class="flex flex-col items-start gap-5 md:flex-row">
       <div class="flex w-full min-w-0 flex-1 flex-col gap-5">
         <HomeCalloutsCard :query="callouts" />
-        <HomeResponsesCard :query="responses" :load-all="fetchMyResponses" />
+        <HomeResponsesCard :query="responses" />
       </div>
 
       <div class="flex w-full flex-col gap-5 md:w-80 md:shrink-0">
