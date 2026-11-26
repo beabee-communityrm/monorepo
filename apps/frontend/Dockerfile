@@ -1,4 +1,3 @@
-ARG DENO_VERSION=2.1.2
 ARG NODE_VERSION=26.13.0
 
 FROM node:${NODE_VERSION}-bookworm-slim AS builder
@@ -14,21 +13,12 @@ WORKDIR /opt
 COPY package.json yarn.lock .yarnrc.yml /opt/
 COPY .yarn /opt/.yarn
 
-# Copy dependencies info from packages
+# Copy dependencies info, only the workspaces the frontends depend on
 COPY packages/common/package.json /opt/packages/common/package.json
-COPY packages/core/package.json /opt/packages/core/package.json
-COPY packages/docker/package.json /opt/packages/docker/package.json
 COPY packages/client/package.json /opt/packages/client/package.json
 COPY packages/locale/package.json /opt/packages/locale/package.json
-
-# Copy dependencies info from apps
-COPY apps/backend/package.json /opt/apps/backend/package.json
-COPY apps/backend-cli/package.json /opt/apps/backend-cli/package.json
 COPY apps/frontend/package.json /opt/apps/frontend/package.json
 COPY apps/frontend-old/package.json /opt/apps/frontend-old/package.json
-COPY apps/legacy/package.json /opt/apps/legacy/package.json
-COPY apps/webhooks/package.json /opt/apps/webhooks/package.json
-COPY apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
 
 # Copy dependencies with relevant content
 COPY packages/prettier-config /opt/packages/prettier-config
@@ -39,8 +29,8 @@ COPY packages/fontawesome /opt/packages/fontawesome
 # Copy apps with relevant content
 COPY apps/dev-cli /opt/apps/dev-cli
 
-# Install dependencies
-RUN yarn workspaces focus @beabee/frontend @beabee/frontend-old
+# Install dependencies, the Yarn cache is a cache mount so it stays out of the image
+RUN --mount=type=cache,target=/root/.yarn/berry/cache yarn workspaces focus @beabee/frontend @beabee/frontend-old
 
 # Copy frontend dependencies
 COPY packages/common /opt/packages/common
