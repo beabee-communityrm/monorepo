@@ -40,11 +40,8 @@ meta:
 <script lang="ts">
 import {
   ContributionType,
-  type GetCalloutResponseDataWith,
-  GetCalloutResponseWith,
   ItemStatus,
   MembershipStatus,
-  type Paginated,
   PaymentStatus,
 } from '@beabee/beabee-common';
 
@@ -53,7 +50,7 @@ import { queryOptions } from '@tanstack/vue-query';
 import { routeQuery } from '#lib/route-queries';
 import { generalContent } from '#store';
 import type { HomeContributionData, RouteQueries, RouteQuery } from '#type';
-import { client } from '#utils/api';
+import { client, fetchMyResponses } from '#utils/api';
 
 /** The open CrowdNewsrooms, newest first */
 const openCalloutsQuery = queryOptions({
@@ -74,25 +71,6 @@ const openCalloutsQuery = queryOptions({
       ['hasAnswered', 'responseCount']
     ),
 });
-
-/** The member's latest responses, with their CrowdNewsrooms */
-const fetchMyResponses = (
-  limit: number
-): Promise<
-  Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>>
-> =>
-  client.callout.response.list(
-    {
-      sort: 'createdAt',
-      order: 'DESC',
-      limit,
-      rules: {
-        condition: 'AND',
-        rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
-      },
-    },
-    [GetCalloutResponseWith.Callout]
-  );
 
 const latestResponsesQuery = queryOptions({
   queryKey: ['callouts', 'responses', 'me', 'latest'],

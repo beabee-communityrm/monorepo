@@ -5,7 +5,7 @@ import ui from '@nuxt/ui/vue-plugin';
 import { VueQueryPlugin } from '@tanstack/vue-query';
 import { type App as VueApp, createApp, h } from 'vue';
 
-import { waitForBackend } from '#utils/api/client';
+import { waitForBackend } from '#utils/api';
 
 import App from '../App.vue';
 import { init as initErrorHandler } from './appsignal';
