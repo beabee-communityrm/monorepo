@@ -42,6 +42,8 @@ export default ({ command, mode }) => {
     '#layouts/': `${resolve(__dirname, './src/layouts')}/`,
     '#lib/': `${resolve(__dirname, './src/lib')}/`,
     '#pages/': `${resolve(__dirname, './src/pages')}/`,
+    '#queries/': `${resolve(__dirname, './src/queries')}/`,
+    '#route-queries/': `${resolve(__dirname, './src/route-queries')}/`,
     '#store/': `${resolve(__dirname, './src/store')}/`,
     '#type/': `${resolve(__dirname, './src/type')}/`,
     '#utils/': `${resolve(__dirname, './src/utils')}/`,
