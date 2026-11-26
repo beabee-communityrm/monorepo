@@ -3,27 +3,26 @@
 Pull requests are checked on every push, but the expensive tests only run in GitHub's merge queue. A PR merges only if every required check passes on the merge commit, and every commit on `main` deploys.
 
 ```
-PR push ──► check, lint ──► approval ──► merge queue: check, test, run-api-tests, run-browser-tests ──► main ──► Deploy
+PR push ──► check-and-unit-tests, lint ──► approval ──► merge queue: check-and-unit-tests, run-api-tests, run-browser-tests ──► main ──► Deploy
 ```
 
 ## Workflows
 
 | Workflow | Runs on | Does |
 |---|---|---|
-| `check.yml` → `check` | every PR push, merge queue | `yarn check` (types, lint, formatting) |
+| `check.yml` → `check-and-unit-tests` | every PR push, merge queue | `yarn check` (types, lint, formatting) and `yarn test` (unit tests) |
 | `lint-pr-title.yml` → `lint` | PR opened or edited | PR title is a conventional commit |
-| `test-unit.yml` → `test` | merge queue, manual | `yarn test` |
 | `test-api.yml` → `run-api-tests` | merge queue, manual | API tests against the `docker-compose.test.yml` stack |
 | `test-browser.yml` → `run-browser-tests` | merge queue, manual | Playwright tests against the same stack |
 | `deploy.yml` | push to `main` or `dev`, tags `v*` | builds and pushes the Docker images |
 | `database-report.yml` | push to `main`, manual | SchemaSpy report of the database schema |
 | `publish-npm.yml` | GitHub release, manual | see [Release Workflow](release-workflow.md) |
 
-The three test workflows also trigger on `pull_request`, but their jobs are skipped there. A PR has to show every required check before it can join the queue, and a skipped job counts as passed. The queue then runs them for real.
+The two E2E workflows also trigger on `pull_request`, but their jobs are skipped there. A PR has to show every required check before it can join the queue, and a skipped job counts as passed. The queue then runs them for real.
 
 ## Merging a pull request
 
-1. Get one approval. Pushing a new commit dismisses it.
+1. Get one approval, unless you are a repository admin. Pushing a new commit dismisses it.
 2. Click **Merge when ready**. The PR joins the queue, and GitHub tests it merged with `main` and any PRs queued ahead of it.
 3. If all checks pass, GitHub merges it. If one fails, the PR leaves the queue: fix it, get it approved again and queue it again.
 
@@ -33,7 +32,8 @@ To see test results before queueing, run the test workflows by hand on your bran
 
 These live in the GitHub settings, not in this repository:
 
-- **Ruleset on `main`:** merge queue (merge method MERGE), 1 approval, and the required checks `check`, `test`, `run-api-tests` and `run-browser-tests`. The test jobs are skipped on PRs, so without the merge queue these required checks would pass without any tests running.
+- **Ruleset "Merge queue and tests" on `main`:** merge queue (merge method MERGE) and the required checks `check-and-unit-tests`, `run-api-tests` and `run-browser-tests`, with no bypass. The E2E jobs are skipped on PRs, so without the merge queue these required checks would pass without any tests running.
+- **Ruleset "Review" on `main`:** 1 approval. Admins are exempt rather than allowed to bypass: a bypass only applies to a direct merge, which the merge queue doesn't allow.
 - **Merge commit message:** must be the PR title, see [Release Workflow](release-workflow.md#required-github-repo-setting).
 
 ## Deployment
@@ -49,7 +49,7 @@ These live in the GitHub settings, not in this repository:
 
 Deploy runs no tests itself: commits on `main` have passed the queue, and release tags are cut from `main`.
 
-`dev` deploys to the hosted dev environment. To try a feature branch there, merge it into `dev` and push; several branches can be on `dev` at once. `dev` has no queue or required checks, so a failing test doesn't stop a dev deploy, but a type error does, because the Docker builds compile the code.
+`dev` deploys to the hosted dev environment. To try a feature branch there, merge it into `dev` and push; several branches can be on `dev` at once. `dev` has no queue or required checks, so a failing test doesn't stop a dev deploy. A backend type error does, because the Docker build compiles the backend with `tsc`; the frontend builds don't type check.
 
 ## When a test fails
 

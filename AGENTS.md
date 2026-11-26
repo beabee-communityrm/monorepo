@@ -132,7 +132,7 @@ For all TypeScript, JavaScript, and Vue files:
 
 **Language:** Commits, PR titles and PR bodies in English, whatever language the chat is in
 
-**`main` ruleset:** 1 approval + `test` check required | every push dismisses existing approvals → warn before force-pushing an approved PR
+**`main` rulesets:** merge queue + checks `check-and-unit-tests`, `run-api-tests`, `run-browser-tests` | 1 approval, admins exempt | every push dismisses existing approvals → warn before force-pushing an approved PR
 
 **Authorization:** Always ask before committing unless user explicitly requests auto-commit. Show planned message + changed files, wait for confirmation.
 
