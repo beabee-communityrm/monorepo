@@ -1,3 +1,5 @@
+import type { PaymentStatus } from '@beabee/beabee-common';
+
 import config from '#config/config';
 import { log as mainLogger } from '#logging';
 import type { ContactContribution } from '#models/index';
@@ -85,6 +87,19 @@ class PaymentBulkService {
   ): Promise<Map<string, PaymentRecord | null>> {
     log.info(`Fetch ${ids.length} payments`);
     return await this.provider.fetchPaymentsByIds(ids);
+  }
+
+  /**
+   * Fetch invoices with the given status
+   *
+   * @param status The invoice status
+   * @returns When each invoice reached the status, by invoice id
+   */
+  async fetchInvoiceByStatus(
+    status: PaymentStatus
+  ): Promise<Map<string, Date>> {
+    log.info(`Fetch ${status} invoices`);
+    return await this.provider.fetchInvoiceByStatus(status);
   }
 
   /**

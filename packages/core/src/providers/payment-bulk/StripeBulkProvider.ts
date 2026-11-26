@@ -1,3 +1,5 @@
+import { PaymentStatus } from '@beabee/beabee-common';
+
 import { setTimeout } from 'node:timers/promises';
 
 import { Stripe, convertInvoiceToPayment, stripe } from '#lib/stripe';
@@ -340,6 +342,43 @@ export class StripeBulkProvider implements PaymentBulkProvider {
       }
     }
     return payments;
+  }
+
+  async fetchInvoiceByStatus(
+    status: PaymentStatus
+  ): Promise<Map<string, Date>> {
+    // The reverse of convertStatus
+    const stripeStatuses: Record<
+      PaymentStatus,
+      Stripe.InvoiceListParams.Status
+    > = {
+      [PaymentStatus.Draft]: 'draft',
+      [PaymentStatus.Pending]: 'open',
+      [PaymentStatus.Successful]: 'paid',
+      [PaymentStatus.Cancelled]: 'void',
+      [PaymentStatus.Failed]: 'uncollectible',
+    };
+    const stripeStatus = stripeStatuses[status];
+
+    log.info(`Fetching ${stripeStatus} Stripe invoices...`);
+    const invoices = await stripe.invoices
+      .list({ status: stripeStatus, limit: 100 })
+      .autoPagingToArray({ limit: 10000 });
+
+    return new Map(
+      invoices.map((invoice) => {
+        const transitions = invoice.status_transitions;
+        const reachedAt = {
+          draft: null,
+          open: transitions.finalized_at,
+          paid: transitions.paid_at,
+          uncollectible: transitions.marked_uncollectible_at,
+          void: transitions.voided_at,
+        }[stripeStatus];
+        // convert from unix seconds
+        return [invoice.id, new Date((reachedAt ?? invoice.created) * 1000)];
+      })
+    );
   }
 
   async fetchSubscriptionCreatedAts(): Promise<Map<string, Date>> {

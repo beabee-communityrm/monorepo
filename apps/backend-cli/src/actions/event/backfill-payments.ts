@@ -1,6 +1,6 @@
 import { ActivityEventType, PaymentStatus } from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';
-import { stripe } from '@beabee/core/lib/stripe';
+import { paymentBulkService } from '@beabee/core/services';
 
 import chalk from 'chalk';
 
@@ -96,24 +96,14 @@ const backfillPaymentFailed: EventBackfiller = {
     console.log(
       `${chalk.blue('→')} Querying Stripe for uncollectible invoices`
     );
-    const invoices = await stripe.invoices
-      .list({ status: 'uncollectible', limit: 100 })
-      .autoPagingToArray({ limit: 10000 });
+    const invoices = await paymentBulkService.fetchInvoiceByStatus(
+      PaymentStatus.Failed
+    );
     console.log(
-      `${chalk.blue('→')} Received ${invoices.length} uncollectible invoices`
+      `${chalk.blue('→')} Received ${invoices.size} uncollectible invoices`
     );
 
-    const params = [
-      eventType,
-      invoices.map((invoice) => invoice.id),
-      invoices.map(
-        (invoice) =>
-          new Date(
-            (invoice.status_transitions.marked_uncollectible_at ??
-              invoice.created) * 1000 // convert from unix seconds
-          )
-      ),
-    ];
+    const params = [eventType, [...invoices.keys()], [...invoices.values()]];
 
     if (!danger) {
       const [{ count }] = await em.query(
@@ -121,7 +111,7 @@ const backfillPaymentFailed: EventBackfiller = {
         params
       );
       console.log(
-        `${chalk.green('✓')} Would add ${count} ${eventType} event(s) from ${invoices.length} uncollectible invoice(s)`
+        `${chalk.green('✓')} Would add ${count} ${eventType} event(s) from ${invoices.size} uncollectible invoice(s)`
       );
       return [];
     }
@@ -136,7 +126,7 @@ const backfillPaymentFailed: EventBackfiller = {
     );
 
     console.log(
-      `${chalk.green('✓')} Added ${inserted.length} ${eventType} event(s) from ${invoices.length} uncollectible invoice(s)`
+      `${chalk.green('✓')} Added ${inserted.length} ${eventType} event(s) from ${invoices.size} uncollectible invoice(s)`
     );
     return inserted.map(({ id }) => id);
   },
