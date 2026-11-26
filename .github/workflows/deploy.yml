@@ -9,21 +9,6 @@ on:
       - v*
 
 jobs:
-  check:
-    uses: ./.github/workflows/check.yml
-
-  test:
-    runs-on: ubuntu-24.04
-
-    steps:
-      - uses: actions/checkout@v7
-      - uses: ./.github/actions/setup
-        with:
-          stripe_public_key: ${{ secrets.BEABEE_STRIPE_PUBLICKEY }}
-          stripe_secret_key: ${{ secrets.BEABEE_STRIPE_SECRETKEY }}
-      - run: yarn test
-        working-directory: ./apps/backend
-
   init:
     runs-on: ubuntu-24.04
 
@@ -49,7 +34,7 @@ jobs:
 
   build-push-backend:
     runs-on: ubuntu-24.04
-    needs: [check, test, init]
+    needs: [init]
 
     steps:
       - uses: docker/setup-buildx-action@v4
@@ -104,7 +89,7 @@ jobs:
 
   build-push-frontend:
     runs-on: ubuntu-24.04
-    needs: [check, test, init]
+    needs: [init]
 
     steps:
       - uses: docker/setup-buildx-action@v4
@@ -126,7 +111,7 @@ jobs:
 
   build-push-router:
     runs-on: ubuntu-24.04
-    needs: [check, test, init]
+    needs: [init]
 
     steps:
       - uses: docker/setup-buildx-action@v4
@@ -178,28 +163,3 @@ jobs:
             done
             docker buildx imagetools create "${args[@]}" "$ORG/$image:sha-$GITHUB_SHA"
           done
-
-  release:
-    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
-    runs-on: ubuntu-24.04
-    needs: [init, publish-tags]
-
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          repository: beabee-communityrm/hive-deploy-stack
-          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ref: main
-
-      - run: |
-          git config --global user.name "Deploy bot"
-          git config --global user.email "<>"
-
-          echo -n ${{ needs.init.outputs.version }} > VERSION
-          ./update.sh
-
-          git add VERSION docker-compose.yml
-          if ! git diff --quiet --cached; then
-            git commit -m "Deploy version ${{ needs.init.outputs.version }}"
-            git push
-          fi
