@@ -134,7 +134,7 @@ export class SignupController {
     @Req() req: Request,
     @Body() { joinFlowId }: SignupConfirmEmailParams
   ): Promise<ConfirmSignupResultDto> {
-    const result = await SignupService.finalizeSignup(joinFlowId);
+    const result = await SignupService.finalizeSignup(joinFlowId, true);
     if (!result) {
       throw new NotFoundError();
     }

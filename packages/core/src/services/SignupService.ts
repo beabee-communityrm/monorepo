@@ -117,7 +117,7 @@ class SignupService {
       // being processed elsewhere, probably because the user opened the URL
       // twice accidentally. Don't send the confirmation email though as
       // otherwise that will be sent twice
-      if (!(await this.finalizeSignup(signupFlow.id))) {
+      if (!(await this.finalizeSignup(signupFlow.id, false))) {
         return;
       }
     }
@@ -206,10 +206,15 @@ class SignupService {
   /**
    * Finalizes a signup flow after email confirmation, creating the contact
    * @param signupFlowId - The ID of the signup flow to finalize
+   * @param emailConfirmed - Whether the caller has proven access to the
+   * flow's email address
    * @returns The created contact, where to send them next and when the flow
    * was finalized
    */
-  async finalizeSignup(signupFlowId: string): Promise<
+  async finalizeSignup(
+    signupFlowId: string,
+    emailConfirmed: boolean
+  ): Promise<
     | {
         contact: Contact;
         clientSecret?: string;
@@ -279,7 +284,10 @@ class SignupService {
     let completedFlow;
     const partialContact: Partial<Contact> & { email: string } = {
       email: signupFlow.email,
-      password: signupFlow.password,
+      // A password only counts once the address is confirmed, and a signup
+      // without one keeps the password an existing contact already has
+      ...(emailConfirmed &&
+        signupFlow.password.hash && { password: signupFlow.password }),
       ...(signupFlow.firstname && { firstname: signupFlow.firstname }),
       ...(signupFlow.lastname && { lastname: signupFlow.lastname }),
     };
@@ -309,7 +317,11 @@ class SignupService {
     }
 
     if (contact) {
-      await ContactsService.updateContact(contact, partialContact);
+      // Anyone who knows the address can start a signup, so only a confirmed
+      // one may change the contact's password and name
+      if (emailConfirmed) {
+        await ContactsService.updateContact(contact, partialContact);
+      }
       // Only an explicit subscription may overwrite an existing contact's preferences
       if (signupFlow.newsletterStatus === NewsletterStatus.Subscribed) {
         await NewsletterService.upsertContact(contact, {
