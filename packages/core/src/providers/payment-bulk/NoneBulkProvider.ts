@@ -23,7 +23,7 @@ export class NoneBulkProvider implements PaymentBulkProvider {
   async fetchPaymentsByIds(): Promise<Map<string, PaymentRecord | null>> {
     return new Map();
   }
-  async fetchInvoiceByStatus(): Promise<Map<string, Date>> {
+  async fetchPaymentDatesByStatus(): Promise<Map<string, Date>> {
     return new Map();
   }
   async fetchSubscriptionCreatedAts(): Promise<Map<string, Date>> {

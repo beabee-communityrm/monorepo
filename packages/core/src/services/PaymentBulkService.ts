@@ -95,11 +95,11 @@ class PaymentBulkService {
    * @param status The invoice status
    * @returns When each invoice reached the status, by invoice id
    */
-  async fetchInvoiceByStatus(
+  async fetchPaymentDatesByStatus(
     status: PaymentStatus
   ): Promise<Map<string, Date>> {
     log.info(`Fetch ${status} invoices`);
-    return await this.provider.fetchInvoiceByStatus(status);
+    return await this.provider.fetchPaymentDatesByStatus(status);
   }
 
   /**

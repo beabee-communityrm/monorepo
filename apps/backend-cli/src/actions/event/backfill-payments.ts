@@ -61,8 +61,8 @@ const refillPaymentSuccessful: EventBackfiller = {
   },
 };
 
-// Find uncollectible invoices ($2 ids, $3 dates) with a contact-linked payment
-// (a Stripe payment's id is its invoice id) but without a failed event
+// Find uncollectible payments ($2 ids, $3 dates) with a contact-linked payment
+// (a Stripe payment's id is its payment id) but without a failed event
 const noFailedEvent = `
   FROM unnest($2::text[], $3::timestamptz[]) AS i(id, "uncollectibleAt")
   JOIN payment p ON p.id = i.id
@@ -76,7 +76,7 @@ const noFailedEvent = `
 
 /**
  * Backfill contact.payment.failed events
- * Uncollectible invoices are fetched from Stripe and dated by when they were
+ * Uncollectible payments are fetched from Stripe and dated by when they were
  * marked uncollectible
  */
 const backfillPaymentFailed: EventBackfiller = {
@@ -94,16 +94,16 @@ const backfillPaymentFailed: EventBackfiller = {
     }
 
     console.log(
-      `${chalk.blue('→')} Querying Stripe for uncollectible invoices`
+      `${chalk.blue('→')} Querying Stripe for uncollectible payments`
     );
-    const invoices = await paymentBulkService.fetchInvoiceByStatus(
+    const payments = await paymentBulkService.fetchPaymentDatesByStatus(
       PaymentStatus.Failed
     );
     console.log(
-      `${chalk.blue('→')} Received ${invoices.size} uncollectible invoices`
+      `${chalk.blue('→')} Received ${payments.size} uncollectible payments`
     );
 
-    const params = [eventType, [...invoices.keys()], [...invoices.values()]];
+    const params = [eventType, [...payments.keys()], [...payments.values()]];
 
     if (!danger) {
       const [{ count }] = await em.query(
@@ -111,7 +111,7 @@ const backfillPaymentFailed: EventBackfiller = {
         params
       );
       console.log(
-        `${chalk.green('✓')} Would add ${count} ${eventType} event(s) from ${invoices.size} uncollectible invoice(s)`
+        `${chalk.green('✓')} Would add ${count} ${eventType} event(s) from ${payments.size} uncollectible payment(s)`
       );
       return [];
     }
@@ -126,7 +126,7 @@ const backfillPaymentFailed: EventBackfiller = {
     );
 
     console.log(
-      `${chalk.green('✓')} Added ${inserted.length} ${eventType} event(s) from ${invoices.size} uncollectible invoice(s)`
+      `${chalk.green('✓')} Added ${inserted.length} ${eventType} event(s) from ${payments.size} uncollectible payment(s)`
     );
     return inserted.map(({ id }) => id);
   },

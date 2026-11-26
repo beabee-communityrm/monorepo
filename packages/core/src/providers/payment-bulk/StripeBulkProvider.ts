@@ -344,7 +344,7 @@ export class StripeBulkProvider implements PaymentBulkProvider {
     return payments;
   }
 
-  async fetchInvoiceByStatus(
+  async fetchPaymentDatesByStatus(
     status: PaymentStatus
   ): Promise<Map<string, Date>> {
     // The reverse of convertStatus
@@ -361,12 +361,11 @@ export class StripeBulkProvider implements PaymentBulkProvider {
     const stripeStatus = stripeStatuses[status];
 
     log.info(`Fetching ${stripeStatus} Stripe invoices...`);
-    const invoices = await stripe.invoices
-      .list({ status: stripeStatus, limit: 100 })
-      .autoPagingToArray({ limit: 10000 });
-
-    return new Map(
-      invoices.map((invoice) => {
+    const dates = new Map<string, Date>();
+    for await (const invoices of fetchPages((page) =>
+      stripe.invoices.list({ status: stripeStatus, ...page })
+    )) {
+      for (const invoice of invoices) {
         const transitions = invoice.status_transitions;
         const reachedAt = {
           draft: null,
@@ -376,9 +375,11 @@ export class StripeBulkProvider implements PaymentBulkProvider {
           void: transitions.voided_at,
         }[stripeStatus];
         // convert from unix seconds
-        return [invoice.id, new Date((reachedAt ?? invoice.created) * 1000)];
-      })
-    );
+        dates.set(invoice.id, new Date((reachedAt ?? invoice.created) * 1000));
+      }
+      log.info(`• Fetched ${dates.size} ${stripeStatus} invoices`);
+    }
+    return dates;
   }
 
   async fetchSubscriptionCreatedAts(): Promise<Map<string, Date>> {

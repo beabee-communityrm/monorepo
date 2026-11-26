@@ -45,7 +45,7 @@ export interface PaymentBulkProvider {
    * Fetch the invoices with the given status
    * @returns When each invoice reached the status, by invoice id
    */
-  fetchInvoiceByStatus(status: PaymentStatus): Promise<Map<string, Date>>;
+  fetchPaymentDatesByStatus(status: PaymentStatus): Promise<Map<string, Date>>;
 
   /**
    * Fetch when each subscription was created. The account can be shared with
