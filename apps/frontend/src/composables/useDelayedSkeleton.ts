@@ -15,7 +15,7 @@ import { LOADING } from '#constants/loading';
 export function useDelayedSkeleton(
   loading: Ref<boolean>,
   startedAt = performance.now()
-) {
+): Ref<boolean> {
   const visible = ref(false);
   let timer: ReturnType<typeof setTimeout> | undefined;
   let shownAt = 0;

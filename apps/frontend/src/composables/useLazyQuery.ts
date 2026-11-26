@@ -15,6 +15,7 @@ import {
 import { useDelayedSkeleton } from '#composables/useDelayedSkeleton';
 import { queryClient } from '#lib/query';
 import { getPageLoadStart } from '#lib/route-queries';
+import type { LazyQuery } from '#type/lazy-query';
 
 /**
  * A block's view of a route query, for a block that loads on its own. What
@@ -37,7 +38,7 @@ export function useLazyQuery<TQueryFnData, TQueryKey extends QueryKey>(
       queryKey: TQueryKey;
     }
   >
-) {
+): LazyQuery<TQueryFnData> {
   // A route query the page started counts from when the page's loads did.
   // One the block starts itself counts from now.
   const startedAt =
@@ -49,25 +50,22 @@ export function useLazyQuery<TQueryFnData, TQueryKey extends QueryKey>(
       : performance.now();
   const query = useQuery(options);
 
-  /** Whether the last finished load failed. A query with no data goes back to
-   * pending when it loads again, so this keeps the error up until it's done. */
+  // A query with no data goes back to pending when it loads again, so this
+  // keeps the error up until it's done.
   const failed = ref(query.isError.value);
   watch(query.status, (status) => {
     if (status !== 'pending') failed.value = status === 'error';
   });
 
-  /** Whether to show a skeleton: whenever there's neither data nor an error */
   const skeleton = useDelayedSkeleton(
     computed(() => query.data.value === undefined && !failed.value),
     startedAt
   );
 
-  /** The loaded data, held back while a skeleton is still showing */
   const data = computed(() =>
     skeleton.value || failed.value ? undefined : query.data.value
   );
 
-  /** Loads the data again; rejects if it still fails */
   async function retry() {
     const result = await query.refetch();
     if (result.isError) throw result.error;

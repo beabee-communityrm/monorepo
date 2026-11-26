@@ -14,6 +14,7 @@ export * from './get-callout-response-map-data-with-address';
 export * from './integration';
 export * from './item-with-status';
 export * from './join-form-data';
+export * from './lazy-query';
 export * from './locale-prop';
 export * from './map';
 export * from './navigation';

@@ -26,7 +26,7 @@ export const queryClient = new QueryClient({
 
 /** Empties the cache whenever the logged-in user changes, as cached data
  * belongs to whoever was logged in when it loaded */
-export function clearCacheOnUserChange() {
+export function clearCacheOnUserChange(): void {
   watch(
     () => currentUser.value?.id,
     () => queryClient.clear(),

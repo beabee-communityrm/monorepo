@@ -37,7 +37,7 @@ let shownLoadStart = 0;
  * When the loads of the navigation that showed the current page started, as a
  * `performance.now()` time. A navigation still under way doesn't count.
  */
-export const getPageLoadStart = () => shownLoadStart;
+export const getPageLoadStart = (): number => shownLoadStart;
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -76,7 +76,7 @@ async function prefetchRouteQueries(to: RouteLocationNormalized) {
 }
 
 /** Starts each navigation's route queries, and holds it while they load */
-export function installRouteQueries(router: Router) {
+export function installRouteQueries(router: Router): void {
   router.beforeResolve((to) => {
     loadStart = performance.now();
     return prefetchRouteQueries(to);
