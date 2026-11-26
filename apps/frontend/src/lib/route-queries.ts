@@ -5,6 +5,7 @@ import {
 } from '@tanstack/vue-query';
 import type { RouteLocationNormalized, Router } from 'vue-router';
 
+import { markStartingQuery } from '#lib/dev-panel';
 import { LOADING } from '#lib/loading';
 import { queryClient } from '#lib/query';
 import type { RouteQueries, RouteQuery } from '#type';
@@ -61,7 +62,9 @@ async function prefetchRouteQueries(to: RouteLocationNormalized) {
 
     for (const query of mod.routeQueries(to)) {
       const cached = queryClient.getQueryData(query.queryKey) !== undefined;
+      markStartingQuery(query.queryKey);
       const load = query.prefetch();
+      markStartingQuery();
       if (cached) continue;
       if (query.wait) waitedLoads.push(load);
       else lazyLoads.push(load);

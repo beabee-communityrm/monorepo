@@ -1,0 +1,7 @@
+{
+  "extends": "@beabee/tsconfig/tsconfig.frontend.json",
+  "compilerOptions": {
+    "types": ["vite/client", "node"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.vue"]
+}

@@ -13,6 +13,7 @@ import {
 } from 'vue';
 
 import { useDelayedSkeleton } from '#composables/useDelayedSkeleton';
+import { trackQueryReader } from '#lib/dev-panel';
 import { queryClient } from '#lib/query';
 import { getPageLoadStart } from '#lib/route-queries';
 
@@ -48,6 +49,7 @@ export function useLazyQuery<TQueryFnData, TQueryKey extends QueryKey>(
       ? getPageLoadStart()
       : performance.now();
   const query = useQuery(options);
+  trackQueryReader(() => toValue(options).queryKey);
 
   /** Whether the last finished load failed. A query with no data goes back to
    * pending when it loads again, so this keeps the error up until it's done. */

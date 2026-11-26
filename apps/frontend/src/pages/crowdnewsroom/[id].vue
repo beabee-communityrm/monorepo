@@ -121,6 +121,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 import LoadError from '#components/LoadError.vue';
+import { trackQueryReader } from '#lib/dev-panel';
 import { currentUser, isEmbed } from '#store';
 
 const { t } = useI18n();
@@ -129,6 +130,7 @@ const route = useRoute('/crowdnewsroom/[id]');
 const options = () =>
   calloutQuery(route.params.id, route.query.lang?.toString());
 const { data: callout, error, refetch } = useQuery(options);
+trackQueryReader(() => options().queryKey);
 
 /** Loads the CrowdNewsroom again; rejects if it still fails */
 async function reload() {
