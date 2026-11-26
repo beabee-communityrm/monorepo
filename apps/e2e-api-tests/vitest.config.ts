@@ -1,8 +1,10 @@
-import { defineConfig } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
     include: ['src/**/*.test.ts'],
+    // The Stripe tests have their own config and script
+    exclude: [...configDefaults.exclude, 'src/tests/stripe/**'],
 
     environment: 'node',
 

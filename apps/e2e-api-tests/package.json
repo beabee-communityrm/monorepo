@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest run",
+    "test:stripe": "vitest run --config vitest.stripe.config.ts",
     "test:watch": "vitest",
     "format": "prettier --write ."
   },
@@ -13,12 +14,15 @@
   },
   "dependencies": {
     "@beabee/client": "workspace:*",
-    "@beabee/test-utils": "workspace:*"
+    "@beabee/test-utils": "workspace:*",
+    "pg": "^8.12.0",
+    "stripe": "^15.12.0"
   },
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
     "@beabee/tsconfig": "workspace:^",
     "@types/node": "^26.6.6",
+    "@types/pg": "^8.11.10",
     "prettier": "^3.9.10",
     "typescript": "~7.0.2",
     "vitest": "^4.1.5"
