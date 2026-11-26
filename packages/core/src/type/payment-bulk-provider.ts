@@ -1,3 +1,5 @@
+import type { PaymentStatus } from '@beabee/beabee-common';
+
 import type { ContactContribution } from '#models/index';
 
 import type { ContributionStates } from './contribution-state.js';
@@ -38,4 +40,17 @@ export interface PaymentBulkProvider {
    * @returns Each payment by id, null if it no longer exists
    */
   fetchPaymentsByIds(ids: string[]): Promise<Map<string, PaymentRecord | null>>;
+
+  /**
+   * Fetch the invoices with the given status
+   * @returns When each invoice reached the status, by invoice id
+   */
+  fetchPaymentDatesByStatus(status: PaymentStatus): Promise<Map<string, Date>>;
+
+  /**
+   * Fetch when each subscription was created. The account can be shared with
+   * other integrations, so these can include subscriptions that aren't ours.
+   * @returns Each subscription's creation date by id
+   */
+  fetchSubscriptionCreatedAts(): Promise<Map<string, Date>>;
 }

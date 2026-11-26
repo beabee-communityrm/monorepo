@@ -1,6 +1,6 @@
 import { ActivityEventType, PaymentStatus } from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';
-import { stripe } from '@beabee/core/lib/stripe';
+import { paymentBulkService } from '@beabee/core/services';
 
 import chalk from 'chalk';
 
@@ -46,6 +46,9 @@ const refillPaymentSuccessful: EventBackfiller = {
   ...insertPaymentSuccessful,
   backfill: async (danger, em) => {
     if (danger) {
+      console.log(
+        `${chalk.blue('→')} Deleting all ${insertPaymentSuccessful.eventType} events`
+      );
       const [, deleted] = await em.query(
         `DELETE FROM activity_event WHERE "eventType" = $1`,
         [insertPaymentSuccessful.eventType]
@@ -58,8 +61,8 @@ const refillPaymentSuccessful: EventBackfiller = {
   },
 };
 
-// Find uncollectible invoices ($2 ids, $3 dates) with a contact-linked payment
-// (a Stripe payment's id is its invoice id) but without a failed event
+// Find uncollectible payments ($2 ids, $3 dates) with a contact-linked payment
+// (a Stripe payment's id is its payment id) but without a failed event
 const noFailedEvent = `
   FROM unnest($2::text[], $3::timestamptz[]) AS i(id, "uncollectibleAt")
   JOIN payment p ON p.id = i.id
@@ -73,7 +76,7 @@ const noFailedEvent = `
 
 /**
  * Backfill contact.payment.failed events
- * Uncollectible invoices are fetched from Stripe and dated by when they were
+ * Uncollectible payments are fetched from Stripe and dated by when they were
  * marked uncollectible
  */
 const backfillPaymentFailed: EventBackfiller = {
@@ -90,21 +93,17 @@ const backfillPaymentFailed: EventBackfiller = {
       return [];
     }
 
-    const invoices = await stripe.invoices
-      .list({ status: 'uncollectible', limit: 100 })
-      .autoPagingToArray({ limit: 10000 });
+    console.log(
+      `${chalk.blue('→')} Querying Stripe for uncollectible payments`
+    );
+    const payments = await paymentBulkService.fetchPaymentDatesByStatus(
+      PaymentStatus.Failed
+    );
+    console.log(
+      `${chalk.blue('→')} Received ${payments.size} uncollectible payments`
+    );
 
-    const params = [
-      eventType,
-      invoices.map((invoice) => invoice.id),
-      invoices.map(
-        (invoice) =>
-          new Date(
-            (invoice.status_transitions.marked_uncollectible_at ??
-              invoice.created) * 1000 // convert from unix seconds
-          )
-      ),
-    ];
+    const params = [eventType, [...payments.keys()], [...payments.values()]];
 
     if (!danger) {
       const [{ count }] = await em.query(
@@ -112,7 +111,7 @@ const backfillPaymentFailed: EventBackfiller = {
         params
       );
       console.log(
-        `${chalk.green('✓')} Would add ${count} ${eventType} event(s) from ${invoices.length} uncollectible invoice(s)`
+        `${chalk.green('✓')} Would add ${count} ${eventType} event(s) from ${payments.size} uncollectible payment(s)`
       );
       return [];
     }
@@ -127,7 +126,7 @@ const backfillPaymentFailed: EventBackfiller = {
     );
 
     console.log(
-      `${chalk.green('✓')} Added ${inserted.length} ${eventType} event(s) from ${invoices.length} uncollectible invoice(s)`
+      `${chalk.green('✓')} Added ${inserted.length} ${eventType} event(s) from ${payments.size} uncollectible payment(s)`
     );
     return inserted.map(({ id }) => id);
   },

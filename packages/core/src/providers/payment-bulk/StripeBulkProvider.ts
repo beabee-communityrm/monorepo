@@ -1,3 +1,5 @@
+import { PaymentStatus } from '@beabee/beabee-common';
+
 import { setTimeout } from 'node:timers/promises';
 
 import { Stripe, convertInvoiceToPayment, stripe } from '#lib/stripe';
@@ -340,5 +342,58 @@ export class StripeBulkProvider implements PaymentBulkProvider {
       }
     }
     return payments;
+  }
+
+  async fetchPaymentDatesByStatus(
+    status: PaymentStatus
+  ): Promise<Map<string, Date>> {
+    // The reverse of convertStatus
+    const stripeStatuses: Record<
+      PaymentStatus,
+      Stripe.InvoiceListParams.Status
+    > = {
+      [PaymentStatus.Draft]: 'draft',
+      [PaymentStatus.Pending]: 'open',
+      [PaymentStatus.Successful]: 'paid',
+      [PaymentStatus.Cancelled]: 'void',
+      [PaymentStatus.Failed]: 'uncollectible',
+    };
+    const stripeStatus = stripeStatuses[status];
+
+    log.info(`Fetching ${stripeStatus} Stripe invoices...`);
+    const dates = new Map<string, Date>();
+    for await (const invoices of fetchPages((page) =>
+      stripe.invoices.list({ status: stripeStatus, ...page })
+    )) {
+      for (const invoice of invoices) {
+        const transitions = invoice.status_transitions;
+        const reachedAt = {
+          draft: null,
+          open: transitions.finalized_at,
+          paid: transitions.paid_at,
+          uncollectible: transitions.marked_uncollectible_at,
+          void: transitions.voided_at,
+        }[stripeStatus];
+        // convert from unix seconds
+        dates.set(invoice.id, new Date((reachedAt ?? invoice.created) * 1000));
+      }
+      log.info(`• Fetched ${dates.size} ${stripeStatus} invoices`);
+    }
+    return dates;
+  }
+
+  async fetchSubscriptionCreatedAts(): Promise<Map<string, Date>> {
+    log.info('📡 Fetching Stripe subscriptions...');
+    const createdAts = new Map<string, Date>();
+    for await (const subscriptions of fetchPages((page) =>
+      stripe.subscriptions.list({ status: 'all', ...page })
+    )) {
+      for (const subscription of subscriptions) {
+        // convert from unix seconds
+        createdAts.set(subscription.id, new Date(subscription.created * 1000));
+      }
+      log.info(`  • Fetched ${createdAts.size} subscriptions`);
+    }
+    return createdAts;
   }
 }
