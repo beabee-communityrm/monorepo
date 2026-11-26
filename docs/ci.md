@@ -3,23 +3,22 @@
 Pull requests are checked on every push, but the expensive tests only run in GitHub's merge queue. A PR merges only if every required check passes on the merge commit, and every commit on `main` deploys.
 
 ```
-PR push ──► check, lint ──► approval ──► merge queue: check, test, run-api-tests, run-browser-tests ──► main ──► Deploy
+PR push ──► check, lint ──► approval ──► merge queue: check, run-api-tests, run-browser-tests ──► main ──► Deploy
 ```
 
 ## Workflows
 
 | Workflow | Runs on | Does |
 |---|---|---|
-| `check.yml` → `check` | every PR push, merge queue | `yarn check` (types, lint, formatting) |
+| `check.yml` → `check` | every PR push, merge queue | `yarn check` (types, lint, formatting) and `yarn test` (unit tests) |
 | `lint-pr-title.yml` → `lint` | PR opened or edited | PR title is a conventional commit |
-| `test-unit.yml` → `test` | merge queue, manual | `yarn test` |
 | `test-api.yml` → `run-api-tests` | merge queue, manual | API tests against the `docker-compose.test.yml` stack |
 | `test-browser.yml` → `run-browser-tests` | merge queue, manual | Playwright tests against the same stack |
 | `deploy.yml` | push to `main` or `dev`, tags `v*` | builds and pushes the Docker images |
 | `database-report.yml` | push to `main`, manual | SchemaSpy report of the database schema |
 | `publish-npm.yml` | GitHub release, manual | see [Release Workflow](release-workflow.md) |
 
-The three test workflows also trigger on `pull_request`, but their jobs are skipped there. A PR has to show every required check before it can join the queue, and a skipped job counts as passed. The queue then runs them for real.
+The two E2E workflows also trigger on `pull_request`, but their jobs are skipped there. A PR has to show every required check before it can join the queue, and a skipped job counts as passed. The queue then runs them for real.
 
 ## Merging a pull request
 
@@ -33,7 +32,7 @@ To see test results before queueing, run the test workflows by hand on your bran
 
 These live in the GitHub settings, not in this repository:
 
-- **Ruleset on `main`:** merge queue (merge method MERGE), 1 approval, and the required checks `check`, `test`, `run-api-tests` and `run-browser-tests`. The test jobs are skipped on PRs, so without the merge queue these required checks would pass without any tests running.
+- **Ruleset on `main`:** merge queue (merge method MERGE), 1 approval, and the required checks `check`, `run-api-tests` and `run-browser-tests`. The E2E jobs are skipped on PRs, so without the merge queue these required checks would pass without any tests running.
 - **Merge commit message:** must be the PR title, see [Release Workflow](release-workflow.md#required-github-repo-setting).
 
 ## Deployment
