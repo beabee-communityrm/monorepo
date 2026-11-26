@@ -3,7 +3,7 @@ import { ApiError } from '@beabee/client';
 import { QueryClient } from '@tanstack/vue-query';
 import { watch } from 'vue';
 
-import { LOADING } from '#lib/loading';
+import { LOADING } from '#constants/loading';
 import { currentUser } from '#store/currentUser';
 
 export const queryClient = new QueryClient({

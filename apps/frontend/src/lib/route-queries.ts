@@ -5,7 +5,7 @@ import {
 } from '@tanstack/vue-query';
 import type { RouteLocationNormalized, Router } from 'vue-router';
 
-import { LOADING } from '#lib/loading';
+import { LOADING } from '#constants/loading';
 import { queryClient } from '#lib/query';
 import type { RouteQueries, RouteQuery } from '#type';
 

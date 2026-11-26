@@ -1,6 +1,6 @@
 import { type Ref, onBeforeUnmount, ref, watch } from 'vue';
 
-import { LOADING } from '#lib/loading';
+import { LOADING } from '#constants/loading';
 
 /**
  * Whether to show a skeleton for something that's loading. It only appears

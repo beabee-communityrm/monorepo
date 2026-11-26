@@ -41,7 +41,7 @@ import {
   useRouter,
 } from 'vue-router';
 
-import { LOADING } from '#lib/loading';
+import { LOADING } from '#constants/loading';
 import { generalContentLoaded } from '#store/generalContent';
 
 const { t } = useI18n();

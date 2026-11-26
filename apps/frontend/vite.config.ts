@@ -38,6 +38,7 @@ export default ({ command, mode }) => {
   const alias = {
     '#components/': `${resolve(__dirname, './src/components')}/`,
     '#composables/': `${resolve(__dirname, './src/composables')}/`,
+    '#constants/': `${resolve(__dirname, './src/constants')}/`,
     '#layouts/': `${resolve(__dirname, './src/layouts')}/`,
     '#lib/': `${resolve(__dirname, './src/lib')}/`,
     '#pages/': `${resolve(__dirname, './src/pages')}/`,
