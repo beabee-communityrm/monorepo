@@ -79,8 +79,7 @@ export const adminMenu = computed<MenuSection[]>(() => [
         href: '/admin/activity',
         icon: faFileWaveform,
         isActive: /^\/admin\/activity.*/,
-        // Not shown in the menu, the page is only reachable by its URL
-        visible: false,
+        visible: canAdmin.value,
       },
       {
         title: 'menu.callouts',
