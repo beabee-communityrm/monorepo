@@ -10,7 +10,7 @@ import {
 import { randomUUID } from 'crypto';
 import { extname } from 'path';
 import { HttpError } from 'routing-controllers';
-import sharp from 'sharp';
+import sharp, { type Metadata, type Sharp, type SharpOptions } from 'sharp';
 import { Readable } from 'stream';
 import { buffer } from 'stream/consumers';
 import { pipeline } from 'stream/promises';
@@ -110,12 +110,12 @@ export class ImageService extends BaseS3ObjectService<ImageServiceConfig> {
       const isSvg = originalMimetype === 'image/svg+xml';
 
       // Bound decode memory: reject oversized inputs and avoid random access
-      const sharpOptions: sharp.SharpOptions = {
+      const sharpOptions: SharpOptions = {
         limitInputPixels: this.config.maxInputPixels,
         sequentialRead: true,
       };
 
-      let image: sharp.Sharp;
+      let image: Sharp;
       let svgBuffer: Buffer | undefined;
 
       if (isSvg) {
@@ -130,7 +130,7 @@ export class ImageService extends BaseS3ObjectService<ImageServiceConfig> {
         await pipeline(stream, image);
       }
 
-      let metadata: sharp.Metadata;
+      let metadata: Metadata;
       try {
         metadata = await image.metadata();
       } catch (error) {
@@ -258,12 +258,6 @@ export class ImageService extends BaseS3ObjectService<ImageServiceConfig> {
           plugins: [
             {
               name: 'preset-default',
-              params: {
-                overrides: {
-                  // Disable removeViewBox to preserve the original aspect ratio
-                  removeViewBox: false,
-                },
-              },
             },
           ],
         });

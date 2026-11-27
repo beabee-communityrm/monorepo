@@ -97,8 +97,6 @@ export const getMimetypeFromDecoderFormat = (
   format: keyof FormatEnum
 ): string => {
   switch (format) {
-    case 'avif':
-      return 'image/avif';
     case 'dz':
       return 'image/vnd.dz';
     case 'fits':
@@ -107,10 +105,6 @@ export const getMimetypeFromDecoderFormat = (
       return 'image/gif';
     case 'heif':
       return 'image/heif';
-    case 'input':
-      return 'image/x-icon';
-    case 'jpg':
-      return 'image/jpeg';
     case 'jpeg':
       return 'image/jpeg';
     case 'jp2':
@@ -130,10 +124,7 @@ export const getMimetypeFromDecoderFormat = (
     case 'svg':
       return 'image/svg+xml';
     case 'tiff':
-    case 'tif':
       return 'image/tiff';
-    case 'v':
-      return 'image/x-icon';
     case 'webp':
       return 'image/webp';
     default:
