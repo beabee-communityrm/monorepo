@@ -25,6 +25,6 @@
     "@types/pg": "^8.11.10",
     "prettier": "^3.9.10",
     "typescript": "~7.0.2",
-    "vitest": "^4.1.5"
+    "vitest": "^5.1.1"
   }
 }

@@ -359,6 +359,7 @@ watch(
   localData,
   (newData) => {
     // Sync data with parent component
+    // eslint-disable-next-line vue/no-mutating-props
     Object.assign(props.data, newData);
     emit('update:validated', true);
   },
