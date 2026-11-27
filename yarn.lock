@@ -793,7 +793,7 @@ __metadata:
     "@inquirer/prompts": "npm:^8.8.1"
     chalk: "npm:^6.0.1"
     concurrently: "npm:^10.0.7"
-    csv-parse: "npm:^5.6.0"
+    csv-parse: "npm:^7.0.3"
     moment: "npm:^2.31.0"
     prettier: "npm:^3.9.10"
     typescript: "npm:~7.0.2"
@@ -833,7 +833,7 @@ __metadata:
     connect-pg-simple: "npm:^10.0.0"
     cookie-parser: "npm:^1.4.7"
     cors: "npm:^2.8.6"
-    csv-parse: "npm:^5.6.0"
+    csv-parse: "npm:^7.0.3"
     csv-stringify: "npm:^6.9.0"
     date-fns: "npm:^4.4.0"
     dpdm: "npm:^4.3.0"
@@ -9810,6 +9810,13 @@ __metadata:
   version: 5.6.0
   resolution: "csv-parse@npm:5.6.0"
   checksum: 10c0/52f5e6c45359902e0c8e57fc2eeed41366dc6b6d283b495b538dd50c8e8510413d6f924096ea056319cbbb8ed26e111c3a3485d7985c021bcf5abaa9e92425c7
+  languageName: node
+  linkType: hard
+
+"csv-parse@npm:^7.0.3":
+  version: 7.0.3
+  resolution: "csv-parse@npm:7.0.3"
+  checksum: 10c0/90d444df5bb14a5531fb87163be5236951a43092934c9ea10e1308cceefdd692c8c0b49f93c616a92a1c9695f371a376268bf45325bb88f60a1328274748cc25
   languageName: node
   linkType: hard
 
