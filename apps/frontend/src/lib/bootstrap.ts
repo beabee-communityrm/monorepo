@@ -5,12 +5,12 @@ import ui from '@nuxt/ui/vue-plugin';
 import { VueQueryPlugin } from '@tanstack/vue-query';
 import { type App as VueApp, createApp, h } from 'vue';
 
-import { waitForBackend } from '#utils/api/client';
+import { waitForBackend } from '#utils/api';
 
 import App from '../App.vue';
 import { init as initErrorHandler } from './appsignal';
 import { i18n } from './i18n';
-import { clearCacheOnUserChange, queryClient } from './query';
+import { clearCacheOnUserChange, queryClient, toastQueryErrors } from './query';
 import { installRouteGuard } from './route-guard';
 import { installRouteQueries } from './route-queries';
 import router from './router';
@@ -45,6 +45,7 @@ export async function startMainApp() {
   app.use(icons);
   app.use(ui);
   app.use(VueQueryPlugin, { queryClient });
+  toastQueryErrors(app);
 
   app.mount('#app');
 }

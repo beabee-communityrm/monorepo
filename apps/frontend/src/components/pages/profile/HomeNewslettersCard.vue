@@ -7,14 +7,15 @@
 -->
 <template>
   <HomeListCard
-    v-if="groups?.length || error"
+    v-if="groups?.length || failed"
     :title="t('homePage.yourNewsletters')"
     icon="i-lucide-mail"
     :count="
       groups && t('homePage.groupCount', { n: groups.length }, groups.length)
     "
     :items="groups"
-    :error="error"
+    :error="failed"
+    :retry="retry"
     :item-key="(group) => group.id"
     :interactive="false"
     :footer-label="t('homePage.manageSubscriptions')"
@@ -29,22 +30,20 @@
 <script lang="ts" setup>
 import type { BaseNewsletterGroupData } from '@beabee/beabee-common';
 
-import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import HomeListCard from '#components/pages/profile/HomeListCard.vue';
-import { client } from '#utils/api';
+import type { LazyQuery } from '#type';
+
+/** Props for HomeNewslettersCard */
+export interface HomeNewslettersCardProps {
+  /** The newsletter groups the member is subscribed to */
+  query: LazyQuery<BaseNewsletterGroupData[]>;
+}
+
+const props = defineProps<HomeNewslettersCardProps>();
 
 const { t } = useI18n();
 
-const groups = ref<BaseNewsletterGroupData[]>();
-const error = ref(false);
-
-onBeforeMount(async () => {
-  try {
-    groups.value = await client.contact.newsletter.getGroups('me');
-  } catch {
-    error.value = true;
-  }
-});
+const { data: groups, failed, retry } = props.query;
 </script>

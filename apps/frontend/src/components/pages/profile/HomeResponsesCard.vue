@@ -10,7 +10,9 @@
     icon="i-lucide-message-square-text"
     :count="t('callouts.data.responses', { n: total }, total)"
     :items="shown"
-    :error="error"
+    :loading="skeleton"
+    :error="failed"
+    :retry="retry"
     :item-key="(response) => response.id"
     :empty-text="t('homePage.noResponses')"
     :footer-label="footerLabel"
@@ -61,51 +63,66 @@ import {
   type Paginated,
 } from '@beabee/beabee-common';
 import { formatLocale } from '@beabee/vue';
-import { useToast } from '@nuxt/ui/composables';
 
-import { computed, onBeforeMount, ref } from 'vue';
+import { queryOptions, useQuery } from '@tanstack/vue-query';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
 
 import HomeListCard from '#components/pages/profile/HomeListCard.vue';
-import { client } from '#utils/api';
+import type { LazyQuery } from '#type';
+import { fetchMyResponses } from '#utils/api';
 import { getRespondAgainKey } from '#utils/callouts';
 
+/** Props for HomeResponsesCard */
+export interface HomeResponsesCardProps {
+  /** The member's latest responses, newest first */
+  query: LazyQuery<
+    Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>>
+  >;
+}
+
+const props = defineProps<HomeResponsesCardProps>();
+
 const { t } = useI18n();
-const toast = useToast();
 
-const page =
-  ref<Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>>>();
-const error = ref(false);
+const { data: latestResponses, skeleton, failed, retry } = props.query;
 
-const responses = computed(() => page.value?.items);
-const total = computed(() => page.value?.total ?? 0);
+const totalResponseCount = computed(() => latestResponses.value?.total ?? 0);
+const fetchLimit = computed(() => Math.min(totalResponseCount.value, 1000));
+const allResponsesQuery = computed(() =>
+  queryOptions({
+    queryKey: ['callouts', 'responses', 'me', 'all', fetchLimit.value],
+    queryFn: () => fetchMyResponses(fetchLimit.value),
+  })
+);
+/** Whether the member has asked to see all their responses */
+const wantsAll = ref(false);
 
-const fetchResponses = (limit: number) =>
-  client.callout.response.list(
-    {
-      sort: 'createdAt',
-      order: 'DESC',
-      limit,
-      rules: {
-        condition: 'AND',
-        rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
-      },
-    },
-    [GetCalloutResponseWith.Callout]
-  );
+const {
+  data: allResponses,
+  isFetching,
+  isError,
+  refetch,
+} = useQuery(() => ({
+  ...allResponsesQuery.value,
+  enabled: wantsAll.value,
+  meta: { errorToast: t('homePage.loadAllResponsesError') },
+}));
 
-onBeforeMount(async () => {
-  try {
-    page.value = await fetchResponses(3);
-  } catch {
-    error.value = true;
-  }
-});
+// The full list once it's loaded, otherwise the latest few
+const loadedResponses = computed(
+  () => allResponses.value ?? latestResponses.value
+);
+const responses = computed(() => loadedResponses.value?.items);
+const total = computed(() => loadedResponses.value?.total ?? 0);
 
 const collapsedCount = 3;
-const expanded = ref(false);
-const loadingAll = ref(false);
+/** The list expands once the rest have loaded */
+const expanded = computed(() => wantsAll.value && !!allResponses.value);
+const loadingAll = computed(
+  () => wantsAll.value && !allResponses.value && isFetching.value
+);
 
 const shown = computed(() =>
   expanded.value ? responses.value : responses.value?.slice(0, collapsedCount)
@@ -118,26 +135,12 @@ const footerLabel = computed(() => {
     : t('homePage.showAllResponses', { n: total.value });
 });
 
-async function toggle() {
+function toggle() {
   if (loadingAll.value) return;
 
-  if (!expanded.value && (responses.value?.length ?? 0) < total.value) {
-    loadingAll.value = true;
-    try {
-      page.value = await fetchResponses(Math.min(total.value, 1000));
-    } catch {
-      toast.add({
-        title: t('homePage.loadAllResponsesError'),
-        color: 'error',
-        icon: 'i-lucide-circle-alert',
-      });
-      return;
-    } finally {
-      loadingAll.value = false;
-    }
-  }
-
-  expanded.value = !expanded.value;
+  wantsAll.value = !expanded.value;
+  // After a failure the query stays enabled, so asking again tries again
+  if (wantsAll.value && isError.value) refetch();
 }
 
 const respondAgainKey = (

@@ -12,7 +12,7 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { DisabledIntegration, Integration } from '#type/integration';
-import { client } from '#utils/api/client';
+import { client } from '#utils/api';
 
 type ProviderDisplayConfig = Pick<
   Integration,

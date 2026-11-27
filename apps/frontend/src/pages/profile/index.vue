@@ -22,17 +22,133 @@ meta:
 
     <div class="flex flex-col items-start gap-5 md:flex-row">
       <div class="flex w-full min-w-0 flex-1 flex-col gap-5">
-        <HomeCalloutsCard />
-        <HomeResponsesCard />
+        <HomeCalloutsCard :query="callouts" />
+        <HomeResponsesCard :query="responses" />
       </div>
 
       <div class="flex w-full flex-col gap-5 md:w-80 md:shrink-0">
-        <HomeContributionCard v-if="!generalContent.hideContribution" />
-        <HomeNewslettersCard />
+        <HomeContributionCard
+          v-if="!generalContent.hideContribution"
+          :query="contribution"
+        />
+        <HomeNewslettersCard :query="newsletters" />
       </div>
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import {
+  ContributionType,
+  ItemStatus,
+  MembershipStatus,
+  PaymentStatus,
+} from '@beabee/beabee-common';
+
+import { queryOptions } from '@tanstack/vue-query';
+
+import { routeQuery } from '#lib/route-queries';
+import { generalContent } from '#store';
+import type { HomeContributionData, RouteQueries, RouteQuery } from '#type';
+import { client, fetchMyResponses } from '#utils/api';
+
+/** The open CrowdNewsrooms, newest first */
+const openCalloutsQuery = queryOptions({
+  queryKey: ['callouts', 'open'],
+  queryFn: () =>
+    client.callout.list(
+      {
+        sort: 'starts',
+        order: 'DESC',
+        rules: {
+          condition: 'AND',
+          rules: [
+            { field: 'status', operator: 'equal', value: [ItemStatus.Open] },
+            { field: 'hidden', operator: 'equal', value: [false] },
+          ],
+        },
+      },
+      ['hasAnswered', 'responseCount']
+    ),
+});
+
+const latestResponsesQuery = queryOptions({
+  queryKey: ['callouts', 'responses', 'me', 'latest'],
+  queryFn: () => fetchMyResponses(3),
+});
+
+/** The newsletter groups the member can join or leave */
+const newsletterGroupsQuery = queryOptions({
+  queryKey: ['contact', 'me', 'newsletter-groups'],
+  queryFn: () => client.contact.newsletter.getGroups('me'),
+});
+
+const fetchLastPayment = async () => {
+  const payments = await client.contact.payment.list('me', {
+    sort: 'chargeDate',
+    order: 'DESC',
+    limit: 1,
+    rules: {
+      condition: 'AND',
+      rules: [
+        {
+          field: 'status',
+          operator: 'equal',
+          value: [PaymentStatus.Successful],
+        },
+      ],
+    },
+  });
+  return payments.items[0] ?? null;
+};
+
+/**
+ * The member's contribution, and for the states that show it their most
+ * recent successful payment. If the payment fails to load, it's left out.
+ */
+const loadContribution = async (): Promise<HomeContributionData> => {
+  const info = await client.contact.contribution.get();
+
+  const hasCurrentContribution =
+    info.membershipStatus === MembershipStatus.Expiring ||
+    (info.membershipStatus === MembershipStatus.Active &&
+      info.type !== ContributionType.None);
+  const lastPayment = hasCurrentContribution
+    ? null
+    : await fetchLastPayment().catch(() => null);
+
+  return { info, lastPayment };
+};
+
+const contributionQuery = queryOptions({
+  queryKey: ['contact', 'me', 'contribution'],
+  queryFn: loadContribution,
+});
+
+/**
+ * The queries the home page reads, one per card, so a slow card doesn't hold
+ * up the rest.
+ */
+const homeQueries = {
+  openCallouts: openCalloutsQuery,
+  latestResponses: latestResponsesQuery,
+  newsletterGroups: newsletterGroupsQuery,
+  contribution: contributionQuery,
+};
+
+/** Starts the queries in `homeQueries`. Leaving one out is a type error. */
+export const routeQueries: RouteQueries = () => {
+  const starts: Record<keyof typeof homeQueries, RouteQuery | undefined> = {
+    openCallouts: routeQuery(homeQueries.openCallouts),
+    latestResponses: routeQuery(homeQueries.latestResponses),
+    newsletterGroups: routeQuery(homeQueries.newsletterGroups),
+    contribution: generalContent.value.hideContribution
+      ? undefined
+      : routeQuery(homeQueries.contribution),
+  };
+  return Object.values(starts).filter((start) => start !== undefined);
+};
+</script>
 
 <script lang="ts" setup>
 import type { ContentProfileData, GetContactData } from '@beabee/beabee-common';
@@ -46,12 +162,20 @@ import HomeNewslettersCard from '#components/pages/profile/HomeNewslettersCard.v
 import HomeResponsesCard from '#components/pages/profile/HomeResponsesCard.vue';
 import NoticeContainer from '#components/pages/profile/NoticeContainer.vue';
 import WelcomeCard from '#components/welcome/WelcomeCard.vue';
-import { currentUser, generalContent } from '#store';
+import { useLazyQuery } from '#composables/useLazyQuery';
+import { currentUser } from '#store';
 import { addBreadcrumb } from '#store/breadcrumb';
-import { client } from '#utils/api';
 import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const { t } = useI18n();
+
+const callouts = useLazyQuery(homeQueries.openCallouts);
+const responses = useLazyQuery(homeQueries.latestResponses);
+const newsletters = useLazyQuery(homeQueries.newsletterGroups);
+const contribution = useLazyQuery(() => ({
+  ...homeQueries.contribution,
+  enabled: !generalContent.value.hideContribution,
+}));
 
 addBreadcrumb(
   computed(() => [

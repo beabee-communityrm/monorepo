@@ -1,9 +1,14 @@
+import {
+  type GetCalloutResponseDataWith,
+  GetCalloutResponseWith,
+  type Paginated,
+} from '@beabee/beabee-common';
 import { BeabeeClient } from '@beabee/client';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import env from '#env';
 
-import { i18n } from '../../lib/i18n';
+import { i18n } from '../lib/i18n';
 
 export const client = new BeabeeClient({
   path: env.apiUrl,
@@ -65,3 +70,22 @@ export async function waitForBackend(maxRetries: number = 60): Promise<void> {
 
   throw new Error('Backend failed to become healthy after maximum retries');
 }
+
+/** The logged-in member's responses, newest first, with their CrowdNewsrooms */
+export const fetchMyResponses = (
+  limit: number
+): Promise<
+  Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>>
+> =>
+  client.callout.response.list(
+    {
+      sort: 'createdAt',
+      order: 'DESC',
+      limit,
+      rules: {
+        condition: 'AND',
+        rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
+      },
+    },
+    [GetCalloutResponseWith.Callout]
+  );

@@ -10,7 +10,9 @@
     :icon="routeIcons.callouts"
     :count="t('homePage.openCount', { n: total })"
     :items="callouts"
-    :error="error"
+    :loading="skeleton"
+    :error="failed"
+    :retry="retry"
     :item-key="(callout) => callout.slug"
     :empty-text="t('homePage.noOpenCallouts')"
     :footer-label="
@@ -56,47 +58,31 @@
 </template>
 
 <script lang="ts" setup>
-import { ItemStatus, type Paginated } from '@beabee/beabee-common';
+import type { Paginated } from '@beabee/beabee-common';
 
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
 
 import CalloutMetaList from '#components/callout/CalloutMetaList.vue';
 import CalloutRespondLinks from '#components/callout/CalloutRespondLinks.vue';
 import HomeListCard from '#components/pages/profile/HomeListCard.vue';
-import { client } from '#utils/api';
+import type { CalloutCardData, LazyQuery } from '#type';
 import { getCalloutImageUrl } from '#utils/callouts';
 import { routeIcons } from '#utils/route-nav';
-import type { CalloutCardData } from '#type';
+
+/** Props for HomeCalloutsCard */
+export interface HomeCalloutsCardProps {
+  /** The open CrowdNewsrooms, newest first */
+  query: LazyQuery<Paginated<CalloutCardData>>;
+}
+
+const props = defineProps<HomeCalloutsCardProps>();
 
 const { t } = useI18n();
 
-const page = ref<Paginated<CalloutCardData>>();
-const error = ref(false);
+const { data: page, skeleton, failed, retry } = props.query;
 
-const callouts = computed(() => page.value?.items);
+const callouts = computed(() => page.value?.items.slice(0, 3));
 const total = computed(() => page.value?.total ?? 0);
-
-onBeforeMount(async () => {
-  try {
-    page.value = await client.callout.list(
-      {
-        order: 'DESC',
-        sort: 'starts',
-        limit: 3,
-        rules: {
-          condition: 'AND',
-          rules: [
-            { field: 'status', operator: 'equal', value: [ItemStatus.Open] },
-            { field: 'hidden', operator: 'equal', value: [false] },
-          ],
-        },
-      },
-      ['hasAnswered', 'responseCount']
-    );
-  } catch {
-    error.value = true;
-  }
-});
 </script>
