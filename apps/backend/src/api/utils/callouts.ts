@@ -4,7 +4,7 @@ import { BadRequestError } from '@beabee/core/errors';
 import { CalloutReviewer, Contact } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
-import { Auth, In } from 'typeorm';
+import { In } from 'typeorm';
 
 export async function getReviewerRules(
   contact: Contact | undefined,

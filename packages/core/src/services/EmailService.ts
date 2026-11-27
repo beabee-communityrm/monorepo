@@ -532,7 +532,7 @@ class EmailService {
     // Get all overrides from database
     const overrides = await getRepository(Email).find({
       where: { templateId: Not(IsNull()) },
-      select: ['templateId', 'subject'],
+      select: { templateId: true, subject: true },
     });
     const templateIdSubjectMap = new Map(
       overrides.map((e) => [e.templateId, e.subject])

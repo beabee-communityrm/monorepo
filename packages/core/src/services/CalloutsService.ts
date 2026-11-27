@@ -97,7 +97,7 @@ class CalloutsService {
   > {
     log.info('Listing all callouts for migration purposes');
     const callouts = await getRepository(Callout).find({
-      select: ['id', 'slug', 'image'],
+      select: { id: true, slug: true, image: true },
     });
 
     return callouts;
@@ -633,7 +633,7 @@ class CalloutsService {
 
     // Get all responses
     const responses = await getRepository(CalloutResponse).find({
-      select: ['id', 'calloutId', 'answers'],
+      select: { id: true, calloutId: true, answers: true },
     });
 
     // Filter responses with file uploads
@@ -685,7 +685,7 @@ class CalloutsService {
 
     const response = await getRepository(CalloutResponse).findOne({
       where: { id: responseId },
-      select: ['id', 'answers'],
+      select: { id: true, answers: true },
     });
 
     if (!response) {

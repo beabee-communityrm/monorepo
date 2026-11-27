@@ -59,7 +59,7 @@
     "reflect-metadata": "^0.2.2",
     "routing-controllers": "^0.11.3",
     "slugify": "^1.6.9",
-    "typeorm": "^0.3.31",
+    "typeorm": "^1.1.2",
     "uuid": "^14.0.3"
   },
   "devDependencies": {

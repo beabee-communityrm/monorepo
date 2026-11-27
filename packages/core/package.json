@@ -197,7 +197,7 @@
     "stripe": "^15.12.0",
     "svgo": "^3.3.3",
     "tar-stream": "^3.2.2",
-    "typeorm": "^0.3.31",
+    "typeorm": "^1.1.2",
     "uuid": "^14.0.3",
     "winston": "^3.19.0",
     "yaml-front-matter": "^4.1.1"

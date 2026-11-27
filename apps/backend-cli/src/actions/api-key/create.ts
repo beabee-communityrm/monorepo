@@ -10,7 +10,13 @@ export const createApiKey = async (argv: CreateApiKeyArgs): Promise<void> => {
     // Get user for API key creation
     const apiUser = await getRepository(Contact).findOneOrFail({
       where: { email: argv.email },
-      select: ['id', 'email', 'firstname', 'lastname', 'roles'],
+      select: {
+        id: true,
+        email: true,
+        firstname: true,
+        lastname: true,
+        roles: true,
+      },
     });
 
     if (!apiUser) {
